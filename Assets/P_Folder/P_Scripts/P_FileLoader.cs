@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
 using UnityEngine.UI;
+using TMPro;
 
 public class P_FileLoader : MonoBehaviour
 {
     public Transform contentPanel;
     public GameObject listItemPrefab;
-    public InputField searchInput;
+    public TMP_InputField searchInput;
     public Button searchButton;
 
     private List<string> allFiles = new List<string>();
