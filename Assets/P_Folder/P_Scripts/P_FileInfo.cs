@@ -1,18 +1,38 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class P_FileInfo : MonoBehaviour
 {
-    // Start is called before the first frame update
+    public Button btn_OpenFile;
+    public TMP_Text fileName;
+    public TMP_Text creationTime;
+    public TMP_Text fileSize;
+
     void Start()
     {
         
     }
 
-    // Update is called once per frame
     void Update()
     {
         
+    }
+
+    public void SetFileName(string name)
+    {
+        fileName.text = name;
+    }
+
+    public void SetCreationTime(string time)
+    {
+        creationTime.text = time; 
+    }
+
+    public void SetFileSize(string size)
+    {
+        fileSize.text = size;
     }
 }
