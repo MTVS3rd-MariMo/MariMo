@@ -1,9 +1,12 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class K_LineRenderer : MonoBehaviour
 {
+    public RectTransform paint_Rt;
+    RawImage paint_BG;
 
     private LineRenderer line;
     private Vector3 prevPos;
@@ -29,7 +32,7 @@ public class K_LineRenderer : MonoBehaviour
         if(Input.GetMouseButton(0))
         {
             // 마우스 스크린 좌표를 캔버스 로컬 좌표로 변환
-            Vector3 currPos = mainCamera.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, mainCamera.nearClipPlane));
+            Vector3 currPos = mainCamera.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, mainCamera.nearClipPlane));           
             //currPos.z = -(float)9.1; //mainCamera.nearClipPlane;
             currPos.z = -9;
 
