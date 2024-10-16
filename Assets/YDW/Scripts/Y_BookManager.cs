@@ -16,12 +16,15 @@ public class Y_BookManager : MonoBehaviour
     public TMP_Text leftTxt;
     public TMP_Text rightTxt;
 
+    public GameObject page;
+
     private void Start()
     {
         //pageNoTxt = GameObject.Find("Txt_pageNo").GetComponent<TextMeshPro>();
         pageNo = int.Parse(pageNoTxt.text);
         //leftTxt = GameObject.Find("Txt_Content1").GetComponent<TextMeshPro>();
         //rightTxt = GameObject.Find("Txt_Content2").GetComponent<TextMeshPro>();
+        page = GameObject.Find("Img_Page34");
 
         string newText = "";
         for (int i = 0; i < text.Length; i+=maxText)
@@ -52,7 +55,7 @@ public class Y_BookManager : MonoBehaviour
 
     public void CloseBook()
     {
-        gameObject.SetActive(false);
+        page.SetActive(false);
     }
 
     public void left()
