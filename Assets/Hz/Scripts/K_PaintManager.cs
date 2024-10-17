@@ -12,7 +12,15 @@ public class K_PaintManager : MonoBehaviour
 
     void Update()
     {
-        
+        if(Input.GetMouseButton(0))
+        {
+            SetPenMode();
+        }
+
+        if(Input.GetMouseButton(1))
+        {
+            SetEraserMode();
+        }
     }
 
     public void SetPenMode()
