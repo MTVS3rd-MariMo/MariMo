@@ -16,7 +16,7 @@ public class LobbyUIController : MonoBehaviour
     public TMP_Dropdown drop_mapSelection;
     public Image img_mapImage;
     public List<Sprite> mapSprites = new List<Sprite>();
-
+    public TMP_Dropdown drop_playerColor;
 
     string log;
 
