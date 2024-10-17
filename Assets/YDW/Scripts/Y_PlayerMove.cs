@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEditor.Rendering;
 using UnityEngine;
 using UnityEngine.AI;
@@ -18,7 +19,7 @@ public class Y_PlayerMove : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        speed = 10;
+        speed = 20;
         conn = GetComponent<CharacterController>();
         layerMaskGround = LayerMask.GetMask("Ground");
         agent.updateRotation = false;
@@ -47,6 +48,7 @@ public class Y_PlayerMove : MonoBehaviour
                 }
             }
         }
-       
     }
+
+    
 }
