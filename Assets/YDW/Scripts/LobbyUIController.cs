@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
@@ -13,10 +13,10 @@ public class LobbyUIController : MonoBehaviour
     public static LobbyUIController lobbyUI;
     public TMP_InputField[] roomSetting;
     public TMP_Text text_logText;
-    public TMP_Dropdown drop_mapSelection;
-    public Image img_mapImage;
-    public List<Sprite> mapSprites = new List<Sprite>();
-    public TMP_Dropdown drop_playerColor;
+    //public TMP_Dropdown drop_mapSelection;
+    //public Image img_mapImage;
+    //public List<Sprite> mapSprites = new List<Sprite>();
+    //public TMP_Dropdown drop_playerColor;
 
     string log;
 
@@ -35,13 +35,13 @@ public class LobbyUIController : MonoBehaviour
 
     void Start()
     {
-        drop_mapSelection.onValueChanged.AddListener(ShowSelectedMapImage);
+        //drop_mapSelection.onValueChanged.AddListener(ShowSelectedMapImage);
     }
 
-    void ShowSelectedMapImage(int num)
-    {
-        img_mapImage.sprite = mapSprites[num];
-    }
+    //void ShowSelectedMapImage(int num)
+    //{
+    //    img_mapImage.sprite = mapSprites[num];
+    //}
 
     public void ShowRoomPanel()
     {
@@ -56,8 +56,8 @@ public class LobbyUIController : MonoBehaviour
         text_logText.text = log;
     }
 
-    public int GetSelectedMapNumber()
-    {
-        return drop_mapSelection.value;
-    }
+    //public int GetSelectedMapNumber()
+    //{
+    //    return drop_mapSelection.value;
+    //}
 }

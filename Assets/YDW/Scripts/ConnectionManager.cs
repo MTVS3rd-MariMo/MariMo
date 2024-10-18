@@ -29,20 +29,22 @@ public class ConnectionManager : MonoBehaviourPunCallbacks
 
     public void StartLogin()
     {
-        // 접속을 위한 설정
+        
         if (LobbyUIController.lobbyUI.input_nickName.text.Length > 0)
         {
+            // 접속을 위한 설정
             PhotonNetwork.GameVersion = "1.0.0";
             PhotonNetwork.NickName = LobbyUIController.lobbyUI.input_nickName.text;
             PhotonNetwork.AutomaticallySyncScene = true;
 
-            // 플레이어 캐릭터 바디 머티리얼 색상 선택
-
             // 접속을 서버에 요청하기
-            PhotonNetwork.ConnectUsingSettings();
+            PhotonNetwork.ConnectUsingSettings(); // 위 정보를 바탕으로 네임 서버에서 마스터 서버로 연결하는 함수.
+                                                  // 네임 서버: 커넥션 관리, NetID 구분하여 클라이언트 구분.
+                                                  // 마스터 서버: 유저들 간의 Match making 을 해주는 공간. 룸을 만들고 룸에 조인을 하고 룸의 플레이어끼리 플레이를 하는 식. 방장의 씬을 기준으로 설정하고 나의 씬에 동기화
+
             LobbyUIController.lobbyUI.btn_login.interactable = false;
-            int playerColor = LobbyUIController.lobbyUI.drop_playerColor.value;
-            PhotonNetwork.LocalPlayer.CustomProperties.Add("CHARACTER_COLOR", playerColor);
+            //int playerColor = LobbyUIController.lobbyUI.drop_playerColor.value;
+            //PhotonNetwork.LocalPlayer.CustomProperties.Add("CHARACTER_COLOR", playerColor);
         }
         
     }
@@ -99,13 +101,13 @@ public class ConnectionManager : MonoBehaviourPunCallbacks
             // 룸의 커스텀 정보를 추가한다.
             // - 선택한 맵 번호를 룸 정보에 추가한다.
             // 키 값 등록하기
-            roomOpt.CustomRoomPropertiesForLobby = new string[] { "MASTER_NAME", "PASSWORD", "SCENE_NUMBER"};
-            
+            roomOpt.CustomRoomPropertiesForLobby = new string[] { "MASTER_NAME", "PASSWORD"}; // , "SCENE_NUMBER"
+
             // 키에 맞는 해시 테이블 추가하기
             Hashtable roomTable = new Hashtable();
             roomTable.Add("MASTER_NAME", PhotonNetwork.NickName);
             roomTable.Add("PASSWORD", 1234);
-            roomTable.Add("SCENE_NUMBER", LobbyUIController.lobbyUI.drop_mapSelection.value + 2);
+            //roomTable.Add("SCENE_NUMBER", LobbyUIController.lobbyUI.drop_mapSelection.value + 2);
             roomOpt.CustomRoomProperties = roomTable;
 
             PhotonNetwork.CreateRoom(roomName, roomOpt, TypedLobby.Default);
@@ -213,6 +215,7 @@ public class ConnectionManager : MonoBehaviourPunCallbacks
             Destroy(scrollContent.GetChild(i).gameObject);
         }
 
+        ////////////////////// 맵 선택 ///////////////////
         //foreach(RoomInfo room in cachedRoomList)
         //{
         //    // cachedRoomList에 있는 모든 방을 만들어서 스크롤뷰에 추가한다.
