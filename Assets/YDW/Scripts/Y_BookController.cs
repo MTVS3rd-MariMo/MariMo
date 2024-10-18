@@ -19,7 +19,10 @@ public class Y_BookController : MonoBehaviour
     public RectTransform leftTextBox;
     public RectTransform rightTextBox;
 
+    public GameObject bookUI;
     public GameObject ChooseCharacterUI;
+    public GameObject PaintUI;
+    public GameObject ChooseCompleteUI;
 
     private void Start()
     {
@@ -31,6 +34,9 @@ public class Y_BookController : MonoBehaviour
         DisplayPage(pageNo);
     }
 
+    #region 책UI
+
+    // 텍스트 쪼개기
     void SplitTextIntoPages()
     {
         string[] words = text.Split(' ');
@@ -61,6 +67,7 @@ public class Y_BookController : MonoBehaviour
         }
     }
 
+    // 페이지에 띄우기
     void DisplayPage(int pageIndex)
     {
         pageNoTxt.text = pageIndex.ToString();
@@ -76,20 +83,84 @@ public class Y_BookController : MonoBehaviour
         }
     }
 
+    // 페이지 왼쪽 넘김
     public void left()
     {
         pageNo = Mathf.Max(1, --pageNo);
         DisplayPage(pageNo);
     }
 
+    // 페이지 오른쪽 넘김
     public void right()
     {
-        pageNo = Mathf.Min((texts.Count + 1) / 2, ++pageNo);
-        DisplayPage(pageNo);
-
-        if(++pageNo > (texts.Count + 1) / 2)
+        if (pageNo + 1 > (texts.Count + 1) / 2)
         {
+            bookUI.SetActive(false);
             ChooseCharacterUI.SetActive(true);
         }
+        else
+        {
+            pageNo = Mathf.Min((texts.Count + 1) / 2, ++pageNo);
+            DisplayPage(pageNo);
+        }  
     }
+
+    #endregion
+
+    #region 캐릭터 고르기
+
+    // 버튼 어떤 게 눌렸나 받아오기
+    int CharacterNum;
+
+    // 다른 사람이 버튼 이미 눌렀으면 못 선택하게 나중에 처리할 것
+    /////////////////////////////////////////////
+
+    public void Select1st()
+    {
+        CharacterNum = 1;
+    }
+
+    public void Select2nd()
+    {
+        CharacterNum = 2;
+    }
+
+    public void Select3rd()
+    {
+        CharacterNum = 3;
+    }
+
+    public void Select4th()
+    {
+        CharacterNum = 4;
+    }
+
+    public void FinishSelect()
+    {
+        // 나중에 백엔드에게 어떤 캐릭터 골랐는지 보내주기
+        // CharacterNum 을 넘겨줘야 할듯....
+        //////////////////////////////
+
+        ChooseCharacterUI.SetActive(false);
+        PaintUI.SetActive(true);
+    }
+
+    public void PaintToComplete()
+    {
+        // 이 때 AI 한테 이미지 보내주는 거 나중에 구현할 것
+        ////////////////////////////
+        
+        PaintUI.SetActive(false);
+        ChooseCompleteUI.SetActive(true);
+    }
+
+    public void ToMap()
+    {
+        // 이 때 캐릭터 받아와서 내 플레이어에 동기화 시켜야 됨
+        ////////////////////////
+
+        gameObject.SetActive(false);
+    }
+
+    #endregion
 }
