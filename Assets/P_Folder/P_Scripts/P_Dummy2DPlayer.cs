@@ -1,32 +1,19 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
-// 변수 : 데이터를 담는 그릇
-// 변수 만드는 법 : 자료형 변수이름;
-
-public class P_DummyPlayer : MonoBehaviour
+public class P_Dummy2DPlayer : MonoBehaviour
 {
-    public bool canWalk = true;
+    public float speed = 5f;
 
-    // 이동 속력
-    public float speed = 5;
 
-    void Start()
-    {
-
-    }
+    bool inPhoto = false;
+    
 
     void Update()
     {
-        if (canWalk)
+        if (inPhoto)
             Move();
-    }
-
-    public void CanWalk(bool can)
-    {
-        canWalk = can;
     }
 
     public void Move()
@@ -52,5 +39,23 @@ public class P_DummyPlayer : MonoBehaviour
         //transform.Translate(finalDir * speed * Time.deltaTime);
         // P = P0 + vt (이동공식)
         transform.position += finalDir * speed * Time.deltaTime;
+
+        // 화면 밖으로 나가지 못하게 고정
+        Vector3 viewPortPoint = Camera.main.WorldToViewportPoint(transform.position);
+
+        if (viewPortPoint.x < 0.1f || viewPortPoint.x > 0.9f || viewPortPoint.y < 0.1f || viewPortPoint.y > 0.9f)
+        {
+            transform.position -= finalDir * speed * Time.deltaTime;
+        }
+    }
+
+    public void InPhoto(bool ismoving)
+    {
+        inPhoto = ismoving;
+    }
+
+    public void PosLock()
+    {
+        
     }
 }

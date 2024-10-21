@@ -12,36 +12,51 @@ public class P_ObjectManager : MonoBehaviour
     //public List<Transform> objectList = new List<Transform>();
     float triggerNum = 0;
 
+    // UI들
     public GameObject studioUI_Canvas;
     public Image studioUI1_Img;
     public TMP_Text studioUI1_Text;
     public TMP_Text timeCount_Text;
 
+    // 버츄얼 카메라
     public CinemachineVirtualCamera for_Directing1;
     public CinemachineVirtualCamera for_Directing2;
 
+    // 투명벽 (플레이어 움직임을 멈춘다면 필요없을 예정)
     public GameObject wall;
 
+    // 연출용 타임라인
     public PlayableDirector timeline;
 
+    // 타임라인 실행을 한번만 하기위한 체크
     bool act = false;
 
-    float timeCount = 5f;
-
+    // 연출용 흑백화면
     public Image blackScreen;
     public Image whiteScreen;
 
+    // 사진관 입장시 움직일 플레이어
+    public GameObject player;
 
-    // Start is called before the first frame update
     void Start()
     {
 
     }
 
-    // Update is called once per frame
     void Update()
     {
-        if(triggerNum >= 4 && !act)
+        
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        triggerNum++;
+        print("+++++++++ : " + triggerNum);
+
+        // 포톤 isMine일때
+        //other.GetComponent<P_DummyPlayer>().CanWalk(false);
+
+        if (triggerNum >= 4 && !act)
         {
             act = true;
             wall.SetActive(true);
@@ -51,17 +66,13 @@ public class P_ObjectManager : MonoBehaviour
         }
     }
 
-    private void OnTriggerEnter(Collider other)
-    {
-        triggerNum++;
-        print("+++++++++ : " + triggerNum);
-    }
-
     private void OnTriggerExit(Collider other)
     {
         triggerNum--;
         print("-------- : " + triggerNum);
     }
+
+    
 
     private void StudioAct()
     {
@@ -83,6 +94,7 @@ public class P_ObjectManager : MonoBehaviour
 
         Color black = blackScreen.color;
 
+        // 페이드 아웃
         while(black.a <=1)
         {
             black.a += Time.deltaTime / 1.5f;
@@ -92,14 +104,14 @@ public class P_ObjectManager : MonoBehaviour
             yield return null;
         }
 
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(0.75f);
 
         // 타임라인 일시정지
         timeline.Pause();
 
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(1.5f);
 
-
+        // 페이드 인
         while (black.a >= 0)
         {
             black.a -= Time.deltaTime / 1.5f;
@@ -109,10 +121,13 @@ public class P_ObjectManager : MonoBehaviour
             yield return null;
         }
 
+        // 사진관용 플레이어 조작 활성화
+        player.GetComponent<P_Dummy2DPlayer>().InPhoto(true);
 
         Color color1 = studioUI1_Img.color;
         Color color2 = studioUI1_Text.color;
 
+        // UI생성
         while (color1.a <= 1)
         {
             color1.a += Time.deltaTime;
@@ -167,6 +182,8 @@ public class P_ObjectManager : MonoBehaviour
 
         Color tcolor = timeCount_Text.color;
 
+        float timeCount = 5f;
+
         while (timeCount > 0)
         {
             tcolor.a = 1;
@@ -187,18 +204,48 @@ public class P_ObjectManager : MonoBehaviour
             }
         }
 
+        player.GetComponent<P_Dummy2DPlayer>().InPhoto(false);
+
         whiteScreen.gameObject.SetActive(true);
         yield return new WaitForSeconds(0.01f);
         whiteScreen.gameObject.SetActive(false);
 
-        studioUI_Canvas.SetActive(false);
-        for_Directing1.gameObject.SetActive(false);
-        for_Directing2.gameObject.SetActive(false);
+        
 
         TakePicture();
 
+        // 페이드 아웃
+        while (black.a <= 1)
+        {
+            black.a += Time.deltaTime / 1.5f;
+
+            blackScreen.color = black;
+
+            yield return null;
+        }
+
         // 타임라인 재생
         timeline.Play();
+
+        yield return new WaitForSeconds(0.5f);
+
+        for_Directing1.gameObject.SetActive(false);
+        for_Directing2.gameObject.SetActive(false);
+
+        yield return new WaitForSeconds(1.5f);
+
+        // 페이드 인
+        while (black.a >= 0)
+        {
+            black.a -= Time.deltaTime / 1.5f;
+
+            blackScreen.color = black;
+
+            yield return null;
+        }
+
+        // 사진관 모든 UI 종료
+        studioUI_Canvas.SetActive(false);
 
     }
 
