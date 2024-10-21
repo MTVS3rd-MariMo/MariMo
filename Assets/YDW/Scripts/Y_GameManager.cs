@@ -5,9 +5,10 @@ using UnityEngine;
 
 public class Y_GameManager : MonoBehaviour
 {
+    public Transform[] spawnPoints;
+
     void Start()
     {
-        print("!!!!!!!!!!!!!");
         StartCoroutine(SpawnPlayer());
 
         // OnPhotonSerializeView 에서 데이터 전송 빈도 수 설정하기 (per seconds)
@@ -21,11 +22,14 @@ public class Y_GameManager : MonoBehaviour
         // 룸에 입장이 완료될 때까지 기다린다.
         yield return new WaitUntil(() => { return PhotonNetwork.InRoom; });
 
-        Vector2 randomPos = Random.insideUnitCircle * 5.0f;
-        Vector3 initPosition = new Vector3(randomPos.x, 1.0f, randomPos.y);
+        // 현재 플레이어의 인덱스(순서)를 가져옴
+        int playerIndex = PhotonNetwork.LocalPlayer.ActorNumber - 1;
 
-        print("??????????????????");
-        PhotonNetwork.Instantiate("Player", initPosition, Quaternion.identity);
+        // 지정된 스폰 지점의 위치 가져옴
+        Vector3 spawnPosition = spawnPoints[playerIndex].position;
+
+        // 플레이어를 해당 스폰 지점에 생성
+        PhotonNetwork.Instantiate("Player", spawnPosition, Quaternion.identity);
     }
 
     void Update()

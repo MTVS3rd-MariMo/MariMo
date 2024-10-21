@@ -1,4 +1,5 @@
-﻿using Photon.Pun;
+﻿using Cinemachine;
+using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -9,8 +10,9 @@ using UnityEngine.InputSystem.Utilities;
 
 public class Y_PlayerMove : MonoBehaviour, IPunObservable
 {
+    public float trackingSpeed = 3;
     public float speed;
-    CharacterController conn;
+    //CharacterController conn;
 
     public NavMeshAgent agent;
     int layerMaskGround;
@@ -25,12 +27,13 @@ public class Y_PlayerMove : MonoBehaviour, IPunObservable
     {
         pv = GetComponent<PhotonView>();
         speed = 20;
-        conn = GetComponent<CharacterController>();
+        //conn = GetComponent<CharacterController>();
         layerMaskGround = LayerMask.GetMask("Ground");
         agent.updateRotation = false;
+
+        
     }
 
-    // Update is called once per frame
     void Update()
     {
         Move();
@@ -41,25 +44,54 @@ public class Y_PlayerMove : MonoBehaviour, IPunObservable
         // 만일 내가 소유권을 가진 캐릭터라면 
         if(pv.IsMine)
         {
-            if (Input.touchCount > 0)
+            if(Application.platform == RuntimePlatform.Android)
             {
-                Touch touch = Input.GetTouch(0);
-
-                if ((touch.phase == TouchPhase.Began) || (touch.phase == TouchPhase.Moved))
+                if (Input.touchCount > 0)
                 {
-                    Ray ray = Camera.main.ScreenPointToRay(touch.position);
-                    RaycastHit hit;
+                    Touch touch = Input.GetTouch(0);
 
-                    if (Physics.Raycast(ray, out hit, 9999f, layerMaskGround))
+                    if ((touch.phase == TouchPhase.Began) || (touch.phase == TouchPhase.Moved))
                     {
-                        agent.SetDestination(hit.point);
+                        Ray ray = Camera.main.ScreenPointToRay(touch.position);
+                        RaycastHit hit;
+
+                        if (Physics.Raycast(ray, out hit, 9999f, layerMaskGround))
+                        {
+                            agent.SetDestination(hit.point);
+                        }
                     }
                 }
             }
+            else
+            {
+                // 사용자의 입력을 받아서
+                // A : -1, D : 1, 누르지 않으면 0
+                float h = Input.GetAxis("Horizontal");
+                // S : -1, W : 1, 누르지 않으면 0
+                float v = Input.GetAxis("Vertical");
+
+                // 방향을 구하자.
+                // 수평 방향
+                Vector3 dirH = transform.right * h;
+                // 수직 방향
+                Vector3 dirV = transform.forward * v;
+                // 최종적으로 이동해야 하는 방향
+                Vector3 finalDir = dirH + dirV;
+                // finalDir 을 정규화 하자 (벡터의 크기를 1로 만든다)
+                finalDir.Normalize();
+
+                // 구해진 방향으로 계속 이동하고 싶다.
+                // 오른쪽으로 이동하고 싶다.
+                //transform.Translate(finalDir * speed * Time.deltaTime);
+                // P = P0 + vt (이동공식)
+                transform.position += finalDir * speed * Time.deltaTime;
+            }
+            
+
         }
         else
         {
-            transform.position = Vector3.Lerp(transform.position, myPos, Time.deltaTime);
+            transform.position = Vector3.Lerp(transform.position, myPos, Time.deltaTime * trackingSpeed);
         }
     }
 

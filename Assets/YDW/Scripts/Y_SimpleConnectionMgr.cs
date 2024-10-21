@@ -50,14 +50,14 @@ public class Y_SimpleConnectionMgr : MonoBehaviourPunCallbacks
         // 방 생성 옵션
         RoomOptions roomOption = new RoomOptions();
         // 방에 들어 올 수 있는 최대 인원 설정
-        roomOption.MaxPlayers = 3;
+        roomOption.MaxPlayers = 4;
         // 로비에 방을 보이게 할것이니?
         roomOption.IsVisible = true;
         // 방에 참여를 할 수 있니?
         roomOption.IsOpen = true;
 
         // Room 참여 or 생성
-        PhotonNetwork.JoinOrCreateRoom("meta_unity_room012340", roomOption, TypedLobby.Default);
+        PhotonNetwork.JoinOrCreateRoom("Marimo", roomOption, TypedLobby.Default);
     }
 
     // 방 생성 성공 했을 때 호출되는 함수
