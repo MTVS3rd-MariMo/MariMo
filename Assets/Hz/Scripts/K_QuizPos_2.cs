@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class K_QuizPos_2 : MonoBehaviour
 {
+    public GameObject correct2;
 
     private void OnTriggerEnter(Collider other)
     {

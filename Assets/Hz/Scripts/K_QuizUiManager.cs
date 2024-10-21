@@ -9,6 +9,9 @@ public class K_QuizUiManager : MonoBehaviour
     public Image img_direction;
     public Image img_countDown;
 
+    public Image img_correctA;
+    public Image img_wrongA;
+
     public TMP_Text text_countDown;
     float currTime = 0;
 
@@ -36,8 +39,13 @@ public class K_QuizUiManager : MonoBehaviour
 
     void Start()
     {
+        // 카운트 다운 && 15초 안내 UI 셋팅
         img_countDown.gameObject.SetActive(false);
         img_direction.gameObject.SetActive(false);
+
+        // 정답, 틀림
+        img_correctA.gameObject.SetActive(false);
+        img_wrongA.gameObject.SetActive(false);
     }
 
     void Update()
