@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 5883214890501978185}
   - component: {fileID: 6568884183543697399}
   - component: {fileID: 8112167255389675912}
-  - component: {fileID: 1251102846196779203}
+  - component: {fileID: 5102122850687551643}
   m_Layer: 0
   m_Name: Answer2
   m_TagString: Untagged
@@ -106,7 +106,7 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1.0121384, y: 1.0091541, z: 0.32998192}
   m_Center: {x: -0.0034000396, y: 0.00501132, z: -0.18000004}
---- !u!114 &1251102846196779203
+--- !u!114 &5102122850687551643
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -115,10 +115,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 437533180043539219}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 30e68336563f2e945a6ef70b20b82904, type: 3}
+  m_Script: {fileID: 11500000, guid: ca7e4c83108cf004f92a54617a8667a3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  correct1: {fileID: 0}
 --- !u!1 &3507339184922988362
 GameObject:
   m_ObjectHideFlags: 0

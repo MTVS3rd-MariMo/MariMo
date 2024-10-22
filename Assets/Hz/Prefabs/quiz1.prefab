@@ -120,6 +120,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   correct1: {fileID: 8432062108334113526}
+  isInCorrectZone: 0
 --- !u!1 &8432062108334113526
 GameObject:
   m_ObjectHideFlags: 0
@@ -132,7 +133,7 @@ GameObject:
   - component: {fileID: 6570999500157437529}
   - component: {fileID: 8649581713240339818}
   - component: {fileID: 9043968316581819683}
-  - component: {fileID: 5259805935732593382}
+  - component: {fileID: 8714707055985255483}
   m_Layer: 0
   m_Name: Answer
   m_TagString: Untagged
@@ -226,7 +227,7 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1.0121384, y: 1.0091541, z: 0.32998192}
   m_Center: {x: -0.0034000396, y: 0.00501132, z: -0.18000004}
---- !u!114 &5259805935732593382
+--- !u!114 &8714707055985255483
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
