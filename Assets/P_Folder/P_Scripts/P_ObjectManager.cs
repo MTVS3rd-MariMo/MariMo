@@ -7,7 +7,7 @@ using UnityEngine;
 using UnityEngine.Playables;
 using UnityEngine.UI;
 
-public class P_ObjectManager : MonoBehaviour
+public class P_ObjectManager_Studio : MonoBehaviour
 {
     //public List<Transform> objectList = new List<Transform>();
     float triggerNum = 0;
@@ -89,12 +89,12 @@ public class P_ObjectManager : MonoBehaviour
 
         yield return new WaitForSeconds(4f);
 
-
+        // UI캔버스
         studioUI_Canvas.SetActive(true);
 
+        // 페이드 아웃
         Color black = blackScreen.color;
 
-        // 페이드 아웃
         while(black.a <=1)
         {
             black.a += Time.deltaTime / 1.5f;
@@ -124,10 +124,10 @@ public class P_ObjectManager : MonoBehaviour
         // 사진관용 플레이어 조작 활성화
         player.GetComponent<P_Dummy2DPlayer>().InPhoto(true);
 
+        // UI생성
         Color color1 = studioUI1_Img.color;
         Color color2 = studioUI1_Text.color;
 
-        // UI생성
         while (color1.a <= 1)
         {
             color1.a += Time.deltaTime;
@@ -211,7 +211,6 @@ public class P_ObjectManager : MonoBehaviour
         whiteScreen.gameObject.SetActive(false);
 
         
-
         TakePicture();
 
         // 페이드 아웃
@@ -229,6 +228,7 @@ public class P_ObjectManager : MonoBehaviour
 
         yield return new WaitForSeconds(0.5f);
 
+        // 연출용 가상카메라 끄기
         for_Directing1.gameObject.SetActive(false);
         for_Directing2.gameObject.SetActive(false);
 
