@@ -16,15 +16,19 @@ public class Y_SetCamera : MonoBehaviour
     public Transform playerAverage;
     public ThirdPersonCamera tpc;
 
+    Y_PlayerMove playerMove;
+
     // Start is called before the first frame update
     void Start()
     {
         pv = GetComponent<PhotonView>();
+        playerMove = GetComponent<Y_PlayerMove>();
 
         // 메인 카메라 찾기
         Camera mainCamera = Camera.main;
         // 버츄얼 카메라 찾기
         tpc = FindObjectOfType<ThirdPersonCamera>();
+
         // 플레이어간의 평균값 찾기
         playerAverage = GameObject.Find("PlayerAverage").transform;
 
@@ -64,6 +68,7 @@ public class Y_SetCamera : MonoBehaviour
         if (PhotonNetwork.CurrentRoom.PlayerCount == 4)
         {
             UpdateCameraPosition();
+            playerMove.movable = true;
         }
     }
 

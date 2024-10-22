@@ -22,6 +22,8 @@ public class Y_PlayerMove : MonoBehaviour, IPunObservable
     PhotonView pv;
     Vector3 myPos;
 
+    public bool movable = false;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -36,7 +38,14 @@ public class Y_PlayerMove : MonoBehaviour, IPunObservable
 
     void Update()
     {
-        Move();
+        if (movable)
+        {
+            Move();
+        }
+        else
+        {
+            // 친구들을 기다리고 있어요! UI
+        }
     }
 
     void Move()
