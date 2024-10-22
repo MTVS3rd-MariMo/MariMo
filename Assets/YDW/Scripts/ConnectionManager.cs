@@ -101,12 +101,12 @@ public class ConnectionManager : MonoBehaviourPunCallbacks
             // 룸의 커스텀 정보를 추가한다.
             // - 선택한 맵 번호를 룸 정보에 추가한다.
             // 키 값 등록하기
-            roomOpt.CustomRoomPropertiesForLobby = new string[] { "MASTER_NAME", "PASSWORD"}; // , "SCENE_NUMBER"
+            roomOpt.CustomRoomPropertiesForLobby = new string[] {"MASTER_NAME"}; // , "PASSWORD", "SCENE_NUMBER"
 
             // 키에 맞는 해시 테이블 추가하기
             Hashtable roomTable = new Hashtable();
             roomTable.Add("MASTER_NAME", PhotonNetwork.NickName);
-            roomTable.Add("PASSWORD", 1234);
+            //roomTable.Add("PASSWORD", 1234);
             //roomTable.Add("SCENE_NUMBER", LobbyUIController.lobbyUI.drop_mapSelection.value + 2);
             roomOpt.CustomRoomProperties = roomTable;
 
@@ -215,19 +215,18 @@ public class ConnectionManager : MonoBehaviourPunCallbacks
             Destroy(scrollContent.GetChild(i).gameObject);
         }
 
-        ////////////////////// 맵 선택 ///////////////////
-        //foreach(RoomInfo room in cachedRoomList)
-        //{
-        //    // cachedRoomList에 있는 모든 방을 만들어서 스크롤뷰에 추가한다.
-        //    GameObject go = Instantiate(roomPrefab, scrollContent);
-        //    RoomPanel roomPanel = go.GetComponent<RoomPanel>();
-        //    roomPanel.SetRoomInfo(room);
-        //    // 버튼에 방 입장 기능 연결하기
-        //    roomPanel.btn_join.onClick.AddListener(() =>
-        //    {
-        //        PhotonNetwork.JoinRoom(room.Name);
-        //    });
-        //}
+        foreach (RoomInfo room in cachedRoomList)
+        {
+            // cachedRoomList에 있는 모든 방을 만들어서 스크롤뷰에 추가한다.
+            GameObject go = Instantiate(roomPrefab, scrollContent);
+            RoomPanel roomPanel = go.GetComponent<RoomPanel>();
+            roomPanel.SetRoomInfo(room);
+            // 버튼에 방 입장 기능 연결하기
+            roomPanel.btn_join.onClick.AddListener(() =>
+            {
+                PhotonNetwork.JoinRoom(room.Name);
+            });
+        }
     }
 
 }
