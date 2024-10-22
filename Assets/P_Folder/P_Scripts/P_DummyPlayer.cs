@@ -6,16 +6,30 @@ using UnityEngine.SceneManagement;
 // 변수 : 데이터를 담는 그릇
 // 변수 만드는 법 : 자료형 변수이름;
 
-public class PlayerMove : MonoBehaviour
+public class P_DummyPlayer : MonoBehaviour
 {
+    public bool canWalk = true;
+
     // 이동 속력
     public float speed = 5;
 
     void Start()
     {
+
     }
 
     void Update()
+    {
+        if (canWalk)
+            Move();
+    }
+
+    public void CanWalk(bool can)
+    {
+        canWalk = can;
+    }
+
+    public void Move()
     {
         // 사용자의 입력을 받아서
         // A : -1, D : 1, 누르지 않으면 0
