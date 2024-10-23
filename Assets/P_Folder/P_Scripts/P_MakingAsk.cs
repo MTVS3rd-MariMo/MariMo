@@ -9,13 +9,12 @@ public class P_MakingAsk : MonoBehaviour
     public Button btn_Prev;
     public Button btn_Next;
 
-    public TMP_InputField quizText;
-    public TMP_Text quizNum;
+    public TMP_InputField askText;
 
     public int count = 0;
 
     // 예시
-    public string[] Datas = { "a", "1a", "2a", "3a", "4a", "b", "1b", "2b", "3b", "4b", "c", "1c", "2c", "3c", "4c", "question1", "question2", "question3" };
+    public string[] Datas = { "question1", "question2", "question3" };
 
     void Start()
     {
@@ -23,8 +22,7 @@ public class P_MakingAsk : MonoBehaviour
         btn_Next.onClick.AddListener(OnclickNext);
 
         // 예시
-        SetQuizNum(count);
-        quizText.text = Datas[0] + "\n" + Datas[1] + "\n" + Datas[2] + "\n" + Datas[3] + "\n" + Datas[4];
+        askText.text = Datas[0];
     }
 
     void Update()
@@ -49,32 +47,31 @@ public class P_MakingAsk : MonoBehaviour
             count--;
 
             // 예시
-            quizText.text = Datas[count*5] + "\n" + Datas[count * 5 + 1] + "\n" + Datas[count * 5 + 2] + "\n" + Datas[count * 5 + 3] + "\n" + Datas[count * 5 + 4] + "\n";
+            askText.text = Datas[count];
         }
 
-        SetQuizNum(count);
     }
 
     public void OnclickNext()
     {
         if (count >= 2)
         {
+            // 데이터 저장
+
             // 다음 창으로 이동
+            GoTitle();
         }    
         else
         {
             count++;
 
             // 예시
-            quizText.text = Datas[count * 5] + "\n" + Datas[count * 5 + 1] + "\n" + Datas[count * 5 + 2] + "\n" + Datas[count * 5 + 3] + "\n" + Datas[count * 5 + 4] + "\n";
+            askText.text = Datas[count];
         }
-
-        SetQuizNum(count);
     }
 
-    public void SetQuizNum(int count)
+    public void GoTitle()
     {
-        int num = count + 1;
-        quizNum.text = ("Create Quiz " +  num).ToString();
+
     }
 }

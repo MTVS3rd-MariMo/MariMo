@@ -43,9 +43,27 @@ public class P_Dummy2DPlayer : MonoBehaviour
         // 화면 밖으로 나가지 못하게 고정
         Vector3 viewPortPoint = Camera.main.WorldToViewportPoint(transform.position);
 
-        if (viewPortPoint.x < 0.1f || viewPortPoint.x > 0.9f || viewPortPoint.y < 0.1f || viewPortPoint.y > 0.9f)
+        // 당겨지는 강도 
+        float pulling = 100f;
+
+        if (viewPortPoint.x < 0.1f)
         {
-            transform.position -= finalDir * speed * Time.deltaTime;
+            transform.position += Vector3.right * (0.1f -viewPortPoint.x) * pulling * Time.deltaTime;
+        }
+
+        if (viewPortPoint.x > 0.9f)
+        {
+            transform.position += Vector3.right * (0.9f - viewPortPoint.x) * pulling * Time.deltaTime;
+        }
+
+        if (viewPortPoint.y < 0.1f)
+        {
+            transform.position += Vector3.forward * (0.1f - viewPortPoint.y) * pulling * Time.deltaTime;
+        }
+
+        if (viewPortPoint.y > 0.9f)
+        {
+            transform.position += Vector3.forward * (0.9f - viewPortPoint.y) * pulling * Time.deltaTime;
         }
     }
 
