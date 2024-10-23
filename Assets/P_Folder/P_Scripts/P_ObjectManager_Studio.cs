@@ -18,9 +18,6 @@ public class P_ObjectManager_Studio : MonoBehaviour
     public TMP_Text studioUI1_Text;
     public TMP_Text timeCount_Text;
 
-    // 버츄얼 카메라
-    public CinemachineVirtualCamera for_Directing1;
-    public CinemachineVirtualCamera for_Directing2;
 
     // 투명벽 (플레이어 움직임을 멈춘다면 필요없을 예정)
     public GameObject wall;
@@ -84,8 +81,6 @@ public class P_ObjectManager_Studio : MonoBehaviour
         // 타임라인 재생
         timeline.Play();
 
-        for_Directing1.gameObject.SetActive(true);
-        for_Directing2.gameObject.SetActive(true);
 
         yield return new WaitForSeconds(4f);
 
@@ -226,13 +221,7 @@ public class P_ObjectManager_Studio : MonoBehaviour
         // 타임라인 재생
         timeline.Play();
 
-        yield return new WaitForSeconds(0.5f);
-
-        // 연출용 가상카메라 끄기
-        for_Directing1.gameObject.SetActive(false);
-        for_Directing2.gameObject.SetActive(false);
-
-        yield return new WaitForSeconds(1.5f);
+        yield return new WaitForSeconds(2f);
 
         // 페이드 인
         while (black.a >= 0)
@@ -246,7 +235,6 @@ public class P_ObjectManager_Studio : MonoBehaviour
 
         // 사진관 모든 UI 종료
         studioUI_Canvas.SetActive(false);
-
     }
 
 
