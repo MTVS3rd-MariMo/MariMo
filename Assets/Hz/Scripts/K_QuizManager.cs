@@ -15,9 +15,8 @@ public class K_QuizManager : MonoBehaviour
     // 카운트 다운 플래그
     public bool isCounting = false;
 
-    // 퀴즈별 Directing 관리
-    public bool isDirectQuiz1;
-    public bool isDirectQuiz2;
+    //
+    public K_QuizPos quizCorrect;
 
     public static K_QuizManager instance;
 
@@ -42,6 +41,8 @@ public class K_QuizManager : MonoBehaviour
             CountDown();
         }
     }
+
+
 
     public void CountDown()
     {
@@ -87,15 +88,33 @@ public class K_QuizManager : MonoBehaviour
 
     public void CheckAnswer()
     {
+        if(quizCorrect != null)
+        {
+            quizCorrect.CheckAnswer();
+            //K_QuizPos_1 quizPosScript = quizCorrect as K_QuizPos_1;
+            //if(quizPosScript != null)
+            //{
+            //    // 퀴즈1의 CheckAnswer로 정답 여부 확인
+            //    quizPosScript.CheckAnswer();
+            //}
+
+            //K_QuizPos_2 quizPosScript2 = quizCorrect as K_QuizPos_2;
+            //if (quizPosScript2 != null)
+            //{
+            //    // 퀴즈1의 CheckAnswer로 정답 여부 확인
+            //    quizPosScript2.CheckAnswer();
+            //}
+        }
+
         // quiz1 오브젝트의 K_QuizPos_1 스크립트 접근
-        K_QuizPos_1 quizPosScript = FindObjectOfType<K_QuizPos_1>();
+        //K_QuizPos_1 quizPosScript = FindObjectOfType<K_QuizPos_1>();
         //K_QuizPos_2 quizPosScript2 = FindObjectOfType<K_QuizPos_2>();
 
-        if (quizPosScript != null)
-        {
-            // 퀴즈1의 CheckAnswer로 정답 여부 확인
-            quizPosScript.CheckAnswer();
-        }
+        //if (quizPosScript != null)
+        //{
+        //    // 퀴즈1의 CheckAnswer로 정답 여부 확인
+        //    quizPosScript.CheckAnswer();
+        //}
 
         //if (quizPosScript2 != null)
         //{
@@ -103,10 +122,10 @@ public class K_QuizManager : MonoBehaviour
         //    quizPosScript2.CheckAnswer();
         //}
 
-        else
-        {
-            print("quizPosScript를 찾지 못했습니다.");
-        }
+        //else
+        //{
+        //    print("quizPosScript를 찾지 못했습니다.");
+        //}
 
         // 퀴즈 종료 처리
         EndQuiz();
@@ -119,6 +138,8 @@ public class K_QuizManager : MonoBehaviour
         isCounting = false;
         currTime = 0;
         K_QuizUiManager.instance.img_countDown.gameObject.SetActive(false);
+
+        isDirecting = false;
 
         // 현재 활성화 상태 activeSelf - bool 값
         if (K_QuizUiManager.instance.img_wrongA.gameObject.activeSelf)
