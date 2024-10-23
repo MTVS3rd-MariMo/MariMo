@@ -114,24 +114,6 @@ public class Y_SetCamera : MonoBehaviour
         }
         averagePosition /= playerPositions.Length;
 
-        // 최대 거리 계산
-        //float maxDistanceBetweenPlayers = 0f;
-        //foreach (var pos in playerPositions)
-        //{
-        //    float distance = Vector3.Distance(averagePosition, pos);
-        //    if (distance > maxDistanceBetweenPlayers)
-        //    {
-        //        maxDistanceBetweenPlayers = distance;
-        //    }
-        //}
-
-        // 카메라 위치 및 거리 설정
-        //float cameraDistance = Mathf.Clamp(maxDistanceBetweenPlayers, minDistance, maxDistance);
-        //virtualCamera.transform.position = averagePosition + Vector3.up * cameraHeight - mainCamera.transform.forward * cameraDistance;
-
-        // 카메라가 평균 위치를 바라보도록 설정
-        //virtualCamera.transform.LookAt(averagePosition);
-
         // playerAverage의 위치 업데이트
         playerAverage.position = averagePosition;
 

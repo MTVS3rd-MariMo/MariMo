@@ -1,5 +1,6 @@
 ﻿using Cinemachine;
 using Photon.Pun;
+using Photon.Voice.PUN;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -24,16 +25,23 @@ public class Y_PlayerMove : MonoBehaviour, IPunObservable
 
     public bool movable = false;
 
+    PhotonVoiceView voiceView;
+    Y_PlayerVoice playerVoice;
+
+    private void Awake()
+    {
+        pv = GetComponent<PhotonView>();
+        voiceView = GetComponent<PhotonVoiceView>();
+        playerVoice = GetComponent<Y_PlayerVoice>();
+    }
+
     // Start is called before the first frame update
     void Start()
     {
-        pv = GetComponent<PhotonView>();
         speed = 20;
         //conn = GetComponent<CharacterController>();
         layerMaskGround = LayerMask.GetMask("Ground");
         agent.updateRotation = false;
-
-        
     }
 
     void Update()
@@ -47,6 +55,9 @@ public class Y_PlayerMove : MonoBehaviour, IPunObservable
             // 친구들을 기다리고 있어요! UI
         }
     }
+
+    // 당겨지는 강도 
+    float pulling = 100f;
 
     void Move()
     {
@@ -94,9 +105,32 @@ public class Y_PlayerMove : MonoBehaviour, IPunObservable
                 //transform.Translate(finalDir * speed * Time.deltaTime);
                 // P = P0 + vt (이동공식)
                 transform.position += finalDir * speed * Time.deltaTime;
-            }
-            
 
+                // 화면 밖으로 나가지 못하게 고정
+                Vector3 viewPortPoint = Camera.main.WorldToViewportPoint(transform.position);
+
+                if (viewPortPoint.x < 0.1f)
+                {
+                    transform.position += Vector3.right * (0.1f - viewPortPoint.x) * pulling * Time.deltaTime;
+                }
+
+                if (viewPortPoint.x > 0.9f)
+                {
+                    transform.position += Vector3.right * (0.9f - viewPortPoint.x) * pulling * Time.deltaTime;
+                }
+
+                if (viewPortPoint.y < 0.1f)
+                {
+                    pulling = 50;
+                    transform.position += Vector3.forward * (0.1f - viewPortPoint.y) * pulling * Time.deltaTime;
+                }
+
+                if (viewPortPoint.y > 0.7f)
+                {
+                    pulling = 200;
+                    transform.position += Vector3.forward * (0.7f - viewPortPoint.y) * pulling * Time.deltaTime;
+                }
+            }
         }
         else
         {
@@ -111,12 +145,14 @@ public class Y_PlayerMove : MonoBehaviour, IPunObservable
         {
             // iterable 데이터를 보낸다 
             stream.SendNext(transform.position);
+            stream.SendNext(voiceView.IsRecording);
         }
 
         // 그렇지 않고 만일 데이터를 서버로부터 읽어오는 상태라면
         else if (stream.IsReading)
         {
             myPos = (Vector3)stream.ReceiveNext();
+            playerVoice.isTalking = (bool)stream.ReceiveNext();
         }
     }
 }
