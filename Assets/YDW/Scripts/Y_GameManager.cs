@@ -1,14 +1,22 @@
 ﻿using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Y_GameManager : MonoBehaviour
 {
     public Transform[] spawnPoints;
+    PhotonView pv;
+    Y_BookController bookUI;
 
     void Start()
     {
+        pv = GetComponent<PhotonView>();
+        bookUI = GameObject.Find("BookCanvas").GetComponent<Y_BookController>();
+
         StartCoroutine(SpawnPlayer());
 
         // OnPhotonSerializeView 에서 데이터 전송 빈도 수 설정하기 (per seconds)
@@ -30,10 +38,27 @@ public class Y_GameManager : MonoBehaviour
 
         // 플레이어를 해당 스폰 지점에 생성
         PhotonNetwork.Instantiate("Player", spawnPosition, Quaternion.identity);
+        
+        if (bookUI != null)
+        {
+            bookUI.currentPlayerNum = playerIndex;
+            //print("!!!!!!!!!!" + playerIndex);
+            //RPC_AddPlayer(PhotonNetwork.NickName);
+            bookUI.RPC_AddPlayer(playerIndex, PhotonNetwork.NickName);
+            Debug.Log($"Player Spawned - Index: {playerIndex}, Name: {PhotonNetwork.NickName}");
+        }
     }
 
-    void Update()
-    {
+    //public void RPC_AddPlayer(string playerName)
+    //{
+    //    pv.RPC("AddPlayer", RpcTarget.All, playerName);
+    //}
 
-    }
+    //[PunRPC]
+    //void AddPlayer(string playerName)
+    //{
+    //    bookUI.playerNames.Add(playerName);
+    //}
+
+
 }
