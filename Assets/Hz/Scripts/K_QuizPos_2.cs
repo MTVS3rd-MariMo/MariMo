@@ -23,8 +23,8 @@ public class K_QuizPos_2 : MonoBehaviour
             isQuizStarted = true;
             print("플레이어다 문제풀자");
 
-            K_QuizUiManager.instance.isPlaying = true;
-            K_QuizUiManager.instance.CountDown();
+            K_QuizManager.instance.isPlaying = true;
+            K_QuizManager.instance.CountDown();
         }
 
         if (other.gameObject == correct2)
@@ -61,8 +61,8 @@ public class K_QuizPos_2 : MonoBehaviour
     {
         isInCorrectZone = false;
         isQuizStarted = false;
-        K_QuizUiManager.instance.isPlaying = false;
-        K_QuizUiManager.instance.isCounting = false;
+        K_QuizManager.instance.isPlaying = false;
+        K_QuizManager.instance.isCounting = false;
     }
 
     public IEnumerator HideWrongAnswer(float delay)
