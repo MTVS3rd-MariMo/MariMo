@@ -50,6 +50,7 @@ MonoBehaviour:
   - DeactivateAllNameUI
   - AddPlayer
   - SyncPlayerName
+  - RPC_SelectChar
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 0

@@ -40,15 +40,33 @@ public class Y_BookController : MonoBehaviour
     public GameObject img_charName2;
     public GameObject img_charName3;
     public GameObject img_charName4;
+    public GameObject btn_chooseChar;
+    public GameObject btn_toMap;
 
     // 버튼 어떤 게 눌렸나 받아오기
     int characterNum = 0;
 
     GameObject player;
     public int currentPlayerNum;
-    public string playerName;
-    //public List<string> playerNames = new List<string>();       
-    public Dictionary<int, string> playerNames = new Dictionary<int, string>();
+    public string playerName;   
+    public Dictionary<int, string> playerNames = new Dictionary<int, string>(); // int, PhotonView 로 고치고
+
+    
+
+    #endregion
+
+    #region 캐릭터 선택 후
+
+
+    ////////////////////////////////
+    // 각 플레이어에 할당할 MP4 파일 경로 배열
+    public string[] videoFilePaths = new string[]
+    {
+        @"C:\Users\Admin\MariMo\Assets\YDW\VideoPlayer\garlic.mp4",
+        @"C:\Users\Admin\MariMo\Assets\YDW\VideoPlayer\pngman_center.mp4",
+        @"C:\Users\Admin\MariMo\Assets\YDW\VideoPlayer\pngman_animation.mp4",
+        @"C:\Users\Admin\MariMo\Assets\YDW\VideoPlayer\pngman_dab.mp4"
+    };
 
     #endregion
 
@@ -62,19 +80,13 @@ public class Y_BookController : MonoBehaviour
 
         SplitTextIntoPages();
         DisplayPage(pageNo);
-
-        //// 플레이어 입장 때마다 닉네임 동기화
-        //if (PhotonNetwork.IsMessageQueueRunning)
-        //{
-        //    pv.RPC("SyncPlayerName", RpcTarget.All, PhotonNetwork.NickName, currentPlayerNum);
-        //}
     }
 
-    bool isSync = true;
+    public bool isSync = true;
 
     private void Update()
     {
-        
+
         if (PhotonNetwork.IsMasterClient && isSync) //&& !(PhotonNetwork.PlayerList.Length == 2)
         {
             SyncAllPlayers();
@@ -86,16 +98,11 @@ public class Y_BookController : MonoBehaviour
         }
     }
 
-
-
     // 플레이어가 참여할 때 호출
     public void RPC_AddPlayer(int playerIndex, string nickName)
     {
         if (!playerNames.ContainsKey(playerIndex))
         {
-            //Debug.Log($"Adding player to dictionary - Index: {playerIndex}, Name: {nickName}");
-            //pv.RPC("AddPlayer", RpcTarget.All, playerIndex, nickName);
-
             // 마스터 클라이언트인 경우에만 전체 동기화 실행
             if (PhotonNetwork.IsMasterClient)
             {
@@ -110,7 +117,7 @@ public class Y_BookController : MonoBehaviour
     }
 
     // 전체 플레이어 동기화
-    private void SyncAllPlayers()
+    public void SyncAllPlayers()
     {
         // 현재 룸의 모든 플레이어 정보 전송
         foreach (var player in PhotonNetwork.PlayerList)
@@ -124,21 +131,8 @@ public class Y_BookController : MonoBehaviour
     [PunRPC]
     void AddPlayer(int playerIndex, string nickName)
     {
-        //if (!playerNames.ContainsKey(playerIndex))
-        //{
-            playerNames[playerIndex] = nickName;
-        //}
-        Debug.Log($"Player added to dictionary - Index: {playerIndex}, Name: {nickName}, Current Count: {playerNames.Count}");
+        playerNames[playerIndex] = nickName;
     }
-
-    //[PunRPC]
-    //void SyncPlayerName(string nickName, int playerIndex)
-    //{
-    //    // 해당 인덱스에 닉네임 저장
-    //    playerNames[playerIndex] = nickName;
-    //}
-
-
 
     #region BookUI
 
@@ -218,68 +212,79 @@ public class Y_BookController : MonoBehaviour
     // 다른 사람이 버튼 이미 눌렀으면 못 선택하게 나중에 처리할 것
     /////////////////////////////////////////////
 
-    public void Select1st()
+    public void Select(int num)
     {
-        //int localPlayerNum = currentPlayerNum;
         RPC_DeactivateAllNameUI(characterNum);
-        characterNum = 1;
+        characterNum = num;
         RPC_ActivateNameUI(characterNum, currentPlayerNum);
-    }
 
-    public void Select2nd()
-    {
-        RPC_DeactivateAllNameUI(characterNum);
-        characterNum = 2;
-        RPC_ActivateNameUI(characterNum, currentPlayerNum);
+        allPlayers[currentPlayerNum].GetComponent<Y_PlayerAvatarSetting>().SelectChar(characterNum);
     }
+    // 나중에 4개 -> 이거 한 개로 다 바꾸기
 
-    public void Select3rd()
-    {
-        RPC_DeactivateAllNameUI(characterNum);
-        characterNum = 3;
-        RPC_ActivateNameUI(characterNum, currentPlayerNum);
-    }
+    //public void Select1st()
+    //{
+    //    RPC_DeactivateAllNameUI(characterNum);
+    //    characterNum = 1;
+    //    RPC_ActivateNameUI(characterNum, currentPlayerNum);
 
-    public void Select4th()
-    {
-        RPC_DeactivateAllNameUI(characterNum);
-        characterNum = 4;
-        RPC_ActivateNameUI(characterNum, currentPlayerNum);
-    }
+    //    //allPlayers[currentPlayerNum].RPC("RPC_SelectChar", RpcTarget.All, characterNum);
+    //    allPlayers[currentPlayerNum].GetComponent<Y_PlayerAvatarSetting>().SelectChar(characterNum);
+    //}
+
+    //public void Select2nd()
+    //{
+    //    RPC_DeactivateAllNameUI(characterNum);
+    //    characterNum = 2;
+    //    RPC_ActivateNameUI(characterNum, currentPlayerNum);
+
+    //    allPlayers[currentPlayerNum].GetComponent<Y_PlayerAvatarSetting>().SelectChar(characterNum);
+    //}
+
+    //public void Select3rd()
+    //{
+    //    RPC_DeactivateAllNameUI(characterNum);
+    //    characterNum = 3;
+    //    RPC_ActivateNameUI(characterNum, currentPlayerNum);
+
+    //    allPlayers[currentPlayerNum].GetComponent<Y_PlayerAvatarSetting>().SelectChar(characterNum);
+    //}
+
+    //public void Select4th()
+    //{
+    //    RPC_DeactivateAllNameUI(characterNum);
+    //    characterNum = 4;
+    //    RPC_ActivateNameUI(characterNum, currentPlayerNum);
+
+    //    allPlayers[currentPlayerNum].GetComponent<Y_PlayerAvatarSetting>().SelectChar(characterNum);
+    //}
 
      public void RPC_ActivateNameUI(int characterIndex, int playerIndex)
-     {
-        //Debug.Log($"ActivateNameUI - Character: {characterIndex}, Player: {playerIndex}, PlayerName: {(playerIndex < playerNames.Count ? playerNames[playerIndex] : "Not Found")}, ListCount: {playerNames.Count}");
+     {  
         pv.RPC("ActivateNameUI", RpcTarget.All, characterIndex, playerIndex);
-    }
+     }
 
     [PunRPC]
     void ActivateNameUI(int characterIndex, int playerIndex)
     {
         string playerName = playerNames.ContainsKey(playerIndex) ? playerNames[playerIndex] : "Not Found";
-        Debug.Log($"ActivateNameUI - Character: {characterIndex}, Player: {playerIndex}, PlayerName: {playerName}, DictionaryCount: {playerNames.Count}");
-
 
         switch (characterIndex)
         {
             case 1:
                 img_charName1.SetActive(true);
-                //print("?????????????" + playerNames[playerIndex]);
                 img_charName1.GetComponentInChildren<TMP_Text>().text = playerNames[playerIndex];
                 break;
             case 2:
                 img_charName2.SetActive(true);
-                //print("?????????????" + playerNames[playerIndex]);
                 img_charName2.GetComponentInChildren<TMP_Text>().text = playerNames[playerIndex];
                 break;
             case 3:
                 img_charName3.SetActive(true);
-                //print("?????????????" + playerNames[playerIndex]);
                 img_charName3.GetComponentInChildren<TMP_Text>().text = playerNames[playerIndex];
                 break;
             case 4:
                 img_charName4.SetActive(true);
-                //print("?????????????" + playerNames[playerIndex]);
                 img_charName4.GetComponentInChildren<TMP_Text>().text = playerNames[playerIndex];
                 break;
         }
@@ -318,15 +323,32 @@ public class Y_BookController : MonoBehaviour
 
         ChooseCharacterUI.SetActive(false);
         PaintUI.SetActive(true);
+
+        // currentPlayerNum 에 따라 RenderTexture, characterNum에 따라 MP4 파일을 설정
+        //SetCharacterVideo(currentPlayerNum, characterNum);
     }
+
+    //private void SetCharacterVideo(int currentPlayerNum, int characterNum)
+    //{
+    //    foreach(KeyValuePair<int, string> items in playerNames)
+    //    {
+            
+    //    }
+    //}
 
     public void PaintToComplete()
     {
         // 이 때 AI 한테 이미지 보내주는 거 나중에 구현할 것
         ////////////////////////////
+        ///
+
+        // 각 플레이어마다 루프 돌면서 이미지 넣어줌
+
         
         PaintUI.SetActive(false);
-        ChooseCompleteUI.SetActive(true);
+        ChooseCharacterUI.SetActive(true);
+        btn_chooseChar.SetActive(false);
+        btn_toMap.SetActive(true);
     }
 
     public void ToMap()
@@ -339,10 +361,12 @@ public class Y_BookController : MonoBehaviour
 
     #endregion
 
-    //string GetPlayerNameByNumber(int playerNum)
-    //{
-    //    return "Remote p#" + playerNum + " v#1";
-    //}
 
+
+    public Dictionary<int, PhotonView> allPlayers = new Dictionary<int, PhotonView>();
+    public void AddPlayer(PhotonView pv)
+    {
+        allPlayers[pv.Owner.ActorNumber - 1] = pv;
+    }
 
 }
