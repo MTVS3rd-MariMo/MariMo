@@ -69,12 +69,6 @@ public class P_ObjectManager_Studio : MonoBehaviour
         print("-------- : " + triggerNum);
     }
 
-    
-
-    private void StudioAct()
-    {
-
-    }
 
     public IEnumerator Studio_UI_Player()
     {

@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   DisplayName: 
   VirtualCamera:
-    exposedName: 
+    exposedName: b7ac4b2104b43354e863c89f0a7a0b8a
     defaultValue: {fileID: 0}
 --- !u!114 &-6802154635655100243
 MonoBehaviour:
@@ -258,7 +258,7 @@ MonoBehaviour:
     m_PreExtrapolationMode: 0
     m_PostExtrapolationTime: 0
     m_PreExtrapolationTime: 0
-    m_DisplayName: CinemachineShot
+    m_DisplayName: Virtual Camera (1)
   - m_Version: 1
     m_Start: 6
     m_ClipIn: 0
