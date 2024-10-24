@@ -6,13 +6,15 @@ using System.Collections.Generic;
 using System.Linq;
 using TMPro;
 using UnityEngine;
-using UnityEngine.tvOS;
+//using UnityEngine.tvOS;
 
 // 버튼들에 연결하는 식들
 // UI 에서 참조하는 변수들
 
 public class Y_BookController : MonoBehaviour
 {
+    public static Y_BookController Instance { get; private set; }
+
     public GameObject bookUI;
     public GameObject ChooseCharacterUI;
     public GameObject PaintUI;
@@ -51,25 +53,37 @@ public class Y_BookController : MonoBehaviour
     public string playerName;   
     public Dictionary<int, string> playerNames = new Dictionary<int, string>(); // int, PhotonView 로 고치고
 
-    
+    public GameObject[] buttons;
 
     #endregion
 
     #region 캐릭터 선택 후
 
-
     ////////////////////////////////
-    // 각 플레이어에 할당할 MP4 파일 경로 배열
-    public string[] videoFilePaths = new string[]
-    {
-        @"C:\Users\Admin\MariMo\Assets\YDW\VideoPlayer\garlic.mp4",
-        @"C:\Users\Admin\MariMo\Assets\YDW\VideoPlayer\pngman_center.mp4",
-        @"C:\Users\Admin\MariMo\Assets\YDW\VideoPlayer\pngman_animation.mp4",
-        @"C:\Users\Admin\MariMo\Assets\YDW\VideoPlayer\pngman_dab.mp4"
-    };
+    //// 각 플레이어에 할당할 MP4 파일 경로 배열
+    //public string[] videoFilePaths = new string[]
+    //{
+    //    @"C:\Users\Admin\MariMo\Assets\YDW\VideoPlayer\garlic.mp4",
+    //    @"C:\Users\Admin\MariMo\Assets\YDW\VideoPlayer\pngman_center.mp4",
+    //    @"C:\Users\Admin\MariMo\Assets\YDW\VideoPlayer\pngman_animation.mp4",
+    //    @"C:\Users\Admin\MariMo\Assets\YDW\VideoPlayer\pngman_dab.mp4"
+    //};
 
     #endregion
 
+    private void Awake()
+    {
+        // Singleton 인스턴스 설정
+        if (Instance == null)
+        {
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
 
     private void Start()
     {
@@ -92,7 +106,7 @@ public class Y_BookController : MonoBehaviour
             SyncAllPlayers();
         }
 
-        if (PhotonNetwork.PlayerList.Length == 2) //////////////
+        if (PhotonNetwork.PlayerList.Length == 4) //////////////
         {
             isSync = false;
         }
@@ -218,7 +232,7 @@ public class Y_BookController : MonoBehaviour
         characterNum = num;
         RPC_ActivateNameUI(characterNum, currentPlayerNum);
 
-        allPlayers[currentPlayerNum].GetComponent<Y_PlayerAvatarSetting>().SelectChar(characterNum);
+        allPlayers[currentPlayerNum].GetComponent<Y_PlayerAvatarSetting>().RPC_SelectChar(characterNum);
     }
     // 나중에 4개 -> 이거 한 개로 다 바꾸기
 
@@ -324,6 +338,7 @@ public class Y_BookController : MonoBehaviour
         ChooseCharacterUI.SetActive(false);
         PaintUI.SetActive(true);
 
+        allPlayers[currentPlayerNum].GetComponent<Y_PlayerAvatarSetting>().RPC_UpdatePhoto(characterNum);
         // currentPlayerNum 에 따라 RenderTexture, characterNum에 따라 MP4 파일을 설정
         //SetCharacterVideo(currentPlayerNum, characterNum);
     }

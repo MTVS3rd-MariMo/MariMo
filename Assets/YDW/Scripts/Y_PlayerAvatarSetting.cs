@@ -1,5 +1,6 @@
 ﻿using Photon.Pun;
 using Photon.Realtime;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -19,6 +20,13 @@ public class Y_PlayerAvatarSetting : MonoBehaviour
 
     int avatarIndex;
 
+    public VideoPlayer vp;
+    public RawImage rawImage;
+    public RenderTexture[] renderTextures;
+    public VideoClip[] videoClips;
+    //public GameObject[] buttons;
+    public Sprite[] images;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -28,39 +36,16 @@ public class Y_PlayerAvatarSetting : MonoBehaviour
         index = pv.Owner.ActorNumber - 1;
         name = pv.Owner.NickName;
 
-        //SyncAllPlayers();
-        //bookController.playerNames[index] = name;
+        
     }
 
-    //private void SyncAllPlayers()
-    //{
-    //    // 현재 룸의 모든 플레이어 정보 전송
-    //    foreach (var player in PhotonNetwork.PlayerList)
-    //    {
-    //        int idx = player.ActorNumber - 1;
-    //        string name = player.NickName;
-    //        bookController.playerNames[idx] = name;
-    //    }
-    //}
-
-    // Update is called once per frame
-    void Update()
+    public void RPC_SelectChar(int characterIndex)
     {
-
-    }
-
-    public VideoPlayer vp;
-    public RawImage rawImage;
-    public RenderTexture[] renderTextures;
-    public VideoClip[] videoClips;
-
-    public void SelectChar(int characterIndex)
-    {
-        pv.RPC(nameof(RPC_SelectChar), RpcTarget.All, characterIndex);
+        pv.RPC(nameof(SelectChar), RpcTarget.All, characterIndex);
     }
 
     [PunRPC]
-    void RPC_SelectChar(int characterIndex)
+    void SelectChar(int characterIndex)
     {
         avatarIndex = characterIndex - 1;
 
@@ -70,4 +55,15 @@ public class Y_PlayerAvatarSetting : MonoBehaviour
         rawImage.texture = vp.targetTexture = renderTextures[avatarIndex];
     }
 
+    public void RPC_UpdatePhoto(int index)
+    {
+        pv.RPC(nameof(UpdatePhoto), RpcTarget.All, index);
+    }
+
+    [PunRPC]
+    void UpdatePhoto(int index)
+    {
+        avatarIndex = index - 1;
+        bookController.buttons[avatarIndex].GetComponent<Image>().sprite = images[avatarIndex];
+    }
 }

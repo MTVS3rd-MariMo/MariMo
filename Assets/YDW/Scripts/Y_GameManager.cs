@@ -50,8 +50,8 @@ public class Y_GameManager : MonoBehaviour
 
         // 플레이어를 해당 스폰 지점에 생성
         GameObject player = PhotonNetwork.Instantiate("Player", spawnPosition, Quaternion.identity);
-        VideoPlayer videoPlayer = player.GetComponentInChildren<VideoPlayer>();
-        RawImage rawImage = player.GetComponentInChildren<RawImage>();
+        //VideoPlayer videoPlayer = player.GetComponentInChildren<VideoPlayer>();
+        //RawImage rawImage = player.GetComponentInChildren<RawImage>();
 
         if (bookUI != null)
         {
@@ -59,9 +59,9 @@ public class Y_GameManager : MonoBehaviour
             bookUI.RPC_AddPlayer(playerIndex, PhotonNetwork.NickName);
 
             // RenderTexture 로드
-            RenderTexture renderTexture = Resources.Load<RenderTexture>(videoRendererPaths[playerIndex]);
-            videoPlayer.targetTexture = renderTexture;
-            rawImage.texture = renderTexture;
+            //RenderTexture renderTexture = Resources.Load<RenderTexture>(videoRendererPaths[playerIndex]);
+            //videoPlayer.targetTexture = renderTexture;
+            //rawImage.texture = renderTexture;
 
         }
 
