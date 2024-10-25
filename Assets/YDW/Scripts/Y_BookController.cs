@@ -234,45 +234,7 @@ public class Y_BookController : MonoBehaviour
 
         allPlayers[currentPlayerNum].GetComponent<Y_PlayerAvatarSetting>().RPC_SelectChar(characterNum);
     }
-    // 나중에 4개 -> 이거 한 개로 다 바꾸기
-
-    //public void Select1st()
-    //{
-    //    RPC_DeactivateAllNameUI(characterNum);
-    //    characterNum = 1;
-    //    RPC_ActivateNameUI(characterNum, currentPlayerNum);
-
-    //    //allPlayers[currentPlayerNum].RPC("RPC_SelectChar", RpcTarget.All, characterNum);
-    //    allPlayers[currentPlayerNum].GetComponent<Y_PlayerAvatarSetting>().SelectChar(characterNum);
-    //}
-
-    //public void Select2nd()
-    //{
-    //    RPC_DeactivateAllNameUI(characterNum);
-    //    characterNum = 2;
-    //    RPC_ActivateNameUI(characterNum, currentPlayerNum);
-
-    //    allPlayers[currentPlayerNum].GetComponent<Y_PlayerAvatarSetting>().SelectChar(characterNum);
-    //}
-
-    //public void Select3rd()
-    //{
-    //    RPC_DeactivateAllNameUI(characterNum);
-    //    characterNum = 3;
-    //    RPC_ActivateNameUI(characterNum, currentPlayerNum);
-
-    //    allPlayers[currentPlayerNum].GetComponent<Y_PlayerAvatarSetting>().SelectChar(characterNum);
-    //}
-
-    //public void Select4th()
-    //{
-    //    RPC_DeactivateAllNameUI(characterNum);
-    //    characterNum = 4;
-    //    RPC_ActivateNameUI(characterNum, currentPlayerNum);
-
-    //    allPlayers[currentPlayerNum].GetComponent<Y_PlayerAvatarSetting>().SelectChar(characterNum);
-    //}
-
+   
      public void RPC_ActivateNameUI(int characterIndex, int playerIndex)
      {  
         pv.RPC("ActivateNameUI", RpcTarget.All, characterIndex, playerIndex);
@@ -338,7 +300,7 @@ public class Y_BookController : MonoBehaviour
         ChooseCharacterUI.SetActive(false);
         PaintUI.SetActive(true);
 
-        allPlayers[currentPlayerNum].GetComponent<Y_PlayerAvatarSetting>().RPC_UpdatePhoto(characterNum);
+        allPlayers[currentPlayerNum].GetComponent<Y_PlayerAvatarSetting>().RPC_UpdatePhoto(characterNum); /////////22222222
         // currentPlayerNum 에 따라 RenderTexture, characterNum에 따라 MP4 파일을 설정
         //SetCharacterVideo(currentPlayerNum, characterNum);
     }
@@ -377,11 +339,18 @@ public class Y_BookController : MonoBehaviour
     #endregion
 
 
-
-    public Dictionary<int, PhotonView> allPlayers = new Dictionary<int, PhotonView>();
+    public Y_PlayerAvatarSetting myAvatar;
+    public Dictionary<int, PhotonView> allPlayers = new Dictionary<int, PhotonView>(); // MyAvatar 로 바꾸기
     public void AddPlayer(PhotonView pv)
     {
         allPlayers[pv.Owner.ActorNumber - 1] = pv;
+
+        if(pv.IsMine)
+        {
+            myAvatar = pv.GetComponent<Y_PlayerAvatarSetting>();
+            print("avatarIndex from AddPlayer: " + myAvatar.avatarIndex);
+        }
     }
+
 
 }

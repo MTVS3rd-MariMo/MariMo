@@ -1,4 +1,5 @@
-﻿using Photon.Pun;
+﻿using iTextSharp.text.html.simpleparser;
+using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,12 +14,19 @@ using UnityEngine.Video;
 
 public class Y_HotSeatController : MonoBehaviourPun
 {
+    public static Y_HotSeatController Instance { get; private set; }
+
     public GameObject guide;
     public GameObject selfIntroduce;
+    public GameObject panel_waiting;
     public GameObject stage;
+
+    Y_PlayerAvatarSetting myAvatarSetting;
 
     // selfIntroduce;
     public TMP_InputField selfIntroduceInput;
+    public TMP_Text Txt_TitleText;
+    public Image myAvatarImage;
     public RectTransform inputFieldRect;
     public Vector2 expandedSize = new Vector2(1200, 200); // 확장된 크기
     public Vector2 expandedPos = new Vector2(-345, 180); // 확장됐을 때 위치
@@ -28,6 +36,7 @@ public class Y_HotSeatController : MonoBehaviourPun
     //public Dictionary<int, PhotonView> allPlayers;
 
     // stage
+    int selfInt_count = 0;
     public List<Image> images = new List<Image>();
     public List<GameObject> players = new List<GameObject>();
     public Dictionary<int, PhotonView> shuffledAllPlayers = new Dictionary<int, PhotonView>();
@@ -38,6 +47,23 @@ public class Y_HotSeatController : MonoBehaviourPun
     int testNum = 0;
     public Vector2 playerPos;
     Vector2 stagePos;
+    public Image[] stageScriptImgs;
+    public TMP_Text[] stageScriptTxts;
+
+
+    private void Awake()
+    {
+        // Singleton 인스턴스 설정
+        if (Instance == null)
+        {
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
 
     void Start()
     {
@@ -49,27 +75,10 @@ public class Y_HotSeatController : MonoBehaviourPun
         stagePos = new Vector2(stageImg.transform.position.x, stageImg.transform.position.y);
         playerPos = players[0].transform.position;
 
-        shuffledAllPlayers = Y_BookController.Instance.allPlayers;
-        shuffledAllPlayers = ShufflePlayers(shuffledAllPlayers);  ///////////////// 얘를 한 번만 해야 됨
-        for (int i = 0; i < shuffledAllPlayers.Count; i++) print("!!!!!!!" + shuffledAllPlayers.ElementAt(i).Key);
-    }
+        myAvatarSetting = Y_BookController.Instance.myAvatar;
+        Txt_TitleText.text = myAvatarSetting.pv.Owner.NickName;
+        myAvatarImage.sprite = myAvatarSetting.images[myAvatarSetting.avatarIndex];
 
-    // 플레이어 순서 무작위로 섞어둠
-    public Dictionary<int, PhotonView> ShufflePlayers(Dictionary<int, PhotonView> originalDictionary)
-    {
-        List<KeyValuePair<int, PhotonView>> shuffledList = originalDictionary.ToList();
-
-        for (int i = 0; i < shuffledList.Count; i++)
-        {
-            int randomIndex = Random.Range(0, shuffledList.Count);
-            KeyValuePair<int, PhotonView> temp = shuffledList[i];
-            shuffledList[i] = shuffledList[randomIndex];
-            shuffledList[randomIndex] = temp;
-        }
-
-        Dictionary<int, PhotonView> shuffledDictionary = shuffledList.ToDictionary(pair => pair.Key, pair => pair.Value);
-
-        return shuffledDictionary;
     }
 
     public IEnumerator Deactivate(GameObject gm)
@@ -85,9 +94,9 @@ public class Y_HotSeatController : MonoBehaviourPun
             if(testNum < players.Count)
             {
                 testNum++;
-                StartSpeech(testNum);
+                StartSpeech(testNum); ////////////////////222222222222233333333333333
             }   
-        }
+        }  
     }
 
     #region SelfIntroduce
@@ -118,27 +127,55 @@ public class Y_HotSeatController : MonoBehaviourPun
     public TMP_Text[] characterNameTags;
     public TMP_Text[] playerNameTags;
     public RawImage[] rawImages;
+    //public string[] selfIntroduces = new string[4];
 
+    // 제출하기 버튼
     public void Submit()
     {
         selfIntroduce.SetActive(false);
-        stage.SetActive(true);
+        panel_waiting.SetActive(true);
 
-        // shuffledAllPlayers 순서대로 이름표 안의 텍스트 배치
-        for(int i = 0; i < characterNameTags.Length; i++)
+        Shuffle();
+
+        RPC_AddSelfIntroduce(); ///////////////////4444444444
+
+        RPC_AllReady();
+    }
+
+    void RPC_AddSelfIntroduce()
+    {
+        photonView.RPC(nameof(AddSelfIntroduce), RpcTarget.All);
+    }
+
+    // 학생이 쓴 자기소개를 리스트에 넣어줌
+    [PunRPC]
+    void AddSelfIntroduce()
+    {
+        //int avatarIndex = myAvatarSetting.avatarIndex; // 내 아바타의 인덱스
+        int avatarIndex = Y_BookController.Instance.myAvatar.avatarIndex;
+        print("!!!!!!!!!!!!!" + avatarIndex);
+        myAvatarSetting.selfIntroduces[avatarIndex] = selfIntroduceInput.text; // 내 아바타의 인덱스 위치대로 추가
+    }
+
+    void RPC_AllReady()
+    {
+        photonView.RPC(nameof(AllReady), RpcTarget.All);
+    }
+
+    [PunRPC]
+    public void AllReady()
+    {
+        selfInt_count++;
+
+        if (selfInt_count >= 4)
         {
-            characterNameTags[i].text = characterNames[shuffledAllPlayers.ElementAt(i).Key].text;
-            playerNameTags[i].text = shuffledAllPlayers[i].Owner.NickName;
+            panel_waiting.SetActive(false);
+            stage.SetActive(true);
+            MatchNameTags();
+            MatchPlayerPos();
+            MatchSelfIntroduce();
+            StartSpeech(0); ////////////////////22222222222222222
         }
-
-        // shuffledAllPlayers 순서대로 캐릭터 MP4 순서대로 배치
-        for(int i = 0; i < rawImages.Length; i++)
-        {
-            //rawImages[i].GetComponentInChildren<VideoPlayer>().clip = 
-                //shuffledAllPlayers.ElementAt(i).Value.GetComponent<Y_PlayerAvatarSetting>().RPC_SetHSVideos(shuffledAllPlayers.ElementAt(i).Key);
-        }
-
-        StartSpeech(0);
     }
 
     #endregion
@@ -147,16 +184,96 @@ public class Y_HotSeatController : MonoBehaviourPun
 
     public GameObject spotlight;
     public GameObject stageScript;
+    List<int> playerNums = new List<int>();
+    int[] playerNumsArray;
 
+    // 셔플 돌린 후 싱크 맞춤
+    public void Shuffle()
+    {
+        if (PhotonNetwork.IsMasterClient)
+        {
+            playerNums = ShuffleList(Y_BookController.Instance.allPlayers);
+            playerNumsArray = playerNums.ToArray();
+            RPC_SyncPlayerNums(playerNumsArray);
+        }
+    }
+
+    // Stage 단계의 상단 이름표 부분 구현 : 랜덤으로 순서 섞어서 보여주기
+    void MatchNameTags()
+    {
+        // playerNums 순서대로 이름표 안의 텍스트 배치
+        for (int i = 0; i < characterNameTags.Length; i++)
+        {
+            string name = Y_BookController.Instance.allPlayers[playerNums[i]].Owner.NickName;
+            int avatarIndex = Y_BookController.Instance.allPlayers[playerNums[i]].GetComponent<Y_PlayerAvatarSetting>().avatarIndex;
+            characterNameTags[i].text = characterNames[avatarIndex].text; // 캐릭터 이름
+            playerNameTags[i].text = name; // 플레이어 이름
+        }
+    }
+
+    // Stage 단계의 플레이어 이미지를 상단 이름표의 순서에 맞춰 배치
+    void MatchPlayerPos()
+    {
+        // playerNums 순서대로 캐릭터 MP4 순서대로 배치
+        for (int i = 0; i < rawImages.Length; i++)
+        {
+            int avatarIndex = Y_BookController.Instance.allPlayers[playerNums[i]].GetComponent<Y_PlayerAvatarSetting>().avatarIndex;
+            rawImages[i].GetComponentInChildren<VideoPlayer>().clip = myAvatarSetting.videoClips[avatarIndex];
+        }
+    }
+
+    // 각 플레이어가 쓴 자기소개를 순서에 따라 넣어놓기
+    void MatchSelfIntroduce()
+    {
+        // playerNums 순서대로 캐릭터 자기소개 순서대로 넣어놓기
+        for (int i = 0; i < stageScriptImgs.Length; i++)
+        {
+            int avatarIndex = Y_BookController.Instance.allPlayers[playerNums[i]].GetComponent<Y_PlayerAvatarSetting>().avatarIndex;
+            stageScriptImgs[i].GetComponentInChildren<TMP_Text>().text = myAvatarSetting.selfIntroduces[avatarIndex];
+        }
+    }
+
+    List<int> ShuffleList(Dictionary<int, PhotonView> playerDict)
+    {
+        foreach (int key in playerDict.Keys)
+        {
+            playerNums.Add(key);
+        }
+
+        int n = playerNums.Count;
+
+        for(int i = 0; i < n; i++)
+        {
+            int j = Random.Range(0, n);
+
+            int tmp = playerNums[i];
+            playerNums[i] = playerNums[j];
+            playerNums[j] = tmp;
+        }
+
+        return playerNums;
+    }
+
+    void RPC_SyncPlayerNums(int[] syncedPlayerNums)
+    {
+        photonView.RPC(nameof(SyncPlayerNums), RpcTarget.All, syncedPlayerNums);
+    }
+
+    [PunRPC]
+    void SyncPlayerNums(int[] syncedPlayerNums)
+    {
+        playerNums = syncedPlayerNums.ToList();
+    }
 
 
     public void StartSpeech(int i)
     {
-        // 전 플레이어는 이름표 색 원래 색으로, 위치도 원위치
+        
         if (i - 1 >= 0)
         {
-            images[i - 1].color = originalColor;
-            players[i - 1].transform.position = playerPos;
+            images[i - 1].color = originalColor; // 전 플레이어는 이름표 색 원래 색으로
+            players[i - 1].transform.position = playerPos; // 위치도 원위치
+            stageScriptImgs[i - 1].gameObject.SetActive(false); // 전 플레이어의 자기소개 끄기
         }
 
         if(i < players.Count)
@@ -166,6 +283,8 @@ public class Y_HotSeatController : MonoBehaviourPun
 
             playerPos = players[i].transform.position;
             StartCoroutine(ChangePos(playerPos, i));
+
+            stageScriptImgs[i].gameObject.SetActive(true);
         }
         
         
