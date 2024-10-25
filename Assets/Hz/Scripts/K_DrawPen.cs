@@ -26,6 +26,13 @@ public class K_DrawPen : MonoBehaviour
     public float minDistance = 1f;
     public float zPosition = -9f;
 
+
+    private void Start()
+    {
+        //uiCamera.cullingMask = 1 << 0;
+        
+    }
+
     private void Update()
     {
         if (Input.GetMouseButtonDown(0))
@@ -68,8 +75,8 @@ public class K_DrawPen : MonoBehaviour
             line.gameObject.layer = LayerMask.NameToLayer("UI");
             line.sortingLayerName = "UI";
             line.sortingOrder = 1;
-            line.startWidth = 0.5f;
-            line.endWidth = 0.5f;
+            line.startWidth = 0.3f;
+            line.endWidth = 0.3f;
             line.gameObject.AddComponent<BoxCollider>();
 
             // 색상 설정
