@@ -58,8 +58,8 @@ public class P_ObjectManager_Studio : MonoBehaviour
             act = true;
             wall.SetActive(true);
 
+            // photon 전체 실행
             StartCoroutine(Studio_UI_Player());
-
         }
     }
 

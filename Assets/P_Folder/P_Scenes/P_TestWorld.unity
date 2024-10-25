@@ -1607,7 +1607,7 @@ GameObject:
   - component: {fileID: 339099876}
   - component: {fileID: 339099875}
   m_Layer: 5
-  m_Name: Img_BlackScreen
+  m_Name: Img_BlackScreen_S
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3566,7 +3566,7 @@ GameObject:
   - component: {fileID: 942757283}
   - component: {fileID: 942757282}
   m_Layer: 5
-  m_Name: text_GuideText
+  m_Name: text_GuideText_S
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5348,7 +5348,7 @@ GameObject:
   - component: {fileID: 1505765808}
   - component: {fileID: 1505765807}
   m_Layer: 5
-  m_Name: text_TimeCount
+  m_Name: text_TimeCount_S
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5778,7 +5778,7 @@ MonoBehaviour:
   answer_Text2: {fileID: 180449789}
   answer_Test3: {fileID: 1835367747}
   answer_Test4: {fileID: 1344982982}
-  wall: {fileID: 156907057}
+  wall_Q: {fileID: 156907057}
   timeline_Q: {fileID: 597623687}
   blackScreen: {fileID: 2013118421}
 --- !u!65 &1683210712
@@ -6125,7 +6125,7 @@ GameObject:
   - component: {fileID: 1793056861}
   - component: {fileID: 1793056860}
   m_Layer: 5
-  m_Name: Img_WhiteScreen
+  m_Name: Img_WhiteScreen_S
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6440,7 +6440,7 @@ GameObject:
   - component: {fileID: 1862749573}
   - component: {fileID: 1862749572}
   m_Layer: 5
-  m_Name: text_GuideText
+  m_Name: text_GuideText_Q
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6652,12 +6652,12 @@ GameObject:
   - component: {fileID: 1880668466}
   - component: {fileID: 1880668465}
   m_Layer: 5
-  m_Name: Img_StudioUI1
+  m_Name: Img_QuestionUI1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1880668464
 RectTransform:
   m_ObjectHideFlags: 0

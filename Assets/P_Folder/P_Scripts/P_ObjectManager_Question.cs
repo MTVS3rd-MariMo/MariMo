@@ -12,7 +12,7 @@ public class P_ObjectManager_Question : MonoBehaviour
     //public List<Transform> objectList = new List<Transform>();
     float triggerNum = 0;
 
-
+    // UI 캔버스
     public GameObject question_Canvas;
     // UI들
     public Image question_PopUp_Img;
@@ -31,7 +31,7 @@ public class P_ObjectManager_Question : MonoBehaviour
 
 
     // 투명벽 (플레이어 움직임을 멈춘다면 필요없을 예정)
-    public GameObject wall;
+    public GameObject wall_Q;
 
     // 연출용 타임라인
     public PlayableDirector timeline_Q;
@@ -97,7 +97,8 @@ public class P_ObjectManager_Question : MonoBehaviour
         //}
 
         // 4명 모두 답을 제출하면
-        if (answer_count >= 4)
+        // 테스트용으로 1로 설정
+        if (answer_count >= 1)
         {
             if (question_count == 0)
             {
@@ -133,7 +134,7 @@ public class P_ObjectManager_Question : MonoBehaviour
         if (triggerNum >= 4 && !act)
         {
             act = true;
-            wall.SetActive(true);
+            wall_Q.SetActive(true);
 
             StartCoroutine(Question_UI_Start());
             question_Canvas.SetActive(true);
@@ -196,6 +197,7 @@ public class P_ObjectManager_Question : MonoBehaviour
         question_PopUp_Text.text = "모두가 답변을 완료했어요!\n참 잘했어요!";
 
         // 안내 UI생성
+        question_PopUp_Img.gameObject.SetActive(true);
         Color color1 = question_PopUp_Img.color;
         Color color2 = question_PopUp_Text.color;
 
@@ -222,6 +224,8 @@ public class P_ObjectManager_Question : MonoBehaviour
 
             yield return null;
         }
+
+        question_PopUp_Img.gameObject.SetActive(false);
 
         // 다음 질문 세팅
         question_Text.text = "질문22222";
@@ -233,12 +237,15 @@ public class P_ObjectManager_Question : MonoBehaviour
         answer_Text1.text = "";
         answer_Text2.text = "";
         answer_Test3.text = "";
-        answer_Test3.text = "";
+        answer_Test4.text = "";
     }
 
     public IEnumerator Question_UI_Answer2()
-    { 
+    {
+        yield return new WaitForSeconds(5f);
+
         // 안내 UI생성
+        question_PopUp_Img.gameObject.SetActive(true);
         Color color1 = question_PopUp_Img.color;
         Color color2 = question_PopUp_Text.color;
 
@@ -266,6 +273,7 @@ public class P_ObjectManager_Question : MonoBehaviour
             yield return null;
         }
 
+        question_PopUp_Img.gameObject.SetActive(false);
         // 모든 질문에 답을 했으면
         StartCoroutine(Question_UI_End());
     }
