@@ -42,6 +42,17 @@ MonoBehaviour:
   - DestroySpaceship
   - Fire
   - RespawnSpaceship
+  - Select1st
+  - Select2nd
+  - Select3rd
+  - Select4th
+  - ActivateNameUI
+  - DeactivateAllNameUI
+  - AddPlayer
+  - SyncPlayerName
+  - RPC_SelectChar
+  - SelectChar
+  - UpdatePhoto
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 0
