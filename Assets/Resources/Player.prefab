@@ -206,6 +206,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f232333b137f2b44ebe3a58b3f64154d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  pv: {fileID: 0}
+  avatarIndex: 0
   vp: {fileID: 2780493785564132161}
   rawImage: {fileID: 2238457611774462121}
   renderTextures:
@@ -223,6 +225,11 @@ MonoBehaviour:
   - {fileID: 21300000, guid: cdb9fb9bd45fe36429e68cad73b450d3, type: 3}
   - {fileID: 21300000, guid: c589e818dda31764085c6397960f0625, type: 3}
   - {fileID: 21300000, guid: 5ecab327f8de4244bbe8e6f3017b3ce1, type: 3}
+  selfIntroduces:
+  - 
+  - 
+  - 
+  - 
 --- !u!114 &5261486963189744133
 MonoBehaviour:
   m_ObjectHideFlags: 0
