@@ -138,7 +138,7 @@ MonoBehaviour:
     m_PreExtrapolationMode: 0
     m_PostExtrapolationTime: 0
     m_PreExtrapolationTime: 0
-    m_DisplayName: Virtual Camera
+    m_DisplayName: VC_Question1
   - m_Version: 1
     m_Start: 0
     m_ClipIn: 0
@@ -207,7 +207,7 @@ MonoBehaviour:
     m_PreExtrapolationMode: 0
     m_PostExtrapolationTime: 0
     m_PreExtrapolationTime: 0
-    m_DisplayName: VC_following
+    m_DisplayName: Virtual Camera_Main
   - m_Version: 1
     m_Start: 4
     m_ClipIn: 0
@@ -258,7 +258,7 @@ MonoBehaviour:
     m_PreExtrapolationMode: 0
     m_PostExtrapolationTime: 0
     m_PreExtrapolationTime: 0
-    m_DisplayName: Virtual Camera (1)
+    m_DisplayName: VC_Question2
   - m_Version: 1
     m_Start: 6
     m_ClipIn: 0
@@ -327,6 +327,6 @@ MonoBehaviour:
     m_PreExtrapolationMode: 0
     m_PostExtrapolationTime: 0
     m_PreExtrapolationTime: 0
-    m_DisplayName: VC_following
+    m_DisplayName: Virtual Camera_Main
   m_Markers:
     m_Objects: []

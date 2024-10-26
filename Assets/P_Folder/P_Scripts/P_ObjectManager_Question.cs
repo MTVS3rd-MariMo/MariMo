@@ -12,8 +12,6 @@ public class P_ObjectManager_Question : MonoBehaviour
     //public List<Transform> objectList = new List<Transform>();
     float triggerNum = 0;
 
-    // 플레이어들
-    public GameObject[] players;
 
     // UI들
     public Image question_PopUp_Img;
@@ -34,8 +32,10 @@ public class P_ObjectManager_Question : MonoBehaviour
     // 투명벽 (플레이어 움직임을 멈춘다면 필요없을 예정)
     public GameObject wall_Q;
 
-    // 연출용 타임라인
+    // 연출용
     public PlayableDirector timeline_Q;
+    public CinemachineVirtualCamera virtual_Camera1;
+    public CinemachineVirtualCamera virtual_Camera2;
 
     // 타임라인 실행을 한번만 하기위한 체크
     bool act = false;
@@ -60,25 +60,31 @@ public class P_ObjectManager_Question : MonoBehaviour
     
     private void OnTriggerEnter(Collider other)
     {
-        triggerNum++;
-        print("+++++++++ : " + triggerNum);
-
-        // 포톤 isMine일때
-        //other.GetComponent<P_DummyPlayer>().CanWalk(false);
-
-        if (triggerNum >= 4 && !act)
+        if (other.CompareTag("Player"))
         {
-            act = true;
-            wall_Q.SetActive(true);
+            triggerNum++;
+            print("+++++++++ : " + triggerNum);
 
-            StartCoroutine(Question_UI_Start());
+            // 포톤 isMine일때
+            //other.GetComponent<P_DummyPlayer>().CanWalk(false);
+
+            if (triggerNum >= 1 && !act)
+            {
+                act = true;
+                wall_Q.SetActive(true);
+
+                StartCoroutine(Question_UI_Start());
+            }
         }
     }
 
     private void OnTriggerExit(Collider other)
     {
-        triggerNum--;
-        print("-------- : " + triggerNum);
+        if (other.CompareTag("Player"))
+        {
+            triggerNum--;
+            print("-------- : " + triggerNum);
+        }
     }
 
     void Submit()
@@ -148,23 +154,27 @@ public class P_ObjectManager_Question : MonoBehaviour
 
     }
 
-    void Moving(bool can)
-    {
-        for (int i = 0; i < players.Length; i++)
-        {
-            players[i].GetComponent<P_DummyPlayer>().canWalk = can;
-        }
-    }
+    //void Moving(bool can)
+    //{
+    //    for (int i = 0; i < players.Length; i++)
+    //    {
+    //        players[i].GetComponent<P_DummyPlayer>().canWalk = can;
+    //    }
+    //}
 
     public IEnumerator Question_UI_Start()
     {
-        Moving(false);
+        //Moving(false);
 
         // 타임라인 재생
         timeline_Q.Play();
+        yield return new WaitForSeconds(0.5f);
 
-        yield return new WaitForSeconds(4f);
+        virtual_Camera1.gameObject.SetActive(true);
 
+        yield return new WaitForSeconds(3.5f);
+
+        virtual_Camera2.gameObject.SetActive(true);
         // 페이드 아웃
 
         blackScreen.gameObject.SetActive(true);
@@ -181,6 +191,9 @@ public class P_ObjectManager_Question : MonoBehaviour
 
         // 타임라인 일시정지
         timeline_Q.Pause();
+
+        virtual_Camera1.gameObject.SetActive(false);
+        virtual_Camera2.gameObject.SetActive(false);
 
         // UI 패널
         questionUI_Panel.SetActive(true);
@@ -323,7 +336,7 @@ public class P_ObjectManager_Question : MonoBehaviour
         questionUI_Panel.SetActive(false);
         blackScreen.gameObject.SetActive(false);
         wall_Q.SetActive(false);
-        Moving(true);
+        //Moving(true);
     }
 
 }
