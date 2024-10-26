@@ -89,5 +89,14 @@ public class Y_GameManager : MonoBehaviour
     //        rawImage.texture = videoPlayer.targetTexture;
     //    }
     //}
+
+    public GameObject hotSeat;
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Alpha2))
+        {
+            hotSeat.SetActive(true);
+        }
+    }
 }
 

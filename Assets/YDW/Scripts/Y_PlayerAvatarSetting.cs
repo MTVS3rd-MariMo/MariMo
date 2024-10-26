@@ -9,23 +9,22 @@ using UnityEngine.Video;
 
 public class Y_PlayerAvatarSetting : MonoBehaviour
 {
-    ////////////////////////////////
-    
+    ///////////////////////////////   
 
-    PhotonView pv;
+    public PhotonView pv;
     int index;
     string name;
 
     Y_BookController bookController;
 
-    int avatarIndex;
+    public int avatarIndex;
 
     public VideoPlayer vp;
     public RawImage rawImage;
     public RenderTexture[] renderTextures;
     public VideoClip[] videoClips;
-    //public GameObject[] buttons;
     public Sprite[] images;
+    public string[] selfIntroduces = new string[4];
 
     // Start is called before the first frame update
     void Start()
@@ -34,9 +33,7 @@ public class Y_PlayerAvatarSetting : MonoBehaviour
         bookController = GameObject.Find("BookCanvas").GetComponent<Y_BookController>();
         bookController.AddPlayer(pv);
         index = pv.Owner.ActorNumber - 1;
-        name = pv.Owner.NickName;
-
-        
+        name = pv.Owner.NickName; 
     }
 
     public void RPC_SelectChar(int characterIndex)
@@ -48,6 +45,7 @@ public class Y_PlayerAvatarSetting : MonoBehaviour
     void SelectChar(int characterIndex)
     {
         avatarIndex = characterIndex - 1;
+        //print("avatarIndex from SelectChar: " + avatarIndex);
 
         // MP4 -> characterIndex
         vp.clip = videoClips[avatarIndex];
@@ -64,6 +62,8 @@ public class Y_PlayerAvatarSetting : MonoBehaviour
     void UpdatePhoto(int index)
     {
         avatarIndex = index - 1;
+        //print("avatarIndex from UpdatePhoto: " + avatarIndex);
         bookController.buttons[avatarIndex].GetComponent<Image>().sprite = images[avatarIndex];
     }
+
 }
