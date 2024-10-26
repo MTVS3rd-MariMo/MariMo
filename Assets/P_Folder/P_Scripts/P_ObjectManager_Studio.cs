@@ -9,6 +9,9 @@ using UnityEngine.UI;
 
 public class P_ObjectManager_Studio : MonoBehaviour
 {
+    // 플레이어 배열
+    public GameObject[] players;
+
     //public List<Transform> objectList = new List<Transform>();
     float triggerNum = 0;
 
@@ -51,7 +54,7 @@ public class P_ObjectManager_Studio : MonoBehaviour
         print("+++++++++ : " + triggerNum);
 
         // 포톤 isMine일때
-        //other.GetComponent<P_DummyPlayer>().CanWalk(false);
+        // other.GetComponent<P_DummyPlayer>().CanWalk(false);
 
         if (triggerNum >= 4 && !act)
         {
@@ -69,9 +72,18 @@ public class P_ObjectManager_Studio : MonoBehaviour
         print("-------- : " + triggerNum);
     }
 
+    void Moving(bool can)
+    {
+        for (int i = 0; i < players.Length; i++)
+        {
+            players[i].GetComponent<P_DummyPlayer>().canWalk = can;
+        }
+    }
 
     public IEnumerator Studio_UI_Player()
     {
+        Moving(false);
+
         // 타임라인 재생
         timeline.Play();
 
@@ -101,7 +113,6 @@ public class P_ObjectManager_Studio : MonoBehaviour
 
         yield return new WaitForSeconds(1.5f);
 
-        // 페이드 인
         while (black.a >= 0)
         {
             black.a -= Time.deltaTime / 1.5f;
@@ -231,6 +242,8 @@ public class P_ObjectManager_Studio : MonoBehaviour
         // 사진관 모든 UI 종료
         studioUI_Panel.SetActive(false);
         blackScreen.gameObject.SetActive(false);
+        wall.SetActive(false);
+        Moving(true);
     }
 
 

@@ -24,7 +24,7 @@ public class K_QuizManager : MonoBehaviour
 
 
     // 연출용 요소들
-    public Image blackScreen;
+    //public Image blackScreen;
     //public PlayableDirector timeline;
 
 
@@ -57,12 +57,7 @@ public class K_QuizManager : MonoBehaviour
 
     public void CountDown()
     {
-        if (!isDirecting)
-        {
-            K_QuizUiManager.instance.img_direction.gameObject.SetActive(true);
-            StartCoroutine(HideDirection(2f));
-            isDirecting = true;
-        }
+        
 
         // 카운트 다운 이미지 보이기 + 카운트 다운은 img_direction 사라지고 1초 후 활성화
         if (isCounting)
@@ -195,6 +190,13 @@ public class K_QuizManager : MonoBehaviour
     // 연출용 함수
     IEnumerator Start_Production()
     {
+        if (!isDirecting)
+        {
+            K_QuizUiManager.instance.img_direction.gameObject.SetActive(true);
+            StartCoroutine(HideDirection(2f));
+            isDirecting = true;
+        }
+
         //timeline.Play();
 
         yield return new WaitForSeconds(2f);

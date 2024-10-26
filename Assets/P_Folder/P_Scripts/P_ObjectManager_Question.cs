@@ -12,8 +12,9 @@ public class P_ObjectManager_Question : MonoBehaviour
     //public List<Transform> objectList = new List<Transform>();
     float triggerNum = 0;
 
-    // UI 캔버스
-    public GameObject question_Canvas;
+    // 플레이어들
+    public GameObject[] players;
+
     // UI들
     public Image question_PopUp_Img;
     public TMP_Text question_PopUp_Text;
@@ -54,6 +55,30 @@ public class P_ObjectManager_Question : MonoBehaviour
         btn_speaker.onClick.AddListener(Speaker);
 
         black = blackScreen.color;
+    }
+
+    
+    private void OnTriggerEnter(Collider other)
+    {
+        triggerNum++;
+        print("+++++++++ : " + triggerNum);
+
+        // 포톤 isMine일때
+        //other.GetComponent<P_DummyPlayer>().CanWalk(false);
+
+        if (triggerNum >= 4 && !act)
+        {
+            act = true;
+            wall_Q.SetActive(true);
+
+            StartCoroutine(Question_UI_Start());
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        triggerNum--;
+        print("-------- : " + triggerNum);
     }
 
     void Submit()
@@ -123,32 +148,18 @@ public class P_ObjectManager_Question : MonoBehaviour
 
     }
 
-    private void OnTriggerEnter(Collider other)
+    void Moving(bool can)
     {
-        triggerNum++;
-        print("+++++++++ : " + triggerNum);
-
-        // 포톤 isMine일때
-        //other.GetComponent<P_DummyPlayer>().CanWalk(false);
-
-        if (triggerNum >= 4 && !act)
+        for (int i = 0; i < players.Length; i++)
         {
-            act = true;
-            wall_Q.SetActive(true);
-
-            StartCoroutine(Question_UI_Start());
-            question_Canvas.SetActive(true);
+            players[i].GetComponent<P_DummyPlayer>().canWalk = can;
         }
-    }
-
-    private void OnTriggerExit(Collider other)
-    {
-        triggerNum--;
-        print("-------- : " + triggerNum);
     }
 
     public IEnumerator Question_UI_Start()
     {
+        Moving(false);
+
         // 타임라인 재생
         timeline_Q.Play();
 
@@ -309,8 +320,10 @@ public class P_ObjectManager_Question : MonoBehaviour
         }
 
         // 사진관 모든 UI 종료
-        question_Canvas.SetActive(false);
+        questionUI_Panel.SetActive(false);
         blackScreen.gameObject.SetActive(false);
+        wall_Q.SetActive(false);
+        Moving(true);
     }
 
 }
