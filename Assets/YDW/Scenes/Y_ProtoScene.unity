@@ -4121,7 +4121,6 @@ MonoBehaviour:
   - {fileID: 1923692192}
   - {fileID: 1914521451}
   - {fileID: 2090158023}
-  selfIntroduces: []
   spotlight: {fileID: 856983987}
   stageScript: {fileID: 635524569}
 --- !u!114 &895948307
@@ -9482,15 +9481,40 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1798344365185981256, guid: d6531a7177236774682bce605a86f279,
+        type: 3}
+      propertyPath: m_text
+      value: "\uC2E0\uC0AC"
+      objectReference: {fileID: 0}
     - target: {fileID: 2825210731026989419, guid: d6531a7177236774682bce605a86f279,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3781054826134278541, guid: d6531a7177236774682bce605a86f279,
+        type: 3}
+      propertyPath: m_text
+      value: "\uC601\uAC10\uB2D8"
       objectReference: {fileID: 0}
     - target: {fileID: 5643849911912166752, guid: d6531a7177236774682bce605a86f279,
         type: 3}
       propertyPath: sceneViewId
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5752993924243095450, guid: d6531a7177236774682bce605a86f279,
+        type: 3}
+      propertyPath: m_text
+      value: "\uC218\uB0A8\uC774"
+      objectReference: {fileID: 0}
+    - target: {fileID: 5755956694243145717, guid: d6531a7177236774682bce605a86f279,
+        type: 3}
+      propertyPath: m_text
+      value: "\uC544\uBC84\uC9C0"
+      objectReference: {fileID: 0}
+    - target: {fileID: 6299199937163462755, guid: d6531a7177236774682bce605a86f279,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
