@@ -36,7 +36,7 @@ public class K_QuizPos : MonoBehaviour
         }
     }
 
-    public void CheckAnswer()
+    public bool CheckAnswer()
     {
         // 다시
         K_QuizCorrect correctScript = correct.GetComponent<K_QuizCorrect>();
@@ -47,6 +47,8 @@ public class K_QuizPos : MonoBehaviour
             print("정답!");
             K_QuizUiManager.instance.img_correctA.gameObject.SetActive(true);
             StartCoroutine(HideCorrectA(2f));
+            return true;
+
         }
         else
         {
@@ -54,6 +56,7 @@ public class K_QuizPos : MonoBehaviour
             print("정답이 아님, 오답 처리");
             K_QuizUiManager.instance.img_wrongA.gameObject.SetActive(true);
             StartCoroutine(HideWrongAnswer(2f));
+            return false;
         }
         ResetQuiz();
     }

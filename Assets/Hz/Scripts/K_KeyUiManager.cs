@@ -30,6 +30,10 @@ public class K_KeyUiManager : MonoBehaviour
 
     void Start()
     {
+        img_getKeyDir.gameObject.SetActive(false);
+        img_endKeyDir.gameObject.SetActive(false);
+        img_doorOpen.gameObject.SetActive(false);
+
         // 키 아이콘들 처음에 비활성화
         foreach (GameObject keyImage in keyImages)
         {

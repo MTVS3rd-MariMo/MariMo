@@ -9,7 +9,7 @@ public class K_CountMgrTest : MonoBehaviour
         GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
 
         // 4명 이상 들어오고 LobbyUiManager 있으면 실행시켜
-        if (players.Length >= 4 && K_LobbyUiManager.instance != null)
+        if (players.Length >= 1 && K_LobbyUiManager.instance != null)
         {
             K_LobbyUiManager.instance.isAllArrived = true;
             print("4명 다옴");
