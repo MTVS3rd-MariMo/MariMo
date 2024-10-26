@@ -13,7 +13,7 @@ public class P_ObjectManager_Studio : MonoBehaviour
     float triggerNum = 0;
 
     // UI들
-    public GameObject studioUI_Canvas;
+    public GameObject studioUI_Panel;
     public Image studioUI1_Img;
     public TMP_Text studioUI1_Text;
     public TMP_Text timeCount_Text;
@@ -79,9 +79,10 @@ public class P_ObjectManager_Studio : MonoBehaviour
         yield return new WaitForSeconds(4f);
 
         // UI캔버스
-        studioUI_Canvas.SetActive(true);
+        studioUI_Panel.SetActive(true);
 
         // 페이드 아웃
+        blackScreen.gameObject.SetActive(true);
         Color black = blackScreen.color;
 
         while(black.a <=1)
@@ -228,7 +229,8 @@ public class P_ObjectManager_Studio : MonoBehaviour
         }
 
         // 사진관 모든 UI 종료
-        studioUI_Canvas.SetActive(false);
+        studioUI_Panel.SetActive(false);
+        blackScreen.gameObject.SetActive(false);
     }
 
 

@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Playables;
+using UnityEngine.UI;
 
 public class K_QuizManager : MonoBehaviour
 {
@@ -20,6 +22,13 @@ public class K_QuizManager : MonoBehaviour
 
     public static K_QuizManager instance;
 
+
+    // 연출용 요소들
+    public Image blackScreen;
+    //public PlayableDirector timeline;
+
+
+
     private void Awake()
     {
         if (null == instance)
@@ -38,7 +47,9 @@ public class K_QuizManager : MonoBehaviour
         // 플레이어 4명 모두 오면 활성화 -> 카운트 다운 하기
         if (isPlaying)
         {
-            CountDown();
+            // 입장
+            // 연출 시작
+            StartCoroutine(Start_Production());
         }
     }
 
@@ -146,6 +157,10 @@ public class K_QuizManager : MonoBehaviour
         {
             StartCoroutine(RestartQuiz(5f));
         }
+        else if (K_QuizUiManager.instance.img_correctA.gameObject.activeSelf)
+        {
+            // 마무리 연출 시작
+        }
     }
 
     IEnumerator RestartQuiz(float delay)
@@ -174,5 +189,25 @@ public class K_QuizManager : MonoBehaviour
         yield return new WaitForSeconds(1f);
         //img_countDown.gameObject.SetActive(true);
         isCounting = true;
+    }
+
+
+    // 연출용 함수
+    IEnumerator Start_Production()
+    {
+        //timeline.Play();
+
+        yield return new WaitForSeconds(2f);
+
+        //timeline.Pause();
+
+        CountDown(); // UI 시작
+    }
+
+    IEnumerator End_Production()
+    {
+        //timeline.Play();
+
+        yield return new WaitForSeconds(2f);
     }
 }

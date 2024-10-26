@@ -155,6 +155,8 @@ public class P_ObjectManager_Question : MonoBehaviour
         yield return new WaitForSeconds(4f);
 
         // 페이드 아웃
+
+        blackScreen.gameObject.SetActive(true);
         while (black.a <= 1)
         {
             black.a += Time.deltaTime / 1.5f;
@@ -308,6 +310,7 @@ public class P_ObjectManager_Question : MonoBehaviour
 
         // 사진관 모든 UI 종료
         question_Canvas.SetActive(false);
+        blackScreen.gameObject.SetActive(false);
     }
 
 }
