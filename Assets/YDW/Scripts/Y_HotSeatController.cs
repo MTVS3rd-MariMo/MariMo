@@ -1,5 +1,7 @@
-﻿using System.Collections;
+﻿using Photon.Pun;
+using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -7,8 +9,9 @@ using UnityEngine.InputSystem;
 using UnityEngine.Playables;
 using UnityEngine.Rendering.LookDev;
 using UnityEngine.UI;
+using UnityEngine.Video;
 
-public class Y_HotSeatController : MonoBehaviour
+public class Y_HotSeatController : MonoBehaviourPun
 {
     public GameObject guide;
     public GameObject selfIntroduce;
@@ -22,10 +25,13 @@ public class Y_HotSeatController : MonoBehaviour
     private Vector2 originalSize;
     private Vector2 originalPosition;
     private TouchScreenKeyboard keyboard;
+    //public Dictionary<int, PhotonView> allPlayers;
 
     // stage
     public List<Image> images = new List<Image>();
     public List<GameObject> players = new List<GameObject>();
+    public Dictionary<int, PhotonView> shuffledAllPlayers = new Dictionary<int, PhotonView>();
+    public TMP_Text[] characterNames;
     public GameObject stageImg;
     public GameObject speechGuide;
     Color originalColor;
@@ -42,6 +48,28 @@ public class Y_HotSeatController : MonoBehaviour
         originalColor = images[0].color;
         stagePos = new Vector2(stageImg.transform.position.x, stageImg.transform.position.y);
         playerPos = players[0].transform.position;
+
+        shuffledAllPlayers = Y_BookController.Instance.allPlayers;
+        shuffledAllPlayers = ShufflePlayers(shuffledAllPlayers);  ///////////////// 얘를 한 번만 해야 됨
+        for (int i = 0; i < shuffledAllPlayers.Count; i++) print("!!!!!!!" + shuffledAllPlayers.ElementAt(i).Key);
+    }
+
+    // 플레이어 순서 무작위로 섞어둠
+    public Dictionary<int, PhotonView> ShufflePlayers(Dictionary<int, PhotonView> originalDictionary)
+    {
+        List<KeyValuePair<int, PhotonView>> shuffledList = originalDictionary.ToList();
+
+        for (int i = 0; i < shuffledList.Count; i++)
+        {
+            int randomIndex = Random.Range(0, shuffledList.Count);
+            KeyValuePair<int, PhotonView> temp = shuffledList[i];
+            shuffledList[i] = shuffledList[randomIndex];
+            shuffledList[randomIndex] = temp;
+        }
+
+        Dictionary<int, PhotonView> shuffledDictionary = shuffledList.ToDictionary(pair => pair.Key, pair => pair.Value);
+
+        return shuffledDictionary;
     }
 
     public IEnumerator Deactivate(GameObject gm)
@@ -87,10 +115,29 @@ public class Y_HotSeatController : MonoBehaviour
         }
     }
 
+    public TMP_Text[] characterNameTags;
+    public TMP_Text[] playerNameTags;
+    public RawImage[] rawImages;
+
     public void Submit()
     {
         selfIntroduce.SetActive(false);
         stage.SetActive(true);
+
+        // shuffledAllPlayers 순서대로 이름표 안의 텍스트 배치
+        for(int i = 0; i < characterNameTags.Length; i++)
+        {
+            characterNameTags[i].text = characterNames[shuffledAllPlayers.ElementAt(i).Key].text;
+            playerNameTags[i].text = shuffledAllPlayers[i].Owner.NickName;
+        }
+
+        // shuffledAllPlayers 순서대로 캐릭터 MP4 순서대로 배치
+        for(int i = 0; i < rawImages.Length; i++)
+        {
+            //rawImages[i].GetComponentInChildren<VideoPlayer>().clip = 
+                //shuffledAllPlayers.ElementAt(i).Value.GetComponent<Y_PlayerAvatarSetting>().RPC_SetHSVideos(shuffledAllPlayers.ElementAt(i).Key);
+        }
+
         StartSpeech(0);
     }
 
@@ -100,6 +147,8 @@ public class Y_HotSeatController : MonoBehaviour
 
     public GameObject spotlight;
     public GameObject stageScript;
+
+
 
     public void StartSpeech(int i)
     {

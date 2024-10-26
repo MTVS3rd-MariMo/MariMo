@@ -42,6 +42,7 @@ public class Y_PlayerMove : MonoBehaviour, IPunObservable
         //conn = GetComponent<CharacterController>();
         layerMaskGround = LayerMask.GetMask("Ground");
         agent.updateRotation = false;
+
     }
 
     void Update()

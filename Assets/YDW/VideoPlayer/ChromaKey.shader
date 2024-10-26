@@ -16,6 +16,7 @@
             ZWrite Off
             Blend SrcAlpha OneMinusSrcAlpha // 투명 처리를 위한 블렌딩 설정
             Cull Off // 뒤집힌 면을 제거하지 않음
+            ZTest LEqual
 
             CGPROGRAM
             #pragma vertex vert // 버텍스 셰이더 정의
