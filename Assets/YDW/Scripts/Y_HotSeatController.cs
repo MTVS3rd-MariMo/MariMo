@@ -39,6 +39,7 @@ public class Y_HotSeatController : MonoBehaviourPun
     int selfInt_count = 0;
     public List<Image> images = new List<Image>();
     public List<GameObject> players = new List<GameObject>();
+    public Dictionary<PhotonView, string> selfIntroduces = new Dictionary<PhotonView, string>();
     public Dictionary<int, PhotonView> shuffledAllPlayers = new Dictionary<int, PhotonView>();
     public TMP_Text[] characterNames;
     public GameObject stageImg;
@@ -152,9 +153,10 @@ public class Y_HotSeatController : MonoBehaviourPun
     void AddSelfIntroduce()
     {
         //int avatarIndex = myAvatarSetting.avatarIndex; // 내 아바타의 인덱스
-        int avatarIndex = Y_BookController.Instance.myAvatar.avatarIndex;
-        print("!!!!!!!!!!!!!" + avatarIndex);
-        myAvatarSetting.selfIntroduces[avatarIndex] = selfIntroduceInput.text; // 내 아바타의 인덱스 위치대로 추가
+        //int avatarIndex = Y_BookController.Instance.myAvatar.avatarIndex;
+        //print("!!!!!!!!!!!!!" + avatarIndex);
+        //selfIntroduces.Add(new KeyValuePair(my)
+        //selfIntroduces[avatarIndex] = selfIntroduceInput.text; // 내 아바타의 인덱스 위치대로 추가
     }
 
     void RPC_AllReady()
@@ -229,7 +231,12 @@ public class Y_HotSeatController : MonoBehaviourPun
         for (int i = 0; i < stageScriptImgs.Length; i++)
         {
             int avatarIndex = Y_BookController.Instance.allPlayers[playerNums[i]].GetComponent<Y_PlayerAvatarSetting>().avatarIndex;
-            stageScriptImgs[i].GetComponentInChildren<TMP_Text>().text = myAvatarSetting.selfIntroduces[avatarIndex];
+            //stageScriptImgs[i].GetComponentInChildren<TMP_Text>().text = myAvatarSetting.selfIntroduces[avatarIndex];
+            if(photonView.IsMine)
+            {
+                //selfIntroduces[avatarIndex] = selfIntroduceInput.text;
+            }
+            //stageScriptImgs[i].GetComponentInChildren<TMP_Text>().text = myAvatarSetting.selfIntroduces[avatarIndex];
         }
     }
 

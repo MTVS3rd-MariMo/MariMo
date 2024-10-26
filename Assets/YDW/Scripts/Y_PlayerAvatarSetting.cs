@@ -45,7 +45,7 @@ public class Y_PlayerAvatarSetting : MonoBehaviour
     void SelectChar(int characterIndex)
     {
         avatarIndex = characterIndex - 1;
-        print("avatarIndex from SelectChar: " + avatarIndex);
+        //print("avatarIndex from SelectChar: " + avatarIndex);
 
         // MP4 -> characterIndex
         vp.clip = videoClips[avatarIndex];
@@ -62,7 +62,7 @@ public class Y_PlayerAvatarSetting : MonoBehaviour
     void UpdatePhoto(int index)
     {
         avatarIndex = index - 1;
-        print("avatarIndex from UpdatePhoto: " + avatarIndex);
+        //print("avatarIndex from UpdatePhoto: " + avatarIndex);
         bookController.buttons[avatarIndex].GetComponent<Image>().sprite = images[avatarIndex];
     }
 
