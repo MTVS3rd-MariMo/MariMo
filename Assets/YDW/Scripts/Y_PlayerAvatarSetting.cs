@@ -66,8 +66,4 @@ public class Y_PlayerAvatarSetting : MonoBehaviour
         //print("avatarIndex from UpdatePhoto: " + avatarIndex);
         bookController.buttons[avatarIndex].GetComponent<Image>().sprite = images[avatarIndex];
     }
-
-
-
-
 }

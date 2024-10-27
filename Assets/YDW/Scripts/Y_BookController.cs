@@ -338,7 +338,6 @@ public class Y_BookController : MonoBehaviour
 
     #endregion
 
-
     public Y_PlayerAvatarSetting myAvatar;
     public Dictionary<int, PhotonView> allPlayers = new Dictionary<int, PhotonView>(); // MyAvatar 로 바꾸기
     public void AddPlayer(PhotonView pv)
@@ -351,6 +350,5 @@ public class Y_BookController : MonoBehaviour
             print("avatarIndex from AddPlayer: " + myAvatar.avatarIndex);
         }
     }
-
 
 }

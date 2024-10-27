@@ -45,7 +45,7 @@ public class Y_HotSeatController : MonoBehaviourPun
     public GameObject stageImg;
     public GameObject speechGuide;
     Color originalColor;
-    int testNum = 0;
+    public int testNum = 0;
     public Vector2 playerPos;
     Vector2 stagePos;
     public Image[] stageScriptImgs;
@@ -90,11 +90,22 @@ public class Y_HotSeatController : MonoBehaviourPun
 
     private void Update()
     {
-        if(Input.GetKeyDown(KeyCode.Alpha1) && testNum < players.Count)
+        if(Input.GetKeyDown(KeyCode.M) && testNum < players.Count)
         {
-            testNum++;
-            StartSpeech(testNum); ////////////////////222222222222233333333333333
+            photonView.RPC(nameof(ProtoTest), RpcTarget.All);
         }  
+    }
+
+    void RPC_ProtoTest()
+    {
+        photonView.RPC(nameof(ProtoTest), RpcTarget.All);
+    }
+
+    [PunRPC]
+    void ProtoTest()
+    {
+        testNum++;
+        StartSpeech(testNum); ////////////////////222222222222233333333333333
     }
 
     #region SelfIntroduce
@@ -182,12 +193,15 @@ public class Y_HotSeatController : MonoBehaviourPun
             {
                 print("playerNums : " + j + " " + playerNums[j]);
             }
+            //Shuffle();
             panel_waiting.SetActive(false);
             stage.SetActive(true);
             MatchNameTags();
             MatchPlayerPos();
             MatchSelfIntroduce();
+
             StartSpeech(0); ////////////////////22222222222222222
+            print("StartSpeech(0) 실행!!");
         }
     }
 
@@ -241,7 +255,7 @@ public class Y_HotSeatController : MonoBehaviourPun
         {
             print("????????? i : " + i);
             int playerNum = playerNums[i];
-            print("????????? playerNum" + playerNum);
+            print("????????? playerNum " + playerNum);
             if (selfIntroduces.ContainsKey(playerNum))
             {
                 stageScriptTxts[i].text = selfIntroduces[playerNum];
@@ -283,26 +297,34 @@ public class Y_HotSeatController : MonoBehaviourPun
     }
 
 
-    public void StartSpeech(int i)
+    public void StartSpeech(int index)
     {
-        print("StartSpeech i : " + i);
-        if (i - 1 >= 0)
+        //if(!photonView.IsMine)
+        //{
+        //    return;
+        //}
+
+        //index--;
+
+        print("StartSpeech index : " + index);
+        if (index - 1 >= 0)
         {
-            images[i - 1].color = originalColor; // 전 플레이어는 이름표 색 원래 색으로
-            players[i - 1].transform.position = playerPos; // 위치도 원위치
-            stageScriptImgs[i - 1].gameObject.SetActive(false); // 전 플레이어의 자기소개 끄기
+            images[index - 1].color = originalColor; // 전 플레이어는 이름표 색 원래 색으로
+            players[index - 1].transform.position = playerPos; // 위치도 원위치
+            stageScriptImgs[index - 1].gameObject.SetActive(false); // 전 플레이어의 자기소개 끄기
         }
 
-        if(i < players.Count)
+        if(index < players.Count)
         {
             // 이름 UI 색깔 바꾸고
-            images[i].color = Color.red;
+            images[index].color = Color.red;
+            print("Color Changed to red");
 
-            playerPos = players[i].transform.position;
-            StartCoroutine(ChangePos(playerPos, i));
+            playerPos = players[index].transform.position;
+            StartCoroutine(ChangePos(playerPos, index));
 
-            stageScriptImgs[i].gameObject.SetActive(true);
-            print("stageScriptImgs i : " + stageScriptImgs[i].GetComponentInChildren<TMP_Text>().text);
+            stageScriptImgs[index].gameObject.SetActive(true);
+            print("stageScriptImgs i : " + stageScriptImgs[index].GetComponentInChildren<TMP_Text>().text);
         }
 
         // "자기소개를 듣고 궁금했던 것들을 질문해봅시다" UI
@@ -328,7 +350,7 @@ public class Y_HotSeatController : MonoBehaviourPun
                 
                 // 밑에 자기소개
                 stageScript.SetActive(true); 
-                stageScript.GetComponentInChildren<TMP_Text>().text = selfIntroduceInput.text;
+                stageScript.GetComponentInChildren<TMP_Text>().text = selfIntroduceInput.text; ///////////////////44444444
 
                 // "친구들에게 말로 자기소개를 해 봅시다" UI
                 speechGuide.SetActive(true);
