@@ -47,7 +47,6 @@ public class Y_PlayerMove : MonoBehaviour, IPunObservable
 
     void Update()
     {
-        movable = true; //////////////
         if (movable)
         {
             Move();
@@ -63,7 +62,7 @@ public class Y_PlayerMove : MonoBehaviour, IPunObservable
 
     void Move()
     {
-        movable = true; ////////////////
+        //movable = true; ////////////////
         // 만일 내가 소유권을 가진 캐릭터라면 
         if(pv.IsMine)
         {

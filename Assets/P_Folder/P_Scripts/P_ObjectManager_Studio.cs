@@ -57,6 +57,7 @@ public class P_ObjectManager_Studio : MonoBehaviour
             triggerNum++;
             print("+++++++++ : " + triggerNum);
 
+            players.Add(other.gameObject);
 
             if (triggerNum >= 1 && !act)
             {
@@ -77,6 +78,8 @@ public class P_ObjectManager_Studio : MonoBehaviour
         {
             triggerNum--;
             print("-------- : " + triggerNum);
+
+            players.Remove(other.gameObject);
         }
     }
 

@@ -38,6 +38,7 @@ public class K_LobbyUiManager : MonoBehaviour
         img_StartInfo.gameObject.SetActive(false);
         //img_KeyEmptyBox.gameObject.SetActive(false);
         img_KeyBoxBorder.gameObject.SetActive(false);
+        img_KeyEmptyBox.gameObject.SetActive(false);
     }
 
     void Update()
@@ -61,6 +62,7 @@ public class K_LobbyUiManager : MonoBehaviour
     {
         img_StartInfo.gameObject.SetActive(true);
         img_KeyBoxBorder.gameObject.SetActive(true);
+        img_KeyEmptyBox.gameObject.SetActive(true);
 
         // 5초 뒤 비활성화
         StartCoroutine(HideInfo(5f));      
