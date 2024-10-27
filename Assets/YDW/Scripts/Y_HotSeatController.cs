@@ -94,6 +94,11 @@ public class Y_HotSeatController : MonoBehaviourPun
         {
             photonView.RPC(nameof(ProtoTest), RpcTarget.All);
         }  
+
+        if(Input.GetKeyDown(KeyCode.N))
+        {
+            RPC_TurnOff();
+        }
     }
 
     void RPC_ProtoTest()
@@ -106,6 +111,17 @@ public class Y_HotSeatController : MonoBehaviourPun
     {
         testNum++;
         StartSpeech(testNum); ////////////////////222222222222233333333333333
+    }
+
+    void RPC_TurnOff()
+    {
+        photonView.RPC(nameof(TurnOff), RpcTarget.All);
+    }
+
+    [PunRPC]
+    void TurnOff()
+    {
+        gameObject.SetActive(false);
     }
 
     #region SelfIntroduce
