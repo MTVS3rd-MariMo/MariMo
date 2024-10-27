@@ -33,7 +33,8 @@ public class Y_PlayerAvatarSetting : MonoBehaviour
         bookController = GameObject.Find("BookCanvas").GetComponent<Y_BookController>();
         bookController.AddPlayer(pv);
         index = pv.Owner.ActorNumber - 1;
-        name = pv.Owner.NickName; 
+        name = pv.Owner.NickName;
+        print(PhotonNetwork.LocalPlayer.ActorNumber);
     }
 
     public void RPC_SelectChar(int characterIndex)
@@ -65,5 +66,4 @@ public class Y_PlayerAvatarSetting : MonoBehaviour
         //print("avatarIndex from UpdatePhoto: " + avatarIndex);
         bookController.buttons[avatarIndex].GetComponent<Image>().sprite = images[avatarIndex];
     }
-
 }
