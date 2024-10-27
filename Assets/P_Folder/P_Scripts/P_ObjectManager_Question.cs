@@ -12,6 +12,7 @@ public class P_ObjectManager_Question : MonoBehaviour
     //public List<Transform> objectList = new List<Transform>();
     float triggerNum = 0;
 
+    List<GameObject> players = new List<GameObject>();
 
     // UI들
     public Image question_PopUp_Img;
@@ -65,8 +66,8 @@ public class P_ObjectManager_Question : MonoBehaviour
             triggerNum++;
             print("+++++++++ : " + triggerNum);
 
-            // 포톤 isMine일때
-            //other.GetComponent<P_DummyPlayer>().CanWalk(false);
+            players.Add(other.gameObject);
+
 
             if (triggerNum >= 1 && !act)
             {
@@ -74,6 +75,8 @@ public class P_ObjectManager_Question : MonoBehaviour
                 wall_Q.SetActive(true);
 
                 StartCoroutine(Question_UI_Start());
+
+                MoveControl(false);
             }
         }
     }
@@ -84,8 +87,19 @@ public class P_ObjectManager_Question : MonoBehaviour
         {
             triggerNum--;
             print("-------- : " + triggerNum);
+
+            players.Remove(other.gameObject);
         }
     }
+
+    void MoveControl(bool canmove)
+    {
+        foreach (GameObject obj in players)
+        {
+            obj.GetComponent<Y_PlayerMove>().movable = canmove;
+        }
+    }
+
 
     void Submit()
     {
@@ -336,7 +350,8 @@ public class P_ObjectManager_Question : MonoBehaviour
         questionUI_Panel.SetActive(false);
         blackScreen.gameObject.SetActive(false);
         wall_Q.SetActive(false);
-        //Moving(true);
+
+        MoveControl(true);
 
         K_KeyManager.instance.isDoneOpenQnA = true;
     }

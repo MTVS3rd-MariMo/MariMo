@@ -91,7 +91,7 @@ public class K_DrawPen : MonoBehaviour
         {
             Vector2 mousePos;
             // 마우스 좌표 rt의 로컬로 변환
-            RectTransformUtility.ScreenPointToLocalPointInRectangle(rt, Input.mousePosition, uiCamera, out mousePos);
+            RectTransformUtility.ScreenPointToLocalPointInRectangle(rt, Input.mousePosition, Camera.main, out mousePos);
 
             print("변환됨");
 
@@ -100,7 +100,7 @@ public class K_DrawPen : MonoBehaviour
             worldPos.z = zPosition;
 
             // 스케치북 안에 있을 시 그려지게
-            if (RectTransformUtility.RectangleContainsScreenPoint(sktechBook, Input.mousePosition, uiCamera))
+            if (RectTransformUtility.RectangleContainsScreenPoint(sktechBook, Input.mousePosition, Camera.main))
             {
                 line.positionCount++;
                 line.SetPosition(line.positionCount - 1, worldPos);

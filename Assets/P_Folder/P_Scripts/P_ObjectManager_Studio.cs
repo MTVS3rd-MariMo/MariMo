@@ -9,6 +9,7 @@ using UnityEngine.UI;
 
 public class P_ObjectManager_Studio : MonoBehaviour
 {
+    List<GameObject> players = new List<GameObject>();
 
     //public List<Transform> objectList = new List<Transform>();
     float triggerNum = 0;
@@ -56,13 +57,14 @@ public class P_ObjectManager_Studio : MonoBehaviour
             triggerNum++;
             print("+++++++++ : " + triggerNum);
 
-            // 포톤 isMine일때
-            // other.GetComponent<P_DummyPlayer>().CanWalk(false);
+            players.Add(other.gameObject);
 
             if (triggerNum >= 1 && !act)
             {
                 act = true;
                 wall.SetActive(true);
+
+                MoveControl(false);
 
                 // photon 전체 실행
                 StartCoroutine(Studio_UI_Player());
@@ -76,16 +78,18 @@ public class P_ObjectManager_Studio : MonoBehaviour
         {
             triggerNum--;
             print("-------- : " + triggerNum);
+
+            players.Remove(other.gameObject);
         }
     }
 
-    //void Moving(bool can)
-    //{
-    //    for (int i = 0; i < players.Length; i++)
-    //    {
-    //        players[i].GetComponent<P_DummyPlayer>().canWalk = can;
-    //    }
-    //}
+    void MoveControl(bool canmove)
+    {
+        foreach (GameObject obj in players)
+        {
+            obj.GetComponent<Y_PlayerMove>().movable = canmove;
+        }
+    }
 
     public IEnumerator Studio_UI_Player()
     {
@@ -262,7 +266,8 @@ public class P_ObjectManager_Studio : MonoBehaviour
         studioUI_Panel.SetActive(false);
         blackScreen.gameObject.SetActive(false);
         wall.SetActive(false);
-        //Moving(true);
+
+        MoveControl(true);
     }
 
 

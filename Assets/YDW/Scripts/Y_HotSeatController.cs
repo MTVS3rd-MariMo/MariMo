@@ -39,13 +39,13 @@ public class Y_HotSeatController : MonoBehaviourPun
     int selfInt_count = 0;
     public List<Image> images = new List<Image>();
     public List<GameObject> players = new List<GameObject>();
-    public Dictionary<PhotonView, string> selfIntroduces = new Dictionary<PhotonView, string>();
+    public Dictionary<int, string> selfIntroduces = new Dictionary<int, string>();
     public Dictionary<int, PhotonView> shuffledAllPlayers = new Dictionary<int, PhotonView>();
     public TMP_Text[] characterNames;
     public GameObject stageImg;
     public GameObject speechGuide;
     Color originalColor;
-    int testNum = 0;
+    public int testNum = 0;
     public Vector2 playerPos;
     Vector2 stagePos;
     public Image[] stageScriptImgs;
@@ -90,14 +90,38 @@ public class Y_HotSeatController : MonoBehaviourPun
 
     private void Update()
     {
-        if(Input.GetKeyDown(KeyCode.Alpha1) && testNum < players.Count)
+        if(Input.GetKeyDown(KeyCode.M) && testNum < players.Count)
         {
-            if(testNum < players.Count)
-            {
-                testNum++;
-                StartSpeech(testNum); ////////////////////222222222222233333333333333
-            }   
+            photonView.RPC(nameof(ProtoTest), RpcTarget.All);
         }  
+
+        if(Input.GetKeyDown(KeyCode.N))
+        {
+            RPC_TurnOff();
+        }
+    }
+
+    void RPC_ProtoTest()
+    {
+        photonView.RPC(nameof(ProtoTest), RpcTarget.All);
+    }
+
+    [PunRPC]
+    void ProtoTest()
+    {
+        testNum++;
+        StartSpeech(testNum); ////////////////////222222222222233333333333333
+    }
+
+    void RPC_TurnOff()
+    {
+        photonView.RPC(nameof(TurnOff), RpcTarget.All);
+    }
+
+    [PunRPC]
+    void TurnOff()
+    {
+        gameObject.SetActive(false);
     }
 
     #region SelfIntroduce
@@ -138,25 +162,30 @@ public class Y_HotSeatController : MonoBehaviourPun
 
         Shuffle();
 
-        RPC_AddSelfIntroduce(); ///////////////////4444444444
+        // 작성한 순서대로 추가됨
+        RPC_AddSelfIntroduce(PhotonNetwork.LocalPlayer.ActorNumber, selfIntroduceInput.text);
 
         RPC_AllReady();
     }
 
-    void RPC_AddSelfIntroduce()
+    void RPC_AddSelfIntroduce(int actorNumber, string selfIntroduce)
     {
-        photonView.RPC(nameof(AddSelfIntroduce), RpcTarget.All);
+        photonView.RPC(nameof(AddSelfIntroduce), RpcTarget.All, actorNumber, selfIntroduce);
     }
 
     // 학생이 쓴 자기소개를 리스트에 넣어줌
     [PunRPC]
-    void AddSelfIntroduce()
+    void AddSelfIntroduce(int actorNumber, string selfIntroduce)
     {
-        //int avatarIndex = myAvatarSetting.avatarIndex; // 내 아바타의 인덱스
-        //int avatarIndex = Y_BookController.Instance.myAvatar.avatarIndex;
-        //print("!!!!!!!!!!!!!" + avatarIndex);
-        //selfIntroduces.Add(new KeyValuePair(my)
-        //selfIntroduces[avatarIndex] = selfIntroduceInput.text; // 내 아바타의 인덱스 위치대로 추가
+        // actorNumber를 Key, selfIntroduce 를 Value 로 딕셔너리에 추가
+        selfIntroduces.Add(actorNumber, selfIntroduce); 
+        //for(int i = 0; i < selfIntroduces.Count; i++)
+        //{
+        //    if (selfIntroduces[i] != null)
+        //    print("selfIntroduces : " + i + " " + selfIntroduces[i]);
+        //}
+        //selfIntroduces[avatarIndex] = selfIntroduce
+        //Input.text; // 내 아바타의 인덱스 위치대로 추가
     }
 
     void RPC_AllReady()
@@ -171,12 +200,24 @@ public class Y_HotSeatController : MonoBehaviourPun
 
         if (selfInt_count >= 4)
         {
+            for (int i = 1; i <= selfIntroduces.Count; i++)
+            {
+                if (selfIntroduces[i] != null)
+                    print("selfIntroduces : " + i + " " + selfIntroduces[i]);
+            }
+            for (int j = 0; j < playerNums.Count; j++)
+            {
+                print("playerNums : " + j + " " + playerNums[j]);
+            }
+            //Shuffle();
             panel_waiting.SetActive(false);
             stage.SetActive(true);
             MatchNameTags();
             MatchPlayerPos();
             MatchSelfIntroduce();
+
             StartSpeech(0); ////////////////////22222222222222222
+            print("StartSpeech(0) 실행!!");
         }
     }
 
@@ -195,8 +236,7 @@ public class Y_HotSeatController : MonoBehaviourPun
         if (PhotonNetwork.IsMasterClient)
         {
             playerNums = ShuffleList(Y_BookController.Instance.allPlayers);
-            playerNumsArray = playerNums.ToArray();
-            RPC_SyncPlayerNums(playerNumsArray);
+            RPC_SyncPlayerNums(playerNums.ToArray());
         }
     }
 
@@ -227,16 +267,16 @@ public class Y_HotSeatController : MonoBehaviourPun
     // 각 플레이어가 쓴 자기소개를 순서에 따라 넣어놓기
     void MatchSelfIntroduce()
     {
-        // playerNums 순서대로 캐릭터 자기소개 순서대로 넣어놓기
-        for (int i = 0; i < stageScriptImgs.Length; i++)
+        for (int i = 0; i < playerNums.Count; i++)
         {
-            int avatarIndex = Y_BookController.Instance.allPlayers[playerNums[i]].GetComponent<Y_PlayerAvatarSetting>().avatarIndex;
-            //stageScriptImgs[i].GetComponentInChildren<TMP_Text>().text = myAvatarSetting.selfIntroduces[avatarIndex];
-            if(photonView.IsMine)
+            print("????????? i : " + i);
+            int playerNum = playerNums[i];
+            print("????????? playerNum " + playerNum);
+            if (selfIntroduces.ContainsKey(playerNum))
             {
-                //selfIntroduces[avatarIndex] = selfIntroduceInput.text;
+                stageScriptTxts[i].text = selfIntroduces[playerNum];
+                print("???????????? stageScriptTxt : " + stageScriptTxts[i].text);
             }
-            //stageScriptImgs[i].GetComponentInChildren<TMP_Text>().text = myAvatarSetting.selfIntroduces[avatarIndex];
         }
     }
 
@@ -273,28 +313,36 @@ public class Y_HotSeatController : MonoBehaviourPun
     }
 
 
-    public void StartSpeech(int i)
+    public void StartSpeech(int index)
     {
-        
-        if (i - 1 >= 0)
+        //if(!photonView.IsMine)
+        //{
+        //    return;
+        //}
+
+        //index--;
+
+        print("StartSpeech index : " + index);
+        if (index - 1 >= 0)
         {
-            images[i - 1].color = originalColor; // 전 플레이어는 이름표 색 원래 색으로
-            players[i - 1].transform.position = playerPos; // 위치도 원위치
-            stageScriptImgs[i - 1].gameObject.SetActive(false); // 전 플레이어의 자기소개 끄기
+            images[index - 1].color = originalColor; // 전 플레이어는 이름표 색 원래 색으로
+            players[index - 1].transform.position = playerPos; // 위치도 원위치
+            stageScriptImgs[index - 1].gameObject.SetActive(false); // 전 플레이어의 자기소개 끄기
         }
 
-        if(i < players.Count)
+        if(index < players.Count)
         {
             // 이름 UI 색깔 바꾸고
-            images[i].color = Color.red;
+            images[index].color = Color.red;
+            print("Color Changed to red");
 
-            playerPos = players[i].transform.position;
-            StartCoroutine(ChangePos(playerPos, i));
+            playerPos = players[index].transform.position;
+            StartCoroutine(ChangePos(playerPos, index));
 
-            stageScriptImgs[i].gameObject.SetActive(true);
+            stageScriptImgs[index].gameObject.SetActive(true);
+            print("stageScriptImgs i : " + stageScriptImgs[index].GetComponentInChildren<TMP_Text>().text);
         }
-        
-        
+
         // "자기소개를 듣고 궁금했던 것들을 질문해봅시다" UI
         // 1분 뒤 질문받기
         // 순서대로 보이스 활성화
@@ -318,7 +366,7 @@ public class Y_HotSeatController : MonoBehaviourPun
                 
                 // 밑에 자기소개
                 stageScript.SetActive(true); 
-                stageScript.GetComponentInChildren<TMP_Text>().text = selfIntroduceInput.text;
+                stageScript.GetComponentInChildren<TMP_Text>().text = selfIntroduceInput.text; ///////////////////44444444
 
                 // "친구들에게 말로 자기소개를 해 봅시다" UI
                 speechGuide.SetActive(true);

@@ -1,4 +1,5 @@
-﻿using Org.BouncyCastle.Asn1.Crmf;
+﻿using Cinemachine;
+using Org.BouncyCastle.Asn1.Crmf;
 using Photon.Pun;
 using System;
 using System.Collections;
@@ -14,6 +15,10 @@ using UnityEngine;
 public class Y_BookController : MonoBehaviour
 {
     public static Y_BookController Instance { get; private set; }
+
+    public Camera mainCam;
+    public CinemachineVirtualCamera virtualCam;
+    public Camera paintCam;
 
     public GameObject bookUI;
     public GameObject ChooseCharacterUI;
@@ -87,6 +92,8 @@ public class Y_BookController : MonoBehaviour
 
     private void Start()
     {
+        mainCam = Camera.main;
+
         pv = GetComponent<PhotonView>();
 
         texts = new List<string>();
@@ -298,6 +305,10 @@ public class Y_BookController : MonoBehaviour
         //////////////////////////////
 
         ChooseCharacterUI.SetActive(false);
+        //mainCam.gameObject.SetActive(false);
+        //virtualCam.gameObject.SetActive(false);
+        //paintCam.gameObject.SetActive(true);
+        
         PaintUI.SetActive(true);
 
         allPlayers[currentPlayerNum].GetComponent<Y_PlayerAvatarSetting>().RPC_UpdatePhoto(characterNum); /////////22222222
@@ -321,7 +332,10 @@ public class Y_BookController : MonoBehaviour
 
         // 각 플레이어마다 루프 돌면서 이미지 넣어줌
 
-        
+        //mainCam.gameObject.SetActive(true);
+        //virtualCam.gameObject.SetActive(true);
+        //paintCam.gameObject.SetActive(false);
+
         PaintUI.SetActive(false);
         ChooseCharacterUI.SetActive(true);
         btn_chooseChar.SetActive(false);
@@ -333,11 +347,12 @@ public class Y_BookController : MonoBehaviour
         // 이 때 캐릭터 받아와서 내 플레이어에 동기화 시켜야 됨
         ////////////////////////
 
+        // 맵 소개 UI 실행
+        K_LobbyUiManager.instance.isAllArrived = true;
         gameObject.SetActive(false);
     }
 
     #endregion
-
 
     public Y_PlayerAvatarSetting myAvatar;
     public Dictionary<int, PhotonView> allPlayers = new Dictionary<int, PhotonView>(); // MyAvatar 로 바꾸기
@@ -351,6 +366,5 @@ public class Y_BookController : MonoBehaviour
             print("avatarIndex from AddPlayer: " + myAvatar.avatarIndex);
         }
     }
-
 
 }
