@@ -15,6 +15,7 @@ public class K_QuizCorrect1 : MonoBehaviour
             // 정답 true
             isCorrect = true;
             print("정답구역");
+            //K_QuizManager.instance.quizCorrect = GetComponentInParent<K_QuizPos_1>();
         }
     }
 

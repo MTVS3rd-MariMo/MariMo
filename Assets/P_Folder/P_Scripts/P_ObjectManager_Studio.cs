@@ -9,24 +9,25 @@ using UnityEngine.UI;
 
 public class P_ObjectManager_Studio : MonoBehaviour
 {
+
     //public List<Transform> objectList = new List<Transform>();
     float triggerNum = 0;
 
     // UI들
-    public GameObject studioUI_Canvas;
+    public GameObject studioUI_Panel;
     public Image studioUI1_Img;
     public TMP_Text studioUI1_Text;
     public TMP_Text timeCount_Text;
 
-    // 버츄얼 카메라
-    public CinemachineVirtualCamera for_Directing1;
-    public CinemachineVirtualCamera for_Directing2;
 
     // 투명벽 (플레이어 움직임을 멈춘다면 필요없을 예정)
     public GameObject wall;
 
-    // 연출용 타임라인
+    // 연출용
     public PlayableDirector timeline;
+    public CinemachineVirtualCamera virtualCamera1;
+    public CinemachineVirtualCamera virtualCamera2;
+    public CinemachineVirtualCamera virtualCamera3;
 
     // 타임라인 실행을 한번만 하기위한 체크
     bool act = false;
@@ -50,49 +51,60 @@ public class P_ObjectManager_Studio : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        triggerNum++;
-        print("+++++++++ : " + triggerNum);
-
-        // 포톤 isMine일때
-        //other.GetComponent<P_DummyPlayer>().CanWalk(false);
-
-        if (triggerNum >= 4 && !act)
+        if (other.CompareTag("Player"))
         {
-            act = true;
-            wall.SetActive(true);
+            triggerNum++;
+            print("+++++++++ : " + triggerNum);
 
-            StartCoroutine(Studio_UI_Player());
+            // 포톤 isMine일때
+            // other.GetComponent<P_DummyPlayer>().CanWalk(false);
 
+            if (triggerNum >= 1 && !act)
+            {
+                act = true;
+                wall.SetActive(true);
+
+                // photon 전체 실행
+                StartCoroutine(Studio_UI_Player());
+            }
         }
     }
 
     private void OnTriggerExit(Collider other)
     {
-        triggerNum--;
-        print("-------- : " + triggerNum);
+        if (other.CompareTag("Player"))
+        {
+            triggerNum--;
+            print("-------- : " + triggerNum);
+        }
     }
 
-    
-
-    private void StudioAct()
-    {
-
-    }
+    //void Moving(bool can)
+    //{
+    //    for (int i = 0; i < players.Length; i++)
+    //    {
+    //        players[i].GetComponent<P_DummyPlayer>().canWalk = can;
+    //    }
+    //}
 
     public IEnumerator Studio_UI_Player()
     {
+        //Moving(false);
+
         // 타임라인 재생
         timeline.Play();
 
-        for_Directing1.gameObject.SetActive(true);
-        for_Directing2.gameObject.SetActive(true);
+        yield return new WaitForSeconds(0.5f);
 
-        yield return new WaitForSeconds(4f);
+        virtualCamera1.gameObject.SetActive(true);
 
-        // UI캔버스
-        studioUI_Canvas.SetActive(true);
+        yield return new WaitForSeconds(3.5f);
+
+        virtualCamera2.gameObject.SetActive(true);
+
 
         // 페이드 아웃
+        blackScreen.gameObject.SetActive(true);
         Color black = blackScreen.color;
 
         while(black.a <=1)
@@ -106,12 +118,16 @@ public class P_ObjectManager_Studio : MonoBehaviour
 
         yield return new WaitForSeconds(0.75f);
 
+        // UI패널
+        studioUI_Panel.SetActive(true);
+
+        virtualCamera3.gameObject.SetActive(true);
+
         // 타임라인 일시정지
         timeline.Pause();
 
         yield return new WaitForSeconds(1.5f);
 
-        // 페이드 인
         while (black.a >= 0)
         {
             black.a -= Time.deltaTime / 1.5f;
@@ -226,13 +242,11 @@ public class P_ObjectManager_Studio : MonoBehaviour
         // 타임라인 재생
         timeline.Play();
 
-        yield return new WaitForSeconds(0.5f);
+        virtualCamera1.gameObject.SetActive(false);
+        virtualCamera2.gameObject.SetActive(false);
+        virtualCamera3.gameObject.SetActive(false);
 
-        // 연출용 가상카메라 끄기
-        for_Directing1.gameObject.SetActive(false);
-        for_Directing2.gameObject.SetActive(false);
-
-        yield return new WaitForSeconds(1.5f);
+        yield return new WaitForSeconds(2f);
 
         // 페이드 인
         while (black.a >= 0)
@@ -245,8 +259,10 @@ public class P_ObjectManager_Studio : MonoBehaviour
         }
 
         // 사진관 모든 UI 종료
-        studioUI_Canvas.SetActive(false);
-
+        studioUI_Panel.SetActive(false);
+        blackScreen.gameObject.SetActive(false);
+        wall.SetActive(false);
+        //Moving(true);
     }
 
 
