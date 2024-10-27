@@ -51,7 +51,7 @@ public class Y_BookController : MonoBehaviour
     public GameObject btn_toMap;
 
     // 버튼 어떤 게 눌렸나 받아오기
-    int characterNum = 0;
+    public int characterNum = 0;
 
     GameObject player;
     public int currentPlayerNum;
@@ -348,7 +348,7 @@ public class Y_BookController : MonoBehaviour
         ////////////////////////
 
         // 맵 소개 UI 실행
-        K_LobbyUiManager.instance.isAllArrived = true;
+        //K_LobbyUiManager.instance.isAllArrived = true; /////////////////// !!!!!!!!!!!!!!!!
         gameObject.SetActive(false);
     }
 
