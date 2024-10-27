@@ -8,6 +8,9 @@ public class K_QuizSpawnMgr : MonoBehaviour
     int quizCount = 2;
     public GameObject quiz;
 
+    // 퀴즈 2개 배열
+    public GameObject[] quizzes; 
+
     public Vector3[] quiz_spawnSize;
     public Vector3[] quiz_spawnCenter;
 
@@ -23,8 +26,9 @@ public class K_QuizSpawnMgr : MonoBehaviour
 
         for (int i = 0; i < quizCount; i++)
         {
+            //SpawnObj(quizzes[i], i);
             SpawnObj(quiz, i);
-            SpawnCorrectA(i);
+            //SpawnCorrectA(i);
         }
 
     }
@@ -44,6 +48,7 @@ public class K_QuizSpawnMgr : MonoBehaviour
         {
             for (int i = 0; i < quizCount; i++)
             {
+                //SpawnObj(quizzes[i], i);
                 SpawnObj(quiz, i);
             }
         }
@@ -55,6 +60,7 @@ public class K_QuizSpawnMgr : MonoBehaviour
         Vector3 size = quiz_spawnSize[idx];
         Vector3 randomPos = GetRandomPosInArea(center, size);
         GameObject go = Instantiate(obj, randomPos, Quaternion.Euler(90, 0, 0));
+        // x축 90에서 0으로 변경
 
         K_QuizPos k_QuizePos = go.GetComponent<K_QuizPos>();
         quiz_correct[idx] = k_QuizePos.correct;        
