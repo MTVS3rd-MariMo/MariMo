@@ -67,7 +67,7 @@ public class K_KeyManager : MonoBehaviour
             isDoneQuiz_2 = false;
         }
 
-        // 총 열쇠 4개 -> 투명벽 열림
+        // 총 열쇠 3개 -> 투명벽 열림
         if (totalKeys >= 4 && !isBarrierOpened)
         {
             //// 스탬프 다모이면 큰 열쇠 이미지 띄워주는 함수

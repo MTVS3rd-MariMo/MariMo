@@ -337,6 +337,8 @@ public class P_ObjectManager_Question : MonoBehaviour
         blackScreen.gameObject.SetActive(false);
         wall_Q.SetActive(false);
         //Moving(true);
+
+        K_KeyManager.instance.isDoneOpenQnA = true;
     }
 
 }

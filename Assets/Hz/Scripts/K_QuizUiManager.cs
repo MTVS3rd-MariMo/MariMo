@@ -13,7 +13,7 @@ public class K_QuizUiManager : MonoBehaviour
     public Image img_wrongA;
 
     // 열쇠
-    public Image img_getKey;
+    //public Image img_getKey;
 
     // 카운트다운
     public TMP_Text text_countDown;
@@ -54,7 +54,7 @@ public class K_QuizUiManager : MonoBehaviour
         img_wrongA.gameObject.SetActive(false);
 
         // 정답 시 열쇠 획득 ui 
-        img_getKey.gameObject.SetActive(false);
+        //img_getKey.gameObject.SetActive(false);
     }
 
     void Update()

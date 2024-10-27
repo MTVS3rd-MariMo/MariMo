@@ -1,9 +1,13 @@
-﻿using System.Collections;
+﻿using Cinemachine;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class K_QuizPos : MonoBehaviour
 {
+    // 연출용
+    public CinemachineVirtualCamera virtualCamera;
+
     // 정답 구역의 오브젝트
     public GameObject correct;
 
@@ -27,6 +31,8 @@ public class K_QuizPos : MonoBehaviour
             //  K_QuizManager.instance.CountDown();
             K_QuizManager.instance.quizCorrect = GetComponentInParent<K_QuizPos>();
 
+            // 연출 테스트
+            virtualCamera.gameObject.SetActive(true);
         }
 
         if (other.gameObject == correct)
@@ -36,7 +42,7 @@ public class K_QuizPos : MonoBehaviour
         }
     }
 
-    public void CheckAnswer()
+    public bool CheckAnswer()
     {
         // 다시
         K_QuizCorrect correctScript = correct.GetComponent<K_QuizCorrect>();
@@ -47,6 +53,12 @@ public class K_QuizPos : MonoBehaviour
             print("정답!");
             K_QuizUiManager.instance.img_correctA.gameObject.SetActive(true);
             StartCoroutine(HideCorrectA(2f));
+
+            // 연출 테스트
+            virtualCamera.gameObject.SetActive(false);
+
+            return true;
+
         }
         else
         {
@@ -54,6 +66,7 @@ public class K_QuizPos : MonoBehaviour
             print("정답이 아님, 오답 처리");
             K_QuizUiManager.instance.img_wrongA.gameObject.SetActive(true);
             StartCoroutine(HideWrongAnswer(2f));
+            return false;
         }
         ResetQuiz();
     }

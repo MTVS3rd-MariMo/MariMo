@@ -39,6 +39,14 @@ public class K_QuizSpawnMgr : MonoBehaviour
                 SpawnCorrectA(i);
             }
         }
+
+        if (Input.GetKeyDown(KeyCode.Alpha2))
+        {
+            for (int i = 0; i < quizCount; i++)
+            {
+                SpawnObj(quiz, i);
+            }
+        }
     }
 
     private void SpawnObj(GameObject obj, int idx)

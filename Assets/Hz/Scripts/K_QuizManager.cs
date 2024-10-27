@@ -57,7 +57,7 @@ public class K_QuizManager : MonoBehaviour
 
     public void CountDown()
     {
-        
+
 
         // 카운트 다운 이미지 보이기 + 카운트 다운은 img_direction 사라지고 1초 후 활성화
         if (isCounting)
@@ -94,44 +94,20 @@ public class K_QuizManager : MonoBehaviour
 
     public void CheckAnswer()
     {
-        if(quizCorrect != null)
+        if (quizCorrect != null)
         {
-            quizCorrect.CheckAnswer();
-            //K_QuizPos_1 quizPosScript = quizCorrect as K_QuizPos_1;
-            //if(quizPosScript != null)
-            //{
-            //    // 퀴즈1의 CheckAnswer로 정답 여부 확인
-            //    quizPosScript.CheckAnswer();
-            //}
+            bool isCorrect = quizCorrect.CheckAnswer();
 
-            //K_QuizPos_2 quizPosScript2 = quizCorrect as K_QuizPos_2;
-            //if (quizPosScript2 != null)
-            //{
-            //    // 퀴즈1의 CheckAnswer로 정답 여부 확인
-            //    quizPosScript2.CheckAnswer();
-            //}
+            if(isCorrect)
+            {
+                EndQuiz();
+                StartCoroutine(CompleteQuiz(2f));
+            }
+            else
+            {
+                StartCoroutine(RestartQuiz(5f));
+            }    
         }
-
-        // quiz1 오브젝트의 K_QuizPos_1 스크립트 접근
-        //K_QuizPos_1 quizPosScript = FindObjectOfType<K_QuizPos_1>();
-        //K_QuizPos_2 quizPosScript2 = FindObjectOfType<K_QuizPos_2>();
-
-        //if (quizPosScript != null)
-        //{
-        //    // 퀴즈1의 CheckAnswer로 정답 여부 확인
-        //    quizPosScript.CheckAnswer();
-        //}
-
-        //if (quizPosScript2 != null)
-        //{
-        //    // 퀴즈1의 CheckAnswer로 정답 여부 확인
-        //    quizPosScript2.CheckAnswer();
-        //}
-
-        //else
-        //{
-        //    print("quizPosScript를 찾지 못했습니다.");
-        //}
 
         // 퀴즈 종료 처리
         EndQuiz();
@@ -147,6 +123,7 @@ public class K_QuizManager : MonoBehaviour
 
         isDirecting = false;
 
+
         // 현재 활성화 상태 activeSelf - bool 값
         if (K_QuizUiManager.instance.img_wrongA.gameObject.activeSelf)
         {
@@ -156,6 +133,12 @@ public class K_QuizManager : MonoBehaviour
         {
             // 마무리 연출 시작
         }
+    }
+
+    private IEnumerator CompleteQuiz(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        K_KeyManager.instance.isDoneQuiz_1 = true;
     }
 
     IEnumerator RestartQuiz(float delay)
