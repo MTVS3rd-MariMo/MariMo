@@ -17,7 +17,7 @@ public class P_ObjectManager_Studio : MonoBehaviour
     // UI들
     public GameObject studioUI_Panel;
     public Image studioUI1_Img;
-    public TMP_Text studioUI1_Text;
+    public Image studioUI2_Img;
     public TMP_Text timeCount_Text;
 
 
@@ -146,15 +146,12 @@ public class P_ObjectManager_Studio : MonoBehaviour
 
         // UI생성
         Color color1 = studioUI1_Img.color;
-        Color color2 = studioUI1_Text.color;
 
         while (color1.a <= 1)
         {
             color1.a += Time.deltaTime;
-            color2.a += Time.deltaTime;
 
             studioUI1_Img.color = color1;
-            studioUI1_Text.color = color2;
 
             yield return null;
         }
@@ -164,23 +161,18 @@ public class P_ObjectManager_Studio : MonoBehaviour
         while (color1.a >= 0)
         {
             color1.a -= Time.deltaTime;
-            color2.a -= Time.deltaTime;
 
             studioUI1_Img.color = color1;
-            studioUI1_Text.color = color2;
 
             yield return null;
         }
 
-        studioUI1_Text.text = "5초 뒤에\n사진을 찍습니다";
 
         while (color1.a <= 1)
         {
             color1.a += Time.deltaTime;
-            color2.a += Time.deltaTime;
 
-            studioUI1_Img.color = color1;
-            studioUI1_Text.color = color2;
+            studioUI2_Img.color = color1;
 
             yield return null;
         }
@@ -190,10 +182,8 @@ public class P_ObjectManager_Studio : MonoBehaviour
         while (color1.a >= 0)
         {
             color1.a -= Time.deltaTime;
-            color2.a -= Time.deltaTime;
 
-            studioUI1_Img.color = color1;
-            studioUI1_Text.color = color2;
+            studioUI2_Img.color = color1;
 
             yield return null;
         }

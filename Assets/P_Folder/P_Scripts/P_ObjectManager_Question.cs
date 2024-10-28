@@ -16,11 +16,9 @@ public class P_ObjectManager_Question : MonoBehaviour
 
     // UI들
     public Image question_PopUp_Img;
-    public TMP_Text question_PopUp_Text;
     public GameObject questionUI_Panel;
     public TMP_Text question_Text;
     public Button btn_speaker;
-    public Image answer_Img;
     public TMP_InputField answer_InputField;
     public Button btn_Submit;
     public GameObject answerUI_Canvas;
@@ -36,6 +34,8 @@ public class P_ObjectManager_Question : MonoBehaviour
     // 연출용
     public PlayableDirector timeline_Q;
     public CinemachineVirtualCamera virtual_Camera1;
+
+    public Sprite[] btn_sprites;
 
     // 타임라인 실행을 한번만 하기위한 체크
     bool act = false;
@@ -55,9 +55,36 @@ public class P_ObjectManager_Question : MonoBehaviour
         btn_speaker.onClick.AddListener(Speaker);
 
         black = blackScreen.color;
+        BtnState(false);
     }
 
-    
+    private void Update()
+    {
+        if(answer_InputField.text.Length >= 50)
+        {
+            BtnState(true);
+        }
+        else
+        {
+            BtnState(false);
+        }
+    }
+
+
+    void BtnState(bool can)
+    {
+        btn_Submit.interactable = can;
+
+        if (can)
+        {
+            btn_Submit.image.sprite = btn_sprites[1];
+        }
+        else
+        {
+            btn_Submit.image.sprite = btn_sprites[0];
+        }
+    }
+
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))
@@ -116,7 +143,7 @@ public class P_ObjectManager_Question : MonoBehaviour
         // 포톤 isMine 일 때
         // if (PhotonView.isMine) {
         answerUI_Canvas.SetActive(true);
-        answer_Img.gameObject.SetActive(false);
+        answer_InputField.gameObject.SetActive(false);
         btn_Submit.gameObject.SetActive(false);
 
         if (answer_count == 1)
@@ -217,20 +244,16 @@ public class P_ObjectManager_Question : MonoBehaviour
         // 다른사람 답변 읽기 대기
         yield return new WaitForSeconds(5f);
 
-        question_PopUp_Text.text = "모두가 답변을 완료했어요!\n참 잘했어요!";
 
         // 안내 UI생성
         question_PopUp_Img.gameObject.SetActive(true);
         Color color1 = question_PopUp_Img.color;
-        Color color2 = question_PopUp_Text.color;
 
         while (color1.a <= 1)
         {
             color1.a += Time.deltaTime;
-            color2.a += Time.deltaTime;
 
             question_PopUp_Img.color = color1;
-            question_PopUp_Text.color = color2;
 
             yield return null;
         }
@@ -240,10 +263,8 @@ public class P_ObjectManager_Question : MonoBehaviour
         while (color1.a >= 0)
         {
             color1.a -= Time.deltaTime;
-            color2.a -= Time.deltaTime;
 
             question_PopUp_Img.color = color1;
-            question_PopUp_Text.color = color2;
 
             yield return null;
         }
@@ -253,7 +274,7 @@ public class P_ObjectManager_Question : MonoBehaviour
         // 다음 질문 세팅
         question_Text.text = "질문22222";
         answerUI_Canvas.SetActive(false);
-        answer_Img.gameObject.SetActive(true);
+        answer_InputField.gameObject.SetActive(true);
         btn_Submit.gameObject.SetActive(true);
 
         // 이전 질문 답변 지우기
@@ -270,15 +291,12 @@ public class P_ObjectManager_Question : MonoBehaviour
         // 안내 UI생성
         question_PopUp_Img.gameObject.SetActive(true);
         Color color1 = question_PopUp_Img.color;
-        Color color2 = question_PopUp_Text.color;
 
         while (color1.a <= 1)
         {
             color1.a += Time.deltaTime;
-            color2.a += Time.deltaTime;
 
             question_PopUp_Img.color = color1;
-            question_PopUp_Text.color = color2;
 
             yield return null;
         }
@@ -288,10 +306,8 @@ public class P_ObjectManager_Question : MonoBehaviour
         while (color1.a >= 0)
         {
             color1.a -= Time.deltaTime;
-            color2.a -= Time.deltaTime;
 
             question_PopUp_Img.color = color1;
-            question_PopUp_Text.color = color2;
 
             yield return null;
         }
