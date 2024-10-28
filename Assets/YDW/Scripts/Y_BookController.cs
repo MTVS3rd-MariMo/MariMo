@@ -338,6 +338,14 @@ public class Y_BookController : MonoBehaviour
 
         PaintUI.SetActive(false);
         ChooseCharacterUI.SetActive(true);
+        for(int i = 0; i < buttons.Length; i++)
+        {
+            TMP_Text textComponent = buttons[i].GetComponentInChildren<TMP_Text>();
+            Color color = textComponent.color;
+            color.a = 0;
+            textComponent.color = color;
+        }
+
         btn_chooseChar.SetActive(false);
         btn_toMap.SetActive(true);
     }
