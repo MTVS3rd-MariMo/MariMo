@@ -10,6 +10,8 @@ using UnityEngine.UI;
 
 public class P_ObjectManager_Studio : MonoBehaviourPun
 {
+    public float testNum = 4;
+
     List<GameObject> players = new List<GameObject>();
 
     //public List<Transform> objectList = new List<Transform>();
@@ -60,7 +62,7 @@ public class P_ObjectManager_Studio : MonoBehaviourPun
 
             players.Add(other.gameObject);
 
-            if (triggerNum >= 4 && !act)
+            if (triggerNum >= testNum && !act)
             {
                 act = true;
                 wall.SetActive(true);
@@ -87,7 +89,7 @@ public class P_ObjectManager_Studio : MonoBehaviourPun
 
     private void OnTriggerExit(Collider other)
     {
-        if (other.CompareTag("Player"))
+        if (other.CompareTag("Player") && !act)
         {
             triggerNum--;
             print("-------- : " + triggerNum);
@@ -146,6 +148,12 @@ public class P_ObjectManager_Studio : MonoBehaviourPun
         // 타임라인 일시정지
         timeline.Pause();
 
+        // 플레이어 위치 이동
+        foreach (GameObject obj in players)
+        {
+            obj.transform.position = new Vector3(virtualCamera3.transform.position.x, obj.transform.position.y, virtualCamera3.transform.position.z);
+        }
+
         yield return new WaitForSeconds(1.5f);
 
         while (black.a >= 0)
@@ -158,7 +166,7 @@ public class P_ObjectManager_Studio : MonoBehaviourPun
         }
 
         // 사진관용 플레이어 조작 활성화
-        player.GetComponent<P_Dummy2DPlayer>().InPhoto(true);
+        MoveControl(true);
 
         // UI생성
         Color color1 = studioUI1_Img.color;
@@ -230,7 +238,8 @@ public class P_ObjectManager_Studio : MonoBehaviourPun
             }
         }
 
-        player.GetComponent<P_Dummy2DPlayer>().InPhoto(false);
+        // 플레이어 움직임 멈춤
+        MoveControl(false);
 
         whiteScreen.gameObject.SetActive(true);
         yield return new WaitForSeconds(0.01f);
@@ -251,6 +260,12 @@ public class P_ObjectManager_Studio : MonoBehaviourPun
 
         // 타임라인 재생
         timeline.Play();
+
+        // 플레이어 위치 이동
+        foreach (GameObject obj in players)
+        {
+            obj.transform.position = new Vector3(transform.position.x, obj.transform.position.y, transform.position.z);
+        }
 
         virtualCamera1.gameObject.SetActive(false);
         virtualCamera2.gameObject.SetActive(false);

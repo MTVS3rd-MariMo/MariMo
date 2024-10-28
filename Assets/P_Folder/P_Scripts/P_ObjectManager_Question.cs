@@ -10,7 +10,8 @@ using UnityEngine.UI;
 
 public class P_ObjectManager_Question : MonoBehaviourPun
 {
-    //public List<Transform> objectList = new List<Transform>();
+    public float testNum = 4;
+
     float triggerNum = 0;
 
     List<GameObject> players = new List<GameObject>();
@@ -96,7 +97,7 @@ public class P_ObjectManager_Question : MonoBehaviourPun
             players.Add(other.gameObject);
 
 
-            if (triggerNum >= 4 && !act)
+            if (triggerNum >= testNum && !act)
             {
                 act = true;
                 wall_Q.SetActive(true);
@@ -180,7 +181,7 @@ public class P_ObjectManager_Question : MonoBehaviourPun
 
         // 4명 모두 답을 제출하면
         // 테스트용으로 1로 설정
-        if (answer_count >= 4)
+        if (answer_count >= testNum)
         {
             if (question_count == 0)
             {
@@ -236,7 +237,7 @@ public class P_ObjectManager_Question : MonoBehaviourPun
         questionUI_Panel.SetActive(true);
 
         // 질문 세팅
-        question_Text.text = "질문 111111";
+        question_Text.text = "수남이가 주인 영감님을 좋아하는 이유는 무엇인가요?\n여러분에게도 주변에서 격려와 응원을 해 주는 사람이 있나요?";
         answer_InputField.text = "";
 
         yield return new WaitForSeconds(1.5f);
@@ -285,7 +286,7 @@ public class P_ObjectManager_Question : MonoBehaviourPun
         question_PopUp_Img.gameObject.SetActive(false);
 
         // 다음 질문 세팅
-        question_Text.text = "질문22222";
+        question_Text.text = "수남이는 자전거를 타고 도망치면서 자유와 해방감을 느꼈습니다.\n여러분에게도 기분이 좋아지는 특별한 활동이 있나요? 그 활동을 하면 어떤 기분이 드나요?";
         answerUI_Canvas.SetActive(false);
         answer_InputField.gameObject.SetActive(true);
         btn_Submit.gameObject.SetActive(true);
