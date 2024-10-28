@@ -1,5 +1,6 @@
 ﻿using Cinemachine;
 using Org.BouncyCastle.Asn1.Crmf;
+using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -7,7 +8,7 @@ using UnityEngine;
 using UnityEngine.Playables;
 using UnityEngine.UI;
 
-public class P_ObjectManager_Studio : MonoBehaviour
+public class P_ObjectManager_Studio : MonoBehaviourPun
 {
     List<GameObject> players = new List<GameObject>();
 
@@ -59,7 +60,7 @@ public class P_ObjectManager_Studio : MonoBehaviour
 
             players.Add(other.gameObject);
 
-            if (triggerNum >= 1 && !act)
+            if (triggerNum >= 4 && !act)
             {
                 act = true;
                 wall.SetActive(true);
@@ -67,9 +68,20 @@ public class P_ObjectManager_Studio : MonoBehaviour
                 MoveControl(false);
 
                 // photon 전체 실행
-                StartCoroutine(Studio_UI_Player());
+                RPC_Studio();
             }
         }
+    }
+
+    [PunRPC]
+    void RPC_Studio()
+    {
+        photonView.RPC(nameof(Studio), RpcTarget.All);
+    }
+
+    void Studio()
+    {
+        StartCoroutine(Studio_UI_Player());
     }
 
     private void OnTriggerExit(Collider other)

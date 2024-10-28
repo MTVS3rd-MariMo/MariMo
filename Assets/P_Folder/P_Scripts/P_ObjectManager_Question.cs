@@ -1,5 +1,6 @@
 ﻿using Cinemachine;
 using Org.BouncyCastle.Asn1.Crmf;
+using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -7,7 +8,7 @@ using UnityEngine;
 using UnityEngine.Playables;
 using UnityEngine.UI;
 
-public class P_ObjectManager_Question : MonoBehaviour
+public class P_ObjectManager_Question : MonoBehaviourPun
 {
     //public List<Transform> objectList = new List<Transform>();
     float triggerNum = 0;
@@ -95,7 +96,7 @@ public class P_ObjectManager_Question : MonoBehaviour
             players.Add(other.gameObject);
 
 
-            if (triggerNum >= 1 && !act)
+            if (triggerNum >= 4 && !act)
             {
                 act = true;
                 wall_Q.SetActive(true);
@@ -133,18 +134,19 @@ public class P_ObjectManager_Question : MonoBehaviour
 
 
         // 포톤으로 실행
-        NextStep();
+        RPC_NextStep();
+    }
+
+    [PunRPC]
+    void RPC_NextStep()
+    {
+        photonView.RPC(nameof(NextStep), RpcTarget.All);
     }
 
     void NextStep()
     {
         answer_count++;
 
-        // 포톤 isMine 일 때
-        // if (PhotonView.isMine) {
-        answerUI_Canvas.SetActive(true);
-        answer_InputField.gameObject.SetActive(false);
-        btn_Submit.gameObject.SetActive(false);
 
         if (answer_count == 1)
         {
@@ -163,13 +165,21 @@ public class P_ObjectManager_Question : MonoBehaviour
             answer_Test4.text = answer_InputField.text;
         }
 
-        // 인풋필드 비우기
-        answer_InputField.text = "";
-        //}
+        // 포톤 isMine 일 때
+        if (photonView.IsMine)
+        {
+            answerUI_Canvas.SetActive(true);
+            answer_InputField.gameObject.SetActive(false);
+            btn_Submit.gameObject.SetActive(false);
+
+            // 인풋필드 비우기
+            answer_InputField.text = "";
+        }
+
 
         // 4명 모두 답을 제출하면
         // 테스트용으로 1로 설정
-        if (answer_count >= 1)
+        if (answer_count >= 4)
         {
             if (question_count == 0)
             {
@@ -185,7 +195,7 @@ public class P_ObjectManager_Question : MonoBehaviour
                 question_count = 2;
                 StartCoroutine(Question_UI_Answer2());
             }
-            
+
         }
     }
 
