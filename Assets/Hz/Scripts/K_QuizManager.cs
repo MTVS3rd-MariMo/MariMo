@@ -111,7 +111,7 @@ public class K_QuizManager : MonoBehaviour
         }
 
         // 퀴즈 종료 처리
-        EndQuiz();
+        //EndQuiz();
     }
 
     public void EndQuiz()
