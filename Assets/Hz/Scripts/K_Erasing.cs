@@ -48,8 +48,10 @@ public class K_Erasing : MonoBehaviour
 
     public void ButtonOff()
     {
-        //erase_Active = false;
-        //print("그만 눌려라 ");
+        erase_Active = false;
+
+        K_Drawing.pen_Active = true;
+        print("다시 그릴꺼야");
     }
 
     Vector2 lastPosition, currPosition = Vector2.zero;
@@ -92,8 +94,8 @@ public class K_Erasing : MonoBehaviour
         int brush_Width = (int)mousePos.x;
         int brush_Height = (int)mousePos.y;
 
-        print(brush_Height);
-        print(brush_Width);
+        //print(brush_Height);
+        //print(brush_Width);
 
         for (int height_Plus = -2; height_Plus <= 2; height_Plus++)
         {
