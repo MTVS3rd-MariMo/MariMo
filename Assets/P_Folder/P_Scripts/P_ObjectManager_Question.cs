@@ -303,31 +303,14 @@ public class P_ObjectManager_Question : MonoBehaviour
 
     public IEnumerator Question_UI_End()
     {
-        blackScreen.gameObject.SetActive(true);
-
-        while (black.a <= 1)
-        {
-            black.a += Time.deltaTime / 1.5f;
-
-            blackScreen.color = black;
-
-            yield return null;
-        }
-
+        virtual_Camera1.gameObject.SetActive(false);
         questionUI_Panel.SetActive(false);
         // 타임라인 재생
         timeline_Q.Play();
 
         yield return new WaitForSeconds(2f);
 
-        while (black.a >= 0)
-        {
-            black.a -= Time.deltaTime / 1.5f;
-
-            blackScreen.color = black;
-
-            yield return null;
-        }
+        
 
         // 사진관 모든 UI 종료
         questionUI_Panel.SetActive(false);
