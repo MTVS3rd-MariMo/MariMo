@@ -356,7 +356,7 @@ public class Y_BookController : MonoBehaviour
         ////////////////////////
 
         // 맵 소개 UI 실행
-        //K_LobbyUiManager.instance.isAllArrived = true; 
+        K_LobbyUiManager.instance.isAllArrived = true; 
         gameObject.SetActive(false);
     }
 
