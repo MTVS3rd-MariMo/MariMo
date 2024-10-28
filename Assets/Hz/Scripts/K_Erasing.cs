@@ -119,7 +119,7 @@ public class K_Erasing : MonoBehaviour
 
         float interval = 1.0f / distance;
 
-        for (float count = 0.0f; count <= distance; count++)
+        for (float count = 0.1f; count <= distance; count++)
         {
             Vector2 Line = Vector2.Lerp(lastPos, currPos, interval * count);
             Erase_Jum(Line);
