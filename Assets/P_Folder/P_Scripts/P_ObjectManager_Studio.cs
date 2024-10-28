@@ -73,12 +73,13 @@ public class P_ObjectManager_Studio : MonoBehaviourPun
         }
     }
 
-    [PunRPC]
+    
     void RPC_Studio()
     {
         photonView.RPC(nameof(Studio), RpcTarget.All);
     }
 
+    [PunRPC]
     void Studio()
     {
         StartCoroutine(Studio_UI_Player());

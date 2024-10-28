@@ -137,12 +137,13 @@ public class P_ObjectManager_Question : MonoBehaviourPun
         RPC_NextStep();
     }
 
-    [PunRPC]
+    
     void RPC_NextStep()
     {
         photonView.RPC(nameof(NextStep), RpcTarget.All);
     }
 
+    [PunRPC]
     void NextStep()
     {
         answer_count++;
@@ -165,7 +166,7 @@ public class P_ObjectManager_Question : MonoBehaviourPun
             answer_Test4.text = answer_InputField.text;
         }
 
-        // 포톤 isMine 일 때
+        //포톤 isMine 일 때
         if (photonView.IsMine)
         {
             answerUI_Canvas.SetActive(true);
