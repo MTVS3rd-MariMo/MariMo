@@ -26,8 +26,8 @@ public class K_QuizSpawnMgr : MonoBehaviour
 
         for (int i = 0; i < quizCount; i++)
         {
-            //SpawnObj(quizzes[i], i);
-            SpawnObj(quiz, i);
+            SpawnObj(quizzes[i], i);
+            //SpawnObj(quiz, i);
             //SpawnCorrectA(i);
         }
 
@@ -48,8 +48,8 @@ public class K_QuizSpawnMgr : MonoBehaviour
         {
             for (int i = 0; i < quizCount; i++)
             {
-                //SpawnObj(quizzes[i], i);
-                SpawnObj(quiz, i);
+                SpawnObj(quizzes[i], i);
+                //SpawnObj(quiz, i);
             }
         }
     }
@@ -59,7 +59,7 @@ public class K_QuizSpawnMgr : MonoBehaviour
         Vector3 center = quiz_spawnCenter[idx];
         Vector3 size = quiz_spawnSize[idx];
         Vector3 randomPos = GetRandomPosInArea(center, size);
-        GameObject go = Instantiate(obj, randomPos, Quaternion.Euler(90, 0, 0));
+        GameObject go = Instantiate(obj, randomPos, Quaternion.Euler(0, 0, 0));
         // x축 90에서 0으로 변경
 
         K_QuizPos k_QuizePos = go.GetComponent<K_QuizPos>();
