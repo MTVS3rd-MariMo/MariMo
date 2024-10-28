@@ -14,7 +14,7 @@ public class Y_QuizStart : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             triggerNum++;
-            print("+++++++++ : " + triggerNum);
+            print("!!!!+++++++++ : " + triggerNum);
 
             players.Add(other.gameObject);
 
@@ -24,6 +24,7 @@ public class Y_QuizStart : MonoBehaviour
                 act = true;
 
                 K_QuizManager.instance.isPlaying = true;
+                print("isPlayer True?");
 
                 //MoveControl(false);
             }
@@ -35,7 +36,7 @@ public class Y_QuizStart : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             triggerNum--;
-            print("-------- : " + triggerNum);
+            print("!!!!-------- : " + triggerNum);
 
             players.Remove(other.gameObject);
         }
