@@ -1,4 +1,5 @@
 ﻿using Cinemachine;
+using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -12,7 +13,7 @@ public class K_QuizPos : MonoBehaviour
     public GameObject correct;
 
     // 퀴즈가 시작되었는지 
-    private bool isQuizStarted = false;
+    public bool isQuizStarted = false;
     // 플레이어가 정답 구역에 있는지 아닌지
     public bool isInCorrectZone = false;
 
@@ -33,6 +34,14 @@ public class K_QuizPos : MonoBehaviour
 
             // 연출 테스트
             virtualCamera.gameObject.SetActive(true);
+
+            Dictionary<int, PhotonView> allPlayers = Y_BookController.Instance.allPlayers;
+
+            for (int i = 0; i < allPlayers.Count; i++)
+            {
+                allPlayers[i].gameObject.transform.localScale = allPlayers[i].gameObject.GetComponent<Y_PlayerAvatarSetting>().quizScale;
+            }
+
         }
 
         if (other.gameObject == correct)

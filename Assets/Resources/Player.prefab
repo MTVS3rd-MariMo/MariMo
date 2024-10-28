@@ -41,7 +41,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 26.9, y: 1, z: -14.9}
-  m_LocalScale: {x: 7, y: 7, z: 1}
+  m_LocalScale: {x: 7, y: 7, z: 7}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 4175717933804313159}
@@ -231,6 +231,8 @@ MonoBehaviour:
   - 
   - 
   - 
+  quizScale: {x: 2, y: 2, z: 2}
+  originalScale: {x: 0, y: 0, z: 0}
 --- !u!114 &5261486963189744133
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -720,6 +722,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eddf335c50f75094490b57f945202e3d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  quizPos: {fileID: 0}
 --- !u!1 &6035916154947793421
 GameObject:
   m_ObjectHideFlags: 0
