@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 6997621874866786003}
   - component: {fileID: 3472164413756753321}
   - component: {fileID: 4802884307186913220}
+  - component: {fileID: -598222992932435014}
   m_Layer: 0
   m_Name: RealQuiz_2
   m_TagString: Untagged
@@ -76,7 +77,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   virtualCamera: {fileID: 3277166137135047400}
   correct: {fileID: 8582527140827197051}
+  isQuizStarted: 0
   isInCorrectZone: 0
+--- !u!114 &-598222992932435014
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1144623329862761890}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e1fd8db8af8407c4ab05d905040a81e5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &3706948750075708442
 GameObject:
   m_ObjectHideFlags: 0
