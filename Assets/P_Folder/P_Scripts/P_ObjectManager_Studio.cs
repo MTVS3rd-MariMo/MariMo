@@ -70,7 +70,9 @@ public class P_ObjectManager_Studio : MonoBehaviourPun
                 MoveControl(false);
 
                 // photon 전체 실행
-                RPC_Studio();
+                //RPC_Studio();
+
+                Studio();
             }
         }
     }
@@ -82,7 +84,7 @@ public class P_ObjectManager_Studio : MonoBehaviourPun
     }
 
     [PunRPC]
-    void Studio()
+    public void Studio()
     {
         StartCoroutine(Studio_UI_Player());
     }
@@ -153,6 +155,15 @@ public class P_ObjectManager_Studio : MonoBehaviourPun
         {
             obj.transform.position = new Vector3(virtualCamera3.transform.position.x, obj.transform.position.y, virtualCamera3.transform.position.z);
         }
+
+
+        Dictionary<int, PhotonView> allPlayers = Y_BookController.Instance.allPlayers;
+
+        for (int i = 0; i < allPlayers.Count; i++)
+        {
+            allPlayers[i].gameObject.transform.localScale = allPlayers[i].gameObject.GetComponent<Y_PlayerAvatarSetting>().quizScale;
+        }
+
 
         yield return new WaitForSeconds(1.5f);
 

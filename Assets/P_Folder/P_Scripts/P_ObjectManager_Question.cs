@@ -145,7 +145,7 @@ public class P_ObjectManager_Question : MonoBehaviourPun
     }
 
     [PunRPC]
-    void NextStep()
+    public void NextStep()
     {
         answer_count++;
 
