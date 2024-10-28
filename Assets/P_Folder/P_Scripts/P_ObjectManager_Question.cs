@@ -229,6 +229,8 @@ public class P_ObjectManager_Question : MonoBehaviourPun
         // 타임라인 일시정지
         timeline_Q.Pause();
 
+        // KeyBox false 
+        K_LobbyUiManager.instance.img_KeyEmptyBox.gameObject.SetActive(false);
 
         // UI 패널
         questionUI_Panel.SetActive(true);
@@ -345,6 +347,8 @@ public class P_ObjectManager_Question : MonoBehaviourPun
         wall_Q.SetActive(false);
 
         MoveControl(true);
+
+        K_LobbyUiManager.instance.img_KeyEmptyBox.gameObject.SetActive(true);
 
         K_KeyManager.instance.isDoneOpenQnA = true;
     }

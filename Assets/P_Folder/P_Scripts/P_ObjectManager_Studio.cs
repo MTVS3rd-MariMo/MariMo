@@ -138,6 +138,9 @@ public class P_ObjectManager_Studio : MonoBehaviourPun
         // UI패널
         studioUI_Panel.SetActive(true);
 
+        // 키박스 꺼주기
+        K_LobbyUiManager.instance.img_KeyEmptyBox.gameObject.SetActive(false);
+
         virtualCamera3.gameObject.SetActive(true);
 
         // 타임라인 일시정지

@@ -56,6 +56,8 @@ public class K_QuizPos : MonoBehaviour
 
             // 연출 테스트
             virtualCamera.gameObject.SetActive(false);
+            // 키 박스 다시 켜주기
+            K_LobbyUiManager.instance.img_KeyEmptyBox.gameObject.SetActive(true);
 
             return true;
 

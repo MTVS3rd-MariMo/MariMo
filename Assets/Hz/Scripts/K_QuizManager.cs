@@ -176,6 +176,8 @@ public class K_QuizManager : MonoBehaviour
         if (!isDirecting)
         {
             K_QuizUiManager.instance.img_direction.gameObject.SetActive(true);
+            // 퀴즈 박스 꺼주기
+            K_LobbyUiManager.instance.img_KeyEmptyBox.gameObject.SetActive(false);
             StartCoroutine(HideDirection(2f));
             isDirecting = true;
         }
@@ -192,7 +194,10 @@ public class K_QuizManager : MonoBehaviour
     IEnumerator End_Production()
     {
         //timeline.Play();
+        // 퀴즈 박스 다시 켜주기
+        //K_LobbyUiManager.instance.img_KeyEmptyBox.gameObject.SetActive(true);
 
         yield return new WaitForSeconds(2f);
+        
     }
 }
