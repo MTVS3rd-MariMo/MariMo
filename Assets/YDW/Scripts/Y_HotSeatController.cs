@@ -374,7 +374,7 @@ public class Y_HotSeatController : MonoBehaviourPun
                 //stageScript.GetComponentInChildren<TMP_Text>().text = selfIntroduceInput.text; ///////////////////44444444
 
                 stageScriptImgs[i].gameObject.SetActive(true);
-                stageScriptTxts[i].text = selfIntroduceInput.text;
+                //stageScriptTxts[i].text = selfIntroduceInput.text;
 
                 // "친구들에게 말로 자기소개를 해 봅시다" UI
                 speechGuide.SetActive(true);

@@ -2731,11 +2731,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: HotSeatCanvas
       objectReference: {fileID: 0}
-    - target: {fileID: 4118193850844843558, guid: d03cb07836d0b8e4f8495823868375c9,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 8514592001075102929, guid: d03cb07836d0b8e4f8495823868375c9,
         type: 3}
       propertyPath: characterNames.Array.data[0]
@@ -2788,11 +2783,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: BookCanvas
-      objectReference: {fileID: 0}
-    - target: {fileID: 800441736716871604, guid: d6531a7177236774682bce605a86f279,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1432539147503538471, guid: d6531a7177236774682bce605a86f279,
         type: 3}
