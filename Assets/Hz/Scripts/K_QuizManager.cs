@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using Photon.Pun;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Playables;
@@ -122,6 +123,13 @@ public class K_QuizManager : MonoBehaviour
         K_QuizUiManager.instance.img_countDown.gameObject.SetActive(false);
 
         isDirecting = false;
+
+        Dictionary<int, PhotonView> allPlayers = Y_BookController.Instance.allPlayers;
+
+        for (int i = 0; i < allPlayers.Count; i++)
+        {
+            allPlayers[i].gameObject.transform.localScale = allPlayers[i].gameObject.GetComponent<Y_PlayerAvatarSetting>().originalScale;
+        }
 
 
         // 현재 활성화 상태 activeSelf - bool 값
