@@ -14,24 +14,14 @@ public class K_Drawing : MonoBehaviour
     Color paint_Color;
 
     // '화이트 보드 전환'
-    public static Color draw_Color = Color.white;
+    public static Color draw_Color = Color.black;
 
     public static Texture2D pixel_Texture;
     int pixel_Width, pixel_Height;
 
     private void Awake()
     {
-
-
         paint_RT = paint.GetComponent<RectTransform>();
-
-        if (paint_RT == null)
-        {
-            Debug.LogError("paint_RT could not be assigned. RectTransform component not found on Paint.");
-            return;
-        }
-
-        Debug.Log("paint_RT assigned successfully");
 
         paint_Color = whiteBoard.color;
 
