@@ -194,6 +194,7 @@ public class Y_HotSeatController : MonoBehaviourPun
     [PunRPC]
     void AddSelfIntroduce(int actorNumber, string selfIntroduce)
     {
+        print("!!!!!!!!! actorNumber : " + actorNumber + " selfIntroduce: " + selfIntroduce);
         selfIntroduces.Add(actorNumber, selfIntroduce); 
     }
 
@@ -282,11 +283,22 @@ public class Y_HotSeatController : MonoBehaviourPun
             print("????????? i : " + i);
             int playerNum = playerNums[i];
             print("????????? playerNum " + playerNum);
-            if (selfIntroduces.ContainsKey(playerNum))
-            {
-                stageScriptTxts[i].text = selfIntroduces[playerNum];
-                print("???????????? stageScriptTxt : " + stageScriptTxts[i].text);
-            }
+
+            stageScriptTxts[i].text = selfIntroduces[playerNum + 1];
+
+            //for (int j = 0; j < selfIntroduces.Count; j++)
+            //{
+
+            //    if(playerNum == selfIntroduces.ElementAt(j).Key)
+            //    {
+            //        stageScriptTxts[i].text = selfIntroduces.ElementAt(j).Value;
+            //    }
+            //}
+            //if (selfIntroduces.ContainsKey(playerNum))
+            //{
+            //    stageScriptTxts[i].text = selfIntroduces[playerNum];
+            //    print("???????????? stageScriptTxt : " + stageScriptTxts[i].text);
+            //}
         }
     }
 
