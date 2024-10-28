@@ -36,7 +36,6 @@ public class P_ObjectManager_Question : MonoBehaviour
     // 연출용
     public PlayableDirector timeline_Q;
     public CinemachineVirtualCamera virtual_Camera1;
-    public CinemachineVirtualCamera virtual_Camera2;
 
     // 타임라인 실행을 한번만 하기위한 체크
     bool act = false;
@@ -188,26 +187,10 @@ public class P_ObjectManager_Question : MonoBehaviour
 
         yield return new WaitForSeconds(3.5f);
 
-        virtual_Camera2.gameObject.SetActive(true);
-        // 페이드 아웃
-
-        blackScreen.gameObject.SetActive(true);
-        while (black.a <= 1)
-        {
-            black.a += Time.deltaTime / 1.5f;
-
-            blackScreen.color = black;
-
-            yield return null;
-        }
-
-        yield return new WaitForSeconds(0.75f);
 
         // 타임라인 일시정지
         timeline_Q.Pause();
 
-        virtual_Camera1.gameObject.SetActive(false);
-        virtual_Camera2.gameObject.SetActive(false);
 
         // UI 패널
         questionUI_Panel.SetActive(true);
