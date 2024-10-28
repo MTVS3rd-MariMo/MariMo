@@ -48,7 +48,7 @@ public class Y_HotSeatController : MonoBehaviourPun
     Color originalColor;
     public int testNum = 0;
     public Vector2 playerPos;
-    Vector2 stagePos;
+    public Transform stagePos;
     public Image[] stageScriptImgs;
     public TMP_Text[] stageScriptTxts;
     public GameObject panel_question;
@@ -78,7 +78,7 @@ public class Y_HotSeatController : MonoBehaviourPun
         StartCoroutine(Deactivate(guide));
 
         originalColor = images[0].color;
-        stagePos = new Vector2(stageImg.transform.position.x, stageImg.transform.position.y);
+        //stagePos = new Vector2(stageImg.transform.position.x, stageImg.transform.position.y);
         playerPos = players[0].transform.position;
 
         myAvatarSetting = Y_BookController.Instance.myAvatar;
@@ -86,6 +86,10 @@ public class Y_HotSeatController : MonoBehaviourPun
         txt_playerName.text = myAvatarSetting.pv.Owner.NickName;
         Txt_TitleText.text = characterNames[Y_BookController.Instance.characterNum - 1].text;
         myAvatarImage.sprite = myAvatarSetting.images[myAvatarSetting.avatarIndex];
+
+        guide.SetActive(true);
+        StartCoroutine(Deactivate(guide));
+
 
     }
 
@@ -371,11 +375,11 @@ public class Y_HotSeatController : MonoBehaviourPun
         while(true)
         {
             // 플레이어가 무대로 가게 한다
-            players[i].transform.position = Vector3.Lerp(playerPos, stagePos, 0.05f);
+            players[i].transform.position = Vector3.Lerp(playerPos, stagePos.position, 0.05f);
             playerPos = players[i].transform.position;
-            if (Vector3.Distance(playerPos, stagePos) < 0.1f) // 무대까지 거의 다 오면
+            if (Vector3.Distance(playerPos, stagePos.position) < 0.1f) // 무대까지 거의 다 오면
             {
-                playerPos = stagePos; // 도착점에 위치 맞춰준다
+                playerPos = stagePos.position; // 도착점에 위치 맞춰준다
 
                 spotlight.SetActive(true); // 스포트라이트
 
