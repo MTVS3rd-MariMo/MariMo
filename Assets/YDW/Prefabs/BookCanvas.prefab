@@ -994,6 +994,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 11f02a073be561742ac87af64fcb841f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  mainCam: {fileID: 0}
+  virtualCam: {fileID: 0}
+  paintCam: {fileID: 0}
   bookUI: {fileID: 6299199937163462755}
   ChooseCharacterUI: {fileID: 2825210731026989419}
   PaintUI: {fileID: 1153641879207519518}
@@ -1011,6 +1014,7 @@ MonoBehaviour:
   img_charName4: {fileID: 5427588169242322816}
   btn_chooseChar: {fileID: 9109553021807331584}
   btn_toMap: {fileID: 134444475440448432}
+  characterNum: 0
   currentPlayerNum: 0
   playerName: 
   buttons:

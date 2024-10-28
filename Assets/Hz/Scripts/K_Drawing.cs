@@ -14,24 +14,14 @@ public class K_Drawing : MonoBehaviour
     Color paint_Color;
 
     // '화이트 보드 전환'
-    public static Color draw_Color = Color.white;
+    public static Color draw_Color = Color.black;
 
     public static Texture2D pixel_Texture;
     int pixel_Width, pixel_Height;
 
     private void Awake()
     {
-
-
         paint_RT = paint.GetComponent<RectTransform>();
-
-        if (paint_RT == null)
-        {
-            Debug.LogError("paint_RT could not be assigned. RectTransform component not found on Paint.");
-            return;
-        }
-
-        Debug.Log("paint_RT assigned successfully");
 
         paint_Color = whiteBoard.color;
 
@@ -61,12 +51,16 @@ public class K_Drawing : MonoBehaviour
     public void ButtonOn()
     {
         pen_Active = true;
+        K_Erasing.erase_Active = false;
         print("눌리니?");
+
+        //K_Erasing
     }
 
     public void ButtonOff()
     {
         pen_Active = false;
+        K_Erasing.erase_Active = true;
         print("그만 눌려라 ");
     }
 
@@ -111,8 +105,8 @@ public class K_Drawing : MonoBehaviour
         int brush_Width = (int)mousePos.x;
         int brush_Height = (int)mousePos.y;
 
-        print(brush_Height);
-        print(brush_Width);
+        //print(brush_Height);
+        //print(brush_Width);
 
         for (int height_Plus = -2; height_Plus <= 2; height_Plus++)
         {
