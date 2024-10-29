@@ -40,8 +40,6 @@ public class P_ObjectManager_Studio : MonoBehaviourPun
     public Image blackScreen;
     public Image whiteScreen;
 
-    // 사진관 입장시 움직일 플레이어
-    public GameObject player;
 
     void Start()
     {
@@ -67,7 +65,7 @@ public class P_ObjectManager_Studio : MonoBehaviourPun
                 act = true;
                 wall.SetActive(true);
 
-                MoveControl(false);
+                RPC_MoveControl(false);
 
                 // photon 전체 실행
                 //RPC_Studio();
@@ -100,6 +98,12 @@ public class P_ObjectManager_Studio : MonoBehaviourPun
         }
     }
 
+    void RPC_MoveControl(bool canmove)
+    {
+        photonView.RPC(nameof(MoveControl), RpcTarget.All, canmove);
+    }
+
+    [PunRPC]
     void MoveControl(bool canmove)
     {
         foreach (GameObject obj in players)
@@ -150,18 +154,15 @@ public class P_ObjectManager_Studio : MonoBehaviourPun
         // 타임라인 일시정지
         timeline.Pause();
 
-        // 플레이어 위치 이동
-        foreach (GameObject obj in players)
-        {
-            obj.transform.position = new Vector3(virtualCamera3.transform.position.x, obj.transform.position.y, virtualCamera3.transform.position.z);
-        }
-
 
         Dictionary<int, PhotonView> allPlayers = Y_BookController.Instance.allPlayers;
 
         for (int i = 0; i < allPlayers.Count; i++)
         {
             allPlayers[i].gameObject.transform.localScale = allPlayers[i].gameObject.GetComponent<Y_PlayerAvatarSetting>().quizScale;
+
+            // 플레이어 위치 이동
+            allPlayers[i].transform.position = new Vector3(virtualCamera3.transform.position.x, allPlayers[i].transform.position.y, virtualCamera3.transform.position.z);
         }
 
 
@@ -273,9 +274,9 @@ public class P_ObjectManager_Studio : MonoBehaviourPun
         timeline.Play();
 
         // 플레이어 위치 이동
-        foreach (GameObject obj in players)
+        for (int i = 0; i < allPlayers.Count; i++)
         {
-            obj.transform.position = new Vector3(transform.position.x, obj.transform.position.y, transform.position.z);
+            allPlayers[i].transform.position = new Vector3(transform.position.x, allPlayers[i].transform.position.y, transform.position.z);
         }
 
         virtualCamera1.gameObject.SetActive(false);
@@ -299,7 +300,7 @@ public class P_ObjectManager_Studio : MonoBehaviourPun
         blackScreen.gameObject.SetActive(false);
         wall.SetActive(false);
 
-        MoveControl(true);
+        RPC_MoveControl(true);
     }
 
 

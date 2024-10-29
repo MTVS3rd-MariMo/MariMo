@@ -29,6 +29,7 @@ public class P_ObjectManager_Question : MonoBehaviourPun
     public TMP_Text answer_Test3;
     public TMP_Text answer_Test4;
 
+    string answer;
 
     // 투명벽 (플레이어 움직임을 멈춘다면 필요없을 예정)
     public GameObject wall_Q;
@@ -102,16 +103,16 @@ public class P_ObjectManager_Question : MonoBehaviourPun
                 act = true;
                 wall_Q.SetActive(true);
 
-                StartCoroutine(Question_UI_Start());
+                RPC_MoveControl(false);
 
-                MoveControl(false);
+                StartCoroutine(Question_UI_Start());
             }
         }
     }
 
     private void OnTriggerExit(Collider other)
     {
-        if (other.CompareTag("Player"))
+        if (other.CompareTag("Player") && !act)
         {
             triggerNum--;
             print("-------- : " + triggerNum);
@@ -120,11 +121,20 @@ public class P_ObjectManager_Question : MonoBehaviourPun
         }
     }
 
+    void RPC_MoveControl(bool canmove)
+    {
+        photonView.RPC(nameof(MoveControl), RpcTarget.All, canmove);
+    }
+
+
+    [PunRPC]
     void MoveControl(bool canmove)
     {
         foreach (GameObject obj in players)
         {
             obj.GetComponent<Y_PlayerMove>().movable = canmove;
+
+            print(obj.GetComponent<Y_PlayerMove>().movable);
         }
     }
 
@@ -132,50 +142,45 @@ public class P_ObjectManager_Question : MonoBehaviourPun
     void Submit()
     {
         // 입력내용 저장
+        answer = answer_InputField.text;
+        answerUI_Canvas.SetActive(true);
+        answer_InputField.gameObject.SetActive(false);
+        btn_Submit.gameObject.SetActive(false);
 
+        // 인풋필드 비우기
+        answer_InputField.text = "";
 
         // 포톤으로 실행
-        RPC_NextStep();
+        RPC_NextStep(answer);
     }
 
     
-    void RPC_NextStep()
+    void RPC_NextStep(string answer)
     {
-        photonView.RPC(nameof(NextStep), RpcTarget.All);
+        photonView.RPC(nameof(NextStep), RpcTarget.All, answer);
     }
 
     [PunRPC]
-    public void NextStep()
+    public void NextStep(string answer)
     {
         answer_count++;
 
 
         if (answer_count == 1)
         {
-            answer_Text1.text = answer_InputField.text;
+            answer_Text1.text = answer;
         }
         else if (answer_count == 2)
         {
-            answer_Text2.text = answer_InputField.text;
+            answer_Text2.text = answer;
         }
         else if (answer_count == 3)
         {
-            answer_Test3.text = answer_InputField.text;
+            answer_Test3.text = answer;
         }
         else if (answer_count == 4)
         {
-            answer_Test4.text = answer_InputField.text;
-        }
-
-        //포톤 isMine 일 때
-        if (photonView.IsMine)
-        {
-            answerUI_Canvas.SetActive(true);
-            answer_InputField.gameObject.SetActive(false);
-            btn_Submit.gameObject.SetActive(false);
-
-            // 인풋필드 비우기
-            answer_InputField.text = "";
+            answer_Test4.text = answer;
         }
 
 
@@ -206,13 +211,6 @@ public class P_ObjectManager_Question : MonoBehaviourPun
 
     }
 
-    //void Moving(bool can)
-    //{
-    //    for (int i = 0; i < players.Length; i++)
-    //    {
-    //        players[i].GetComponent<P_DummyPlayer>().canWalk = can;
-    //    }
-    //}
 
     public IEnumerator Question_UI_Start()
     {
