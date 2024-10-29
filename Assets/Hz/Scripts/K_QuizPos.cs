@@ -28,7 +28,7 @@ public class K_QuizPos : MonoBehaviour
             isQuizStarted = true;
             print("플레이어다 문제풀자");
 
-            //K_QuizManager.instance.isPlaying = true;
+            K_QuizManager.instance.isPlaying = true;
             //  K_QuizManager.instance.CountDown();
             K_QuizManager.instance.quizCorrect = GetComponentInParent<K_QuizPos>();
 
