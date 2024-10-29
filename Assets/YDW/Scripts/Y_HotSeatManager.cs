@@ -4,10 +4,30 @@ using UnityEngine;
 
 public class Y_HotSeatManager : MonoBehaviour
 {
+
+    public static Y_HotSeatManager Instance { get; private set; }
+
+    
+
+
     float triggerNum = 0;
     bool act = false;
     List<GameObject> players = new List<GameObject>();
     public GameObject hotSeatCanvas;
+
+    private void Awake()
+    {
+        // Singleton 인스턴스 설정
+        if (Instance == null)
+        {
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
 
     private void OnTriggerEnter(Collider other)
     {
@@ -19,7 +39,7 @@ public class Y_HotSeatManager : MonoBehaviour
             players.Add(other.gameObject);
 
 
-            if (triggerNum >= 1 && !act)
+            if (triggerNum >= 4 && !act)
             {
                 act = true;
 
@@ -41,7 +61,7 @@ public class Y_HotSeatManager : MonoBehaviour
         }
     }
 
-    void MoveControl(bool canmove)
+    public void MoveControl(bool canmove)
     {
         foreach (GameObject obj in players)
         {

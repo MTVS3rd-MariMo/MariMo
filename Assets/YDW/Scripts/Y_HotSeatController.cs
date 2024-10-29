@@ -1,4 +1,5 @@
 ﻿using iTextSharp.text.html.simpleparser;
+using iTextSharp.text.pdf;
 using Photon.Pun;
 using Photon.Pun.UtilityScripts;
 using System.Collections;
@@ -100,12 +101,16 @@ public class Y_HotSeatController : MonoBehaviourPun
         if(gm == panel_good)
         {
             gameObject.SetActive(false);
+            //yield return new WaitForSeconds(2f);
+            K_KeyManager.instance.isDoneHotSitting = true;
+            yield return new WaitForSeconds(3f);
+            Y_HotSeatManager.Instance.MoveControl(true);
         }
     }
 
     private void Update()
     {
-        if(Input.GetKeyDown(KeyCode.M) && testNum < players.Count)
+        if(Input.GetKeyDown(KeyCode.Alpha0) && testNum < players.Count)
         {
             RPC_ProtoTest();
         }  
