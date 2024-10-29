@@ -81,10 +81,16 @@ public class K_QuizManager : MonoBehaviourPun
             }
             else if (second == 0)
             {
+                
                 // 시간초과(텍스트) 보여주자.
                 K_QuizUiManager.instance.text_countDown.text = "시간 종료!";
-                // 정답 판별 함수 호출
-                CheckAnswer();
+
+                if (photonView.IsMine)
+                {
+                    // 정답 판별 함수 호출
+                    RPC_CHeckAnswer();
+                }
+                
             }
             // 그렇지 않으면
             else
@@ -95,6 +101,13 @@ public class K_QuizManager : MonoBehaviourPun
 
     }
 
+    void RPC_CHeckAnswer()
+    {
+        photonView.RPC(nameof(CheckAnswer), RpcTarget.All);
+    }
+
+
+    [PunRPC]
     public void CheckAnswer()
     {
         if (quizCorrect != null)
