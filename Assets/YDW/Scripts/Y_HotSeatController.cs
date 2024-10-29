@@ -2,10 +2,12 @@
 using iTextSharp.text.pdf;
 using Photon.Pun;
 using Photon.Pun.UtilityScripts;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using TMPro;
+using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
@@ -98,13 +100,14 @@ public class Y_HotSeatController : MonoBehaviourPun
     {
         yield return new WaitForSeconds(2);
         gm.SetActive(false);
-        if(gm == panel_good)
+        if(gm == guides[4])
         {
             gameObject.SetActive(false);
             //yield return new WaitForSeconds(2f);
             K_KeyManager.instance.isDoneHotSitting = true;
             yield return new WaitForSeconds(3f);
-            Y_HotSeatManager.Instance.MoveControl(true);
+            GameObject.Find("Object_HotSeat").GetComponent<Y_HotSeatManager>().MoveControl(true);
+            print("Moveable True!!!!!!!");
         }
     }
 
@@ -322,7 +325,7 @@ public class Y_HotSeatController : MonoBehaviourPun
 
         for(int i = 0; i < n; i++)
         {
-            int j = Random.Range(0, n);
+            int j = UnityEngine.Random.Range(0, n);
 
             int tmp = playerNums[i];
             playerNums[i] = playerNums[j];
