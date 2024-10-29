@@ -31,7 +31,7 @@ public class Y_HotSeatManager : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player"))
+        if (other.CompareTag("Player") && !act)
         {
             triggerNum++;
             print("+++++++++ : " + triggerNum);
@@ -52,7 +52,7 @@ public class Y_HotSeatManager : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
-        if (other.CompareTag("Player"))
+        if (other.CompareTag("Player") && !act)
         {
             triggerNum--;
             print("-------- : " + triggerNum);
