@@ -103,8 +103,8 @@ public class Y_HotSeatController : MonoBehaviourPun
         if(gm == guides[4])
         {
             //yield return new WaitForSeconds(2f);
-            K_KeyManager.instance.isDoneHotSitting = true;
             yield return new WaitForSeconds(3f);
+            K_KeyManager.instance.isDoneHotSitting = true;
             Y_HotSeatManager.Instance.MoveControl(true);
             print("Moveable True!!!!!!!");
             gameObject.SetActive(false);

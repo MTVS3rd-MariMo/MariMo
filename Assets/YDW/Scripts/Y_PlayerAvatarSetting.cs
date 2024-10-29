@@ -28,6 +28,7 @@ public class Y_PlayerAvatarSetting : MonoBehaviour
     public string[] selfIntroduces = new string[4];
 
     public Vector3 quizScale = new Vector3(2f, 2f, 2f); // 퀴즈 시 사용할 스케일
+    public Vector3 studioScale = new Vector3(4f, 4f, 4f); // 사진관에서 사용할 스케일
     public Vector3 originalScale; // 플레이어의 원래 스케일 저장
 
     // Start is called before the first frame update

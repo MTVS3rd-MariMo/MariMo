@@ -159,7 +159,7 @@ public class P_ObjectManager_Studio : MonoBehaviourPun
 
         for (int i = 0; i < allPlayers.Count; i++)
         {
-            allPlayers[i].gameObject.transform.localScale = allPlayers[i].gameObject.GetComponent<Y_PlayerAvatarSetting>().quizScale;
+            allPlayers[i].gameObject.transform.localScale = allPlayers[i].gameObject.GetComponent<Y_PlayerAvatarSetting>().studioScale;
 
             // 플레이어 위치 이동
             allPlayers[i].transform.position = new Vector3(virtualCamera3.transform.position.x, allPlayers[i].transform.position.y, virtualCamera3.transform.position.z);
