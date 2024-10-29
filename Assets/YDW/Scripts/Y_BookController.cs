@@ -311,7 +311,7 @@ public class Y_BookController : MonoBehaviour
         
         PaintUI.SetActive(true);
 
-        allPlayers[currentPlayerNum].GetComponent<Y_PlayerAvatarSetting>().RPC_UpdatePhoto(characterNum); /////////22222222
+         /////////22222222
         // currentPlayerNum 에 따라 RenderTexture, characterNum에 따라 MP4 파일을 설정
         //SetCharacterVideo(currentPlayerNum, characterNum);
     }
@@ -335,7 +335,7 @@ public class Y_BookController : MonoBehaviour
         //mainCam.gameObject.SetActive(true);
         //virtualCam.gameObject.SetActive(true);
         //paintCam.gameObject.SetActive(false);
-
+        allPlayers[currentPlayerNum].GetComponent<Y_PlayerAvatarSetting>().RPC_UpdatePhoto(characterNum);
         PaintUI.SetActive(false);
         ChooseCharacterUI.SetActive(true);
         for(int i = 0; i < buttons.Length; i++)
