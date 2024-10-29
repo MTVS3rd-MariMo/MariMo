@@ -102,14 +102,16 @@ public class Y_HotSeatController : MonoBehaviourPun
         gm.SetActive(false);
         if(gm == guides[4])
         {
-            gameObject.SetActive(false);
             //yield return new WaitForSeconds(2f);
             K_KeyManager.instance.isDoneHotSitting = true;
             yield return new WaitForSeconds(3f);
-            GameObject.Find("Object_HotSeat").GetComponent<Y_HotSeatManager>().MoveControl(true);
+            Y_HotSeatManager.Instance.MoveControl(true);
             print("Moveable True!!!!!!!");
+            gameObject.SetActive(false);
         }
     }
+
+    bool isEnd = false;
 
     private void Update()
     {
@@ -118,17 +120,25 @@ public class Y_HotSeatController : MonoBehaviourPun
             RPC_ProtoTest();
         }  
 
-        if(Input.GetKeyDown(KeyCode.N))
-        {
-            RPC_TurnOff();
-        }
+        //if(Input.GetKeyDown(KeyCode.N))
+        //{
+        //    RPC_TurnOff();
+        //}
 
-        if(hotSeating_count >= 4)
+        if(hotSeating_count >= 4 && !isEnd)
         {
-            RPC_ActivateGuide(4);
+            isEnd = true;
+            StartCoroutine(EndCoroutine());
+            //RPC_ActivateGuide(4);
             //panel_good.SetActive(true);
             //StartCoroutine(Deactivate(panel_good));
         }
+    }
+
+    IEnumerator EndCoroutine()
+    {
+        yield return new WaitForSeconds(2.5f);
+        RPC_ActivateGuide(4);
     }
 
     void RPC_ProtoTest()

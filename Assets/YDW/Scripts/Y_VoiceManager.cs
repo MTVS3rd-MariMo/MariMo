@@ -3,10 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using Photon.Voice.Unity;
 using Photon.Pun;
+using UnityEngine.UI;
 
 public class Y_VoiceManager : MonoBehaviour
 {
     Recorder recorder;
+    public Image voiceIcon;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -20,6 +23,14 @@ public class Y_VoiceManager : MonoBehaviour
         if(Input.GetKeyDown(KeyCode.M))
         {
             recorder.TransmitEnabled = !recorder.TransmitEnabled;
+            if(recorder.TransmitEnabled)
+            {
+                voiceIcon.gameObject.SetActive(true);
+            }
+            else
+            {
+                voiceIcon.gameObject.SetActive(false);
+            }
         }
     }
 }

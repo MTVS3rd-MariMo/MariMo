@@ -192,7 +192,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2534c5a5ee21f574e9af0638b6b7905a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  voiceIcon: {fileID: 2403803633794609453}
+  voiceIcon: {fileID: 0}
   isTalking: 0
 --- !u!114 &3406280480905180733
 MonoBehaviour:
