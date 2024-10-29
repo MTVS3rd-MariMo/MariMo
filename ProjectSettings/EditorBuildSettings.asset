@@ -20,13 +20,13 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/YDW/Scenes/Y_ProtoScene.unity
     guid: acb927c5c0a1e1f4084983da39dff3b3
-  - enabled: 0
+  - enabled: 1
     path: Assets/Scenes/Proto_Real.unity
     guid: ae6affcc89503fb4db6db9fedbea5a99
   - enabled: 0
     path: Assets/Scenes/Proto_Real_Test.unity
     guid: 8b30ace312fc1cd4a8dc928342843199
-  - enabled: 1
-    path: Assets/Scenes/Proto_Real_Test_YDW.unity
-    guid: 1d8981ed396634649b647b0e78d5fe98
+  - enabled: 0
+    path: Assets/Scenes/Proto_Real_Park.unity
+    guid: b8d1891fbc1663b4aa5d71aa2a358b65
   m_configObjects: {}
