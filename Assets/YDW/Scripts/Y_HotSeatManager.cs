@@ -1,8 +1,9 @@
-﻿using System.Collections;
+﻿using Photon.Pun;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Y_HotSeatManager : MonoBehaviour
+public class Y_HotSeatManager : MonoBehaviourPun
 {
 
     public static Y_HotSeatManager Instance { get; private set; }
@@ -43,12 +44,25 @@ public class Y_HotSeatManager : MonoBehaviour
             {
                 act = true;
 
-                hotSeatCanvas.SetActive(true);
+                if (photonView.IsMine) RPC_ActivateHotSeat();
+                //hotSeatCanvas.SetActive(true);
 
                 MoveControl(false);
             }
         }
     }
+
+    void RPC_ActivateHotSeat()
+    {
+        photonView.RPC(nameof(ActivateHotSeat), RpcTarget.All);
+    }
+
+    [PunRPC]
+    void ActivateHotSeat()
+    {
+        hotSeatCanvas.SetActive(true);
+    }
+
 
     private void OnTriggerExit(Collider other)
     {
