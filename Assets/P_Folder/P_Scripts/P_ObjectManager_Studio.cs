@@ -65,12 +65,12 @@ public class P_ObjectManager_Studio : MonoBehaviourPun
                 act = true;
                 wall.SetActive(true);
 
-                RPC_MoveControl(false);
+                if (photonView.IsMine)
+                {
+                    RPC_MoveControl(false);
 
-                // photon 전체 실행
-                //RPC_Studio();
-
-                Studio();
+                    RPC_Studio();
+                }
             }
         }
     }
