@@ -68,7 +68,7 @@ public class Y_SetCamera : MonoBehaviour
         if (PhotonNetwork.CurrentRoom.PlayerCount == 4)
         {
             UpdateCameraPosition();
-            playerMove.movable = true;
+            //playerMove.movable = true;
         }
     }
 
