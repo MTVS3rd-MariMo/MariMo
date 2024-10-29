@@ -395,7 +395,17 @@ public class Y_HotSeatController : MonoBehaviourPun
                 // "친구들에게 말로 자기소개를 해 봅시다" UI
                 speechGuide.SetActive(true);
                 StartCoroutine(Deactivate(speechGuide));
-                if(PhotonNetwork.IsMasterClient) StartCoroutine(StartTimer(5));
+
+                if (i == 0 && PhotonNetwork.IsMasterClient)
+                {
+                    StartCoroutine(StartTimer(15));
+                }
+                else if(PhotonNetwork.IsMasterClient)
+                {
+                    StartCoroutine(StartTimer(5));
+                }
+
+                //if(PhotonNetwork.IsMasterClient) StartCoroutine(StartTimer(5));
 
                 break;
             }

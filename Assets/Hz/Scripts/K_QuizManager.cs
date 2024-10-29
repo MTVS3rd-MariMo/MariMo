@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.Playables;
 using UnityEngine.UI;
 
-public class K_QuizManager : MonoBehaviour
+public class K_QuizManager : MonoBehaviourPun
 {
     // 현재 시간
     float currTime = 0;
@@ -54,12 +54,14 @@ public class K_QuizManager : MonoBehaviour
         }
     }
 
+    void RPC_CountDown()
+    {
+        
+    }
 
-
+    [PunRPC]
     public void CountDown()
     {
-
-
         // 카운트 다운 이미지 보이기 + 카운트 다운은 img_direction 사라지고 1초 후 활성화
         if (isCounting)
         {

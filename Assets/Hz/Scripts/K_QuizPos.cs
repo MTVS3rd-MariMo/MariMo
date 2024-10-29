@@ -4,7 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class K_QuizPos : MonoBehaviour
+public class K_QuizPos : MonoBehaviourPun
 {
     // 연출용
     public CinemachineVirtualCamera virtualCamera;
@@ -17,6 +17,8 @@ public class K_QuizPos : MonoBehaviour
     // 플레이어가 정답 구역에 있는지 아닌지
     public bool isInCorrectZone = false;
 
+    private int playerCount = 0;
+
     private void OnTriggerEnter(Collider other)
     {
         //K_QuizUiManager.instance.isPlaying = true;
@@ -25,21 +27,10 @@ public class K_QuizPos : MonoBehaviour
 
         if (other.CompareTag("Player") && !isQuizStarted)
         {
-            isQuizStarted = true;
-            print("플레이어다 문제풀자");
-
-            K_QuizManager.instance.isPlaying = true;
-            //  K_QuizManager.instance.CountDown();
-            K_QuizManager.instance.quizCorrect = GetComponentInParent<K_QuizPos>();
-
-            // 연출 테스트
-            virtualCamera.gameObject.SetActive(true);
-
-            Dictionary<int, PhotonView> allPlayers = Y_BookController.Instance.allPlayers;
-
-            for (int i = 0; i < allPlayers.Count; i++)
+            playerCount++;
+            if(playerCount >= 4 && photonView.IsMine)
             {
-                allPlayers[i].gameObject.transform.localScale = allPlayers[i].gameObject.GetComponent<Y_PlayerAvatarSetting>().quizScale;
+                RPC_StartQuiz();
             }
 
         }
@@ -49,6 +40,38 @@ public class K_QuizPos : MonoBehaviour
             isInCorrectZone = true;
             print("정답 구역 들어감");
         }
+    }
+
+    void RPC_StartQuiz()
+    {
+        photonView.RPC(nameof(StartQuiz), RpcTarget.All);
+    }
+
+    [PunRPC]
+    void StartQuiz()
+    {
+        isQuizStarted = true;
+        print("플레이어다 문제풀자");
+
+        K_QuizManager.instance.isPlaying = true;
+        //  K_QuizManager.instance.CountDown();
+        K_QuizManager.instance.quizCorrect = GetComponentInParent<K_QuizPos>();
+
+        // 연출 테스트
+        virtualCamera.gameObject.SetActive(true);
+
+        Dictionary<int, PhotonView> allPlayers = Y_BookController.Instance.allPlayers;
+
+        for (int i = 0; i < allPlayers.Count; i++)
+        {
+            allPlayers[i].gameObject.transform.localScale = allPlayers[i].gameObject.GetComponent<Y_PlayerAvatarSetting>().quizScale;
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.CompareTag("Player") && !isQuizStarted)
+        playerCount--;
     }
 
     public bool CheckAnswer()
@@ -65,6 +88,7 @@ public class K_QuizPos : MonoBehaviour
 
             // 연출 테스트
             virtualCamera.gameObject.SetActive(false);
+
             // 키 박스 다시 켜주기
             K_LobbyUiManager.instance.img_KeyEmptyBox.gameObject.SetActive(true);
 
@@ -81,6 +105,7 @@ public class K_QuizPos : MonoBehaviour
         }
         ResetQuiz();
     }
+
 
     // 퀴즈 상태 초기화
     private void ResetQuiz()
