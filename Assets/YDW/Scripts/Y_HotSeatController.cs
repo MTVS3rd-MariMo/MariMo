@@ -127,9 +127,6 @@ public class Y_HotSeatController : MonoBehaviourPun
         {
             isEnd = true;
             StartCoroutine(LastCoroutine());
-            //RPC_ActivateGuide(4);
-            //panel_good.SetActive(true);
-            //StartCoroutine(Deactivate(panel_good));
         }
     }
 
@@ -226,9 +223,13 @@ public class Y_HotSeatController : MonoBehaviourPun
     [PunRPC]
     public void AllReady()
     {
+        // 보이스 일단 4명 다 꺼줌
         Y_VoiceManager.Instance.recorder.TransmitEnabled = false;
+
+        // 서브밋 누른 플레이어 수 늘림
         selfInt_count++;
 
+        // 4명이 다 차면
         if (selfInt_count >= 4)
         {
             panel_waiting.SetActive(false);
@@ -339,6 +340,8 @@ public class Y_HotSeatController : MonoBehaviourPun
             players[index - 1].transform.position = playerPos; // 이미지 위치도 원위치
             stageScriptImgs[index - 1].gameObject.SetActive(false); // 전 플레이어의 자기소개 끄기
             spotlight.SetActive(false); // 스포트라이트 끔
+
+            ////////////////// 보이스 꺼 줘야 함
         }
 
         if(index < players.Count)
@@ -350,6 +353,8 @@ public class Y_HotSeatController : MonoBehaviourPun
             StartCoroutine(ChangePos(playerPos, index));
 
             stageScriptImgs[index].gameObject.SetActive(true);
+
+            //////////////// 내 차례 됐을 때에만 보이스 켜줌
         }
 
         // "자기소개를 듣고 궁금했던 것들을 질문해봅시다" UI
