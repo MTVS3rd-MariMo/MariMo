@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
@@ -6,7 +6,7 @@ using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.UI;
 
-[System.Serializable] // json µ¥ÀÌÅÍ¸¦ ¹ŞÀ» ‹š Áß¿ä
+[System.Serializable] // json ë°ì´í„°ë¥¼ ë°›ì„ ë–„ ì¤‘ìš”
 public struct PostInfo
 {
     public int userId;
@@ -21,17 +21,24 @@ public struct PostInfoArray
     public List<PostInfo> data;
 }
 
+[System.Serializable]
+public struct Draw_PostInfo
+{
+    public int userId;
+    public string avatar;
+}
+
 public class HttpInfo
 {
     public string url = "";
 
-    // Body µ¥ÀÌÅÍ
+    // Body ë°ì´í„°
     public string body = "";
 
     // contentType
     public string contentType = "";
 
-    // Åë½Å ¼º°ø ÈÄ È£ÃâµÇ´Â ÇÔ¼ö ´ãÀ» º¯¼ö
+    // í†µì‹  ì„±ê³µ í›„ í˜¸ì¶œë˜ëŠ” í•¨ìˆ˜ ë‹´ì„ ë³€ìˆ˜
     public Action<DownloadHandler> onComplete;
 
 }
@@ -66,8 +73,6 @@ public class HttpManager : MonoBehaviour
         }
     }
 
-
-
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.Alpha1))
@@ -87,77 +92,123 @@ public class HttpManager : MonoBehaviour
         }
     }
 
-    // GET : ¼­¹ö¿¡°Ô µ¥ÀÌÅÍ¸¦ Á¶È¸ ¿äÃ»
+    // GET : ì„œë²„ì—ê²Œ ë°ì´í„°ë¥¼ ì¡°íšŒ ìš”ì²­
     public IEnumerator Get(HttpInfo info)
     {
         using (UnityWebRequest webRequest = UnityWebRequest.Get(info.url))
         {
-            // ¼­¹ö¿¡ ¿äÃ» º¸³»±â
+            // ì„œë²„ì— ìš”ì²­ ë³´ë‚´ê¸°
             yield return webRequest.SendWebRequest();
 
-            // ¼­¹ö¿¡°Ô ÀÀ´äÀÌ ¿Ô´Ù.
+            // ì„œë²„ì—ê²Œ ì‘ë‹µì´ ì™”ë‹¤.
             DoneRequest(webRequest, info);
         }
     }
 
-    // ¼­¹ö¿¡°Ô ³»°¡ º¸³»´Â µ¥ÀÌÅÍ¸¦ »ı¼ºÇØÁà
+    // ì„œë²„ì—ê²Œ ë‚´ê°€ ë³´ë‚´ëŠ” ë°ì´í„°ë¥¼ ìƒì„±í•´ì¤˜
     public IEnumerator Post(HttpInfo info)
     {
         using (UnityWebRequest webRequest = UnityWebRequest.Post(info.url, info.body, info.contentType))
         {
-            // ¼­¹ö¿¡ ¿äÃ» º¸³»±â
+            // ì„œë²„ì— ìš”ì²­ ë³´ë‚´ê¸°
             yield return webRequest.SendWebRequest();
 
-            // ¼­¹ö¿¡°Ô ÀÀ´äÀÌ ¿Ô´Ù.
-            DoneRequest(webRequest, info);
+
+            // ì‘ë‹µ ì²˜ë¦¬
+            info.onComplete?.Invoke(webRequest.downloadHandler);
+
+
+            // ì„œë²„ì—ê²Œ ì‘ë‹µì´ ì™”ë‹¤.
+            //DoneRequest(webRequest, info);
         }
     }
 
+    //// íŒŒì¼ ì—…ë¡œë“œ (form-data)
+    //public IEnumerator UploadFileByFormData(HttpInfo info)
+    //{
+    //    // info.data ì—ëŠ” íŒŒì¼ì˜ ìœ„ì¹˜
+    //    // info.data ì— ìˆëŠ” íŒŒì¼ì„ byte ë°°ì—´ë¡œ ì½ì–´ì˜¤ì
+    //    byte[] data = File.ReadAllBytes(info.body);
 
-    // ÆÄÀÏ ¾÷·Îµå (form-data)
+    //    // data ë¥¼ MultipartForm ìœ¼ë¡œ ì…‹íŒ…
+    //    List<IMultipartFormSection> formData = new List<IMultipartFormSection>();
+    //    //formData.Add(new MultipartFormFileSection("file", data, "image.jpg", info.contentType));
+    //    formData.Add(new MultipartFormFileSection("file", System.Convert.FromBase64String(info.body), "image.png", "image/png"));
+
+
+    //    using (UnityWebRequest webRequest = UnityWebRequest.Post(info.url, formData))
+    //    {
+    //        // ì„œë²„ì— ìš”ì²­ ë³´ë‚´ê¸°
+    //        yield return webRequest.SendWebRequest();
+
+    //        // ì„œë²„ì—ê²Œ ì‘ë‹µì´ ì™”ë‹¤.
+    //       DoneRequest(webRequest, info);
+            
+    //    }
+    //}
+
+    // íŒŒì¼ ì—…ë¡œë“œ (form-data)
     public IEnumerator UploadFileByFormData(HttpInfo info)
     {
-        // info.data ¿¡´Â ÆÄÀÏÀÇ À§Ä¡
-        // info.data ¿¡ ÀÖ´Â ÆÄÀÏÀ» byte ¹è¿­·Î ÀĞ¾î¿ÀÀÚ
-        byte[] data = File.ReadAllBytes(info.body);
+        // info.data ì—ëŠ” íŒŒì¼ì˜ ìœ„ì¹˜
+        // info.data ì— ìˆëŠ” íŒŒì¼ì„ byte ë°°ì—´ë¡œ ì½ì–´ì˜¤ì
+        //byte[] data = System.Convert.FromBase64String(info.body);
 
-        // data ¸¦ MultipartForm À¸·Î ¼ÂÆÃ
+
+        // data ë¥¼ MultipartForm ìœ¼ë¡œ ì…‹íŒ…
         List<IMultipartFormSection> formData = new List<IMultipartFormSection>();
-        formData.Add(new MultipartFormFileSection("file", data, "image.jpg", info.contentType));
+        {
+            new MultipartFormDataSection("body", info.body);
+        }
+        //formData.Add(new MultipartFormFileSection("file", data, "image.jpg", info.contentType));
+        //formData.Add(new MultipartFormFileSection("file", data, "image.png", "image/png"));
 
+        print("ìš”ì²­ ì²´í¬1");
 
         using (UnityWebRequest webRequest = UnityWebRequest.Post(info.url, formData))
         {
-            // ¼­¹ö¿¡ ¿äÃ» º¸³»±â
+            print("ìš”ì²­ ì²´í¬2");
+
+            // ì„œë²„ì— ìš”ì²­ ë³´ë‚´ê¸°
             yield return webRequest.SendWebRequest();
 
-            // ¼­¹ö¿¡°Ô ÀÀ´äÀÌ ¿Ô´Ù.
-           DoneRequest(webRequest, info);
-            
+            // ì„œë²„ì—ê²Œ ì‘ë‹µì´ ì™”ë‹¤.
+            DoneRequest(webRequest, info);
+
+            // ì—ëŸ¬ ë°œìƒì‹œ Debug ë¡œê·¸
+            if (webRequest.result != UnityWebRequest.Result.Success)
+            {
+                Debug.LogError("Error : " + webRequest.error);
+            }
+            else
+            {
+                Debug.Log("Upload ì™„ë£Œ : " + webRequest.downloadHandler.text);
+            }
+
         }
     }
 
-    // ÆÄÀÏ ¾÷·Îµå
+    // íŒŒì¼ ì—…ë¡œë“œ
     public IEnumerator UploadFileByByte(HttpInfo info)
     {
-        // info.data ¿¡´Â ÆÄÀÏÀÇ À§Ä¡
-        // info.data ¿¡ ÀÖ´Â ÆÄÀÏÀ» byte ¹è¿­·Î ÀĞ¾î¿ÀÀÚ
+        // info.data ì—ëŠ” íŒŒì¼ì˜ ìœ„ì¹˜
+        // info.data ì— ìˆëŠ” íŒŒì¼ì„ byte ë°°ì—´ë¡œ ì½ì–´ì˜¤ì
         byte[] data = File.ReadAllBytes(info.body);
 
 
         using (UnityWebRequest webRequest = new UnityWebRequest(info.url, "POST"))
         {
-            // ¾÷·Îµå ÇÏ´Â µ¥ÀÌÅÍ
+            // ì—…ë¡œë“œ í•˜ëŠ” ë°ì´í„°
             webRequest.uploadHandler = new UploadHandlerRaw(data);
             webRequest.uploadHandler.contentType = info.contentType;
 
-            // ÀÀ´ä ¹Ş´Â µ¥ÀÌÅÍ °ø°£
+            // ì‘ë‹µ ë°›ëŠ” ë°ì´í„° ê³µê°„
             webRequest.downloadHandler = new DownloadHandlerBuffer();
 
-            // ¼­¹ö¿¡ ¿äÃ» º¸³»±â
+            // ì„œë²„ì— ìš”ì²­ ë³´ë‚´ê¸°
             yield return webRequest.SendWebRequest();
 
-            // ¼­¹ö¿¡°Ô ÀÀ´äÀÌ ¿Ô´Ù.
+            // ì„œë²„ì—ê²Œ ì‘ë‹µì´ ì™”ë‹¤.
             DoneRequest(webRequest, info);
 
         }
@@ -180,7 +231,7 @@ public class HttpManager : MonoBehaviour
             yield return webRequest.SendWebRequest();
 
             //DownloadHandlerAudioClip handler = webRequest.downloadHandler as DownloadHandlerAudioClip;
-            //handler.audioClip À» Audiosource ¿¡ ¼ÂÆÃÇÏ°í ÇÃ·¹ÀÌ!
+            //handler.audioClip ì„ Audiosource ì— ì…‹íŒ…í•˜ê³  í”Œë ˆì´!
 
             DoneRequest(webRequest, info);
         }
@@ -190,19 +241,20 @@ public class HttpManager : MonoBehaviour
 
     void DoneRequest(UnityWebRequest webRequest, HttpInfo info)
     {
-        // ¸¸¾à¿¡ °á°ú°¡ Á¤»óÀÌ¶ó¸é
+
+        // ë§Œì•½ì— ê²°ê³¼ê°€ ì •ìƒì´ë¼ë©´
         if (webRequest.result == UnityWebRequest.Result.Success)
         {
-            // ÀÀ´ä ¿Â µ¥ÀÌÅÍ¸¦ ¿äÃ»ÇÑ Å¬·¡½º·Î º¸³»ÀÚ
+            // ì‘ë‹µ ì˜¨ ë°ì´í„°ë¥¼ ìš”ì²­í•œ í´ë˜ìŠ¤ë¡œ ë³´ë‚´ì
             if (info.onComplete != null)
             {
                 info.onComplete(webRequest.downloadHandler);
             }
         }
-        // ±×·¸Áö ¾Ê´Ù¸é (Error ¶ó¸é)
+        // ê·¸ë ‡ì§€ ì•Šë‹¤ë©´ (Error ë¼ë©´)
         else
         {
-            // Erroe ÀÇ ÀÌÀ¯¸¦ Ãâ·Â
+            // Erroe ì˜ ì´ìœ ë¥¼ ì¶œë ¥
             Debug.LogError("Net Error : " + webRequest.error);
         }
     }
