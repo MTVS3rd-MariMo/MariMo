@@ -7,8 +7,27 @@ using UnityEngine.UI;
 
 public class Y_VoiceManager : MonoBehaviour
 {
-    Recorder recorder;
+    public static Y_VoiceManager Instance { get; private set; }
+
+    public Recorder recorder;
     public Image voiceIcon;
+    public Image noVoiceIcon;
+    public bool isTalking = false;
+    public bool hasChanged = false;
+
+    private void Awake()
+    {
+        // Singleton 인스턴스 설정
+        if (Instance == null)
+        {
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
 
     // Start is called before the first frame update
     void Start()
@@ -25,12 +44,30 @@ public class Y_VoiceManager : MonoBehaviour
             recorder.TransmitEnabled = !recorder.TransmitEnabled;
             if(recorder.TransmitEnabled)
             {
+                noVoiceIcon.gameObject.SetActive(false);
                 voiceIcon.gameObject.SetActive(true);
             }
             else
             {
                 voiceIcon.gameObject.SetActive(false);
+                noVoiceIcon.gameObject.SetActive(true);
             }
         }
+
+        //if(isTalking)
+        //{
+        //    recorder.TransmitEnabled = true;
+        //    noVoiceIcon.gameObject.SetActive(false);
+        //    voiceIcon.gameObject.SetActive(true);
+        //    isTalking = false;
+        //}
+        //else if(!hasChanged)
+        //{
+        //    recorder.TransmitEnabled = false;
+        //    voiceIcon.gameObject.SetActive(false);
+        //    noVoiceIcon.gameObject.SetActive(true);
+        //}
     }
+
+
 }
