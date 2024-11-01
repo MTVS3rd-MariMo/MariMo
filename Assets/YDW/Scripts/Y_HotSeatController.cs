@@ -37,7 +37,6 @@ public class Y_HotSeatController : MonoBehaviourPun
     private Vector2 originalSize;
     private Vector2 originalPosition;
     private TouchScreenKeyboard keyboard;
-    //public Dictionary<int, PhotonView> allPlayers;
 
     // stage
     int selfInt_count = 0;
@@ -81,32 +80,31 @@ public class Y_HotSeatController : MonoBehaviourPun
         StartCoroutine(Deactivate(guide));
 
         originalColor = images[0].color;
-        //stagePos = new Vector2(stageImg.transform.position.x, stageImg.transform.position.y);
         playerPos = players[0].transform.position;
 
+        // 자기소개 화면 본인 닉네임과 캐릭터, 이미지 표시
         myAvatarSetting = Y_BookController.Instance.myAvatar;
-        //Txt_TitleText.text = myAvatarSetting.pv.Owner.NickName;
         txt_playerName.text = myAvatarSetting.pv.Owner.NickName;
         Txt_TitleText.text = characterNames[Y_BookController.Instance.characterNum - 1].text;
         myAvatarImage.sprite = myAvatarSetting.images[myAvatarSetting.avatarIndex];
 
+        // 안내 가이드 띄워주기
         guide.SetActive(true);
         StartCoroutine(Deactivate(guide));
 
 
     }
 
+    // 오브젝트 2초뒤 꺼주기
     public IEnumerator Deactivate(GameObject gm)
     {
         yield return new WaitForSeconds(2);
         gm.SetActive(false);
         if(gm == guides[4])
         {
-            //yield return new WaitForSeconds(2f);
             yield return new WaitForSeconds(3f);
             K_KeyManager.instance.isDoneHotSitting = true;
             Y_HotSeatManager.Instance.MoveControl(true);
-            print("Moveable True!!!!!!!");
             gameObject.SetActive(false);
         }
     }
@@ -128,14 +126,14 @@ public class Y_HotSeatController : MonoBehaviourPun
         if(hotSeating_count >= 4 && !isEnd)
         {
             isEnd = true;
-            StartCoroutine(EndCoroutine());
+            StartCoroutine(LastCoroutine());
             //RPC_ActivateGuide(4);
             //panel_good.SetActive(true);
             //StartCoroutine(Deactivate(panel_good));
         }
     }
 
-    IEnumerator EndCoroutine()
+    IEnumerator LastCoroutine()
     {
         yield return new WaitForSeconds(2.5f);
         RPC_ActivateGuide(4);
@@ -216,7 +214,6 @@ public class Y_HotSeatController : MonoBehaviourPun
     [PunRPC]
     void AddSelfIntroduce(int actorNumber, string selfIntroduce)
     {
-        print("!!!!!!!!! actorNumber : " + actorNumber + " selfIntroduce: " + selfIntroduce);
         selfIntroduces.Add(actorNumber, selfIntroduce); 
     }
 
@@ -225,23 +222,15 @@ public class Y_HotSeatController : MonoBehaviourPun
         photonView.RPC(nameof(AllReady), RpcTarget.All);
     }
 
+    // 4명 전부 들어오면 실행
     [PunRPC]
     public void AllReady()
     {
+        Y_VoiceManager.Instance.recorder.TransmitEnabled = false;
         selfInt_count++;
 
         if (selfInt_count >= 4)
         {
-            for (int i = 1; i <= selfIntroduces.Count; i++)
-            {
-                if (selfIntroduces[i] != null)
-                    print("selfIntroduces : " + i + " " + selfIntroduces[i]);
-            }
-            for (int j = 0; j < playerNums.Count; j++)
-            {
-                print("playerNums : " + j + " " + playerNums[j]);
-            }
-            //Shuffle();
             panel_waiting.SetActive(false);
             stage.SetActive(true);
 
@@ -250,7 +239,6 @@ public class Y_HotSeatController : MonoBehaviourPun
             MatchSelfIntroduce();
 
             StartSpeech(0);
-            print("StartSpeech(0) 실행!!");
         }
     }
 
@@ -302,25 +290,9 @@ public class Y_HotSeatController : MonoBehaviourPun
     {
         for (int i = 0; i < playerNums.Count; i++)
         {
-            print("????????? i : " + i);
             int playerNum = playerNums[i];
-            print("????????? playerNum " + playerNum);
 
             stageScriptTxts[i].text = selfIntroduces[playerNum + 1];
-
-            //for (int j = 0; j < selfIntroduces.Count; j++)
-            //{
-
-            //    if(playerNum == selfIntroduces.ElementAt(j).Key)
-            //    {
-            //        stageScriptTxts[i].text = selfIntroduces.ElementAt(j).Value;
-            //    }
-            //}
-            //if (selfIntroduces.ContainsKey(playerNum))
-            //{
-            //    stageScriptTxts[i].text = selfIntroduces[playerNum];
-            //    print("???????????? stageScriptTxt : " + stageScriptTxts[i].text);
-            //}
         }
     }
 
@@ -356,28 +328,28 @@ public class Y_HotSeatController : MonoBehaviourPun
         playerNums = syncedPlayerNums.ToList();
     }
 
+    public GameObject[] timerImgs;
 
+    // 순서대로 자기소개 - 질문
     public void StartSpeech(int index)
     {
-        print("StartSpeech index : " + index);
         if (index - 1 >= 0)
         {
             images[index - 1].color = originalColor; // 전 플레이어는 이름표 색 원래 색으로
-            players[index - 1].transform.position = playerPos; // 위치도 원위치
+            players[index - 1].transform.position = playerPos; // 이미지 위치도 원위치
             stageScriptImgs[index - 1].gameObject.SetActive(false); // 전 플레이어의 자기소개 끄기
+            spotlight.SetActive(false); // 스포트라이트 끔
         }
 
         if(index < players.Count)
         {
             // 이름 UI 색깔 바꾸고
             images[index].color = Color.red;
-            print("Color Changed to red");
 
             playerPos = players[index].transform.position;
             StartCoroutine(ChangePos(playerPos, index));
 
             stageScriptImgs[index].gameObject.SetActive(true);
-            print("stageScriptImgs i : " + stageScriptImgs[index].GetComponentInChildren<TMP_Text>().text);
         }
 
         // "자기소개를 듣고 궁금했던 것들을 질문해봅시다" UI
@@ -385,8 +357,6 @@ public class Y_HotSeatController : MonoBehaviourPun
         // 순서대로 보이스 활성화
         // 4명 다 끝내면 "참 잘했어요!" UI
     }
-
-
 
     public IEnumerator ChangePos(Vector2 playerPos, int i)
     {
@@ -402,13 +372,9 @@ public class Y_HotSeatController : MonoBehaviourPun
                 spotlight.SetActive(true); // 스포트라이트
 
                 ////////////////////// 나중에 보이스 연동
-                
-                // 밑에 자기소개
-                //stageScript.SetActive(true); 
-                //stageScript.GetComponentInChildren<TMP_Text>().text = selfIntroduceInput.text; ///////////////////44444444
+
 
                 stageScriptImgs[i].gameObject.SetActive(true);
-                //stageScriptTxts[i].text = selfIntroduceInput.text;
 
                 // "친구들에게 말로 자기소개를 해 봅시다" UI
                 speechGuide.SetActive(true);
@@ -416,11 +382,11 @@ public class Y_HotSeatController : MonoBehaviourPun
 
                 if (i == 0 && PhotonNetwork.IsMasterClient)
                 {
-                    StartCoroutine(StartTimer(15));
+                    RPC_StartTimer(i, 15);
                 }
                 else if(PhotonNetwork.IsMasterClient)
                 {
-                    StartCoroutine(StartTimer(5));
+                    RPC_StartTimer(i, 5);
                 }
 
                 //if(PhotonNetwork.IsMasterClient) StartCoroutine(StartTimer(5));
@@ -434,47 +400,45 @@ public class Y_HotSeatController : MonoBehaviourPun
     float currTime = 0;
     int hotSeating_count = 0;
     public GameObject[] guides;
+    public TMP_Text[] timerTxts;
 
-    IEnumerator StartTimer(int time)
+    void RPC_StartTimer(int i, int time)
     {
+        photonView.RPC(nameof(StartTimerCoroutine), RpcTarget.All, i, time);
+    }
+
+    [PunRPC]
+    void StartTimerCoroutine(int i, int time)
+    {
+        StartCoroutine(StartTimer(i, time));
+    }
+
+    // 타이머 시작
+    IEnumerator StartTimer(int i, int time)
+    {
+        timerImgs[i].gameObject.SetActive(true);
+
         while (currTime < time)
         {
             // DeltaTime을 사용하여 경과 시간 계산
             currTime += Time.deltaTime;
             yield return null; // 다음 프레임까지 대기
+
+            // 경과 시간을 분:초 형식으로 변환
+            TimeSpan timeSpan = TimeSpan.FromSeconds(currTime);
+            string timeText = string.Format("{0:00}:{1:00}",
+                timeSpan.Minutes, Mathf.Max(time - timeSpan.Seconds, 0));
+
+            timerTxts[i].text = timeText;
+
+            if(time - timeSpan.Seconds <= 0) timerImgs[i].gameObject.SetActive(false); // 타이머 끄기
         }
 
-        RPC_ActivateGuide(3);
+        // "자기소개를 듣고 궁금한 것들을 질문해봅시다" -> 2초 뒤 자동으로 deactivate
+        ActivateGuide(3);
 
-        //panel_question.SetActive(true);
-        //StartCoroutine(Deactivate(panel_question));
-
-        //RPC_ProtoTest();
         hotSeating_count++;
         currTime = 0;
-
-        //timerPanel.GetComponent<Image>().color = oldColor;
-
-        //timerTxt.SetActive(true);
-
-        //elapsedTime += Time.deltaTime;
-
-        //// 경과 시간을 분:초 형식으로 변환
-        //TimeSpan timeSpan = TimeSpan.FromSeconds(elapsedTime);
-        //string timeText = string.Format("{0:00}:{1:00}",
-        //    timeSpan.Minutes, duration - timeSpan.Seconds);
-
-        //timerText.text = timeText;
-
-        //// 시간이 5초 이하일 때 글씨 깜박이고 빨간색으로 변경
-        //if (elapsedTime >= duration - 5 && elapsedTime < duration)
-        //{
-        //    if (!isFlashing)
-        //    {
-        //        StartCoroutine(uiManager.MoveUI("5초 남았어요!"));
-        //        StartCoroutine(FlashTimerText());
-        //    }
-        //}
     }
 
     void RPC_ActivateGuide(int index)
