@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Networking;
 using UnityEngine.UI;
 
 public class P_CreatorToolController : MonoBehaviour
@@ -134,6 +135,19 @@ public class P_CreatorToolController : MonoBehaviour
 
     public void OnclickSend()
     {
+        HttpInfo info = new HttpInfo();
+        // api/lesson-material/upload-pdf 앤드포인트..?
+        info.url = "api/lesson-material/upload-pdf";
+        info.body = JsonUtility.ToJson(pdfPath);
+        info.contentType = "application/json";
+        info.onComplete = (DownloadHandler downloadHandler) =>
+        {
+
+            print(downloadHandler.text);
+        };
+
+        StartCoroutine(HttpManager.GetInstance().Post(info));
+
         // 생성중 UI 뜨고 생성 완료시 이동
         panel_Making.SetActive(true);
     }
