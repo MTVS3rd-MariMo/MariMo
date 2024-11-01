@@ -26,6 +26,13 @@ public class K_DrawPen : MonoBehaviour
     public float minDistance = 1f;
     public float zPosition = -9f;
 
+
+    private void Start()
+    {
+        //uiCamera.cullingMask = 1 << 0;
+        
+    }
+
     private void Update()
     {
         if (Input.GetMouseButtonDown(0))
@@ -68,8 +75,8 @@ public class K_DrawPen : MonoBehaviour
             line.gameObject.layer = LayerMask.NameToLayer("UI");
             line.sortingLayerName = "UI";
             line.sortingOrder = 1;
-            line.startWidth = 0.5f;
-            line.endWidth = 0.5f;
+            line.startWidth = 0.3f;
+            line.endWidth = 0.3f;
             line.gameObject.AddComponent<BoxCollider>();
 
             // 색상 설정
@@ -84,7 +91,7 @@ public class K_DrawPen : MonoBehaviour
         {
             Vector2 mousePos;
             // 마우스 좌표 rt의 로컬로 변환
-            RectTransformUtility.ScreenPointToLocalPointInRectangle(rt, Input.mousePosition, uiCamera, out mousePos);
+            RectTransformUtility.ScreenPointToLocalPointInRectangle(rt, Input.mousePosition, Camera.main, out mousePos);
 
             print("변환됨");
 
@@ -93,7 +100,7 @@ public class K_DrawPen : MonoBehaviour
             worldPos.z = zPosition;
 
             // 스케치북 안에 있을 시 그려지게
-            if (RectTransformUtility.RectangleContainsScreenPoint(sktechBook, Input.mousePosition, uiCamera))
+            if (RectTransformUtility.RectangleContainsScreenPoint(sktechBook, Input.mousePosition, Camera.main))
             {
                 line.positionCount++;
                 line.SetPosition(line.positionCount - 1, worldPos);

@@ -12,6 +12,8 @@ public class P_CreatorToolController : MonoBehaviour
     public GameObject panel_NewStory;
     public GameObject panel_FileViewer;
     public GameObject panel_Making;
+    public GameObject panel_MakingQuiz;
+    public GameObject panel_MakingAsk;
 
     public Button btn_SelectStory;
     public Button btn_CreateRoom;
@@ -57,6 +59,13 @@ public class P_CreatorToolController : MonoBehaviour
 
     public void OnclickSelectStory()
     {
+        // 이전 작업들 끄기
+        panel_MakingAsk.SetActive(false);
+        panel_MakingQuiz.SetActive(false);
+        panel_Making.SetActive(false);
+        panel_FileViewer.SetActive(false);
+        panel_NewStory.SetActive(false);
+
         panel_SelectStory.SetActive(true);
         BtnColor(Color.blue, btn_SelectStory);
         panel_CreateRoom.SetActive(false);
@@ -67,6 +76,11 @@ public class P_CreatorToolController : MonoBehaviour
 
     public void OnclickCreateRoom()
     {
+        // 이전 작업들 끄기
+        panel_Making.SetActive(false);
+        panel_FileViewer.SetActive(false);
+        panel_NewStory.SetActive(false);
+
         panel_SelectStory.SetActive(false);
         BtnColor(Color.white, btn_SelectStory);
         panel_CreateRoom.SetActive(true);
@@ -77,6 +91,11 @@ public class P_CreatorToolController : MonoBehaviour
 
     public void OnclickLibrary()
     {
+        // 이전 작업들 끄기
+        panel_Making.SetActive(false);
+        panel_FileViewer.SetActive(false);
+        panel_NewStory.SetActive(false);
+
         panel_SelectStory.SetActive(false);
         BtnColor(Color.white, btn_SelectStory);
         panel_CreateRoom.SetActive(false);
