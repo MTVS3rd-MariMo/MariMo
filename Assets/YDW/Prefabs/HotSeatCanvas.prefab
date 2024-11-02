@@ -439,7 +439,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &5865333724246537277
 RectTransform:
   m_ObjectHideFlags: 0
@@ -988,7 +988,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &8871008104454394944
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2771,7 +2771,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &3697262960305227498
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3781,7 +3781,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &795284051281027570
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3941,6 +3941,11 @@ MonoBehaviour:
   - {fileID: 6923617460551082705}
   spotlight: {fileID: 3020021941896964027}
   stageScript: {fileID: 6079742161778667375}
+  timerImgs:
+  - {fileID: 7891072303563804019}
+  - {fileID: 567206579575083458}
+  - {fileID: 1345772129863980460}
+  - {fileID: 3285214926227702198}
   guides:
   - {fileID: 4080625606137431106}
   - {fileID: 9175514382243176831}
@@ -6567,7 +6572,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &3980892645652866308
 RectTransform:
   m_ObjectHideFlags: 0
