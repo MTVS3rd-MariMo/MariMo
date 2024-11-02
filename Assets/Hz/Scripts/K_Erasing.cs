@@ -23,7 +23,6 @@ public class K_Erasing : MonoBehaviour
 
     private void Awake()
     {
-
         paint_RT = paint.GetComponent<RectTransform>();
 
         pixel_Width = (int)paint_RT.rect.width;
@@ -42,7 +41,6 @@ public class K_Erasing : MonoBehaviour
         erase_Active = true;
 
         K_Drawing.pen_Active = false;
-        //K_Drawing.ButtonOff();
         print("지우개 지워");
     }
 
@@ -97,9 +95,9 @@ public class K_Erasing : MonoBehaviour
         //print(brush_Height);
         //print(brush_Width);
 
-        for (int height_Plus = -2; height_Plus <= 2; height_Plus++)
+        for (int height_Plus = -6; height_Plus <= 6; height_Plus++)
         {
-            for (int width_Plus = -2; width_Plus <= 2; width_Plus++)
+            for (int width_Plus = -6; width_Plus <= 6; width_Plus++)
             {
                 if (brush_Height + height_Plus >= 0 && brush_Height + height_Plus < pixel_Height
                     && brush_Width + width_Plus >= 0 && brush_Width + width_Plus < pixel_Width)

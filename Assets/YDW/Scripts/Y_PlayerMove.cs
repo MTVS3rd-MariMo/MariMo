@@ -38,7 +38,7 @@ public class Y_PlayerMove : MonoBehaviour, IPunObservable
     // Start is called before the first frame update
     void Start()
     {
-        speed = 20;
+        speed = 10;
         //conn = GetComponent<CharacterController>();
         layerMaskGround = LayerMask.GetMask("Ground");
         agent.updateRotation = false;
