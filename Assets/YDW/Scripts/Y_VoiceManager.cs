@@ -62,12 +62,12 @@ public class Y_VoiceManager : MonoBehaviour
             }
         }
 
-        if(Input.GetKeyDown(KeyCode.N))
+        if (Input.GetKeyDown(KeyCode.N))
         {
             StartRecording(1, 5);
         }
 
-        if(Input.GetKeyDown(KeyCode.B))
+        if (Input.GetKeyDown(KeyCode.B))
         {
             StopRecording(1, "test");
         }
@@ -89,18 +89,18 @@ public class Y_VoiceManager : MonoBehaviour
 
     public void StartRecording(int actorNumber, int recordingLength)
     {
-        //if (actorNumber == PhotonNetwork.LocalPlayer.ActorNumber)
-        //{
+        if (actorNumber == PhotonNetwork.LocalPlayer.ActorNumber)
+        {
             //PunVoiceClient.Instance.PrimaryRecorder.TransmitEnabled = true;
             currentRecording = Microphone.Start(null, false, recordingLength, recordingFrequency);
             Debug.Log($"녹음 시작됨: {actorNumber}");
-        //}
+        }
     }
 
     public void StopRecording(int actorNumber, string filename)
     {
-        //if (actorNumber == PhotonNetwork.LocalPlayer.ActorNumber)
-        //{
+        if (actorNumber == PhotonNetwork.LocalPlayer.ActorNumber)
+        {
             //PunVoiceClient.Instance.PrimaryRecorder.TransmitEnabled = false;
 
             if (Microphone.IsRecording(null))
@@ -113,10 +113,12 @@ public class Y_VoiceManager : MonoBehaviour
                 voiceData[actorNumber] = currentRecording;
                 Debug.Log($"녹음 Dictionary 에 저장됨: {actorNumber}");
                 //if(PhotonNetwork.IsMasterClient)
-                SaveAsWav(currentRecording, "C:\\Users\\Admin\\OneDrive\\문서\\FinalProject\\HotSeatingAudio" + filename + ".wav");
+                //{
+                    SaveAsWav(currentRecording, "C:\\Users\\Admin\\OneDrive\\문서\\FinalProject\\HotSeatingAudio\\" + filename + ".wav");
+                //}
                 Debug.Log($"Wav 파일로 저장됨: {actorNumber}");
             }
-        //}
+        }
     }
 
     public static void SaveAsWav(AudioClip clip, string filePath)

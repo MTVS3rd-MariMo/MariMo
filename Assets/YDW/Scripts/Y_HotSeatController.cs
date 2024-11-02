@@ -378,25 +378,25 @@ public class Y_HotSeatController : MonoBehaviourPun
                 speechGuide.SetActive(true);
                 StartCoroutine(Deactivate(speechGuide));
 
+                int recordTime = 0;
+
                 if (i == 0 && PhotonNetwork.IsMasterClient)
                 {
                     RPC_StartTimer(i, 15);
-
-                    //////////////// 내 차례 됐을 때에만 보이스 켜줌
-                    if (PhotonNetwork.LocalPlayer.ActorNumber == playerNums[i])
-                    {
-                        Y_VoiceManager.Instance.recorder.TransmitEnabled = true;
-                        Y_VoiceManager.Instance.StartRecording(playerNums[i], 15);
-                    }
+                    recordTime = 15;
+                    
                 }
                 else if(PhotonNetwork.IsMasterClient)
                 {
                     RPC_StartTimer(i, 5);
-                    if (PhotonNetwork.LocalPlayer.ActorNumber == playerNums[i])
-                    {
-                        Y_VoiceManager.Instance.recorder.TransmitEnabled = true;
-                        Y_VoiceManager.Instance.StartRecording(playerNums[i], 5);
-                    }
+                    recordTime = 5;
+                }
+
+                //////////////// 내 차례 됐을 때에만 보이스 켜줌
+                if (PhotonNetwork.LocalPlayer.ActorNumber == playerNums[i])
+                {
+                    Y_VoiceManager.Instance.recorder.TransmitEnabled = true;
+                    Y_VoiceManager.Instance.StartRecording(playerNums[i], recordTime);
                 }
 
                 //if(PhotonNetwork.IsMasterClient) StartCoroutine(StartTimer(5));
