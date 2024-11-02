@@ -16,6 +16,8 @@ public class K_HttpAvatar : MonoBehaviour
         btn_CreateAvatar.onClick.AddListener(CreateAvatar);
     }
 
+    
+    // 서버에 아바타 보내기
     public IEnumerator UploadTextureAsPng()
     {
         Texture2D textureToUpload = rawImage.texture as Texture2D;
@@ -57,20 +59,28 @@ public class K_HttpAvatar : MonoBehaviour
         StartCoroutine(UploadTextureAsPng());
     }
 
-    public IEnumerator TestConnection()
-    {
-        using (UnityWebRequest webRequest = UnityWebRequest.Get("http://localhost:8080/api/avatar/upload-img"))
-        {
-            yield return webRequest.SendWebRequest();
+    // 서버에서 아바타 받아오기
 
-            if (webRequest.result != UnityWebRequest.Result.Success)
+    public IEnumerator OnDownloadMP4()
+    {
+        HttpInfo info = new HttpInfo
+        {
+            url = uploadUrl,
+            body = "img",
+            contentType = "multipart/form-data",
+            onComplete = (DownloadHandler downloadHandler) =>
             {
-                Debug.LogError("Error: " + webRequest.error);
+                // 응답 받아
+                Debug.Log("Upload 완료 : " + downloadHandler.text);
             }
-            else
-            {
-                Debug.Log("Received: " + webRequest.downloadHandler.text);
-            }
-        }
+        };
+        
+        yield return StartCoroutine(HttpManager.GetInstance().Get(info));
+
+    }
+
+    public void DownloadAvatar()
+    {
+        StartCoroutine(OnDownloadMP4());
     }
 }
