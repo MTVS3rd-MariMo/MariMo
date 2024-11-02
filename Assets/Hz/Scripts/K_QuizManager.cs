@@ -54,10 +54,6 @@ public class K_QuizManager : MonoBehaviourPun
         }
     }
 
-    void RPC_CountDown()
-    {
-        
-    }
 
     [PunRPC]
     public void CountDown()
@@ -117,6 +113,8 @@ public class K_QuizManager : MonoBehaviourPun
             if(isCorrect)
             {
                 EndQuiz();
+                // 정답 맞출 시 글씨 색상 변경
+                quizCorrect.text_Correct.color = Color.red;
                 StartCoroutine(CompleteQuiz(2f));
             }
             else

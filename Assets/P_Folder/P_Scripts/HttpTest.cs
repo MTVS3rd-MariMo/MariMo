@@ -15,13 +15,13 @@ public class HttpTest : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
             HttpInfo info = new HttpInfo();
-            info.url = "http://mtvs.helloworldlabs.kr:7771/api/string?parameter=¾È³çÇÏ¼¼¿ä";
+            info.url = "http://mtvs.helloworldlabs.kr:7771/api/string?parameter=ï¿½È³ï¿½ï¿½Ï¼ï¿½ï¿½ï¿½";
             info.onComplete = (DownloadHandler downloadHandler) =>
             {
                 print(downloadHandler.text);
 
                 //string jsonData = "{ \"data\" : " + downloadHandler.text + "}";
-                //// jsonData ¸¦ PostInfoArray ÇüÀ¸·Î ¹Ù²ÙÀÚ
+                //// jsonData ï¿½ï¿½ PostInfoArray ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ù²ï¿½ï¿½ï¿½
                 //allPostInfo = JsonUtility.FromJson<PostInfoArray>(jsonData);
             };
 
@@ -34,11 +34,11 @@ public class HttpTest : MonoBehaviour
             info.url = "https://ssl.pstatic.net/melona/libs/1506/1506331/b8145c5a724d3f2c9d2b_20240813152032478.jpg";
             info.onComplete = (DownloadHandler downloadHandler) =>
             {
-                // ´Ù¿î·Îµå µÈ µ¥ÀÌÅÍ¸¦ Texture2D ·Î º¯È¯
+                // ï¿½Ù¿ï¿½Îµï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Í¸ï¿½ Texture2D ï¿½ï¿½ ï¿½ï¿½È¯
                 DownloadHandlerTexture handler = downloadHandler as DownloadHandlerTexture;
                 Texture2D texture = handler.texture;
 
-                // texture ¸¦ ÀÌ¿ëÇØ¼­ Sprite ·Î º¯È¯
+                // texture ï¿½ï¿½ ï¿½Ì¿ï¿½ï¿½Ø¼ï¿½ Sprite ï¿½ï¿½ ï¿½ï¿½È¯
                 Sprite sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), Vector2.zero);
 
                 Image  image = GameObject.Find("Image").GetComponent<Image>();
@@ -51,9 +51,9 @@ public class HttpTest : MonoBehaviour
 
         if(Input.GetKeyDown(KeyCode.Alpha3))
         {
-            // °¡»óÀÇ ³ªÀÇ µ¥ÀÌÅÍ¸¦ ¸¸µéÀÚ
+            // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Í¸ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
             UserInfo userInfo = new UserInfo();
-            userInfo.name = "¹ÚÈ¿±Ù";
+            userInfo.name = "ï¿½ï¿½È¿ï¿½ï¿½";
             userInfo.age = 25;
             userInfo.height = 182.6f;
 
@@ -81,7 +81,7 @@ public class HttpTest : MonoBehaviour
                 File.WriteAllBytes(Application.dataPath + "/testimage.jpg", downloadHandler.data);
             };
 
-            StartCoroutine(HttpManager.GetInstance().UploadFileByFormData(info));
+            //StartCoroutine(HttpManager.GetInstance().UploadFileByFormData(info));
         }
 
         if (Input.GetKeyDown(KeyCode.Alpha5))

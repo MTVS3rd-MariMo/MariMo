@@ -2,6 +2,7 @@
 using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class K_QuizPos : MonoBehaviourPun
@@ -11,6 +12,8 @@ public class K_QuizPos : MonoBehaviourPun
 
     // 정답 구역의 오브젝트
     public GameObject correct;
+    // 정답 텍스트
+    public TextMeshPro text_Correct;
 
     // 퀴즈가 시작되었는지 
     public bool isQuizStarted = false;
