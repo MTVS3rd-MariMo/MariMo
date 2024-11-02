@@ -342,9 +342,10 @@ public class Y_HotSeatController : MonoBehaviourPun
             spotlight.SetActive(false); // 스포트라이트 끔
 
             ////////////////// 보이스 꺼 줘야 함
+            Y_VoiceManager.Instance.recorder.TransmitEnabled = false;
         }
 
-        if(index < players.Count)
+        if (index < players.Count)
         {
             // 이름 UI 색깔 바꾸고
             images[index].color = Color.red;
@@ -354,13 +355,8 @@ public class Y_HotSeatController : MonoBehaviourPun
 
             stageScriptImgs[index].gameObject.SetActive(true);
 
-            //////////////// 내 차례 됐을 때에만 보이스 켜줌
         }
 
-        // "자기소개를 듣고 궁금했던 것들을 질문해봅시다" UI
-        // 1분 뒤 질문받기
-        // 순서대로 보이스 활성화
-        // 4명 다 끝내면 "참 잘했어요!" UI
     }
 
     public IEnumerator ChangePos(Vector2 playerPos, int i)
@@ -376,9 +372,6 @@ public class Y_HotSeatController : MonoBehaviourPun
 
                 spotlight.SetActive(true); // 스포트라이트
 
-                ////////////////////// 나중에 보이스 연동
-
-
                 stageScriptImgs[i].gameObject.SetActive(true);
 
                 // "친구들에게 말로 자기소개를 해 봅시다" UI
@@ -388,10 +381,22 @@ public class Y_HotSeatController : MonoBehaviourPun
                 if (i == 0 && PhotonNetwork.IsMasterClient)
                 {
                     RPC_StartTimer(i, 15);
+
+                    //////////////// 내 차례 됐을 때에만 보이스 켜줌
+                    if (PhotonNetwork.LocalPlayer.ActorNumber == playerNums[i])
+                    {
+                        Y_VoiceManager.Instance.recorder.TransmitEnabled = true;
+                        Y_VoiceManager.Instance.StartRecording(playerNums[i], 15);
+                    }
                 }
                 else if(PhotonNetwork.IsMasterClient)
                 {
                     RPC_StartTimer(i, 5);
+                    if (PhotonNetwork.LocalPlayer.ActorNumber == playerNums[i])
+                    {
+                        Y_VoiceManager.Instance.recorder.TransmitEnabled = true;
+                        Y_VoiceManager.Instance.StartRecording(playerNums[i], 5);
+                    }
                 }
 
                 //if(PhotonNetwork.IsMasterClient) StartCoroutine(StartTimer(5));
@@ -436,7 +441,15 @@ public class Y_HotSeatController : MonoBehaviourPun
 
             timerTxts[i].text = timeText;
 
-            if(time - timeSpan.Seconds <= 0) timerImgs[i].gameObject.SetActive(false); // 타이머 끄기
+            if (time - timeSpan.Seconds <= 0)
+            {
+                timerImgs[i].gameObject.SetActive(false); // 타이머 끄기
+                if (PhotonNetwork.LocalPlayer.ActorNumber == playerNums[i]) // 녹음 종료
+                {
+                    Y_VoiceManager.Instance.recorder.TransmitEnabled = false;
+                    Y_VoiceManager.Instance.StopRecording(playerNums[i], "hotseatingInterview" + playerNums[i].ToString());
+                }
+            }
         }
 
         // "자기소개를 듣고 궁금한 것들을 질문해봅시다" -> 2초 뒤 자동으로 deactivate
