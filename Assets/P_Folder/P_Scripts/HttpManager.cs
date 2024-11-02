@@ -21,13 +21,6 @@ public struct PostInfoArray
     public List<PostInfo> data;
 }
 
-[System.Serializable]
-public struct Draw_PostInfo
-{
-    public int userId;
-    public string avatar;
-}
-
 public class HttpInfo
 {
     public string url = "";
@@ -50,7 +43,7 @@ public class HttpManager : MonoBehaviour
 
     public static HttpManager GetInstance()
     {
-        if(instance == null)
+        if (instance == null)
         {
             GameObject go = new GameObject();
             go.name = "HttpManager";
@@ -114,77 +107,85 @@ public class HttpManager : MonoBehaviour
             yield return webRequest.SendWebRequest();
 
 
-            // 응답 처리
-            info.onComplete?.Invoke(webRequest.downloadHandler);
-
-
             // 서버에게 응답이 왔다.
-            //DoneRequest(webRequest, info);
+            DoneRequest(webRequest, info);
         }
     }
 
-    //// 파일 업로드 (form-data)
-    //public IEnumerator UploadFileByFormData(HttpInfo info)
-    //{
-    //    // info.data 에는 파일의 위치
-    //    // info.data 에 있는 파일을 byte 배열로 읽어오자
-    //    byte[] data = File.ReadAllBytes(info.body);
-
-    //    // data 를 MultipartForm 으로 셋팅
-    //    List<IMultipartFormSection> formData = new List<IMultipartFormSection>();
-    //    //formData.Add(new MultipartFormFileSection("file", data, "image.jpg", info.contentType));
-    //    formData.Add(new MultipartFormFileSection("file", System.Convert.FromBase64String(info.body), "image.png", "image/png"));
-
-
-    //    using (UnityWebRequest webRequest = UnityWebRequest.Post(info.url, formData))
-    //    {
-    //        // 서버에 요청 보내기
-    //        yield return webRequest.SendWebRequest();
-
-    //        // 서버에게 응답이 왔다.
-    //       DoneRequest(webRequest, info);
-            
-    //    }
-    //}
-
     // 파일 업로드 (form-data)
     public IEnumerator UploadFileByFormData(HttpInfo info)
+    {
+       // info.data 에는 파일의 위치
+       // info.data 에 있는 파일을 byte 배열로 읽어오자
+       byte[] data = File.ReadAllBytes(info.body);
+
+       // data 를 MultipartForm 으로 셋팅
+       List<IMultipartFormSection> formData = new List<IMultipartFormSection>();
+       //formData.Add(new MultipartFormFileSection("file", data, "image.jpg", info.contentType));
+       formData.Add(new MultipartFormFileSection("file", System.Convert.FromBase64String(info.body), "image.png", "image/png"));
+
+
+       using (UnityWebRequest webRequest = UnityWebRequest.Post(info.url, formData))
+       {
+           // 서버에 요청 보내기
+           yield return webRequest.SendWebRequest();
+
+           // 서버에게 응답이 왔다.
+          DoneRequest(webRequest, info);
+
+       }
+    }
+
+
+    // 그림판 보내기 
+    public IEnumerator UploadFileByFormData(HttpInfo info, byte[] imgData)
     {
         // info.data 에는 파일의 위치
         // info.data 에 있는 파일을 byte 배열로 읽어오자
         //byte[] data = System.Convert.FromBase64String(info.body);
 
-
         // data 를 MultipartForm 으로 셋팅
-        List<IMultipartFormSection> formData = new List<IMultipartFormSection>();
-        {
-            new MultipartFormDataSection("body", info.body);
-        }
-        //formData.Add(new MultipartFormFileSection("file", data, "image.jpg", info.contentType));
-        //formData.Add(new MultipartFormFileSection("file", data, "image.png", "image/png"));
+        WWWForm form = new WWWForm();
+        form.AddField("body", info.body);
+        form.AddBinaryData("img", imgData, "img.png", "image/png");
 
         print("요청 체크1");
 
-        using (UnityWebRequest webRequest = UnityWebRequest.Post(info.url, formData))
+        using (UnityWebRequest webRequest = UnityWebRequest.Post(info.url, form))
         {
             print("요청 체크2");
+
+            //webRequest.SetRequestHeader("multipart/form-data");
 
             // 서버에 요청 보내기
             yield return webRequest.SendWebRequest();
 
+            // 요청 결과 상태 확인
+            if (webRequest.result == UnityWebRequest.Result.Success)
+            {
+                Debug.Log("성공적으로 이미지 업로드");
+                Debug.Log("서버 응답: " + webRequest.downloadHandler.text);
+            }
+            // else if (webRequest.result == UnityWebRequest.Result.ConnectionError)
+            // {
+            //     Debug.LogError("연결 오류 발생: " + webRequest.error);
+            // }
+            // else if (webRequest.result == UnityWebRequest.Result.DataProcessingError)
+            // {
+            //     Debug.LogError("데이터 처리 오류 발생: " + webRequest.error);
+            // }
+            // else if (webRequest.result == UnityWebRequest.Result.ProtocolError)
+            // {
+            //     Debug.LogError("프로토콜 오류 발생: " + webRequest.error);
+            // }
+            // else
+            // {
+            //     Debug.LogError("알 수 없는 오류 발생: " + webRequest.error);
+            // }
+
+
             // 서버에게 응답이 왔다.
             DoneRequest(webRequest, info);
-
-            // 에러 발생시 Debug 로그
-            if (webRequest.result != UnityWebRequest.Result.Success)
-            {
-                Debug.LogError("Error : " + webRequest.error);
-            }
-            else
-            {
-                Debug.Log("Upload 완료 : " + webRequest.downloadHandler.text);
-            }
-
         }
     }
 

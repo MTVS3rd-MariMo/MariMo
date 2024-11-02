@@ -8,8 +8,7 @@ using UnityEngine.UI;
 public class K_HttpAvatar : MonoBehaviour
 {
     public RawImage rawImage;
-    public string uploadUrl = "https://localhost:8080/api/avatar/upload-img";
-
+    public string uploadUrl = "http://172.30.1.44:8080/api/avatar/upload-img";
     public Button btn_CreateAvatar;
 
     void Start()
@@ -21,7 +20,7 @@ public class K_HttpAvatar : MonoBehaviour
     {
         Texture2D textureToUpload = rawImage.texture as Texture2D;
 
-        if(textureToUpload == null)
+        if (textureToUpload == null)
         {
             Debug.Log("텍스쳐 설정 안댐 ");
 
@@ -29,12 +28,12 @@ public class K_HttpAvatar : MonoBehaviour
         }
 
         byte[] pngData = textureToUpload.EncodeToPNG();
-        string base64PngData = System.Convert.ToBase64String(pngData);
+        //string img = System.Convert.ToBase64String(pngData);
 
         HttpInfo info = new HttpInfo
         {
             url = uploadUrl,
-            body = base64PngData,
+            body = "img",
             contentType = "multipart/form-data",
             onComplete = (DownloadHandler downloadHandler) =>
             {
@@ -43,13 +42,12 @@ public class K_HttpAvatar : MonoBehaviour
             }
         };
 
-        // 요청 보내고 
-        // 서버에 PNG 이미지 전송
-        //StartCoroutine(HttpManager.GetInstance().UploadFileByByte(info));
-
         // 디버그 체크
-        Debug.Log("Attempting to upload to URL: " + info.url); 
-        yield return StartCoroutine(HttpManager.GetInstance().UploadFileByFormData(info));
+        Debug.Log("Attempting to upload to URL: " + info.url);
+        Debug.Log("Coroutine Started");
+
+        Debug.Log("이미지 데이터 길이 " + pngData.Length);
+        yield return StartCoroutine(HttpManager.GetInstance().UploadFileByFormData(info, pngData));
     }
 
     // 캐릭터 생성하기 버튼 누르면 서버에 전송
@@ -57,5 +55,22 @@ public class K_HttpAvatar : MonoBehaviour
     {
         // 아바타 만든거 보내기 (POST)
         StartCoroutine(UploadTextureAsPng());
+    }
+
+    public IEnumerator TestConnection()
+    {
+        using (UnityWebRequest webRequest = UnityWebRequest.Get("http://localhost:8080/api/avatar/upload-img"))
+        {
+            yield return webRequest.SendWebRequest();
+
+            if (webRequest.result != UnityWebRequest.Result.Success)
+            {
+                Debug.LogError("Error: " + webRequest.error);
+            }
+            else
+            {
+                Debug.Log("Received: " + webRequest.downloadHandler.text);
+            }
+        }
     }
 }
