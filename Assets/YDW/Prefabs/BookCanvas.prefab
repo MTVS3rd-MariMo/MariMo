@@ -6186,7 +6186,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &2262571984283119333
 RectTransform:
   m_ObjectHideFlags: 0
@@ -9300,6 +9300,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Paint
+      objectReference: {fileID: 0}
+    - target: {fileID: 3059336393582678337, guid: b9afc3e64b4aa46328ba596143c56b8b,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3615930560580344382, guid: b9afc3e64b4aa46328ba596143c56b8b,
         type: 3}
