@@ -13,10 +13,9 @@ public class LobbyUIController : MonoBehaviour
     public static LobbyUIController lobbyUI;
     public TMP_InputField[] roomSetting;
     public TMP_Text text_logText;
-    //public TMP_Dropdown drop_mapSelection;
-    //public Image img_mapImage;
-    //public List<Sprite> mapSprites = new List<Sprite>();
-    //public TMP_Dropdown drop_playerColor;
+    public GameObject signUpUI;
+    public GameObject logInUI;
+
 
     string log;
 
@@ -48,6 +47,12 @@ public class LobbyUIController : MonoBehaviour
         btn_login.interactable = true;
         panel_login.gameObject.SetActive(false);
         panel_joinOrCreateRoom.SetActive(true);
+    }
+
+    public void ShowSignIn()
+    {
+        logInUI.SetActive(false);
+        signUpUI.SetActive(true);
     }
     
     public void PrintLog(string message)

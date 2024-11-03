@@ -5,6 +5,7 @@ using System.IO;
 using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.UI;
+using static Org.BouncyCastle.Bcpg.Attr.ImageAttrib;
 
 [System.Serializable] // json 데이터를 받을 떄 중요
 public struct PostInfo
@@ -34,6 +35,18 @@ public class HttpInfo
     // 통신 성공 후 호출되는 함수 담을 변수
     public Action<DownloadHandler> onComplete;
 
+}
+
+[Serializable]
+public class SignUpData
+{
+    public string username;
+    public string password;
+    public bool isTeacher;
+    public string school;
+    public int grade;
+    public int className;
+    public int studentNumber;
 }
 
 
@@ -258,5 +271,43 @@ public class HttpManager : MonoBehaviour
             // Erroe 의 이유를 출력
             Debug.LogError("Net Error : " + webRequest.error);
         }
+    }
+
+    string RegisterUrl = ""; ///////////////////
+
+    public IEnumerator SignUpCoroutine(string username, string password, string school, int grade, int className, int studentNumber, bool isTeacher)
+    {
+        SignUpData registerData = new SignUpData 
+        { username = username, 
+            password = password, 
+            isTeacher = isTeacher, 
+            school = school, 
+            grade = grade, 
+            className = className, 
+            studentNumber = studentNumber };
+
+        string jsonBody = JsonUtility.ToJson(registerData);
+
+        using (UnityWebRequest webRequest = new UnityWebRequest(RegisterUrl, "POST"))
+        {
+            // 서버에 요청 보내기
+            yield return webRequest.SendWebRequest();
+
+            // 서버에게 응답이 왔다
+            //DoneRequest(webRequest, info);
+
+        }
+
+        //HttpInfo info = new HttpInfo();
+        //info.url = ""; /////////////////////////////////////////
+        //info.contentType = ""; ///////////////////////////////
+        //info.body = jsonBody;
+        //info.onComplete = (string username, string password, string school, int grade, int className, int studentNumber, bool isTeacher) =>
+        //{
+        //    File.WriteAllBytes(Application.dataPath + "/aespa.jpg", uploadHandler.data);
+        //};
+        //StartCoroutine(HttpManager.GetInstance().UploadFileByFormData(info));
+
+        yield return null;
     }
 }
