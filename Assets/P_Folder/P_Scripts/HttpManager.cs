@@ -5,6 +5,7 @@ using System.IO;
 using System.Net;
 using UnityEngine;
 using UnityEngine.Networking;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using static Org.BouncyCastle.Bcpg.Attr.ImageAttrib;
 
@@ -65,6 +66,7 @@ public class User
 public class HttpManager : MonoBehaviour
 {
     static HttpManager instance;
+    public string userId;
 
     public static HttpManager GetInstance()
     {
@@ -424,6 +426,11 @@ public class HttpManager : MonoBehaviour
                 {
                     print(user.userId);
                     Debug.LogError("로그인 실패: 없는 사용자입니다");
+                }
+                else
+                {
+                    userId = user.userId;
+                    SceneManager.LoadScene(1);
                 }
             }
             else
