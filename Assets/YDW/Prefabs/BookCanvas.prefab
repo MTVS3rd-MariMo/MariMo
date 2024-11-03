@@ -9301,11 +9301,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Paint
       objectReference: {fileID: 0}
-    - target: {fileID: 3059336393582678337, guid: b9afc3e64b4aa46328ba596143c56b8b,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 3615930560580344382, guid: b9afc3e64b4aa46328ba596143c56b8b,
         type: 3}
       propertyPath: m_Pivot.x
@@ -9406,6 +9401,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6233489287317646703, guid: b9afc3e64b4aa46328ba596143c56b8b,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 5252311551421808156}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
