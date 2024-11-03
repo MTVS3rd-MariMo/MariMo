@@ -408,6 +408,7 @@ public class HttpManager : MonoBehaviour
             webRequest.uploadHandler = new UploadHandlerRaw(jsonToSend); // 로우 데이터 업로드
             webRequest.downloadHandler = new DownloadHandlerBuffer(); // 서버가 다운로드 할 수 있는 공간 만듦
             webRequest.SetRequestHeader("Content-Type", "application/json");
+            //webRequest.SetRequestHeader("userId", userId);
 
             // 서버에 요청 보내기
             yield return webRequest.SendWebRequest();
