@@ -16,7 +16,7 @@ public class K_HttpAvatar : MonoBehaviour
     public GameObject ChooseCharacterUI;
     public Image avatarImage;
 
-
+    // URL
     public string uploadUrl = "http://172.30.1.44:8080/api/avatar/upload-img";
     public string downloadUrl = "";
 
@@ -54,7 +54,7 @@ public class K_HttpAvatar : MonoBehaviour
                 ChooseCharacterUI.SetActive(true);
 
                 // 서버에서 전송해준 이미지 다운로드해서 표시해주기
-                StartCoroutine(OnDownloadMP4());
+                StartCoroutine(OnDownloadImage());
             }
         };
 
@@ -74,7 +74,7 @@ public class K_HttpAvatar : MonoBehaviour
     }
 
     // 서버에서 아바타 받아오기
-    public IEnumerator OnDownloadMP4()
+    public IEnumerator OnDownloadImage()
     {
         HttpInfo info = new HttpInfo
         {
@@ -105,6 +105,24 @@ public class K_HttpAvatar : MonoBehaviour
 
     public void DownloadAvatar()
     {
-        StartCoroutine(OnDownloadMP4());
+        StartCoroutine(OnDownloadImage());
     }
+
+
+    // 아바타 관련 데이터
+    [System.Serializable]
+    public struct UserAvatarData
+    {
+        public int userId;
+        public string avatarImg;
+        public string animation_idle;
+        public string animation_walk;
+    }
+
+    [System.Serializable]
+    public struct UserAvatarDataArray
+    {
+        public List<UserAvatarData> data;
+    }
+
 }
