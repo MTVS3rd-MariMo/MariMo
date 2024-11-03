@@ -412,6 +412,7 @@ public class HttpManager : MonoBehaviour
             webRequest.uploadHandler = new UploadHandlerRaw(jsonToSend); // 로우 데이터 업로드
             webRequest.downloadHandler = new DownloadHandlerBuffer(); // 서버가 다운로드 할 수 있는 공간 만듦
             webRequest.SetRequestHeader("Content-Type", "application/json");
+            //webRequest.SetRequestHeader("userId", userId);
 
             // 서버에 요청 보내기
             yield return webRequest.SendWebRequest();
@@ -421,17 +422,19 @@ public class HttpManager : MonoBehaviour
             {
                 Debug.Log("로그인 성공: " + webRequest.downloadHandler.text);
                 string jsonRaw = webRequest.downloadHandler.text;
-                User user = JsonUtility.FromJson<User>(jsonRaw);
-                if (user.userId != "")
-                {
-                    print(user.userId);
-                    Debug.LogError("로그인 실패: 없는 사용자입니다");
-                }
-                else
-                {
-                    userId = user.userId;
-                    SceneManager.LoadScene(1);
-                }
+                print(jsonRaw);
+                //User user = JsonUtility.FromJson<User>(jsonRaw);
+                //if (user.userId != "")
+                //{
+                //    print(user.userId);
+                //    Debug.LogError("로그인 실패: 없는 사용자입니다");
+                //}
+                //else
+                //{
+                userId = jsonRaw;
+                print(userId);
+                SceneManager.LoadScene(1);
+                //}
             }
             else
             {
