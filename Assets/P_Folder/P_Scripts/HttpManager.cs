@@ -417,17 +417,19 @@ public class HttpManager : MonoBehaviour
             {
                 Debug.Log("로그인 성공: " + webRequest.downloadHandler.text);
                 string jsonRaw = webRequest.downloadHandler.text;
-                User user = JsonUtility.FromJson<User>(jsonRaw);
-                if (user.userId != "")
-                {
-                    print(user.userId);
-                    Debug.LogError("로그인 실패: 없는 사용자입니다");
-                }
-                else
-                {
-                    userId = user.userId;
-                    SceneManager.LoadScene(1);
-                }
+                print(jsonRaw);
+                //User user = JsonUtility.FromJson<User>(jsonRaw);
+                //if (user.userId != "")
+                //{
+                //    print(user.userId);
+                //    Debug.LogError("로그인 실패: 없는 사용자입니다");
+                //}
+                //else
+                //{
+                userId = jsonRaw;
+                print(userId);
+                SceneManager.LoadScene(1);
+                //}
             }
             else
             {
