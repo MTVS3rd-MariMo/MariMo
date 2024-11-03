@@ -228,4 +228,10 @@ public class P_CreatorToolConnectMgr : MonoBehaviour
         };
         IsDataLoaded = false;
     }
+
+    // 모든 퀴즈와 질문 데이터 가져오기
+    public QuizData GetQuizData()
+    {
+        return quizData;
+    }
 }

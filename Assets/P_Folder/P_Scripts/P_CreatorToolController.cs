@@ -173,6 +173,20 @@ public class P_CreatorToolController : MonoBehaviour
     }
 
 
+    public void OnFinishMaking(QuizData quizData)
+    {
+        HttpInfo info = new HttpInfo();
+        info.url = url_Front + "/api/lesson-material";
+        info.body = JsonUtility.ToJson(quizData);
+        info.contentType = "application/json";
+        info.onComplete = (DownloadHandler downloadHandler) =>
+        {
+            // 완료시 실행
+        };
+
+        StartCoroutine(HttpManager.GetInstance().Post(info));
+
+    }
 
     void BtnColor(Color color, Button button)
     {
@@ -186,4 +200,6 @@ public class P_CreatorToolController : MonoBehaviour
         button.colors = colorBlock;
 
     }
+
+
 }

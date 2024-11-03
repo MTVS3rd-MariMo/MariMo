@@ -6,6 +6,8 @@ using UnityEngine.UI;
 
 public class P_MakingAsk : MonoBehaviour
 {
+    private P_CreatorToolController _creatorToolController;
+
     public Button btn_Prev;
     public Button btn_Next;
 
@@ -18,6 +20,7 @@ public class P_MakingAsk : MonoBehaviour
 
     void Start()
     {
+        _creatorToolController = GetComponentInParent<P_CreatorToolController>();
         btn_Prev.onClick.AddListener(OnclickPrev);
         btn_Next.onClick.AddListener(OnclickNext);
 
@@ -70,8 +73,14 @@ public class P_MakingAsk : MonoBehaviour
         }
     }
 
+
     public void GoTitle()
     {
+        // 데이터 송신
+        QuizData data = P_CreatorToolConnectMgr.Instance.GetQuizData();
 
+        _creatorToolController.OnFinishMaking(data);
+
+        // 초기 화면으로
     }
 }
