@@ -7,8 +7,13 @@ using UnityEngine.UI;
 
 public class K_HttpAvatar : MonoBehaviour
 {
+    // 아바타 보내기
     public RawImage rawImage;   
     public Button btn_CreateAvatar;
+
+    // 아바타 이미지 받기
+    public Image avatarImage;
+
 
     public string uploadUrl = "http://172.30.1.44:8080/api/avatar/upload-img";
     public string downloadUrl = "";
@@ -65,12 +70,23 @@ public class K_HttpAvatar : MonoBehaviour
         HttpInfo info = new HttpInfo
         {
             url = downloadUrl,
-            //body = "png",
-            //contentType = "multipart/form-data",
             onComplete = (DownloadHandler downloadHandler) =>
             {
+                Texture2D receivedTexture = new Texture2D(2, 2);
+                receivedTexture.LoadImage(downloadHandler.data);
+                rawImage.texture = receivedTexture;
+
+                Sprite receivedSprite = Sprite.Create(
+                    receivedTexture,
+                    new Rect(0, 0, receivedTexture.width, receivedTexture.height),
+                    new Vector2(0.5f, 0.5f)
+                    );
+                avatarImage.sprite = receivedSprite;
+
+                Debug.Log("아바타 이미지 다운로드 댐");
+
                 // 응답 받아
-                Debug.Log("Download 완료 : " + downloadHandler.text);
+                //Debug.Log("Download 완료 : " + downloadHandler.text);
             }
         };
         
