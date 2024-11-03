@@ -8,7 +8,8 @@ using UnityEngine;
 
 public class Y_SignUp : MonoBehaviour
 {
-    public TMP_InputField[] inputs;
+    public TMP_InputField[] signUpInputs = new TMP_InputField[6];
+    public TMP_InputField[] logInInputs = new TMP_InputField[2];
     public bool isTeacher = false;
 
     
@@ -38,12 +39,12 @@ public class Y_SignUp : MonoBehaviour
 
     public void ClickConfirm()
     {
-        string username = inputs[5].text;
-        string password = inputs[6].text;
-        string school = inputs[1].text;
-        string grade = inputs[2].text;
-        string className = inputs[3].text;
-        string studentNumber = inputs[4].text;
+        string username = signUpInputs[4].text;
+        string password = signUpInputs[5].text;
+        string school = signUpInputs[0].text;
+        string grade = signUpInputs[1].text;
+        string className = signUpInputs[2].text;
+        string studentNumber = signUpInputs[3].text;
 
         if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password))
         {
@@ -55,11 +56,22 @@ public class Y_SignUp : MonoBehaviour
         {
             StartCoroutine(HttpManager.GetInstance().SignUpCoroutine(username, password, school, Int32.Parse(grade), Int32.Parse(className), Int32.Parse(studentNumber), isTeacher));
         }
+
+        LobbyUIController.lobbyUI.signUpUI.SetActive(false);
+        LobbyUIController.lobbyUI.logInUI.SetActive(true);
     }
 
-    //private string SignUpCoroutine(string username, string password, string school, int grade, int className, int studentNumber, bool isTeacher)
-    //{
-    //    SignUpData registerData = new SignUpData { username = username, password = password, isTeacher = isTeacher, school = school, grade = grade, className = className, studentNumber = studentNumber };
+    public void ClickBack()
+    {
+        LobbyUIController.lobbyUI.signUpUI.SetActive(false);
+        LobbyUIController.lobbyUI.logInUI.SetActive(true);
+    }
 
-    //}
+    public void ClickLogIn()
+    {
+        string username = logInInputs[0].text;
+        string password = logInInputs[1].text;
+        StartCoroutine(HttpManager.GetInstance().LogInCoroutine(username, password));
+    }
+
 }
