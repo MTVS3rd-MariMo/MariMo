@@ -17,7 +17,7 @@ public class QuizData
 public class Quiz
 {
     public string question;
-    public string answer;
+    public float answer;
     public string firstChoice;
     public string secondChoice;
     public string thirdChoice;
@@ -94,7 +94,7 @@ public class P_CreatorToolConnectMgr : MonoBehaviour
             openQuestions = new List<OpenQuestion>()
         };
     }
-
+    
     // json 문자열 파싱
     public void ParseQuizData(string jsonString)
     {
