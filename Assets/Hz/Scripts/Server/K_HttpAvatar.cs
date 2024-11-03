@@ -7,15 +7,16 @@ using UnityEngine.UI;
 
 public class K_HttpAvatar : MonoBehaviour
 {
-    public RawImage rawImage;
-    public string uploadUrl = "http://172.30.1.44:8080/api/avatar/upload-img";
+    public RawImage rawImage;   
     public Button btn_CreateAvatar;
+
+    public string uploadUrl = "http://172.30.1.44:8080/api/avatar/upload-img";
+    public string downloadUrl = "";
 
     void Start()
     {
         btn_CreateAvatar.onClick.AddListener(CreateAvatar);
     }
-
     
     // 서버에 아바타 보내기
     public IEnumerator UploadTextureAsPng()
@@ -30,7 +31,6 @@ public class K_HttpAvatar : MonoBehaviour
         }
 
         byte[] pngData = textureToUpload.EncodeToPNG();
-        //string img = System.Convert.ToBase64String(pngData);
 
         HttpInfo info = new HttpInfo
         {
@@ -60,18 +60,17 @@ public class K_HttpAvatar : MonoBehaviour
     }
 
     // 서버에서 아바타 받아오기
-
     public IEnumerator OnDownloadMP4()
     {
         HttpInfo info = new HttpInfo
         {
-            url = uploadUrl,
-            body = "img",
-            contentType = "multipart/form-data",
+            url = downloadUrl,
+            //body = "png",
+            //contentType = "multipart/form-data",
             onComplete = (DownloadHandler downloadHandler) =>
             {
                 // 응답 받아
-                Debug.Log("Upload 완료 : " + downloadHandler.text);
+                Debug.Log("Download 완료 : " + downloadHandler.text);
             }
         };
         
