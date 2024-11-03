@@ -1,18 +1,25 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class K_ChangeDrawColor : MonoBehaviour
 {
-    // Start is called before the first frame update
+    [SerializeField]
+    Button btn_ChangeColor;
+
+    [SerializeField]
+    Color penColor;
+
     void Start()
     {
-        
+        // 이벤트 등록
+        btn_ChangeColor.onClick.AddListener(ChangePenColor);
     }
 
-    // Update is called once per frame
-    void Update()
+
+    void ChangePenColor()
     {
-        
+        K_Drawing.draw_Color = penColor;
     }
 }
