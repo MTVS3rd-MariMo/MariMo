@@ -30,7 +30,7 @@ public class P_CreatorToolController : MonoBehaviour
 
     public TMP_Dropdown dropdown;
 
-    string url_Front = "http://172.29.48.1:8080/";
+    string url_Front = "http://192.168.0.44:8899";
 
 
     void Start()
@@ -138,9 +138,9 @@ public class P_CreatorToolController : MonoBehaviour
     {
         HttpInfo info = new HttpInfo();
         // api/lesson-material/upload-pdf 앤드포인트..?
-        info.url = url_Front + "api/lesson-material/upload-pdf";
-        info.body = JsonUtility.ToJson(P_CreatorToolConnectMgr.Instance.pdfPath);
-        info.contentType = "application/json";
+        info.url = url_Front + "/api/lesson-material/upload-pdf";
+        info.body = P_CreatorToolConnectMgr.Instance.pdfPath;
+        info.contentType = "multipart/form-data";
         info.onComplete = (DownloadHandler downloadHandler) =>
         {
             try
@@ -162,7 +162,7 @@ public class P_CreatorToolController : MonoBehaviour
             }
         };
 
-        StartCoroutine(HttpManager.GetInstance().Post(info));
+        StartCoroutine(HttpManager.GetInstance().UploadFileByFormDataPDF(info));
 
         // 생성중 UI 뜨고 생성 완료시 이동
         panel_Making.SetActive(true);

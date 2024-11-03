@@ -145,8 +145,6 @@ public class P_FileLoader : MonoBehaviour
 
         P_CreatorToolConnectMgr.Instance.pdfPath = filePath;
 
-        Debug.Log(JsonUtility.ToJson(filePath));
-
         panel_FileViewer.SetActive(false);
     }
 
