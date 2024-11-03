@@ -10,8 +10,10 @@ public class K_HttpAvatar : MonoBehaviour
     // 아바타 보내기
     public RawImage rawImage;   
     public Button btn_CreateAvatar;
+    public GameObject PaintUI;
 
     // 아바타 이미지 받기
+    public GameObject ChooseCharacterUI;
     public Image avatarImage;
 
 
@@ -46,6 +48,13 @@ public class K_HttpAvatar : MonoBehaviour
             {
                 // 응답 받아
                 Debug.Log("Upload 완료 : " + downloadHandler.text);
+
+                // 업로드 완료됐다면, PaintUI 비활성화, ChooseCharacterUI 활성화 시키기
+                PaintUI.SetActive(false);
+                ChooseCharacterUI.SetActive(true);
+
+                // 서버에서 전송해준 이미지 다운로드해서 표시해주기
+                StartCoroutine(OnDownloadMP4());
             }
         };
 
