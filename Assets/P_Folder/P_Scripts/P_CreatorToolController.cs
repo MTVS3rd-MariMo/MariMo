@@ -1,7 +1,9 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Networking;
 using UnityEngine.UI;
 
 public class P_CreatorToolController : MonoBehaviour
@@ -28,7 +30,7 @@ public class P_CreatorToolController : MonoBehaviour
 
     public TMP_Dropdown dropdown;
 
-    public string pdfPath = null;
+    string url_Front = "http://192.168.0.44:8899";
 
 
     void Start()
@@ -51,7 +53,7 @@ public class P_CreatorToolController : MonoBehaviour
 
     private void Update()
     {
-        if (pdfPath != null)
+        if (P_CreatorToolConnectMgr.Instance.pdfPath != null)
             btn_SendPDF.interactable = true;
         else
             btn_SendPDF.interactable = false;
@@ -134,6 +136,34 @@ public class P_CreatorToolController : MonoBehaviour
 
     public void OnclickSend()
     {
+        HttpInfo info = new HttpInfo();
+        // api/lesson-material/upload-pdf 앤드포인트..?
+        info.url = url_Front + "/api/lesson-material/upload-pdf";
+        info.body = P_CreatorToolConnectMgr.Instance.pdfPath;
+        info.contentType = "multipart/form-data";
+        info.onComplete = (DownloadHandler downloadHandler) =>
+        {
+            try
+            {
+                // 응답 데이터 로그 출력 (디버그용)
+                Debug.Log("서버 응답: " + downloadHandler.text);
+
+                // QuizManager의 ParseQuizData 메서드 호출하여 데이터 파싱
+                P_CreatorToolConnectMgr.Instance.ParseQuizData(downloadHandler.text);
+
+                // 데이터 로드 완료 후 처리할 작업이 있다면 여기에 추가
+                Debug.Log("퀴즈 데이터 로드 완료!");
+                Debug.Log($"로드된 퀴즈 개수: {P_CreatorToolConnectMgr.Instance.GetQuizCount()}");
+                Debug.Log($"로드된 주관식 문제 개수: {P_CreatorToolConnectMgr.Instance.GetOpenQuestionCount()}");
+            }
+            catch (Exception e)
+            {
+                Debug.LogError($"JSON 파싱 중 에러 발생: {e.Message}");
+            }
+        };
+
+        StartCoroutine(HttpManager.GetInstance().UploadFileByFormDataPDF(info));
+
         // 생성중 UI 뜨고 생성 완료시 이동
         panel_Making.SetActive(true);
     }

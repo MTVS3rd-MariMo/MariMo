@@ -128,30 +128,79 @@ public class HttpManager : MonoBehaviour
     // 파일 업로드 (form-data)
     public IEnumerator UploadFileByFormData(HttpInfo info)
     {
-       // info.data 에는 파일의 위치
-       // info.data 에 있는 파일을 byte 배열로 읽어오자
-       byte[] data = File.ReadAllBytes(info.body);
+        // info.data 에는 파일의 위치
+        // info.data 에 있는 파일을 byte 배열로 읽어오자
+        byte[] data = File.ReadAllBytes(info.body);
 
-       // data 를 MultipartForm 으로 셋팅
-       List<IMultipartFormSection> formData = new List<IMultipartFormSection>();
-       //formData.Add(new MultipartFormFileSection("file", data, "image.jpg", info.contentType));
-       formData.Add(new MultipartFormFileSection("file", System.Convert.FromBase64String(info.body), "image.png", "image/png"));
+        // data 를 MultipartForm 으로 셋팅
+        List<IMultipartFormSection> formData = new List<IMultipartFormSection>();
+        //formData.Add(new MultipartFormFileSection("file", data, "image.jpg", info.contentType));
+        formData.Add(new MultipartFormFileSection("file", System.Convert.FromBase64String(info.body), "image.png", "image/png"));
 
 
-       using (UnityWebRequest webRequest = UnityWebRequest.Post(info.url, formData))
-       {
-           // 서버에 요청 보내기
-           yield return webRequest.SendWebRequest();
+        using (UnityWebRequest webRequest = UnityWebRequest.Post(info.url, formData))
+        {
+            // 서버에 요청 보내기
+            yield return webRequest.SendWebRequest();
 
-           // 서버에게 응답이 왔다.
-          DoneRequest(webRequest, info);
+            // 서버에게 응답이 왔다.
+            DoneRequest(webRequest, info);
 
-       }
+        }
+    }
+
+    public IEnumerator UploadFileByFormDataPDF(HttpInfo info)
+    {
+        // info.data 에는 파일의 위치
+        // info.data 에 있는 파일을 byte 배열로 읽어오자
+        byte[] data = File.ReadAllBytes(info.body);
+
+        // data 를 MultipartForm 으로 셋팅
+        List<IMultipartFormSection> formData = new List<IMultipartFormSection>();
+        //formData.Add(new MultipartFormFileSection("file", data, "image.jpg", info.contentType));
+        formData.Add(new MultipartFormFileSection("pdf", data, "file.pdf", "application/pdf"));
+
+
+        using (UnityWebRequest webRequest = UnityWebRequest.Post(info.url, formData))
+        {
+            //webRequest.SetRequestHeader("Content-Type", "multipart/form-data");
+
+            // 서버에 요청 보내기
+            yield return webRequest.SendWebRequest();
+
+            // 요청 결과 상태 확인
+            if (webRequest.result == UnityWebRequest.Result.Success)
+            {
+                Debug.Log("성공적으로 pdf 업로드");
+                Debug.Log("서버 응답: " + webRequest.downloadHandler.text);
+            }
+            else if (webRequest.result == UnityWebRequest.Result.ConnectionError)
+            {
+                Debug.LogError("연결 오류 발생: " + webRequest.error);
+            }
+            else if (webRequest.result == UnityWebRequest.Result.DataProcessingError)
+            {
+                Debug.LogError("데이터 처리 오류 발생: " + webRequest.error);
+            }
+            else if (webRequest.result == UnityWebRequest.Result.ProtocolError)
+            {
+                Debug.LogError("프로토콜 오류 발생: " + webRequest.error);
+            }
+            else
+            {
+                Debug.LogError("알 수 없는 오류 발생: " + webRequest.error);
+            }
+
+
+            // 서버에게 응답이 왔다.
+            DoneRequest(webRequest, info);
+
+        }
     }
 
 
     // 그림판 보내기 
-    public IEnumerator UploadFileByFormData(HttpInfo info, byte[] imgData)
+    public IEnumerator UploadFileByFormDataArt(HttpInfo info, byte[] imgData)
     {
         // info.data 에는 파일의 위치
         // info.data 에 있는 파일을 byte 배열로 읽어오자

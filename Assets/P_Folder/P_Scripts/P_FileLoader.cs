@@ -143,11 +143,7 @@ public class P_FileLoader : MonoBehaviour
     {
         Debug.Log($"Opening file: {filePath}");
 
-        // 파일 경로 전송
-        P_CreatorToolController p_CreatorToolController = GetComponentInParent<P_CreatorToolController>();
-
-        if (p_CreatorToolController != null)
-            p_CreatorToolController.pdfPath = filePath;
+        P_CreatorToolConnectMgr.Instance.pdfPath = filePath;
 
         panel_FileViewer.SetActive(false);
     }

@@ -49,7 +49,7 @@ public class K_HttpAvatar : MonoBehaviour
         Debug.Log("Coroutine Started");
 
         Debug.Log("이미지 데이터 길이 " + pngData.Length);
-        yield return StartCoroutine(HttpManager.GetInstance().UploadFileByFormData(info, pngData));
+        yield return StartCoroutine(HttpManager.GetInstance().UploadFileByFormDataArt(info, pngData));
     }
 
     // 캐릭터 생성하기 버튼 누르면 서버에 전송
