@@ -4,9 +4,13 @@ using Photon.Pun;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Networking;
+using UnityEngine.UI;
+using UnityEngine.Video;
 //using UnityEngine.tvOS;
 
 // 버튼들에 연결하는 식들
@@ -14,16 +18,40 @@ using UnityEngine;
 
 public class Y_BookController : MonoBehaviour
 {
+    #region Server
+    // Server 
+    K_HttpAvatar k_HttpAvatar;
+    private string uploadUrl = "http://192.168.0.113:9988/api/avatar/upload-img";
+    private string avatarImgUrl;
+    private List<string> animationUrls;
+
+    // 아바타 보내기
+    private RawImage rawImage;
+    private Button btn_CreateAvatar;
+    //public GameObject PaintUI;
+
+    // 아바타 이미지 받기
+    //public GameObject ChooseCharacterUI;
+    // 선택된 아바타 UI
+    private Image avatarImage;
+    private GameObject btn_MakeAvatar;
+    private GameObject btn_ToMap;
+
+    // VideoPlayer
+
+
+
+    #endregion
+
     public static Y_BookController Instance { get; private set; }
 
     public Camera mainCam;
     public CinemachineVirtualCamera virtualCam;
-    public Camera paintCam;
 
     public GameObject bookUI;
     public GameObject ChooseCharacterUI;
     public GameObject PaintUI;
-    public GameObject ChooseCompleteUI;
+    //public GameObject ChooseCompleteUI;
     public PhotonView pv;
 
     #region Book
@@ -101,6 +129,7 @@ public class Y_BookController : MonoBehaviour
 
         SplitTextIntoPages();
         DisplayPage(pageNo);
+
     }
 
     public bool isSync = true;
@@ -314,15 +343,45 @@ public class Y_BookController : MonoBehaviour
          /////////22222222
         // currentPlayerNum 에 따라 RenderTexture, characterNum에 따라 MP4 파일을 설정
         //SetCharacterVideo(currentPlayerNum, characterNum);
+
+
+        
     }
 
-    //private void SetCharacterVideo(int currentPlayerNum, int characterNum)
-    //{
-    //    foreach(KeyValuePair<int, string> items in playerNames)
-    //    {
-            
-    //    }
-    //}
+    private void SetCharacterVideo(int currentPlayerNum, int characterNum)
+    {
+
+        //foreach (KeyValuePair<int, string> items in playerNames)
+        //{
+
+        //}
+    }
+
+    // 비디오 다운로드 후 설정
+    private IEnumerator DownloadAndSetVideo(string videoUrl, VideoPlayer videoPlayer)
+    {
+        using (UnityWebRequest webRequest = UnityWebRequest.Get(videoUrl))
+        {
+            yield return webRequest.SendWebRequest();
+
+            if (webRequest.result == UnityWebRequest.Result.Success)
+            {
+                byte[] videoData = webRequest.downloadHandler.data;
+                string filePath = Path.Combine(Application.persistentDataPath, "character_animation.mp4");
+                File.WriteAllBytes(filePath, videoData);
+
+                videoPlayer.url = filePath;
+                videoPlayer.Prepare();
+                videoPlayer.Play();
+
+                Debug.Log($"애니메이션 다운로드 및 설정 완료: {filePath}");
+            }
+            else
+            {
+                Debug.LogError("애니메이션 다운로드 실패: " + webRequest.error);
+            }
+        }
+    }
 
     public void PaintToComplete()
     {
