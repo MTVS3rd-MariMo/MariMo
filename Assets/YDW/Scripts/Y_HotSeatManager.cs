@@ -5,11 +5,7 @@ using UnityEngine;
 
 public class Y_HotSeatManager : MonoBehaviourPun
 {
-
     public static Y_HotSeatManager Instance { get; private set; }
-
-    
-
 
     float triggerNum = 0;
     bool act = false;
@@ -38,7 +34,6 @@ public class Y_HotSeatManager : MonoBehaviourPun
             print("+++++++++ : " + triggerNum);
 
             players.Add(other.gameObject);
-
 
             if (triggerNum >= 4 && !act)
             {
