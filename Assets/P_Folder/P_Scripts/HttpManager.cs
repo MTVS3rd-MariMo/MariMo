@@ -66,7 +66,6 @@ public class User
 public class HttpManager : MonoBehaviour
 {
     static HttpManager instance;
-    public string userId;
 
     public static HttpManager GetInstance()
     {
@@ -340,107 +339,5 @@ public class HttpManager : MonoBehaviour
         }
     }
 
-    string RegisterUrl = "http://211.250.74.75:8899/api/user/signup"; ///////////////////
 
-    public IEnumerator SignUpCoroutine(string username, string password, string school, int grade, int className, int studentNumber, bool isTeacher)
-    {
-        Role role;
-
-        if (isTeacher)
-        {
-            role = Role.TEACHER;
-        }
-        else
-        {
-            role = Role.STUDENT;
-        }
-
-        SignUpData registerData = new SignUpData
-        {
-            role = role,
-            school = school,
-            grade = grade,
-            classRoom = className,
-            studentNumber = studentNumber,
-            name = username,
-            password = password
-        };
-
-        string jsonBody = JsonUtility.ToJson(registerData);
-        byte[] jsonToSend = new System.Text.UTF8Encoding().GetBytes(jsonBody);
-
-        // 서버 요청 설정
-        using (UnityWebRequest webRequest = new UnityWebRequest(RegisterUrl, "POST"))
-        {
-            webRequest.uploadHandler = new UploadHandlerRaw(jsonToSend); // 로우 데이터 업로드
-            webRequest.downloadHandler = new DownloadHandlerBuffer(); // 서버가 다운로드 할 수 있는 공간 만듦
-            webRequest.SetRequestHeader("Content-Type", "application/json");
-
-            // 서버에 요청 보내기
-            yield return webRequest.SendWebRequest();
-
-            // 서버 응답 처리
-            if (webRequest.result == UnityWebRequest.Result.Success)
-            {
-                Debug.Log("회원가입 성공: " + webRequest.downloadHandler.text);
-            }
-            else
-            {
-                Debug.LogError("회원가입 실패: " + webRequest.error);
-            }
-        }
-    }
-
-    string logInUrl = "http://211.250.74.75:8899/api/user/login";
-
-
-    public IEnumerator LogInCoroutine(string username, string password)
-    {
-
-        SignUpData registerData = new SignUpData
-        {
-            name = username,
-            password = password
-        };
-
-        string jsonBody = JsonUtility.ToJson(registerData);
-        byte[] jsonToSend = new System.Text.UTF8Encoding().GetBytes(jsonBody);
-
-        // 서버 요청 설정
-        using (UnityWebRequest webRequest = new UnityWebRequest(logInUrl, "POST"))
-        {
-            webRequest.uploadHandler = new UploadHandlerRaw(jsonToSend); // 로우 데이터 업로드
-            webRequest.downloadHandler = new DownloadHandlerBuffer(); // 서버가 다운로드 할 수 있는 공간 만듦
-            webRequest.SetRequestHeader("Content-Type", "application/json");
-            //webRequest.SetRequestHeader("userId", userId);
-
-            // 서버에 요청 보내기
-            yield return webRequest.SendWebRequest();
-
-            // 서버 응답 처리
-            if (webRequest.result == UnityWebRequest.Result.Success)
-            {
-                Debug.Log("로그인 성공: " + webRequest.downloadHandler.text);
-                string jsonRaw = webRequest.downloadHandler.text;
-                print(jsonRaw);
-                //User user = JsonUtility.FromJson<User>(jsonRaw);
-                //if (user.userId != "")
-                //{
-                //    print(user.userId);
-                //    Debug.LogError("로그인 실패: 없는 사용자입니다");
-                //}
-                //else
-                //{
-                userId = jsonRaw;
-                print(userId);
-                SceneManager.LoadScene(1);
-                //}
-            }
-            else
-            {
-                Debug.LogError("로그인 실패: " + webRequest.error);
-
-            }
-        }
-    }
 }

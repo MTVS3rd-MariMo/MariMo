@@ -12,18 +12,22 @@ public class Y_SignUp : MonoBehaviour
     public TMP_InputField[] logInInputs = new TMP_InputField[2];
     public bool isTeacher = false;
 
-    
+    public GameObject signUpUI;
+    public GameObject logInUI;
+    public GameObject titleUI;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    public static Y_SignUp signUp;
 
-    // Update is called once per frame
-    void Update()
+    private void Awake()
     {
-        
+        if (signUp == null)
+        {
+            signUp = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
     }
 
     public void ClickStudent()
@@ -35,7 +39,6 @@ public class Y_SignUp : MonoBehaviour
     {
         isTeacher = true;
     }
-
 
     public void ClickConfirm()
     {
@@ -54,24 +57,30 @@ public class Y_SignUp : MonoBehaviour
         }
         else
         {
-            StartCoroutine(HttpManager.GetInstance().SignUpCoroutine(username, password, school, Int32.Parse(grade), Int32.Parse(className), Int32.Parse(studentNumber), isTeacher));
+            StartCoroutine(Y_HttpLogIn.GetInstance().SignUpCoroutine(username, password, school, Int32.Parse(grade), Int32.Parse(className), Int32.Parse(studentNumber), isTeacher));
         }
 
-        LobbyUIController.lobbyUI.signUpUI.SetActive(false);
-        LobbyUIController.lobbyUI.logInUI.SetActive(true);
+        signUpUI.SetActive(false);
+        logInUI.SetActive(true);
     }
 
     public void ClickBack()
     {
-        LobbyUIController.lobbyUI.signUpUI.SetActive(false);
-        LobbyUIController.lobbyUI.logInUI.SetActive(true);
+        signUpUI.SetActive(false);
+        logInUI.SetActive(true);
     }
 
     public void ClickLogIn()
     {
         string username = logInInputs[0].text;
         string password = logInInputs[1].text;
-        StartCoroutine(HttpManager.GetInstance().LogInCoroutine(username, password));
+        StartCoroutine(Y_HttpLogIn.GetInstance().LogInCoroutine(username, password));
+    }
+
+    public void ClickJoin()
+    {
+        logInUI.SetActive(false);
+        signUpUI.SetActive(true);
     }
 
 }

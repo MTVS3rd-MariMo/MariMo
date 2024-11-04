@@ -7,13 +7,14 @@ using System.Reflection;
 using System;
 using ExitGames.Client.Photon;
 using Hashtable = ExitGames.Client.Photon.Hashtable;
+using UnityEngine.UI;
 
 
 public class ConnectionManager : MonoBehaviourPunCallbacks
 {
     public GameObject roomPrefab;
     public Transform scrollContent;
-    public GameObject[] panelList;
+    //public GameObject[] panelList;
 
     List<RoomInfo> cachedRoomList = new List<RoomInfo>();
 
@@ -36,11 +37,13 @@ public class ConnectionManager : MonoBehaviourPunCallbacks
             PhotonNetwork.GameVersion = "1.0.0";
             PhotonNetwork.NickName = LobbyUIController.lobbyUI.input_nickName.text;
             PhotonNetwork.AutomaticallySyncScene = true;
+            print("접속 설정 완료");
 
             // 접속을 서버에 요청하기
             PhotonNetwork.ConnectUsingSettings(); // 위 정보를 바탕으로 네임 서버에서 마스터 서버로 연결하는 함수.
                                                   // 네임 서버: 커넥션 관리, NetID 구분하여 클라이언트 구분.
                                                   // 마스터 서버: 유저들 간의 Match making 을 해주는 공간. 룸을 만들고 룸에 조인을 하고 룸의 플레이어끼리 플레이를 하는 식. 방장의 씬을 기준으로 설정하고 나의 씬에 동기화
+            print("서버에 요청 중....");
 
             LobbyUIController.lobbyUI.btn_login.interactable = false;
             //int playerColor = LobbyUIController.lobbyUI.drop_playerColor.value;
@@ -83,12 +86,16 @@ public class ConnectionManager : MonoBehaviourPunCallbacks
         // 서버 로비에 들어갔음을 알려준다.
         print(MethodInfo.GetCurrentMethod().Name + " is Call!");
         LobbyUIController.lobbyUI.ShowRoomPanel();
+        CreateRoom(); ///////////////
+        CreateRoom(); //////////////////
     }
 
     public void CreateRoom()
     {
-        string roomName = LobbyUIController.lobbyUI.roomSetting[0].text;
-        int playerCount = Convert.ToInt32(LobbyUIController.lobbyUI.roomSetting[1].text);
+        //string roomName = LobbyUIController.lobbyUI.roomSetting[0].text;
+        //int playerCount = Convert.ToInt32(LobbyUIController.lobbyUI.roomSetting[1].text);
+        string roomName = "마리모";
+        int playerCount = 4;
 
         if (roomName.Length > 0 && playerCount > 1)
         {
@@ -118,7 +125,9 @@ public class ConnectionManager : MonoBehaviourPunCallbacks
     public void JoinRoom()
     {
         // Join 관련 패널을 활성화한다.
-        ChangePanel(1, 2);
+        //ChangePanel(1, 2);
+
+        PhotonNetwork.LoadLevel(1);
     }
 
     /// <summary>
@@ -126,11 +135,11 @@ public class ConnectionManager : MonoBehaviourPunCallbacks
     /// </summary>
     /// <param name="offIndex">꺼야될 패널 인덱스</param>
     /// <param name="onIndex">켜야될 패널 인덱스</param>
-    void ChangePanel(int offIndex, int onIndex)
-    {
-        panelList[offIndex].SetActive(false);
-        panelList[onIndex].SetActive(true);
-    }
+    //void ChangePanel(int offIndex, int onIndex)
+    //{
+    //    panelList[offIndex].SetActive(false);
+    //    panelList[onIndex].SetActive(true);
+    //}
 
     public override void OnCreatedRoom()
     {
@@ -222,10 +231,12 @@ public class ConnectionManager : MonoBehaviourPunCallbacks
             RoomPanel roomPanel = go.GetComponent<RoomPanel>();
             roomPanel.SetRoomInfo(room);
             // 버튼에 방 입장 기능 연결하기
-            roomPanel.btn_join.onClick.AddListener(() =>
+
+            roomPanel.btn_Room.onClick.AddListener(() =>
             {
                 PhotonNetwork.JoinRoom(room.Name);
             });
+
         }
     }
 

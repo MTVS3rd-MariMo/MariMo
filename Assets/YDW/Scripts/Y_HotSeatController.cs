@@ -75,10 +75,11 @@ public class Y_HotSeatController : MonoBehaviourPun
 
     void Start()
     {
+        // 자기소개 인풋필드 터치 키보드 올라오면 위치/크기 변경할 준비
         originalSize = inputFieldRect.sizeDelta;
         originalPosition = inputFieldRect.gameObject.transform.localPosition;
-        StartCoroutine(Deactivate(guide));
 
+        // stage 부분 사전 준비/저장
         originalColor = images[0].color;
         playerPos = players[0].transform.position;
 
@@ -91,8 +92,6 @@ public class Y_HotSeatController : MonoBehaviourPun
         // 안내 가이드 띄워주기
         guide.SetActive(true);
         StartCoroutine(Deactivate(guide));
-
-
     }
 
     // 오브젝트 2초뒤 꺼주기
@@ -100,7 +99,7 @@ public class Y_HotSeatController : MonoBehaviourPun
     {
         yield return new WaitForSeconds(2);
         gm.SetActive(false);
-        if(gm == guides[4])
+        if(gm == guides[4]) // 마지막 "참 잘했어요!" UI 의 경우
         {
             yield return new WaitForSeconds(3f);
             K_KeyManager.instance.isDoneHotSitting = true;
@@ -113,28 +112,30 @@ public class Y_HotSeatController : MonoBehaviourPun
 
     private void Update()
     {
-        if(Input.GetKeyDown(KeyCode.Alpha0) && testNum < players.Count)
+        if(Input.GetKeyDown(KeyCode.Alpha0) && testNum <= players.Count)
         {
             RPC_ProtoTest();
         }  
+
+        //if(Input.GetKeyDown(KeyCode.Alpha0) && testNum == players.Count)
+        //{
+
+        //}
 
         //if(Input.GetKeyDown(KeyCode.N))
         //{
         //    RPC_TurnOff();
         //}
 
-        if(hotSeating_count >= 4 && !isEnd)
+        // 네 명이 다 인터뷰 하면 자동으로 활동 종료
+        if(testNum >= players.Count && !isEnd)
         {
             isEnd = true;
             StartCoroutine(LastCoroutine());
         }
     }
 
-    IEnumerator LastCoroutine()
-    {
-        yield return new WaitForSeconds(2.5f);
-        RPC_ActivateGuide(4);
-    }
+    
 
     void RPC_ProtoTest()
     {
@@ -194,12 +195,58 @@ public class Y_HotSeatController : MonoBehaviourPun
         selfIntroduce.SetActive(false);
         panel_waiting.SetActive(true);
 
+        // 플레이어 순서 랜덤으로 섞음
         Shuffle();
 
         // 작성한 순서대로 추가됨
         RPC_AddSelfIntroduce(PhotonNetwork.LocalPlayer.ActorNumber, selfIntroduceInput.text);
 
         RPC_AllReady();
+    }
+
+    List<int> playerNums = new List<int>();
+    int[] playerNumsArray;
+
+    // 셔플 돌린 후 싱크 맞춤
+    public void Shuffle()
+    {
+        if (PhotonNetwork.IsMasterClient)
+        {
+            playerNums = ShuffleList(Y_BookController.Instance.allPlayers);
+            RPC_SyncPlayerNums(playerNums.ToArray());
+        }
+    }
+
+    List<int> ShuffleList(Dictionary<int, PhotonView> playerDict)
+    {
+        foreach (int key in playerDict.Keys)
+        {
+            playerNums.Add(key);
+        }
+
+        int n = playerNums.Count;
+
+        for (int i = 0; i < n; i++)
+        {
+            int j = UnityEngine.Random.Range(0, n);
+
+            int tmp = playerNums[i];
+            playerNums[i] = playerNums[j];
+            playerNums[j] = tmp;
+        }
+
+        return playerNums;
+    }
+
+    void RPC_SyncPlayerNums(int[] syncedPlayerNums)
+    {
+        photonView.RPC(nameof(SyncPlayerNums), RpcTarget.All, syncedPlayerNums);
+    }
+
+    [PunRPC]
+    void SyncPlayerNums(int[] syncedPlayerNums)
+    {
+        playerNums = syncedPlayerNums.ToList();
     }
 
     void RPC_AddSelfIntroduce(int actorNumber, string selfIntroduce)
@@ -235,10 +282,12 @@ public class Y_HotSeatController : MonoBehaviourPun
             panel_waiting.SetActive(false);
             stage.SetActive(true);
 
+            // 상단의 이름표, 중간의 캐릭터 애니메이션, 하단의 자기소개 순서 모두 랜덤으로 돌린 순서랑 맞춰 줌
             MatchNameTags();
             MatchPlayerPos();
             MatchSelfIntroduce();
 
+            Y_VoiceManager.Instance.recorder.TransmitEnabled = false; // 인터뷰 시작하기 전에 일단은 모두 보이스 끈다
             StartSpeech(0);
         }
     }
@@ -249,19 +298,7 @@ public class Y_HotSeatController : MonoBehaviourPun
 
     public GameObject spotlight;
     public GameObject stageScript;
-    List<int> playerNums = new List<int>();
-    int[] playerNumsArray;
-
-    // 셔플 돌린 후 싱크 맞춤
-    public void Shuffle()
-    {
-        if (PhotonNetwork.IsMasterClient)
-        {
-            playerNums = ShuffleList(Y_BookController.Instance.allPlayers);
-            RPC_SyncPlayerNums(playerNums.ToArray());
-        }
-    }
-
+    
     // Stage 단계의 상단 이름표 부분 구현 : 랜덤으로 순서 섞어서 보여주기
     void MatchNameTags()
     {
@@ -297,38 +334,6 @@ public class Y_HotSeatController : MonoBehaviourPun
         }
     }
 
-    List<int> ShuffleList(Dictionary<int, PhotonView> playerDict)
-    {
-        foreach (int key in playerDict.Keys)
-        {
-            playerNums.Add(key);
-        }
-
-        int n = playerNums.Count;
-
-        for(int i = 0; i < n; i++)
-        {
-            int j = UnityEngine.Random.Range(0, n);
-
-            int tmp = playerNums[i];
-            playerNums[i] = playerNums[j];
-            playerNums[j] = tmp;
-        }
-
-        return playerNums;
-    }
-
-    void RPC_SyncPlayerNums(int[] syncedPlayerNums)
-    {
-        photonView.RPC(nameof(SyncPlayerNums), RpcTarget.All, syncedPlayerNums);
-    }
-
-    [PunRPC]
-    void SyncPlayerNums(int[] syncedPlayerNums)
-    {
-        playerNums = syncedPlayerNums.ToList();
-    }
-
     public GameObject[] timerImgs;
 
     // 순서대로 자기소개 - 질문
@@ -341,7 +346,9 @@ public class Y_HotSeatController : MonoBehaviourPun
             stageScriptImgs[index - 1].gameObject.SetActive(false); // 전 플레이어의 자기소개 끄기
             spotlight.SetActive(false); // 스포트라이트 끔
 
-            ////////////////// 보이스 꺼 줘야 함
+            // 녹음 끄기
+            //  Y_VoiceManager.Instance.StopRecording(playerNums[index-1], "hotseatingInterview" + playerNums[index-1].ToString());
+            // 보이스 꺼 줘야 함
             Y_VoiceManager.Instance.recorder.TransmitEnabled = false;
         }
 
@@ -350,11 +357,9 @@ public class Y_HotSeatController : MonoBehaviourPun
             // 이름 UI 색깔 바꾸고
             images[index].color = Color.red;
 
+            // 플레이어 무대로 가게 한다
             playerPos = players[index].transform.position;
             StartCoroutine(ChangePos(playerPos, index));
-
-            stageScriptImgs[index].gameObject.SetActive(true);
-
         }
 
     }
@@ -370,7 +375,7 @@ public class Y_HotSeatController : MonoBehaviourPun
             {
                 playerPos = stagePos.position; // 도착점에 위치 맞춰준다
 
-                spotlight.SetActive(true); // 스포트라이트
+                spotlight.SetActive(true); // 스포트라이트 켜준다
 
                 stageScriptImgs[i].gameObject.SetActive(true);
 
@@ -378,28 +383,33 @@ public class Y_HotSeatController : MonoBehaviourPun
                 speechGuide.SetActive(true);
                 StartCoroutine(Deactivate(speechGuide));
 
-                int recordTime = 0;
+                //int recordTime;
 
-                if (i == 0 && PhotonNetwork.IsMasterClient)
+                // 마스터면 15초, 아니면 5초 타이머 시작
+                if (i == 0 && PhotonNetwork.IsMasterClient) // 테스트용으로 5초, 시연 땐 15초 정도 할까 /////////////////////////
                 {
-                    RPC_StartTimer(i, 15);
-                    recordTime = 15;
+                    RPC_StartTimer(i, 5);
+                    //recordTime = 15;
                     
                 }
                 else if(PhotonNetwork.IsMasterClient)
                 {
                     RPC_StartTimer(i, 5);
-                    recordTime = 5;
+                    //recordTime = 5;
                 }
 
-                //////////////// 내 차례 됐을 때에만 보이스 켜줌
+                // 내 차례 됐을 때에만 보이스 켜줌
                 if (PhotonNetwork.LocalPlayer.ActorNumber == playerNums[i])
                 {
                     Y_VoiceManager.Instance.recorder.TransmitEnabled = true;
-                    Y_VoiceManager.Instance.StartRecording(playerNums[i], recordTime);
+                    //Y_VoiceManager.Instance.StartRecording(playerNums[i], recordTime);
                 }
 
-                //if(PhotonNetwork.IsMasterClient) StartCoroutine(StartTimer(5));
+                // 자기소개 켜 줌
+                stageScriptImgs[i].gameObject.SetActive(true);
+
+                // 인터뷰로 넘어감
+                StartCoroutine(InterviewCoroutine(i));
 
                 break;
             }
@@ -426,6 +436,7 @@ public class Y_HotSeatController : MonoBehaviourPun
     // 타이머 시작
     IEnumerator StartTimer(int i, int time)
     {
+        yield return new WaitForSeconds(3f); // UI 사라질 때까지 기다리기
         timerImgs[i].gameObject.SetActive(true);
 
         while (currTime < time)
@@ -444,11 +455,12 @@ public class Y_HotSeatController : MonoBehaviourPun
             if (time - timeSpan.Seconds <= 0)
             {
                 timerImgs[i].gameObject.SetActive(false); // 타이머 끄기
-                if (PhotonNetwork.LocalPlayer.ActorNumber == playerNums[i]) // 녹음 종료
-                {
-                    Y_VoiceManager.Instance.recorder.TransmitEnabled = false;
-                    Y_VoiceManager.Instance.StopRecording(playerNums[i], "hotseatingInterview" + playerNums[i].ToString());
-                }
+                //if (PhotonNetwork.LocalPlayer.ActorNumber == playerNums[i]) // 녹음 시작
+                //{
+                    //Y_VoiceManager.Instance.recorder.TransmitEnabled = true;
+                    //Y_VoiceManager.Instance.StartRecording(playerNums[i], 600);
+                    //Y_VoiceManager.Instance.StopRecording(playerNums[i], "hotseatingInterview" + playerNums[i].ToString());
+                //}
             }
         }
 
@@ -459,6 +471,48 @@ public class Y_HotSeatController : MonoBehaviourPun
         currTime = 0;
     }
 
+    public GameObject[] myTurnImgs;
+    IEnumerator InterviewCoroutine(int index)
+    {
+        for(int i = 0; i < players.Count; i++)
+        {
+            if(i != index)
+            {
+                myTurnImgs[i].SetActive(true);
+
+                // 질문하는 사람 보이스 켜주고 녹음 시작
+                Y_VoiceManager.Instance.StartRecording(playerNums[i], 600);
+
+                // 원래는 30초인데 테스트용 2초
+                yield return new WaitForSeconds(2f);
+                // 녹음 종료
+
+                myTurnImgs[i].SetActive(false);
+
+                // 자기소개 한 사람 보이스 켜주고 녹음 시작
+                
+                // 원래는 60초인데 일단 2초
+                yield return new WaitForSeconds(2f);
+                // 녹음 종료
+            }
+        }
+
+        if(index == players.Count - 1)
+        {
+            RPC_ProtoTest();
+        }
+    }
+
+
+    #endregion
+
+    // 최종 단계
+    IEnumerator LastCoroutine()
+    {
+        yield return new WaitForSeconds(2.5f);
+        Y_VoiceManager.Instance.recorder.TransmitEnabled = true;
+        RPC_ActivateGuide(4);
+    }
     void RPC_ActivateGuide(int index)
     {
         photonView.RPC(nameof(ActivateGuide), RpcTarget.All, index);
@@ -469,8 +523,5 @@ public class Y_HotSeatController : MonoBehaviourPun
     {
         guides[index].SetActive(true);
         StartCoroutine(Deactivate(guides[index]));
-    }    
-
-
-    #endregion
+    }
 }
