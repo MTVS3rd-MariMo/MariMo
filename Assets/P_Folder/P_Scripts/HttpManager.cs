@@ -209,6 +209,10 @@ public class HttpManager : MonoBehaviour
             // 서버에게 응답이 왔다.
             DoneRequest(webRequest, info);
 
+            if (webRequest.result == UnityWebRequest.Result.Success)
+            {
+
+            }
         }
     }
 
