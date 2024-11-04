@@ -47,7 +47,17 @@ public class P_QuizSelect : MonoBehaviour
     // 선택한 퀴즈 데이터 전송
     void OnclickSelectComplete()
     {
-        p_CreatorToolController.panel_MakingAsk.SetActive(true);
+        // 선택한 퀴즈가 아닌건 삭제
+        for (int i = 0; i < P_CreatorToolConnectMgr.Instance.GetQuizCount(); i++)
+        {
+            if (P_CreatorToolConnectMgr.Instance.GetQuiz(i).quizId == P_CreatorToolConnectMgr.Instance.selectedID[0]
+                || P_CreatorToolConnectMgr.Instance.GetQuiz(i).quizId == P_CreatorToolConnectMgr.Instance.selectedID[1])
+            {
+            }
+            else
+            {
+            }
+                p_CreatorToolController.panel_MakingAsk.SetActive(true);
 
         gameObject.SetActive(false);
     }
