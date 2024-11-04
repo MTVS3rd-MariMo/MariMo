@@ -62,66 +62,62 @@ public class Y_VoiceManager : MonoBehaviour
             }
         }
 
-        if (Input.GetKeyDown(KeyCode.N))
-        {
-            StartRecording(1, 5);
-        }
-
-        if (Input.GetKeyDown(KeyCode.B))
-        {
-            StopRecording(1, "test");
-        }
-
-        //if(isTalking)
+        //if (Input.GetKeyDown(KeyCode.N))
         //{
-        //    recorder.TransmitEnabled = true;
-        //    noVoiceIcon.gameObject.SetActive(false);
-        //    voiceIcon.gameObject.SetActive(true);
-        //    isTalking = false;
+        //    StartRecording(1, 5);
         //}
-        //else if(!hasChanged)
-        //{
-        //    recorder.TransmitEnabled = false;
-        //    voiceIcon.gameObject.SetActive(false);
-        //    noVoiceIcon.gameObject.SetActive(true);
-        //}
-    }
 
-    public void StartRecording(int actorNumber, int recordingLength)
-    {
-        if (actorNumber == PhotonNetwork.LocalPlayer.ActorNumber)
+        //if (Input.GetKeyDown(KeyCode.B))
+        //{
+        //    StopRecording(1, "test");
+        //}
+
+        if(Input.GetKeyDown(KeyCode.Alpha9))
         {
-            //PunVoiceClient.Instance.PrimaryRecorder.TransmitEnabled = true;
-            currentRecording = Microphone.Start(null, false, recordingLength, recordingFrequency);
-            Debug.Log($"녹음 시작됨: {actorNumber}");
+            // 딕셔너리 키 값을 플레이어 아이디로, 오디오 클립은 for 문 돌려서 WAV 로 바꾼 뒤 통신
         }
     }
 
-    public void StopRecording(int actorNumber, string filename)
+
+
+    public void StartRecording(int playerId, int recordingLength)
     {
-        if (actorNumber == PhotonNetwork.LocalPlayer.ActorNumber)
+        currentRecording = Microphone.Start(null, true, recordingLength, recordingFrequency);
+        Debug.Log($"녹음 시작됨: {playerId}");
+    }
+
+    public void StopRecording(int playerId, string filename)
+    {
+        if (Microphone.IsRecording(null))
         {
-            //PunVoiceClient.Instance.PrimaryRecorder.TransmitEnabled = false;
+            int recordingPosition = Microphone.GetPosition(null);
+            Microphone.End(null);
 
-            if (Microphone.IsRecording(null))
+            if (currentRecording != null && recordingPosition > 0)
             {
-                Microphone.End(null);
-            }
+                // 녹음 데이터를 실제 녹음 길이만큼 잘라내기
+                AudioClip trimmedRecording = TrimAudioClip(currentRecording, recordingPosition);
+                voiceData[playerId] = trimmedRecording;
+                Debug.Log($"녹음 Dictionary 에 저장됨: {playerId}");
 
-            if (currentRecording != null)
-            {
-                voiceData[actorNumber] = currentRecording;
-                Debug.Log($"녹음 Dictionary 에 저장됨: {actorNumber}");
-                //if(PhotonNetwork.IsMasterClient)
-                //{
-                    SaveAsWav(currentRecording, "C:\\Users\\Admin\\OneDrive\\문서\\FinalProject\\HotSeatingAudio\\" + filename + ".wav");
-                //}
-                Debug.Log($"Wav 파일로 저장됨: {actorNumber}");
+                //SaveAsWav(trimmedRecording, "C:\\Users\\Admin\\OneDrive\\문서\\FinalProject\\HotSeatingAudio\\" + filename + ".wav");
+                //Debug.Log($"Wav 파일로 저장됨: {playerId}");
             }
         }
     }
 
-    public static void SaveAsWav(AudioClip clip, string filePath)
+    private AudioClip TrimAudioClip(AudioClip clip, int lengthSamples)
+    {
+        float[] samples = new float[lengthSamples];
+        clip.GetData(samples, 0);
+
+        AudioClip trimmedClip = AudioClip.Create(clip.name, lengthSamples, clip.channels, clip.frequency, false);
+        trimmedClip.SetData(samples, 0);
+
+        return trimmedClip;
+    }
+
+    public void SaveAsWav(AudioClip clip, string filePath)
     {
         // AudioClip 데이터 추출
         var samples = new float[clip.samples * clip.channels];
@@ -129,12 +125,12 @@ public class Y_VoiceManager : MonoBehaviour
 
         byte[] wavData = ConvertToWav(samples, clip.channels, clip.frequency);
 
-        // 파일로 저장
+        // 파일로 저장 -> 나중에 저장 대신 통신으로 바꿔야 함
         File.WriteAllBytes(filePath, wavData);
         Debug.Log($"AudioClip saved as WAV at: {filePath}");
     }
 
-    private static byte[] ConvertToWav(float[] samples, int channels, int frequency)
+    private byte[] ConvertToWav(float[] samples, int channels, int frequency)
     {
         MemoryStream stream = new MemoryStream();
 
