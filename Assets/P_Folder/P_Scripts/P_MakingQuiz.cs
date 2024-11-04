@@ -17,20 +17,26 @@ public class P_MakingQuiz : MonoBehaviour
     public TMP_InputField quizOption3;
     public TMP_InputField quizOption4;
 
+    public string prevText;
+    public string prevOption1;
+    public string prevOption2;
+    public string prevOption3;
+    public string prevOption4;
+
+    public string nextText;
+    public string nextOption1;
+    public string nextOption2;
+    public string nextOption3;
+    public string nextOption4;
+
     public int count = 0;
 
-    public string[] Datas = { "a", "1a", "2a", "3a", "4a", "b", "1b", "2b", "3b", "4b", "c", "1c", "2c", "3c", "4c"};
 
     void Start()
     {
         btn_Prev.onClick.AddListener(OnclickPrev);
         btn_Next.onClick.AddListener(OnclickNext);
 
-        quizText.text = Datas[count * 5];
-        quizOption1.text = Datas[count * 5 + 1];
-        quizOption2.text = Datas[count * 5 + 2];
-        quizOption3.text = Datas[count * 5 + 3];
-        quizOption4.text = Datas[count * 5 + 4];
     }
 
     void Update()
@@ -53,13 +59,20 @@ public class P_MakingQuiz : MonoBehaviour
         else
         {
             count--;
+            
+            nextText = quizText.text;
+            nextOption1 = quizOption1.text;
+            nextOption2 = quizOption2.text;
+            nextOption3 = quizOption3.text;
+            nextOption4 = quizOption4.text;
+
 
             // 예시
-            quizText.text = Datas[count * 5];
-            quizOption1.text = Datas[count * 5 + 1];
-            quizOption2.text = Datas[count * 5 + 2];
-            quizOption3.text = Datas[count * 5 + 3];
-            quizOption4.text = Datas[count * 5 + 4];
+            quizText.text = prevText;
+            quizOption1.text = prevOption1;
+            quizOption2.text = prevOption2;
+            quizOption3.text = prevOption3;
+            quizOption4.text = prevOption4;
         }
     }
 
@@ -75,14 +88,48 @@ public class P_MakingQuiz : MonoBehaviour
         {
             count++;
 
+            prevText = quizText.text;
+            prevOption1 = quizOption1.text;
+            prevOption2 = quizOption2.text;
+            prevOption3 = quizOption3.text;
+            prevOption4 = quizOption4.text;
+
             // 예시
-            quizText.text = Datas[count * 5];
-            quizOption1.text = Datas[count * 5 + 1];
-            quizOption2.text = Datas[count * 5 + 2];
-            quizOption3.text = Datas[count * 5 + 3];
-            quizOption4.text = Datas[count * 5 + 4];
+            quizText.text = nextText;
+            quizOption1.text = nextOption1;
+            quizOption2.text = nextOption2;
+            quizOption3.text = nextOption3;
+            quizOption4.text = nextOption4;
         }
     }
 
-    
+    public void OpenQuizSet()
+    {
+        for (int i = 0; i < P_CreatorToolConnectMgr.Instance.GetQuizCount(); i++)
+        {
+            if (P_CreatorToolConnectMgr.Instance.GetQuiz(i).quizId == P_CreatorToolConnectMgr.Instance.selectedID[0])
+            {
+                prevText = P_CreatorToolConnectMgr.Instance.GetQuiz(i).question;
+                prevOption1 = P_CreatorToolConnectMgr.Instance.GetQuiz(i).choices1;
+                prevOption2 = P_CreatorToolConnectMgr.Instance.GetQuiz(i).choices2;
+                prevOption3 = P_CreatorToolConnectMgr.Instance.GetQuiz(i).choices3;
+                prevOption4 = P_CreatorToolConnectMgr.Instance.GetQuiz(i).choices4;
+            }
+
+            if (P_CreatorToolConnectMgr.Instance.GetQuiz(i).quizId == P_CreatorToolConnectMgr.Instance.selectedID[1])
+            {
+                nextText = P_CreatorToolConnectMgr.Instance.GetQuiz(i).question;
+                nextOption1 = P_CreatorToolConnectMgr.Instance.GetQuiz(i).choices1;
+                nextOption2 = P_CreatorToolConnectMgr.Instance.GetQuiz(i).choices2;
+                nextOption3 = P_CreatorToolConnectMgr.Instance.GetQuiz(i).choices3;
+                nextOption4 = P_CreatorToolConnectMgr.Instance.GetQuiz(i).choices4;
+            }
+        }
+
+        quizText.text = prevText;
+        quizOption1.text = prevOption1;
+        quizOption2.text = prevOption2;
+        quizOption3.text = prevOption3;
+        quizOption4.text = prevOption4;
+    }
 }

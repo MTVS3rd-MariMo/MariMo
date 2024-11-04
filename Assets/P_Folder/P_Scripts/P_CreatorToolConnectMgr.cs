@@ -9,25 +9,28 @@ using static P_CreatorToolConnectMgr;
 [Serializable]
 public class QuizData
 {
-    public List<Quiz> quizzes;
-    public List<OpenQuestion> openQuestions;
+    public List<Quiz> quizList;
+    public List<OpenQuestion> openQuestionList;
 }
 
 [Serializable]
 public class Quiz
 {
+    public int quizId;
     public string question;
-    public float answer;
-    public string firstChoice;
-    public string secondChoice;
-    public string thirdChoice;
-    public string fourthChoice;
+    public int answer;
+    public string choices1;
+    public string choices2;
+    public string choices3;
+    public string choices4;
 }
 
 [Serializable]
 public class OpenQuestion
 {
+    public int openQuestionId;
     public string questionTitle;
+    public string[] openQuestionAnswerList;
 }
 
 
@@ -57,6 +60,8 @@ public class P_CreatorToolConnectMgr : MonoBehaviour
     private QuizData quizData;
     public string pdfPath = null;
 
+    public List<int> selectedID = null;
+
     // 데이터 파싱 이벤트 구독 델리게이트
     public delegate void OnDataParsedDelegate();
     public event OnDataParsedDelegate OnDataParsed;
@@ -85,13 +90,14 @@ public class P_CreatorToolConnectMgr : MonoBehaviour
         InitializeConnectMgr();
     }
 
+
     void InitializeConnectMgr()
     {
         // 초기 데이터 로드 등 초기화 작업
         quizData = new QuizData
         {
-            quizzes = new List<Quiz>(),
-            openQuestions = new List<OpenQuestion>()
+            quizList = new List<Quiz>(),
+            openQuestionList = new List<OpenQuestion>()
         };
     }
     
@@ -124,9 +130,9 @@ public class P_CreatorToolConnectMgr : MonoBehaviour
     // 특정 퀴즈 받아오는 함수
     public Quiz GetQuiz(int index)
     {
-        if (quizData.quizzes != null && index < quizData.quizzes.Count)
+        if (quizData.quizList != null && index < quizData.quizList.Count)
         {
-            return quizData.quizzes[index];
+            return quizData.quizList[index];
         }
         return null;
     }
@@ -134,15 +140,15 @@ public class P_CreatorToolConnectMgr : MonoBehaviour
     // 전체 퀴즈 개수 가져오기
     public int GetQuizCount()
     {
-        return quizData.quizzes?.Count ?? 0;
+        return quizData.quizList?.Count ?? 0;
     }
 
     // 특정 열린질문 가져오는 함수
     public OpenQuestion GetOpenQuestion(int index)
     {
-        if (quizData.openQuestions != null && index < quizData.openQuestions.Count)
+        if (quizData.openQuestionList != null && index < quizData.openQuestionList.Count)
         {
-            return quizData.openQuestions[index];
+            return quizData.openQuestionList[index];
         }
         return null;
     }
@@ -150,7 +156,7 @@ public class P_CreatorToolConnectMgr : MonoBehaviour
     // 전체 주관식 문제 개수 가져오기
     public int GetOpenQuestionCount()
     {
-        return quizData.openQuestions?.Count ?? 0;
+        return quizData.openQuestionList?.Count ?? 0;
     }
 
     // json 파일 데이터 로드
@@ -167,28 +173,28 @@ public class P_CreatorToolConnectMgr : MonoBehaviour
     private void DisplayQuizData()
     {
         Debug.Log("=== 퀴즈 데이터 ===");
-        if (quizData.quizzes != null)
+        if (quizData.quizList != null)
         {
-            for (int i = 0; i < quizData.quizzes.Count; i++)
+            for (int i = 0; i < quizData.quizList.Count; i++)
             {
-                Quiz quiz = quizData.quizzes[i];
+                Quiz quiz = quizData.quizList[i];
                 Debug.Log($"\n퀴즈 {i + 1}");
                 Debug.Log($"문제: {quiz.question}");
                 Debug.Log($"정답: {quiz.answer}");
                 Debug.Log("보기:");
-                Debug.Log($"1) {quiz.firstChoice}");
-                Debug.Log($"2) {quiz.secondChoice}");
-                Debug.Log($"3) {quiz.thirdChoice}");
-                Debug.Log($"4) {quiz.fourthChoice}");
+                Debug.Log($"1) {quiz.choices1}");
+                Debug.Log($"2) {quiz.choices2}");
+                Debug.Log($"3) {quiz.choices3}");
+                Debug.Log($"4) {quiz.choices4}");
             }
         }
 
         Debug.Log("\n=== 주관식 문제 ===");
-        if (quizData.openQuestions != null)
+        if (quizData.openQuestionList != null)
         {
-            for (int i = 0; i < quizData.openQuestions.Count; i++)
+            for (int i = 0; i < quizData.openQuestionList.Count; i++)
             {
-                Debug.Log($"{i + 1}. {quizData.openQuestions[i].questionTitle}");
+                Debug.Log($"{i + 1}. {quizData.openQuestionList[i].questionTitle}");
             }
         }
     }
@@ -198,14 +204,14 @@ public class P_CreatorToolConnectMgr : MonoBehaviour
     // 데이터 유효성 검사
     private void ValidateData()
     {
-        if (quizData.quizzes == null)
+        if (quizData.quizList == null)
         {
-            quizData.quizzes = new List<Quiz>();
+            quizData.quizList = new List<Quiz>();
         }
 
-        if (quizData.openQuestions == null)
+        if (quizData.openQuestionList == null)
         {
-            quizData.openQuestions = new List<OpenQuestion>();
+            quizData.openQuestionList = new List<OpenQuestion>();
         }
     }
 
@@ -214,8 +220,8 @@ public class P_CreatorToolConnectMgr : MonoBehaviour
     {
         return IsDataLoaded &&
                quizData != null &&
-               quizData.quizzes != null &&
-               quizData.openQuestions != null;
+               quizData.quizList != null &&
+               quizData.openQuestionList != null;
     }
 
     // 데이터 초기화
@@ -223,14 +229,14 @@ public class P_CreatorToolConnectMgr : MonoBehaviour
     {
         quizData = new QuizData
         {
-            quizzes = new List<Quiz>(),
-            openQuestions = new List<OpenQuestion>()
+            quizList = new List<Quiz>(),
+            openQuestionList = new List<OpenQuestion>()
         };
         IsDataLoaded = false;
     }
 
     // 모든 퀴즈와 질문 데이터 가져오기
-    public QuizData GetQuizData()
+    public QuizData GetAllData()
     {
         return quizData;
     }

@@ -14,6 +14,7 @@ public class P_CreatorToolController : MonoBehaviour
     public GameObject panel_NewStory;
     public GameObject panel_FileViewer;
     public GameObject panel_Making;
+    public GameObject panel_SelectQuiz;
     public GameObject panel_MakingQuiz;
     public GameObject panel_MakingAsk;
 
@@ -25,16 +26,19 @@ public class P_CreatorToolController : MonoBehaviour
     public Button btn_Story3;
     public Button btn_Back_NewStory;
     public Button btn_SerchPDF;
+    public Button btn_Checking;
     public Button btn_Back_SerchPDF;
     public Button btn_SendPDF;
 
     public TMP_Dropdown dropdown;
 
-    string url_Front = "http://211.250.74.75:8899";
+    string url_Front = "http://125.132.216.190:8899";
 
 
     void Start()
     {
+        P_CreatorToolConnectMgr.Instance.OnDataParsed += SendFinish;
+
         btn_SelectStory.onClick.AddListener(OnclickSelectStory);
         btn_CreateRoom.onClick.AddListener(OnclickCreateRoom);
         btn_Library.onClick.AddListener(OnclickLibrary);
@@ -45,6 +49,7 @@ public class P_CreatorToolController : MonoBehaviour
         btn_SerchPDF.onClick.AddListener(OnclickSerchPDF);
         btn_SendPDF.onClick.AddListener(OnclickSend);
         btn_CreateRoom.onClick.AddListener(OnclickCreateRoom);
+        btn_Checking.onClick.AddListener(OnclickChecking);
 
 
 
@@ -67,6 +72,9 @@ public class P_CreatorToolController : MonoBehaviour
         panel_Making.SetActive(false);
         panel_FileViewer.SetActive(false);
         panel_NewStory.SetActive(false);
+        panel_Making.SetActive(false);
+        panel_MakingAsk.SetActive(false);
+        panel_MakingQuiz.SetActive(false);
 
         panel_SelectStory.SetActive(true);
         BtnColor(Color.blue, btn_SelectStory);
@@ -134,6 +142,11 @@ public class P_CreatorToolController : MonoBehaviour
         panel_FileViewer.SetActive(false);
     }
 
+    public void OnclickChecking()
+    {
+        panel_SelectQuiz.SetActive(true);
+    }
+
     public void OnclickSend()
     {
         print(P_CreatorToolConnectMgr.Instance.pdfPath);
@@ -147,9 +160,6 @@ public class P_CreatorToolController : MonoBehaviour
         {
             try
             {
-                // 응답 데이터 로그 출력 (디버그용)
-                Debug.Log("서버 응답: " + downloadHandler.text);
-
                 // QuizManager의 ParseQuizData 메서드 호출하여 데이터 파싱
                 P_CreatorToolConnectMgr.Instance.ParseQuizData(downloadHandler.text);
 
@@ -157,6 +167,8 @@ public class P_CreatorToolController : MonoBehaviour
                 Debug.Log("퀴즈 데이터 로드 완료!");
                 Debug.Log($"로드된 퀴즈 개수: {P_CreatorToolConnectMgr.Instance.GetQuizCount()}");
                 Debug.Log($"로드된 주관식 문제 개수: {P_CreatorToolConnectMgr.Instance.GetOpenQuestionCount()}");
+
+
             }
             catch (Exception e)
             {
@@ -168,7 +180,12 @@ public class P_CreatorToolController : MonoBehaviour
 
         StartCoroutine(HttpManager.GetInstance().UploadFileByFormDataPDF(info));
 
-        // 생성중 UI 뜨고 생성 완료시 이동
+    }
+
+    // 데이터 로드 완료시 실행
+    private void SendFinish()
+    {
+        
         panel_Making.SetActive(true);
     }
 

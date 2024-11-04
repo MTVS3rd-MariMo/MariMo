@@ -77,7 +77,7 @@ public class P_MakingAsk : MonoBehaviour
     public void GoTitle()
     {
         // 데이터 송신
-        QuizData data = P_CreatorToolConnectMgr.Instance.GetQuizData();
+        QuizData data = P_CreatorToolConnectMgr.Instance.GetAllData();
 
         _creatorToolController.OnFinishMaking(data);
 
