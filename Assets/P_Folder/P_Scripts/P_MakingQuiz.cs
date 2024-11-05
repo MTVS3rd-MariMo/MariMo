@@ -17,17 +17,7 @@ public class P_MakingQuiz : MonoBehaviour
     public TMP_InputField quizOption3;
     public TMP_InputField quizOption4;
 
-    public string prevText;
-    public string prevOption1;
-    public string prevOption2;
-    public string prevOption3;
-    public string prevOption4;
-
-    public string nextText;
-    public string nextOption1;
-    public string nextOption2;
-    public string nextOption3;
-    public string nextOption4;
+    Quiz dummyquiz;
 
     public int count = 0;
 
@@ -59,20 +49,11 @@ public class P_MakingQuiz : MonoBehaviour
         else
         {
             count--;
-            
-            nextText = quizText.text;
-            nextOption1 = quizOption1.text;
-            nextOption2 = quizOption2.text;
-            nextOption3 = quizOption3.text;
-            nextOption4 = quizOption4.text;
+
+            P_CreatorToolConnectMgr.Instance.ModifyQuiz(dummyquiz, 1);
 
 
-            // 예시
-            quizText.text = prevText;
-            quizOption1.text = prevOption1;
-            quizOption2.text = prevOption2;
-            quizOption3.text = prevOption3;
-            quizOption4.text = prevOption4;
+            OpenQuizSet(0);
         }
     }
 
@@ -88,48 +69,27 @@ public class P_MakingQuiz : MonoBehaviour
         {
             count++;
 
-            prevText = quizText.text;
-            prevOption1 = quizOption1.text;
-            prevOption2 = quizOption2.text;
-            prevOption3 = quizOption3.text;
-            prevOption4 = quizOption4.text;
+            P_CreatorToolConnectMgr.Instance.ModifyQuiz(dummyquiz, 0);
 
             // 예시
-            quizText.text = nextText;
-            quizOption1.text = nextOption1;
-            quizOption2.text = nextOption2;
-            quizOption3.text = nextOption3;
-            quizOption4.text = nextOption4;
+            OpenQuizSet(1);
         }
     }
 
-    public void OpenQuizSet()
+    public void OpenQuizSet(int index)
     {
-        for (int i = 0; i < P_CreatorToolConnectMgr.Instance.GetQuizCount(); i++)
-        {
-            if (P_CreatorToolConnectMgr.Instance.GetQuiz(i).quizId == P_CreatorToolConnectMgr.Instance.selectedID[0])
-            {
-                prevText = P_CreatorToolConnectMgr.Instance.GetQuiz(i).question;
-                prevOption1 = P_CreatorToolConnectMgr.Instance.GetQuiz(i).choices1;
-                prevOption2 = P_CreatorToolConnectMgr.Instance.GetQuiz(i).choices2;
-                prevOption3 = P_CreatorToolConnectMgr.Instance.GetQuiz(i).choices3;
-                prevOption4 = P_CreatorToolConnectMgr.Instance.GetQuiz(i).choices4;
-            }
 
-            if (P_CreatorToolConnectMgr.Instance.GetQuiz(i).quizId == P_CreatorToolConnectMgr.Instance.selectedID[1])
-            {
-                nextText = P_CreatorToolConnectMgr.Instance.GetQuiz(i).question;
-                nextOption1 = P_CreatorToolConnectMgr.Instance.GetQuiz(i).choices1;
-                nextOption2 = P_CreatorToolConnectMgr.Instance.GetQuiz(i).choices2;
-                nextOption3 = P_CreatorToolConnectMgr.Instance.GetQuiz(i).choices3;
-                nextOption4 = P_CreatorToolConnectMgr.Instance.GetQuiz(i).choices4;
-            }
-        }
+        dummyquiz.question = P_CreatorToolConnectMgr.Instance.GetQuiz(index).question;
+        dummyquiz.choices1 = P_CreatorToolConnectMgr.Instance.GetQuiz(index).choices1;
+        dummyquiz.choices2 = P_CreatorToolConnectMgr.Instance.GetQuiz(index).choices2;
+        dummyquiz.choices3 = P_CreatorToolConnectMgr.Instance.GetQuiz(index).choices3;
+        dummyquiz.choices4 = P_CreatorToolConnectMgr.Instance.GetQuiz(index).choices4;
 
-        quizText.text = prevText;
-        quizOption1.text = prevOption1;
-        quizOption2.text = prevOption2;
-        quizOption3.text = prevOption3;
-        quizOption4.text = prevOption4;
+        quizText.text = dummyquiz.question;
+        quizOption1.text = dummyquiz.choices1;
+        quizOption2.text = dummyquiz.choices2;
+        quizOption3.text = dummyquiz.choices3;
+        quizOption4.text = dummyquiz.choices4;
     }
+
 }

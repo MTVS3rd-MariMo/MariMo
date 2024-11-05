@@ -253,4 +253,18 @@ public class P_CreatorToolConnectMgr : MonoBehaviour
     {
         return quizData;
     }
+
+    public void ModifyQuiz(Quiz quiz, int index)
+    {
+        quizData.quizList[index].question = quiz.question;
+        quizData.quizList[index].choices1 = quiz.choices1;
+        quizData.quizList[index].choices2 = quiz.choices2;
+        quizData.quizList[index].choices3 = quiz.choices3;
+        quizData.quizList[index].choices4 = quiz.choices4;
+    }
+
+    public void ModifyQuestion(string text,  int index)
+    {
+        quizData.openQuestionList[index].questionTitle = text;
+    }
 }

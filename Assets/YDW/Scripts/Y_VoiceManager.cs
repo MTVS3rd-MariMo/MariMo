@@ -136,7 +136,7 @@ public class Y_VoiceManager : MonoBehaviour
 
                 voiceData[playerId] = trimmedRecording;
                 
-                Debug.Log($"녹음 Dictionary 에 저장됨: {playerId}");
+                Debug.Log($"녹음 Dictionary 에 저장됨: {testInt}");
 
                 SaveAsWav(trimmedRecording, "C:\\Users\\Admin\\OneDrive\\문서\\FinalProject\\HotSeatingAudio\\" + testInt + filename + ".wav");
                 Debug.Log($"Wav 파일로 저장됨: {playerId}");
