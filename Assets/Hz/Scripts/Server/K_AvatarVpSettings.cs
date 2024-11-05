@@ -41,7 +41,9 @@ public class K_AvatarVpSettings : MonoBehaviour
     {
 
         avatarIndex = characterIndex - 1;
+        print(avatarIndex);
         rawImage.texture = vp.targetTexture = renderTextures[avatarIndex];
+        print("renderTexture" + renderTextures[avatarIndex]);
     }
 
 

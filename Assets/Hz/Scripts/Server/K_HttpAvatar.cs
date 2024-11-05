@@ -37,13 +37,23 @@ public class K_HttpAvatar : MonoBehaviourPun
     //public int avatarIndex;
 
     // URL
-    public string uploadUrl = "http://125.132.216.190:8203/api/avatar/upload-img";
+    public string uploadUrl = "http://125.132.216.28:8202/api/avatar/upload-img";
     //public string downloadUrl = "";
     private string avatarImgUrl;
     private List<string> animationUrls;
 
+
+    int userId = 1;
+    int lessonId = 101;
+
+    private void Start()
+    {
+        btn_CreateAvatar.onClick.AddListener(() => CreateAvatar(userId, lessonId));
+        
+    }
+
     // 그림 보내기 POST
-    public IEnumerator UploadTextureAsPng()
+    public IEnumerator UploadTextureAsPng(int userId, int lessonId)
     {
         Texture2D textureToUpload = rawImage.texture as Texture2D;
 
@@ -88,7 +98,7 @@ public class K_HttpAvatar : MonoBehaviourPun
             }
         };
 
-        yield return StartCoroutine(HttpManager.GetInstance().UploadFileByFormDataArt(info, pngData));
+        yield return StartCoroutine(HttpManager.GetInstance().UploadFileByFormDataArt(info, pngData, userId, lessonId));
     }
 
     [PunRPC]
@@ -101,7 +111,7 @@ public class K_HttpAvatar : MonoBehaviourPun
 
         for (int i = 0; i < animationUrls.Length; i++)
         {
-            StartCoroutine(DownloadVideo(userId, animationUrls[i], "animation", actorNumber));
+            StartCoroutine(DownloadVideo(userId, animationUrls[i], $"animation_{i}", actorNumber));
         }
     }
 
@@ -185,10 +195,11 @@ public class K_HttpAvatar : MonoBehaviourPun
     }
 
     // 캐릭터 생성하기 버튼 누르면 서버에 전송
-    public void CreateAvatar()
+    public void CreateAvatar(int userId, int lessonId)
     {
+        Debug.Log("createAvatar 호출됨");
         // 아바타 만든거 보내기 (POST)
-        StartCoroutine(UploadTextureAsPng());
+        StartCoroutine(UploadTextureAsPng(userId, lessonId));
     }
 
     // 아바타 관련 데이터
