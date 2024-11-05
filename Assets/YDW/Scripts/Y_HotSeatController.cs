@@ -138,12 +138,14 @@ public class Y_HotSeatController : MonoBehaviourPun
 
         if(Input.GetKeyDown(KeyCode.Alpha8))
         {
-            MuteOtherPlayers(PhotonNetwork.LocalPlayer.ActorNumber);
+            photonView.RPC(nameof(MuteOtherPlayers), RpcTarget.All, PhotonNetwork.LocalPlayer.ActorNumber);
+            //MuteOtherPlayers(PhotonNetwork.LocalPlayer.ActorNumber);
         }
 
         if(Input.GetKeyDown(KeyCode.Alpha7))
         {
-            UnMuteAllPlayers();
+            photonView.RPC(nameof(UnMuteAllPlayers), RpcTarget.All);
+            //UnMuteAllPlayers();
         }
     }
 
@@ -431,6 +433,7 @@ public class Y_HotSeatController : MonoBehaviourPun
 
     PhotonVoiceView[] allVoiceViews;
 
+    [PunRPC]
     public void MuteOtherPlayers(int playerNum)
     {
         int myActorNumber = PhotonNetwork.LocalPlayer.ActorNumber;
@@ -454,6 +457,7 @@ public class Y_HotSeatController : MonoBehaviourPun
         }
     }
 
+    [PunRPC]
     public void UnMuteAllPlayers()
     {
         foreach (var voiceView in allVoiceViews)
