@@ -25,7 +25,7 @@ public class ConnectionManager : MonoBehaviourPunCallbacks
 
     void Update()
     {
-        
+        if (Input.GetKeyDown(KeyCode.Alpha1)) StartLogin();
     }
 
     public void StartLogin()
@@ -77,7 +77,28 @@ public class ConnectionManager : MonoBehaviourPunCallbacks
 
         // 서버의 로비로 들어간다.
         PhotonNetwork.JoinLobby();
+
+        //// 연결 준비 상태 확인 후 방 생성
+        //if (PhotonNetwork.IsConnectedAndReady)
+        //{
+        //    CreateRoom();
+        //}
+        //else
+        //{
+        //    StartCoroutine(WaitAndCreateRoom());
+        //}
+
     }
+
+    //IEnumerator WaitAndCreateRoom()
+    //{
+    //    // 연결 상태가 준비될 때까지 대기
+    //    while (!PhotonNetwork.IsConnectedAndReady)
+    //    {
+    //        yield return null;
+    //    }
+    //    CreateRoom();
+    //}
 
     public override void OnJoinedLobby()
     {
@@ -86,8 +107,7 @@ public class ConnectionManager : MonoBehaviourPunCallbacks
         // 서버 로비에 들어갔음을 알려준다.
         print(MethodInfo.GetCurrentMethod().Name + " is Call!");
         LobbyUIController.lobbyUI.ShowRoomPanel();
-        CreateRoom(); ///////////////
-        CreateRoom(); //////////////////
+        CreateRoom();
     }
 
     public void CreateRoom()
