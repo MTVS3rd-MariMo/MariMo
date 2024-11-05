@@ -33,7 +33,7 @@ public class P_CreatorToolController : MonoBehaviour
 
     public TMP_Dropdown dropdown;
 
-    string url_Front = "http://125.132.216.190:8202";
+    string url_Front = "http://125.132.216.28:8202";
 
 
     void Start()
@@ -191,7 +191,7 @@ public class P_CreatorToolController : MonoBehaviour
         
         panel_Making.SetActive(true);
     }
-
+     
 
     public void OnFinishMaking(QuizData quizData)
     {
@@ -204,7 +204,7 @@ public class P_CreatorToolController : MonoBehaviour
             // 완료시 실행
         };
 
-        StartCoroutine(HttpManager.GetInstance().Post(info));
+        StartCoroutine(HttpManager.GetInstance().Put(info));
 
     }
 
@@ -216,7 +216,7 @@ public class P_CreatorToolController : MonoBehaviour
 
         panel_MakingQuiz.SetActive(true);
 
-        panel_MakingQuiz.GetComponent<P_MakingQuiz>().OpenQuizSet();
+        panel_MakingQuiz.GetComponent<P_MakingQuiz>().OpenQuizSet(0);
 
         panel_SelectQuiz.SetActive(false);
     }
