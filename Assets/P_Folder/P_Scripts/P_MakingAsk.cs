@@ -6,6 +6,8 @@ using UnityEngine.UI;
 
 public class P_MakingAsk : MonoBehaviour
 {
+    private P_CreatorToolController _creatorToolController;
+
     public Button btn_Prev;
     public Button btn_Next;
 
@@ -13,16 +15,15 @@ public class P_MakingAsk : MonoBehaviour
 
     public int count = 0;
 
-    // 예시
-    public string[] Datas = { "question1", "question2", "question3" };
 
     void Start()
     {
+        _creatorToolController = GetComponentInParent<P_CreatorToolController>();
         btn_Prev.onClick.AddListener(OnclickPrev);
         btn_Next.onClick.AddListener(OnclickNext);
 
         // 예시
-        askText.text = Datas[0];
+        askText.text = P_CreatorToolConnectMgr.Instance.GetOpenQuestion(0).questionTitle;
     }
 
     void Update()
@@ -47,7 +48,7 @@ public class P_MakingAsk : MonoBehaviour
             count--;
 
             // 예시
-            askText.text = Datas[count];
+            askText.text = P_CreatorToolConnectMgr.Instance.GetOpenQuestion(0).questionTitle;
         }
 
     }
@@ -66,12 +67,19 @@ public class P_MakingAsk : MonoBehaviour
             count++;
 
             // 예시
-            askText.text = Datas[count];
+            askText.text = P_CreatorToolConnectMgr.Instance.GetOpenQuestion(1).questionTitle;
         }
     }
 
+
     public void GoTitle()
     {
+        // 데이터 송신
+        QuizData data = P_CreatorToolConnectMgr.Instance.GetAllData();
 
+        _creatorToolController.OnFinishMaking(data);
+
+        // 초기 화면으로
+        _creatorToolController.OnclickSelectStory();
     }
 }
