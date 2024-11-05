@@ -60,7 +60,7 @@ public class LobbyUIController : MonoBehaviour
     public void PrintLog(string message)
     {
         log += message + '\n';
-        text_logText.text = log;
+        //text_logText.text = log;
     }
 
     public void ShowAlbum()

@@ -1,7 +1,9 @@
 ﻿using iTextSharp.text.html.simpleparser;
 using iTextSharp.text.pdf;
 using Photon.Pun;
+using Photon.Pun.Demo.PunBasics;
 using Photon.Pun.UtilityScripts;
+using Photon.Voice.PUN;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -132,6 +134,16 @@ public class Y_HotSeatController : MonoBehaviourPun
         {
             isEnd = true;
             StartCoroutine(LastCoroutine());
+        }
+
+        if(Input.GetKeyDown(KeyCode.Alpha8))
+        {
+            MuteOtherPlayers(PhotonNetwork.LocalPlayer.ActorNumber);
+        }
+
+        if(Input.GetKeyDown(KeyCode.Alpha7))
+        {
+            UnMuteAllPlayers();
         }
     }
 
@@ -271,7 +283,7 @@ public class Y_HotSeatController : MonoBehaviourPun
     public void AllReady()
     {
         // 보이스 일단 4명 다 꺼줌
-        Y_VoiceManager.Instance.recorder.TransmitEnabled = false;
+        //Y_VoiceManager.Instance.recorder.TransmitEnabled = false;
 
         // 서브밋 누른 플레이어 수 늘림
         selfInt_count++;
@@ -349,7 +361,7 @@ public class Y_HotSeatController : MonoBehaviourPun
             // 녹음 끄기
             //  Y_VoiceManager.Instance.StopRecording(playerNums[index-1], "hotseatingInterview" + playerNums[index-1].ToString());
             // 보이스 꺼 줘야 함
-            Y_VoiceManager.Instance.recorder.TransmitEnabled = false;
+            //Y_VoiceManager.Instance.recorder.TransmitEnabled = false;
         }
 
         if (index < players.Count)
@@ -377,6 +389,7 @@ public class Y_HotSeatController : MonoBehaviourPun
 
                 spotlight.SetActive(true); // 스포트라이트 켜준다
 
+
                 stageScriptImgs[i].gameObject.SetActive(true);
 
                 // "친구들에게 말로 자기소개를 해 봅시다" UI
@@ -398,22 +411,55 @@ public class Y_HotSeatController : MonoBehaviourPun
                     //recordTime = 5;
                 }
 
+                // 소리 나머지 뮤트
+                MuteOtherPlayers(playerNums[i]);
                 // 내 차례 됐을 때에만 보이스 켜줌
-                if (PhotonNetwork.LocalPlayer.ActorNumber == playerNums[i])
-                {
-                    Y_VoiceManager.Instance.recorder.TransmitEnabled = true;
-                    //Y_VoiceManager.Instance.StartRecording(playerNums[i], recordTime);
-                }
+                //if (PhotonNetwork.LocalPlayer.ActorNumber == playerNums[i])
+                //{
+                //    Y_VoiceManager.Instance.recorder.TransmitEnabled = true;
+                //    //Y_VoiceManager.Instance.StartRecording(playerNums[i], recordTime);
+                //}
 
                 // 자기소개 켜 줌
                 stageScriptImgs[i].gameObject.SetActive(true);
 
-                // 인터뷰로 넘어감
-                StartCoroutine(InterviewCoroutine(i));
-
                 break;
             }
             yield return null;
+        }
+    }
+
+    PhotonVoiceView[] allVoiceViews;
+
+    public void MuteOtherPlayers(int playerNum)
+    {
+        int myActorNumber = PhotonNetwork.LocalPlayer.ActorNumber;
+
+        // 모든 PhotonVoiceView를 가진 객체를 검색
+        allVoiceViews = FindObjectsOfType<PhotonVoiceView>();
+
+        foreach (var voiceView in allVoiceViews)
+        {
+            PhotonView photonVoiceView = voiceView.GetComponent<PhotonView>();
+
+            // 플레이어가 null이 아닌지 확인하고, 현재 차례 플레이어를 제외하고 전부 음소거
+            if (photonVoiceView != null && photonVoiceView.Owner != null && myActorNumber != playerNum)
+            {
+                voiceView.RecorderInUse.TransmitEnabled = false;
+            }
+            else if(myActorNumber == playerNum) // 한 명만 음소거 아니게
+            {
+                voiceView.RecorderInUse.TransmitEnabled = true;
+            }
+        }
+    }
+
+    public void UnMuteAllPlayers()
+    {
+        foreach (var voiceView in allVoiceViews)
+        {
+            PhotonView photonVoiceView = voiceView.GetComponent<PhotonView>();
+            voiceView.RecorderInUse.TransmitEnabled = true;
         }
     }
 
@@ -454,13 +500,10 @@ public class Y_HotSeatController : MonoBehaviourPun
 
             if (time - timeSpan.Seconds <= 0)
             {
-                timerImgs[i].gameObject.SetActive(false); // 타이머 끄기
-                //if (PhotonNetwork.LocalPlayer.ActorNumber == playerNums[i]) // 녹음 시작
-                //{
-                    //Y_VoiceManager.Instance.recorder.TransmitEnabled = true;
-                    //Y_VoiceManager.Instance.StartRecording(playerNums[i], 600);
-                    //Y_VoiceManager.Instance.StopRecording(playerNums[i], "hotseatingInterview" + playerNums[i].ToString());
-                //}
+                timerImgs[i].gameObject.SetActive(false); 
+
+                // 인터뷰로 넘어감
+                StartCoroutine(InterviewCoroutine(i));
             }
         }
 
@@ -474,26 +517,33 @@ public class Y_HotSeatController : MonoBehaviourPun
     public GameObject[] myTurnImgs;
     IEnumerator InterviewCoroutine(int index)
     {
+        yield return new WaitForSeconds(2f);
+
         for(int i = 0; i < players.Count; i++)
         {
-            if(i != index)
+            if(i != playerNums[index])
             {
                 myTurnImgs[i].SetActive(true);
 
                 // 질문하는 사람 보이스 켜주고 녹음 시작
+                MuteOtherPlayers(playerNums[i]);
                 Y_VoiceManager.Instance.StartRecording(playerNums[i], 600);
 
-                // 원래는 30초인데 테스트용 2초
-                yield return new WaitForSeconds(2f);
+                // 원래는 30초인데 테스트용 5초
+                yield return new WaitForSeconds(5f);
                 // 녹음 종료
+                Y_VoiceManager.Instance.StopRecording(playerNums[i], "InterviewFile");
 
                 myTurnImgs[i].SetActive(false);
 
-                // 자기소개 한 사람 보이스 켜주고 녹음 시작
-                
-                // 원래는 60초인데 일단 2초
-                yield return new WaitForSeconds(2f);
+                // 자기소개 한 사람(답변할 사람) 보이스 켜주고 녹음 시작
+                MuteOtherPlayers(playerNums[index]);
+                Y_VoiceManager.Instance.StartRecording(playerNums[index], 600);
+
+                // 원래는 60초인데 일단 5초
+                yield return new WaitForSeconds(5f);
                 // 녹음 종료
+                Y_VoiceManager.Instance.StopRecording(playerNums[index], "InterviewFile");
             }
         }
 
