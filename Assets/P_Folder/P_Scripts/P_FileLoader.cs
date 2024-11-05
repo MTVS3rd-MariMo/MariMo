@@ -8,11 +8,10 @@ using System.Linq;
 
 public class P_FileLoader : MonoBehaviour
 {
-    public GameObject panel_Title;
     public GameObject panel_FileViewer;
 
     public Transform contentPanel;
-    public GameObject listItemPrefab;
+    public GameObject file;
     public TMP_InputField searchInput;
     public Button searchButton;
 
@@ -76,7 +75,7 @@ public class P_FileLoader : MonoBehaviour
             Destroy(child.gameObject);
         }
 
-        GameObject newback = Instantiate(listItemPrefab, contentPanel);
+        GameObject newback = Instantiate(file, contentPanel);
         P_FileInfo dummyComponent = newback.GetComponent<P_FileInfo>();
 
         dummyComponent.SetFileName("...");
@@ -87,7 +86,7 @@ public class P_FileLoader : MonoBehaviour
 
         foreach (FileSystemInfo item in items)
         {
-            GameObject newItem = Instantiate(listItemPrefab, contentPanel);
+            GameObject newItem = Instantiate(file, contentPanel);
             P_FileInfo fileInfoComponent = newItem.GetComponent<P_FileInfo>();
 
             if (fileInfoComponent != null)

@@ -17,20 +17,16 @@ public class P_MakingQuiz : MonoBehaviour
     public TMP_InputField quizOption3;
     public TMP_InputField quizOption4;
 
+    Quiz dummyquiz;
+
     public int count = 0;
 
-    public string[] Datas = { "a", "1a", "2a", "3a", "4a", "b", "1b", "2b", "3b", "4b", "c", "1c", "2c", "3c", "4c"};
 
     void Start()
     {
         btn_Prev.onClick.AddListener(OnclickPrev);
         btn_Next.onClick.AddListener(OnclickNext);
 
-        quizText.text = Datas[count * 5];
-        quizOption1.text = Datas[count * 5 + 1];
-        quizOption2.text = Datas[count * 5 + 2];
-        quizOption3.text = Datas[count * 5 + 3];
-        quizOption4.text = Datas[count * 5 + 4];
     }
 
     void Update()
@@ -54,12 +50,10 @@ public class P_MakingQuiz : MonoBehaviour
         {
             count--;
 
-            // 예시
-            quizText.text = Datas[count * 5];
-            quizOption1.text = Datas[count * 5 + 1];
-            quizOption2.text = Datas[count * 5 + 2];
-            quizOption3.text = Datas[count * 5 + 3];
-            quizOption4.text = Datas[count * 5 + 4];
+            P_CreatorToolConnectMgr.Instance.ModifyQuiz(dummyquiz, 1);
+
+
+            OpenQuizSet(0);
         }
     }
 
@@ -67,22 +61,35 @@ public class P_MakingQuiz : MonoBehaviour
     {
         if (count >= 2)
         {
+            // 데이터 저장
+
             panel_MakingAsk.gameObject.SetActive(true);
-            // 다음 창으로 이동
-            GetComponentInParent<P_CreatorToolController>().OnclickSelectStory();
         }
         else
         {
             count++;
 
+            P_CreatorToolConnectMgr.Instance.ModifyQuiz(dummyquiz, 0);
+
             // 예시
-            quizText.text = Datas[count * 5];
-            quizOption1.text = Datas[count * 5 + 1];
-            quizOption2.text = Datas[count * 5 + 2];
-            quizOption3.text = Datas[count * 5 + 3];
-            quizOption4.text = Datas[count * 5 + 4];
+            OpenQuizSet(1);
         }
     }
 
-    
+    public void OpenQuizSet(int index)
+    {
+
+        dummyquiz.question = P_CreatorToolConnectMgr.Instance.GetQuiz(index).question;
+        dummyquiz.choices1 = P_CreatorToolConnectMgr.Instance.GetQuiz(index).choices1;
+        dummyquiz.choices2 = P_CreatorToolConnectMgr.Instance.GetQuiz(index).choices2;
+        dummyquiz.choices3 = P_CreatorToolConnectMgr.Instance.GetQuiz(index).choices3;
+        dummyquiz.choices4 = P_CreatorToolConnectMgr.Instance.GetQuiz(index).choices4;
+
+        quizText.text = dummyquiz.question;
+        quizOption1.text = dummyquiz.choices1;
+        quizOption2.text = dummyquiz.choices2;
+        quizOption3.text = dummyquiz.choices3;
+        quizOption4.text = dummyquiz.choices4;
+    }
+
 }

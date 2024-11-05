@@ -138,6 +138,24 @@ public class HttpManager : MonoBehaviour
         }
     }
 
+    // 수정용
+    public IEnumerator Put(HttpInfo info)
+    {
+        using (UnityWebRequest webRequest = UnityWebRequest.PostWwwForm(info.url,"PUT"))
+        {
+            byte[] jsonToSend = new System.Text.UTF8Encoding().GetBytes(info.body);
+            webRequest.uploadHandler = new UploadHandlerRaw(jsonToSend);
+            webRequest.downloadHandler = new DownloadHandlerBuffer();
+            webRequest.SetRequestHeader("Content-Type", "application/json");
+
+            // 서버에 요청 보내기
+            yield return webRequest.SendWebRequest();
+
+            // 서버에게 응답이 왔다.
+            DoneRequest(webRequest, info);
+        }
+    }
+
     // 파일 업로드 (form-data)
     public IEnumerator UploadFileByFormData(HttpInfo info)
     {
