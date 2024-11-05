@@ -136,17 +136,17 @@ public class Y_HotSeatController : MonoBehaviourPun
             StartCoroutine(LastCoroutine());
         }
 
-        if(Input.GetKeyDown(KeyCode.Alpha8))
-        {
-            photonView.RPC(nameof(MuteOtherPlayers), RpcTarget.All, PhotonNetwork.LocalPlayer.ActorNumber);
-            //MuteOtherPlayers(PhotonNetwork.LocalPlayer.ActorNumber);
-        }
+        //if(Input.GetKeyDown(KeyCode.Alpha8))
+        //{
+        //    photonView.RPC(nameof(MuteOtherPlayers), RpcTarget.All, PhotonNetwork.LocalPlayer.ActorNumber);
+        //    //MuteOtherPlayers(PhotonNetwork.LocalPlayer.ActorNumber);
+        //}
 
-        if(Input.GetKeyDown(KeyCode.Alpha7))
-        {
-            photonView.RPC(nameof(UnMuteAllPlayers), RpcTarget.All);
-            //UnMuteAllPlayers();
-        }
+        //if(Input.GetKeyDown(KeyCode.Alpha7))
+        //{
+        //    photonView.RPC(nameof(UnMuteAllPlayers), RpcTarget.All);
+        //    //UnMuteAllPlayers();
+        //}
     }
 
     
@@ -414,7 +414,7 @@ public class Y_HotSeatController : MonoBehaviourPun
                 }
 
                 // 소리 나머지 뮤트
-                MuteOtherPlayers(playerNums[i]);
+                RPC_MuteOtherPlayers(playerNums[i]);
                 // 내 차례 됐을 때에만 보이스 켜줌
                 //if (PhotonNetwork.LocalPlayer.ActorNumber == playerNums[i])
                 //{
@@ -433,38 +433,62 @@ public class Y_HotSeatController : MonoBehaviourPun
 
     PhotonVoiceView[] allVoiceViews;
 
+    public void RPC_MuteOtherPlayers(int playerNum)
+    {
+        photonView.RPC(nameof(MuteOtherPlayers), RpcTarget.All, playerNum);
+    }
+
     [PunRPC]
     public void MuteOtherPlayers(int playerNum)
     {
         int myActorNumber = PhotonNetwork.LocalPlayer.ActorNumber;
 
-        // 모든 PhotonVoiceView를 가진 객체를 검색
-        allVoiceViews = FindObjectsOfType<PhotonVoiceView>();
-
-        foreach (var voiceView in allVoiceViews)
+        if(myActorNumber != playerNum)
         {
-            PhotonView photonVoiceView = voiceView.GetComponent<PhotonView>();
-
-            // 플레이어가 null이 아닌지 확인하고, 현재 차례 플레이어를 제외하고 전부 음소거
-            if (photonVoiceView != null && photonVoiceView.Owner != null && myActorNumber != playerNum)
-            {
-                voiceView.RecorderInUse.TransmitEnabled = false;
-            }
-            else if(myActorNumber == playerNum) // 한 명만 음소거 아니게
-            {
-                voiceView.RecorderInUse.TransmitEnabled = true;
-            }
+            Y_VoiceManager.Instance.recorder.TransmitEnabled = false;
         }
+        else
+        {
+            Y_VoiceManager.Instance.recorder.TransmitEnabled = true;
+        }
+
+        //// 모든 PhotonVoiceView를 가진 객체를 검색
+        //allVoiceViews = FindObjectsOfType<PhotonVoiceView>();
+        //print("AllVoiceViews 받아옴");
+
+        //foreach (var voiceView in allVoiceViews)
+        //{
+        //    PhotonView photonVoiceView = voiceView.GetComponent<PhotonView>();
+
+        //    // 플레이어가 null이 아닌지 확인하고, 현재 차례 플레이어를 제외하고 전부 음소거
+        //    if (photonVoiceView != null && photonVoiceView.Owner != null && myActorNumber != playerNum)
+        //    {
+        //        voiceView.RecorderInUse.TransmitEnabled = false;
+        //        print("음소거 합니다");
+        //    }
+        //    else if(myActorNumber == playerNum) // 한 명만 음소거 아니게
+        //    {
+        //        voiceView.RecorderInUse.TransmitEnabled = true;
+        //        print("얜 음소거 안 합니다");
+        //    }
+        //}
+    }
+
+    public void RPC_UnMuteAllPlayers()
+    {
+        photonView.RPC(nameof(UnMuteAllPlayers), RpcTarget.All);
     }
 
     [PunRPC]
     public void UnMuteAllPlayers()
     {
-        foreach (var voiceView in allVoiceViews)
-        {
-            PhotonView photonVoiceView = voiceView.GetComponent<PhotonView>();
-            voiceView.RecorderInUse.TransmitEnabled = true;
-        }
+        Y_VoiceManager.Instance.recorder.TransmitEnabled = true;
+
+        //foreach (var voiceView in allVoiceViews)
+        //{
+        //    PhotonView photonVoiceView = voiceView.GetComponent<PhotonView>();
+        //    voiceView.RecorderInUse.TransmitEnabled = true;
+        //}
     }
 
     float currTime = 0;
@@ -523,9 +547,9 @@ public class Y_HotSeatController : MonoBehaviourPun
     {
         yield return new WaitForSeconds(2f);
 
-        for(int i = 0; i < players.Count; i++)
+        for(int i = 0; i <= players.Count; i++)
         {
-            if(i != playerNums[index])
+            if(i < players.Count && i != playerNums[index])
             {
                 myTurnImgs[i].SetActive(true);
 
@@ -549,11 +573,12 @@ public class Y_HotSeatController : MonoBehaviourPun
                 // 녹음 종료
                 Y_VoiceManager.Instance.StopRecording(playerNums[index], "InterviewFile");
             }
-        }
 
-        if(index == players.Count - 1)
-        {
-            RPC_ProtoTest();
+            if (i == players.Count)
+            {
+                RPC_ProtoTest();
+                print("다음 사람 자기소개로 넘어갑니다");
+            }
         }
     }
 
@@ -566,6 +591,7 @@ public class Y_HotSeatController : MonoBehaviourPun
         yield return new WaitForSeconds(2.5f);
         Y_VoiceManager.Instance.recorder.TransmitEnabled = true;
         RPC_ActivateGuide(4);
+        RPC_UnMuteAllPlayers();
     }
     void RPC_ActivateGuide(int index)
     {
