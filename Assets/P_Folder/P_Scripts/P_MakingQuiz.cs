@@ -80,9 +80,9 @@ public class P_MakingQuiz : MonoBehaviour
     {
         if (count >= 2)
         {
+            // 데이터 저장
+
             panel_MakingAsk.gameObject.SetActive(true);
-            // 다음 창으로 이동
-            GetComponentInParent<P_CreatorToolController>().OnclickSelectStory();
         }
         else
         {

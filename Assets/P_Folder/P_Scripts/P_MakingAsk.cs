@@ -15,8 +15,6 @@ public class P_MakingAsk : MonoBehaviour
 
     public int count = 0;
 
-    // 예시
-    public string[] Datas = { "question1", "question2", "question3" };
 
     void Start()
     {
@@ -25,7 +23,7 @@ public class P_MakingAsk : MonoBehaviour
         btn_Next.onClick.AddListener(OnclickNext);
 
         // 예시
-        askText.text = Datas[0];
+        askText.text = P_CreatorToolConnectMgr.Instance.GetOpenQuestion(0).questionTitle;
     }
 
     void Update()
@@ -50,7 +48,7 @@ public class P_MakingAsk : MonoBehaviour
             count--;
 
             // 예시
-            askText.text = Datas[count];
+            askText.text = P_CreatorToolConnectMgr.Instance.GetOpenQuestion(0).questionTitle;
         }
 
     }
@@ -69,7 +67,7 @@ public class P_MakingAsk : MonoBehaviour
             count++;
 
             // 예시
-            askText.text = Datas[count];
+            askText.text = P_CreatorToolConnectMgr.Instance.GetOpenQuestion(1).questionTitle;
         }
     }
 
@@ -82,5 +80,6 @@ public class P_MakingAsk : MonoBehaviour
         _creatorToolController.OnFinishMaking(data);
 
         // 초기 화면으로
+        _creatorToolController.OnclickSelectStory();
     }
 }

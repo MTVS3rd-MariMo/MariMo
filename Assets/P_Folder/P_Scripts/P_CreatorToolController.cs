@@ -29,10 +29,11 @@ public class P_CreatorToolController : MonoBehaviour
     public Button btn_Checking;
     public Button btn_Back_SerchPDF;
     public Button btn_SendPDF;
+    public Button btn_SelectQuiz;
 
     public TMP_Dropdown dropdown;
 
-    string url_Front = "http://125.132.216.190:8899";
+    string url_Front = "http://125.132.216.190:8202";
 
 
     void Start()
@@ -50,7 +51,7 @@ public class P_CreatorToolController : MonoBehaviour
         btn_SendPDF.onClick.AddListener(OnclickSend);
         btn_CreateRoom.onClick.AddListener(OnclickCreateRoom);
         btn_Checking.onClick.AddListener(OnclickChecking);
-
+        btn_SelectQuiz.onClick.AddListener(OnclickSelectComplete);
 
 
         BtnColor(Color.blue, btn_SelectStory);
@@ -145,6 +146,8 @@ public class P_CreatorToolController : MonoBehaviour
     public void OnclickChecking()
     {
         panel_SelectQuiz.SetActive(true);
+
+        panel_SelectQuiz.GetComponent<P_QuizSelect>().QuizSetting();
     }
 
     public void OnclickSend()
@@ -203,6 +206,19 @@ public class P_CreatorToolController : MonoBehaviour
 
         StartCoroutine(HttpManager.GetInstance().Post(info));
 
+    }
+
+    // 선택한 퀴즈 데이터 전송
+    public void OnclickSelectComplete()
+    {
+        // 선택한 퀴즈가 아닌건 삭제
+        P_CreatorToolConnectMgr.Instance.DeleteQuiz(P_CreatorToolConnectMgr.Instance.selectedID);
+
+        panel_MakingQuiz.SetActive(true);
+
+        panel_MakingQuiz.GetComponent<P_MakingQuiz>().OpenQuizSet();
+
+        panel_SelectQuiz.SetActive(false);
     }
 
     void BtnColor(Color color, Button button)

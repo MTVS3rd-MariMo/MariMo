@@ -9,6 +9,7 @@ using static P_CreatorToolConnectMgr;
 [Serializable]
 public class QuizData
 {
+    public long lessonMaterialId;
     public List<Quiz> quizList;
     public List<OpenQuestion> openQuestionList;
 }
@@ -135,6 +136,18 @@ public class P_CreatorToolConnectMgr : MonoBehaviour
             return quizData.quizList[index];
         }
         return null;
+    }
+
+    // 리스트 외의 퀴즈 제거하는 함수
+    public void DeleteQuiz(List<int> ints)
+    {
+        for (int i = quizData.quizList.Count - 1; i >= 0; i--)
+        {
+            if (quizData.quizList[i].quizId != ints[0] && quizData.quizList[i].quizId != ints[1])
+            {
+                quizData.quizList.RemoveAt(i);
+            }
+        }
     }
 
     // 전체 퀴즈 개수 가져오기
