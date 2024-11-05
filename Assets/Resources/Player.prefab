@@ -17,6 +17,7 @@ GameObject:
   - component: {fileID: 2044002936649389299}
   - component: {fileID: 8482240015333793538}
   - component: {fileID: 3406280480905180733}
+  - component: {fileID: 1390562481910733863}
   - component: {fileID: 5261486963189744133}
   - component: {fileID: 2433383882890850642}
   - component: {fileID: 2403669846499813768}
@@ -234,6 +235,25 @@ MonoBehaviour:
   quizScale: {x: 2, y: 2, z: 2}
   studioScale: {x: 4, y: 4, z: 4}
   originalScale: {x: 0, y: 0, z: 0}
+--- !u!114 &1390562481910733863
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 58571690274281487}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2d619c82be5b4034c8103c20da5834a1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  avatarIndex: 0
+  vp: {fileID: 2780493785564132161}
+  rawImage: {fileID: 2238457611774462121}
+  renderTextures:
+  - {fileID: 8400000, guid: dc6f08a5678c00b4d9b38ed54c5949e3, type: 2}
+  videoClips: []
+  images: []
 --- !u!114 &5261486963189744133
 MonoBehaviour:
   m_ObjectHideFlags: 0
