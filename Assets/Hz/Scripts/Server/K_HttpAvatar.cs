@@ -156,8 +156,10 @@ public class K_HttpAvatar : MonoBehaviourPun
             {
                 byte[] videoData = webRequest.downloadHandler.data;
 
+                print(fileName);
+
                 // 애니메이션 데이터를 로컬 파일로 저장
-                string filePath = Path.Combine(Application.persistentDataPath, fileName);
+                string filePath = Application.persistentDataPath + "/" + fileName + ".mp4";
                 System.IO.File.WriteAllBytes(filePath, videoData);
 
                 Debug.Log($"MP4 파일 다운로드 및 저장 성공: {filePath}");
