@@ -58,7 +58,8 @@ public class P_CreatorToolConnectMgr : MonoBehaviour
         }
     }
 
-    private QuizData quizData;
+    public QuizData quizData;
+    public QuizData dummydata;
     public string pdfPath = null;
 
     public List<int> selectedID = null;
@@ -89,6 +90,49 @@ public class P_CreatorToolConnectMgr : MonoBehaviour
         DontDestroyOnLoad(gameObject);
 
         InitializeConnectMgr();
+
+        dummydata = new QuizData
+        {
+            lessonMaterialId = 1,
+            quizList = new List<Quiz>
+            {
+                new Quiz
+                {
+                    quizId = 11,
+                    question = "수남이는 몇 살인가요?",
+                    answer = 3,
+                    choices1 = "1. 14살",
+                    choices2 = "2. 15살",
+                    choices3 = "3. 16살",
+                    choices4 = "4. 17살"
+                },
+                new Quiz
+                {
+                    quizId = 12,
+                    question = "수남이는 어디에서 일하나요?",
+                    answer = 2,
+                    choices1 = "1. 카페",
+                    choices2 = "2. 전기 용품 도매상",
+                    choices3 = "3. 서점",
+                    choices4 = "4. 공장"
+                }
+            },
+            openQuestionList = new List<OpenQuestion>
+            {
+                new OpenQuestion
+                {
+                    openQuestionId = 5,
+                    questionTitle = "나는 어떤 순간에 잘못된 선택을 하려는 유혹을 느꼈을 때, 그 유혹에 저항하기 위해 어떤 방법을 사용할 수 있을까?",
+                    
+                },
+                new OpenQuestion
+                {
+                    openQuestionId = 6,
+                    questionTitle = "특별한 상황에서 나에게 자신을 지켜줄 멘토나 도움을 줄 수 있는 사람이 누구인지 생각해보면, 그와의 관계를 어떻게 강화할 수 있을까?"
+
+                }
+            }
+        };
     }
 
 
@@ -97,6 +141,7 @@ public class P_CreatorToolConnectMgr : MonoBehaviour
         // 초기 데이터 로드 등 초기화 작업
         quizData = new QuizData
         {
+            lessonMaterialId = 0,
             quizList = new List<Quiz>(),
             openQuestionList = new List<OpenQuestion>()
         };
@@ -148,6 +193,8 @@ public class P_CreatorToolConnectMgr : MonoBehaviour
                 quizData.quizList.RemoveAt(i);
             }
         }
+
+        Debug.Log(quizData.quizList.Count);
     }
 
     // 전체 퀴즈 개수 가져오기

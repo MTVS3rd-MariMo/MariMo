@@ -33,7 +33,7 @@ public class P_MakingAsk : MonoBehaviour
         else
             btn_Prev.interactable = true;
 
-        if (count == 2)
+        if (count == 1)
             btn_Next.GetComponentInChildren<TMP_Text>().text = "Done";
         else
             btn_Next.GetComponentInChildren<TMP_Text>().text = "Next";
@@ -55,7 +55,7 @@ public class P_MakingAsk : MonoBehaviour
 
     public void OnclickNext()
     {
-        if (count >= 2)
+        if (count >= 1)
         {
             // 데이터 저장
 

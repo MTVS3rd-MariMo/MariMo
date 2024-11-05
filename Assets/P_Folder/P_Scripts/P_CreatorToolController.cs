@@ -152,36 +152,45 @@ public class P_CreatorToolController : MonoBehaviour
 
     public void OnclickSend()
     {
-        print(P_CreatorToolConnectMgr.Instance.pdfPath);
-
-        HttpInfo info = new HttpInfo();
-        // api/lesson-material/upload-pdf 앤드포인트..?
-        info.url = url_Front + "/api/lesson-material/upload-pdf";
-        info.body = P_CreatorToolConnectMgr.Instance.pdfPath;
-        info.contentType = "multipart/form-data";
-        info.onComplete = (DownloadHandler downloadHandler) =>
-        {
-            try
-            {
-                // QuizManager의 ParseQuizData 메서드 호출하여 데이터 파싱
-                P_CreatorToolConnectMgr.Instance.ParseQuizData(downloadHandler.text);
-
-                // 데이터 로드 완료 후 처리할 작업이 있다면 여기에 추가
-                Debug.Log("퀴즈 데이터 로드 완료!");
-                Debug.Log($"로드된 퀴즈 개수: {P_CreatorToolConnectMgr.Instance.GetQuizCount()}");
-                Debug.Log($"로드된 주관식 문제 개수: {P_CreatorToolConnectMgr.Instance.GetOpenQuestionCount()}");
-
-
-            }
-            catch (Exception e)
-            {
-                Debug.LogError($"JSON 파싱 중 에러 발생: {e.Message}");
-            }
-        };
+        //// 더미데이터용
+        P_CreatorToolConnectMgr.Instance.quizData = P_CreatorToolConnectMgr.Instance.dummydata;
 
         btn_SendPDF.interactable = false;
 
-        StartCoroutine(HttpManager.GetInstance().UploadFileByFormDataPDF(info));
+        panel_Making.SetActive(true);
+        ///////
+
+
+        //print(P_CreatorToolConnectMgr.Instance.pdfPath);
+
+        //HttpInfo info = new HttpInfo();
+        //// api/lesson-material/upload-pdf 앤드포인트..?
+        //info.url = url_Front + "/api/lesson-material/upload-pdf";
+        //info.body = P_CreatorToolConnectMgr.Instance.pdfPath;
+        //info.contentType = "multipart/form-data";
+        //info.onComplete = (DownloadHandler downloadHandler) =>
+        //{
+        //    try
+        //    {
+        //        // QuizManager의 ParseQuizData 메서드 호출하여 데이터 파싱
+        //        P_CreatorToolConnectMgr.Instance.ParseQuizData(downloadHandler.text);
+
+        //        // 데이터 로드 완료 후 처리할 작업이 있다면 여기에 추가
+        //        Debug.Log("퀴즈 데이터 로드 완료!");
+        //        Debug.Log($"로드된 퀴즈 개수: {P_CreatorToolConnectMgr.Instance.GetQuizCount()}");
+        //        Debug.Log($"로드된 주관식 문제 개수: {P_CreatorToolConnectMgr.Instance.GetOpenQuestionCount()}");
+
+
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        Debug.LogError($"JSON 파싱 중 에러 발생: {e.Message}");
+        //    }
+        //};
+
+        //btn_SendPDF.interactable = false;
+
+        //StartCoroutine(HttpManager.GetInstance().UploadFileByFormDataPDF(info));
 
     }
 
@@ -216,6 +225,9 @@ public class P_CreatorToolController : MonoBehaviour
 
         panel_MakingQuiz.SetActive(true);
 
+        // 디버깅
+        Debug.Log(P_CreatorToolConnectMgr.Instance.GetQuiz(0).question);
+
         panel_MakingQuiz.GetComponent<P_MakingQuiz>().OpenQuizSet(0);
 
         panel_SelectQuiz.SetActive(false);
@@ -233,6 +245,5 @@ public class P_CreatorToolController : MonoBehaviour
         button.colors = colorBlock;
 
     }
-
 
 }

@@ -141,7 +141,7 @@ public class HttpManager : MonoBehaviour
     // 수정용
     public IEnumerator Put(HttpInfo info)
     {
-        using (UnityWebRequest webRequest = UnityWebRequest.PostWwwForm(info.url,"PUT"))
+        using (UnityWebRequest webRequest = new UnityWebRequest(info.url,"PUT"))
         {
             byte[] jsonToSend = new System.Text.UTF8Encoding().GetBytes(info.body);
             webRequest.uploadHandler = new UploadHandlerRaw(jsonToSend);

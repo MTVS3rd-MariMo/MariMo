@@ -17,7 +17,7 @@ public class P_MakingQuiz : MonoBehaviour
     public TMP_InputField quizOption3;
     public TMP_InputField quizOption4;
 
-    Quiz dummyquiz;
+    Quiz dummyquiz = new Quiz();
 
     public int count = 0;
 
@@ -27,6 +27,7 @@ public class P_MakingQuiz : MonoBehaviour
         btn_Prev.onClick.AddListener(OnclickPrev);
         btn_Next.onClick.AddListener(OnclickNext);
 
+        dummyquiz = P_CreatorToolConnectMgr.Instance.dummydata.quizList[0];
     }
 
     void Update()
@@ -36,7 +37,7 @@ public class P_MakingQuiz : MonoBehaviour
         else
             btn_Prev.interactable = true;
 
-        if (count == 2)
+        if (count == 1)
             btn_Next.GetComponentInChildren<TMP_Text>().text = "Done";
         else
             btn_Next.GetComponentInChildren<TMP_Text>().text = "Next";
@@ -59,7 +60,7 @@ public class P_MakingQuiz : MonoBehaviour
 
     public void OnclickNext()
     {
-        if (count >= 2)
+        if (count >= 1)
         {
             // 데이터 저장
 
@@ -78,6 +79,8 @@ public class P_MakingQuiz : MonoBehaviour
 
     public void OpenQuizSet(int index)
     {
+        // 디버깅
+        Debug.Log(dummyquiz.question);
 
         dummyquiz.question = P_CreatorToolConnectMgr.Instance.GetQuiz(index).question;
         dummyquiz.choices1 = P_CreatorToolConnectMgr.Instance.GetQuiz(index).choices1;
