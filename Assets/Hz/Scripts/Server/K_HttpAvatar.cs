@@ -38,9 +38,11 @@ public class K_HttpAvatar : MonoBehaviourPun
 
     // URL
     public string uploadUrl = "http://211.250.74.75:8202/api/avatar/upload-img";
-    //public string downloadUrl = "";
     private string avatarImgUrl;
     private List<string> animationUrls;
+
+    // 다른 유저 조회 URL
+    string otherUserUrl = "http://211.250.74.75:8202/api/avatar/participant";
 
 
     int userId = 1;
@@ -184,6 +186,20 @@ public class K_HttpAvatar : MonoBehaviourPun
             else
             {
                 Debug.LogError("MP4 다운로드 실패: " + webRequest.error);
+            }
+        }
+    }
+
+    // 아바타 정보 요청
+    public IEnumerator GetAvatarData(int userId, int lessonId)
+    {
+        using(UnityWebRequest webRequest = UnityWebRequest.Get(otherUserUrl))
+        {
+            yield return webRequest.SendWebRequest();
+
+            if(webRequest.result == UnityWebRequest.Result.Success)
+            {
+                
             }
         }
     }
