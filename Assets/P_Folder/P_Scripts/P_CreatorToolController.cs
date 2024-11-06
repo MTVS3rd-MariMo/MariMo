@@ -19,8 +19,11 @@ public class P_CreatorToolController : MonoBehaviour
     public GameObject panel_MakingAsk;
 
     public Button btn_SelectStory;
+    public Sprite[] sp_SelectStory;
     public Button btn_CreateRoom;
+    public Sprite[] sp_CreateRoom;
     public Button btn_Library;
+    public Sprite[] sp_Library;
     public Button btn_Story1;
     public Button btn_Story2;
     public Button btn_Story3;
@@ -33,7 +36,7 @@ public class P_CreatorToolController : MonoBehaviour
 
     public TMP_Dropdown dropdown;
 
-    string url_Front = "http://125.132.216.28:8202";
+    string url_Front = "http://211.250.74.75:8202";
 
 
     void Start()
@@ -54,7 +57,9 @@ public class P_CreatorToolController : MonoBehaviour
         btn_SelectQuiz.onClick.AddListener(OnclickSelectComplete);
 
 
-        BtnColor(Color.blue, btn_SelectStory);
+        btn_SelectStory.image.sprite = sp_SelectStory[1];
+
+        //OnclickSelectStory();
     }
 
     private void Update()
@@ -78,11 +83,26 @@ public class P_CreatorToolController : MonoBehaviour
         panel_MakingQuiz.SetActive(false);
 
         panel_SelectStory.SetActive(true);
-        BtnColor(Color.blue, btn_SelectStory);
+        btn_SelectStory.image.sprite = sp_SelectStory[1];
         panel_CreateRoom.SetActive(false);
-        BtnColor(Color.white, btn_CreateRoom);
+        btn_CreateRoom.image.sprite = sp_CreateRoom[0];
         panel_Library.SetActive(false);
-        BtnColor(Color.white, btn_Library);
+        btn_Library.image.sprite = sp_Library[0];
+
+
+        //HttpInfo info = new HttpInfo();
+        //info.url = url_Front + "api/lesson-material/" + "1";
+        //info.onComplete = (DownloadHandler downloadHandler) =>
+        //{
+        //    print(downloadHandler.text);
+
+        //    //string jsonData = "{ \"data\" : " + downloadHandler.text + "}";
+        //    //// jsonData �� PostInfoArray ������ �ٲ���
+        //    //allPostInfo = JsonUtility.FromJson<PostInfoArray>(jsonData);
+        //};
+
+        //StartCoroutine(HttpManager.GetInstance().Get(info));
+
     }
 
     public void OnclickCreateRoom()
@@ -93,11 +113,11 @@ public class P_CreatorToolController : MonoBehaviour
         panel_NewStory.SetActive(false);
 
         panel_SelectStory.SetActive(false);
-        BtnColor(Color.white, btn_SelectStory);
+        btn_SelectStory.image.sprite = sp_SelectStory[0];
         panel_CreateRoom.SetActive(true);
-        BtnColor(Color.blue, btn_CreateRoom);
+        btn_CreateRoom.image.sprite = sp_CreateRoom[1];
         panel_Library.SetActive(false);
-        BtnColor(Color.white, btn_Library);
+        btn_Library.image.sprite = sp_Library[0];
     }
 
     public void OnclickLibrary()
@@ -108,11 +128,11 @@ public class P_CreatorToolController : MonoBehaviour
         panel_NewStory.SetActive(false);
 
         panel_SelectStory.SetActive(false);
-        BtnColor(Color.white, btn_SelectStory);
+        btn_SelectStory.image.sprite = sp_SelectStory[0];
         panel_CreateRoom.SetActive(false);
-        BtnColor(Color.white, btn_CreateRoom);
+        btn_CreateRoom.image.sprite = sp_CreateRoom[0];
         panel_Library.SetActive(true);
-        BtnColor(Color.blue, btn_Library);
+        btn_Library.image.sprite = sp_Library[1];
     }
 
     public void OnclickStory1()

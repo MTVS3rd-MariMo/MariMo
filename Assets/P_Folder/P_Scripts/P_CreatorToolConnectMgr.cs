@@ -9,9 +9,9 @@ using static P_CreatorToolConnectMgr;
 [Serializable]
 public class QuizData
 {
-    public long lessonMaterialId;
     public List<Quiz> quizList;
     public List<OpenQuestion> openQuestionList;
+    public long lessonMaterialId;
 }
 
 [Serializable]
@@ -29,9 +29,7 @@ public class Quiz
 [Serializable]
 public class OpenQuestion
 {
-    public int openQuestionId;
     public string questionTitle;
-    public string[] openQuestionAnswerList;
 }
 
 
@@ -93,7 +91,6 @@ public class P_CreatorToolConnectMgr : MonoBehaviour
 
         dummydata = new QuizData
         {
-            lessonMaterialId = 1,
             quizList = new List<Quiz>
             {
                 new Quiz
@@ -121,17 +118,16 @@ public class P_CreatorToolConnectMgr : MonoBehaviour
             {
                 new OpenQuestion
                 {
-                    openQuestionId = 5,
                     questionTitle = "나는 어떤 순간에 잘못된 선택을 하려는 유혹을 느꼈을 때, 그 유혹에 저항하기 위해 어떤 방법을 사용할 수 있을까?",
-                    
+
                 },
                 new OpenQuestion
                 {
-                    openQuestionId = 6,
                     questionTitle = "특별한 상황에서 나에게 자신을 지켜줄 멘토나 도움을 줄 수 있는 사람이 누구인지 생각해보면, 그와의 관계를 어떻게 강화할 수 있을까?"
 
                 }
-            }
+            },
+            lessonMaterialId = 1
         };
     }
 
