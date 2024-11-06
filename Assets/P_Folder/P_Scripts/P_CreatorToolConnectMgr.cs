@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Networking;
 using static P_CreatorToolConnectMgr;
 
 
@@ -33,6 +34,21 @@ public class OpenQuestion
 }
 
 
+// 수업자료 조회용 구조체
+[Serializable]
+public class Lessons
+{
+    public List<LessonMaterials> lessonsList;
+}
+
+[Serializable]
+public class LessonMaterials
+{
+    public int lessonMaterialId;
+    public string bookTitle;
+}
+
+
 public class P_CreatorToolConnectMgr : MonoBehaviour
 {
     private static P_CreatorToolConnectMgr instance;
@@ -56,9 +72,15 @@ public class P_CreatorToolConnectMgr : MonoBehaviour
         }
     }
 
+    public string url_Front = "http://211.250.74.75:8202";
+
     public QuizData quizData;
     public QuizData dummydata;
     public string pdfPath = null;
+
+    public Lessons lessons;
+    // 임시 유저아이디
+    public int userID = 3;
 
     public List<int> selectedID = null;
 
@@ -89,6 +111,7 @@ public class P_CreatorToolConnectMgr : MonoBehaviour
 
         InitializeConnectMgr();
 
+        // 더미데이터 셋팅
         dummydata = new QuizData
         {
             quizList = new List<Quiz>
@@ -129,6 +152,8 @@ public class P_CreatorToolConnectMgr : MonoBehaviour
             },
             lessonMaterialId = 1
         };
+
+        InitializeLessons();
     }
 
 
@@ -165,6 +190,24 @@ public class P_CreatorToolConnectMgr : MonoBehaviour
         {
             IsDataLoaded = false;
             Debug.LogError($"Quiz 데이터 파싱 실패: {e.Message}");
+            throw;
+        }
+    }
+
+    // Lesson 데이터 파싱
+    public void ParseLessons(string jsonString)
+    {
+        try
+        {
+            lessons = JsonUtility.FromJson<Lessons>(jsonString);
+            IsDataLoaded = true;
+            LastLoadTime = DateTime.Now;
+        }
+        catch (Exception e)
+        {
+
+            IsDataLoaded = false;
+            Debug.LogError($"Lesson 데이터 파싱 실패: {e.Message}");
             throw;
         }
     }
@@ -224,7 +267,6 @@ public class P_CreatorToolConnectMgr : MonoBehaviour
         }
     }
 
-
     // 데이터 확인용
     private void DisplayQuizData()
     {
@@ -254,8 +296,6 @@ public class P_CreatorToolConnectMgr : MonoBehaviour
             }
         }
     }
-
-
 
     // 데이터 유효성 검사
     private void ValidateData()
@@ -312,4 +352,15 @@ public class P_CreatorToolConnectMgr : MonoBehaviour
     {
         quizData.openQuestionList[index].questionTitle = text;
     }
+
+    // 수업자료 구조체 초기화
+    void InitializeLessons()
+    {
+        lessons = new Lessons
+        {
+            lessonsList = new List<LessonMaterials>()
+        };
+    }
+
+    
 }
