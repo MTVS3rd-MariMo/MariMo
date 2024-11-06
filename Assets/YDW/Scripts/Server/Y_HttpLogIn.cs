@@ -66,7 +66,6 @@ public class Y_HttpLogIn : MonoBehaviour
             // 서버에 요청 보내기
             yield return webRequest.SendWebRequest();
 
-
             // 서버에게 응답이 왔다.
             DoneRequest(webRequest, info);
         }

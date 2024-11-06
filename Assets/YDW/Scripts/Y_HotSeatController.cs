@@ -554,14 +554,10 @@ public class Y_HotSeatController : MonoBehaviourPun
     {
         yield return new WaitForSeconds(2f);
 
-        Debug.LogError("인덱스 찍어 : " + index);
-
         for(int i = 0; i <= players.Count; i++)
         {
             if(i < players.Count && i != index) // playerNums[index]
             {
-                Debug.LogError("i 찍어 : " + i);
-                Debug.LogError("playerNums[index] 찍어 : " + playerNums[index]);
 
                 myTurnImgs[i].SetActive(true);
 
