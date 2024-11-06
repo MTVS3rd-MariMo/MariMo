@@ -1,7 +1,20 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
+
+[Serializable]
+public class SignUpData
+{
+    public Role role;
+    public string school;
+    public int grade;
+    public int classRoom;
+    public int studentNumber;
+    public string name;
+    public string password;
+}
 
 public class Y_HttpLogIn : MonoBehaviour
 {
@@ -79,7 +92,7 @@ public class Y_HttpLogIn : MonoBehaviour
         }
     }
 
-    public string RegisterUrl = "http://125.132.216.190:8202/api/user/signup"; ///////////////////
+    public string RegisterUrl = "http://211.250.74.75:8202/api/user/signup"; ///////////////////
 
     public IEnumerator SignUpCoroutine(string username, string password, string school, int grade, int className, int studentNumber, bool isTeacher)
     {
@@ -130,7 +143,7 @@ public class Y_HttpLogIn : MonoBehaviour
         }
     }
 
-    public string logInUrl = "http://125.132.216.190:8202/api/user/login";
+    public string logInUrl = "http://211.250.74.75:8202/api/user/login";
 
 
     public IEnumerator LogInCoroutine(string username, string password)
