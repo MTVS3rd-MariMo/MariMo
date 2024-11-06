@@ -9,7 +9,7 @@ using System.IO;
 using System;
 using Photon.Pun.Demo.PunBasics;
 
-public class Y_VoiceManager : MonoBehaviour
+public class Y_VoiceManager : MonoBehaviourPun
 {
     public static Y_VoiceManager Instance { get; private set; }
 
@@ -103,26 +103,24 @@ public class Y_VoiceManager : MonoBehaviour
         //{
         //    StopRecording(1, "test");
         //}
-
-        if (Input.GetKeyDown(KeyCode.Alpha9))
-        {
-            // 딕셔너리 키 값을 플레이어 아이디로, 오디오 클립은 for 문 돌려서 WAV 로 바꾼 뒤 통신
-        }
     }
 
 
 
     public void StartRecording(int playerId, int recordingLength)
     {
-        currentRecording = Microphone.Start(null, true, recordingLength, recordingFrequency);
-        Debug.Log($"녹음 시작됨: {playerId}");
+        if (PhotonNetwork.LocalPlayer.ActorNumber == playerId)
+        {
+            currentRecording = Microphone.Start(null, true, recordingLength, recordingFrequency);
+            Debug.Log($"녹음 시작됨: {testInt}");
+        }
     }
 
     int testInt = 0;
 
     public void StopRecording(int playerId, string filename)
     {
-        if (Microphone.IsRecording(null))
+        if (Microphone.IsRecording(null) && PhotonNetwork.LocalPlayer.ActorNumber == playerId)
         {
             int recordingPosition = Microphone.GetPosition(null);
             Microphone.End(null);
@@ -134,15 +132,28 @@ public class Y_VoiceManager : MonoBehaviour
 
                 /////////////// 딕셔너리에 추가 말고 바로 통신 해야 함 
 
-                voiceData[playerId] = trimmedRecording;
+                //voiceData[playerId] = trimmedRecording;
                 
-                Debug.Log($"녹음 Dictionary 에 저장됨: {testInt}");
+                //Debug.Log($"녹음 Dictionary 에 저장됨: {testInt}");
 
                 SaveAsWav(trimmedRecording, "C:\\Users\\Admin\\OneDrive\\문서\\FinalProject\\HotSeatingAudio\\" + testInt + filename + ".wav");
-                Debug.Log($"Wav 파일로 저장됨: {playerId}");
-                testInt++;
+                Debug.Log($"Wav 파일로 저장됨: {testInt}");
             }
+
+            RPC_UpdateTestInt();
         }
+    }
+
+    public void RPC_UpdateTestInt()
+    {
+        photonView.RPC(nameof(updateTestInt), RpcTarget.All);
+    }
+
+    [PunRPC]
+    public void updateTestInt()
+    {
+        testInt++;
+        print("TestInt Update: " + testInt);
     }
 
     private AudioClip TrimAudioClip(AudioClip clip, int lengthSamples)

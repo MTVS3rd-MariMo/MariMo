@@ -130,7 +130,7 @@ public class Y_HotSeatController : MonoBehaviourPun
         //}
 
         // 네 명이 다 인터뷰 하면 자동으로 활동 종료
-        if(testNum >= players.Count && !isEnd)
+        if(testNum > players.Count && !isEnd)
         {
             isEnd = true;
             StartCoroutine(LastCoroutine());
@@ -353,7 +353,8 @@ public class Y_HotSeatController : MonoBehaviourPun
     // 순서대로 자기소개 - 질문
     public void StartSpeech(int index)
     {
-        if (index - 1 >= 0)
+        print("!!!!!!!!!! index : " + index);
+        if (index - 1 >= 0 && index - 1 < images.Count)
         {
             images[index - 1].color = originalColor; // 전 플레이어는 이름표 색 원래 색으로
             players[index - 1].transform.position = playerPos; // 이미지 위치도 원위치
@@ -374,6 +375,11 @@ public class Y_HotSeatController : MonoBehaviourPun
             // 플레이어 무대로 가게 한다
             playerPos = players[index].transform.position;
             StartCoroutine(ChangePos(playerPos, index));
+        }
+
+        if (index == 4)
+        {
+            StartCoroutine(LastCoroutine());
         }
 
     }
@@ -554,32 +560,54 @@ public class Y_HotSeatController : MonoBehaviourPun
                 myTurnImgs[i].SetActive(true);
 
                 // 질문하는 사람 보이스 켜주고 녹음 시작
-                MuteOtherPlayers(playerNums[i]);
-                Y_VoiceManager.Instance.StartRecording(playerNums[i], 600);
+                RPC_MuteOtherPlayers(playerNums[i]);
+                RPC_RecordVoice(playerNums[i]);
 
                 // 원래는 30초인데 테스트용 5초
                 yield return new WaitForSeconds(5f);
                 // 녹음 종료
-                Y_VoiceManager.Instance.StopRecording(playerNums[i], "InterviewFile");
+                RPC_StopRecordVoice(playerNums[i]);
 
                 myTurnImgs[i].SetActive(false);
 
                 // 자기소개 한 사람(답변할 사람) 보이스 켜주고 녹음 시작
-                MuteOtherPlayers(playerNums[index]);
-                Y_VoiceManager.Instance.StartRecording(playerNums[index], 600);
+                RPC_MuteOtherPlayers(playerNums[index]);
+                RPC_RecordVoice(playerNums[index]);
 
                 // 원래는 60초인데 일단 5초
                 yield return new WaitForSeconds(5f);
                 // 녹음 종료
-                Y_VoiceManager.Instance.StopRecording(playerNums[index], "InterviewFile");
+                RPC_StopRecordVoice(playerNums[index]);
             }
 
             if (i == players.Count)
             {
-                RPC_ProtoTest();
+                if(PhotonNetwork.IsMasterClient) RPC_ProtoTest();
                 print("다음 사람 자기소개로 넘어갑니다");
             }
         }
+    }
+
+    public void RPC_RecordVoice(int i)
+    {
+        photonView.RPC(nameof(RecordVoice), RpcTarget.All, i);
+    }
+
+    [PunRPC]
+    public void RecordVoice(int i)
+    {
+        Y_VoiceManager.Instance.StartRecording(i, 600);
+    }
+
+    public void RPC_StopRecordVoice(int i)
+    {
+        photonView.RPC(nameof(StopRecordVoice), RpcTarget.All, i);
+    }
+
+    [PunRPC]
+    public void StopRecordVoice(int i)
+    {
+        Y_VoiceManager.Instance.StopRecording(i, "InterviewFile");
     }
 
 
