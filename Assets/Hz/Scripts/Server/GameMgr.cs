@@ -41,7 +41,7 @@ public class GameMgr : MonoBehaviour
     
     void Update()
     {
-       if(Input.GetKeyDown(KeyCode.Alpha8))
+       if(Input.GetMouseButtonDown(0))//(KeyCode.Alpha8))
         {
             OnClickShare();
         }
@@ -76,6 +76,7 @@ public class GameMgr : MonoBehaviour
 
     public void OnClickShare()
     {
+        if (isDoneCapture) return;
         isDoneCapture = true;
         StartCoroutine(Capture());
         //나의 RtcSender 로 공유를 시작하게 한다
