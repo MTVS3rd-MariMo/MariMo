@@ -74,6 +74,9 @@ MonoBehaviour:
   - MuteOtherPlayers
   - UnMuteAllPlayers
   - ApplayVideoToPlayer
+  - RecordVoice
+  - StopRecordVoice
+  - updateTestInt
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 0
