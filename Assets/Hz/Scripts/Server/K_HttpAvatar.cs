@@ -206,7 +206,9 @@ public class K_HttpAvatar : MonoBehaviourPun
     {
         foreach(var userId  in userIds)
         {
-            using (UnityWebRequest webRequest = UnityWebRequest.Get(otherUserUrl))
+            string getUrl = $"{otherUserUrl}?userId={userId}&lessonId={lessonId}";
+
+            using (UnityWebRequest webRequest = UnityWebRequest.Get(getUrl))
             {
                 print("서버에게 GET 요청 갔는지");
 
