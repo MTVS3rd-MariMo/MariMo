@@ -114,7 +114,7 @@ public class ConnectionManager : MonoBehaviourPunCallbacks
     {
         //string roomName = LobbyUIController.lobbyUI.roomSetting[0].text;
         //int playerCount = Convert.ToInt32(LobbyUIController.lobbyUI.roomSetting[1].text);
-        string roomName = "마리모";
+        string roomName = "마리모"; /////////////////////////////////// To. 효근 : 나중에 선생님이 입력한 Inputbox.text 값으로 바꿔놓으면 됨!
         int playerCount = 4;
 
         if (roomName.Length > 0 && playerCount > 1)
@@ -128,11 +128,15 @@ public class ConnectionManager : MonoBehaviourPunCallbacks
             // 룸의 커스텀 정보를 추가한다.
             // - 선택한 맵 번호를 룸 정보에 추가한다.
             // 키 값 등록하기
-            roomOpt.CustomRoomPropertiesForLobby = new string[] {"MASTER_NAME"}; // , "PASSWORD", "SCENE_NUMBER"
+            roomOpt.CustomRoomPropertiesForLobby = new string[] {"MASTER_NAME", "ROOM_ID"}; // , "PASSWORD", "SCENE_NUMBER"
 
             // 키에 맞는 해시 테이블 추가하기
             Hashtable roomTable = new Hashtable();
             roomTable.Add("MASTER_NAME", PhotonNetwork.NickName);
+
+            // 서버에서 Room_ID 받아오고 -> 받아올 때까지 기다려
+            // 해시테이블에 추가
+
             //roomTable.Add("PASSWORD", 1234);
             //roomTable.Add("SCENE_NUMBER", LobbyUIController.lobbyUI.drop_mapSelection.value + 2);
             roomOpt.CustomRoomProperties = roomTable;
@@ -148,6 +152,9 @@ public class ConnectionManager : MonoBehaviourPunCallbacks
         //ChangePanel(1, 2);
 
         PhotonNetwork.LoadLevel(1);
+
+        // 수업자료들 (퀴즈 같은 거) 받아오기
+
     }
 
     /// <summary>

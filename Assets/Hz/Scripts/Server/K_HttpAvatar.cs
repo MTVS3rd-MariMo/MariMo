@@ -37,19 +37,23 @@ public class K_HttpAvatar : MonoBehaviourPun
     //public int avatarIndex;
 
     // URL
-    public string uploadUrl = "http://125.132.216.28:8202/api/avatar/upload-img";
-    //public string downloadUrl = "";
+    public string uploadUrl = "http://211.250.74.75:8202/api/avatar/upload-img";
     private string avatarImgUrl;
     private List<string> animationUrls;
 
+    // 다른 유저 조회 URL
+    string otherUserUrl = "http://211.250.74.75:8202/api/avatar/participant";
+
 
     int userId = 1;
+    int userIds = 10;
     int lessonId = 101;
 
     private void Start()
     {
-        btn_CreateAvatar.onClick.AddListener(() => CreateAvatar(userId, lessonId));
-        
+        //btn_CreateAvatar.onClick.AddListener(() => CreateAvatar(userId, lessonId)); 
+        btn_CreateAvatar.onClick.AddListener(() => StartCoroutine(CreateAndFetchOtherAvatars(userId, lessonId)));
+
     }
 
     // 그림 보내기 POST
@@ -186,6 +190,72 @@ public class K_HttpAvatar : MonoBehaviourPun
                 Debug.LogError("MP4 다운로드 실패: " + webRequest.error);
             }
         }
+    }
+
+    // 아바타 생성, 다른 유저 데이터 가져오기
+    private IEnumerator CreateAndFetchOtherAvatars(int userId, int lessonId)
+    {
+        yield return StartCoroutine(UploadTextureAsPng(userId, lessonId));
+
+        List<int> otherUserIds = GetOtherUserIds();
+        yield return StartCoroutine(GetAvatarData(otherUserIds, lessonId));
+    }
+
+    // 아바타 정보 요청 (GET)
+    public IEnumerator GetAvatarData(List<int> userIds, int lessonId)
+    {
+        foreach(var userId  in userIds)
+        {
+            string getUrl = $"{otherUserUrl}?userId={userId}&lessonId={lessonId}";
+
+            using (UnityWebRequest webRequest = UnityWebRequest.Get(getUrl))
+            {
+                print("서버에게 GET 요청 갔는지");
+
+                yield return webRequest.SendWebRequest();
+
+                if (webRequest.result == UnityWebRequest.Result.Success)
+                {
+                    // JSON 데이터 파싱
+                    List<UserAvatarData> avatarDatalist = JsonUtility.FromJson<List<UserAvatarData>>(webRequest.downloadHandler.text);
+
+                    foreach (var avatarData in avatarDatalist)
+                    {
+                        // 각 이미지 적용
+                        StartCoroutine(OnDownloadImage(avatarData.userId, avatarData.avatarImg, PhotonNetwork.LocalPlayer.ActorNumber));
+
+                        // 각 애니메이션 적용
+                        for (int i = 0; i < avatarData.animations.Count; i++)
+                        {
+                            StartCoroutine(DownloadVideo(avatarData.userId, avatarData.animations[i].animation, $"animation_{avatarData.userId}_{i}", PhotonNetwork.LocalPlayer.ActorNumber));
+                        }
+                    }
+
+                    Debug.LogError("다른 유저 데이터 가져옴");
+
+                }
+                else
+                {
+                    Debug.LogError("다른 유저 데이터 가져오기 실패" + webRequest.error);
+                }
+            }
+        }
+        
+    }
+
+    private List<int> GetOtherUserIds()
+    {
+        List<int> otherUserIds = new List<int>();
+
+        foreach(var player in PhotonNetwork.PlayerList)
+        {
+            if(player.ActorNumber != PhotonNetwork.LocalPlayer.ActorNumber)
+            {
+                otherUserIds.Add(player.ActorNumber);
+            }
+        }
+
+        return otherUserIds;
     }
 
     [PunRPC]

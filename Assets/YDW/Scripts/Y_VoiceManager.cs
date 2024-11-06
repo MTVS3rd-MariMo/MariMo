@@ -109,6 +109,8 @@ public class Y_VoiceManager : MonoBehaviourPun
 
     public void StartRecording(int playerId, int recordingLength)
     {
+        //print("!!!!!!!!! playerId " + playerId + ", actorNumber: " + PhotonNetwork.LocalPlayer.ActorNumber);
+
         if (PhotonNetwork.LocalPlayer.ActorNumber == playerId)
         {
             currentRecording = Microphone.Start(null, true, recordingLength, recordingFrequency);
@@ -133,11 +135,11 @@ public class Y_VoiceManager : MonoBehaviourPun
                 /////////////// 딕셔너리에 추가 말고 바로 통신 해야 함 
 
                 //voiceData[playerId] = trimmedRecording;
-                
+
                 //Debug.Log($"녹음 Dictionary 에 저장됨: {testInt}");
 
                 //SaveAsWav(trimmedRecording, "C:\\Users\\Admin\\OneDrive\\문서\\FinalProject\\HotSeatingAudio\\" + testInt + filename + ".wav");
-                //Debug.Log($"Wav 파일로 저장됨: {testInt}");
+                Debug.Log($"Wav 파일로 저장됨: {testInt}");
             }
 
             RPC_UpdateTestInt();
