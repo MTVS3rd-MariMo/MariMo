@@ -301,6 +301,7 @@ public class P_CreatorToolConnectMgr : MonoBehaviour
         return quizData;
     }
 
+    // 퀴즈 내용 변경
     public void ModifyQuiz(Quiz quiz, int index)
     {
         quizData.quizList[index].question = quiz.question;
@@ -310,6 +311,7 @@ public class P_CreatorToolConnectMgr : MonoBehaviour
         quizData.quizList[index].choices4 = quiz.choices4;
     }
 
+    // 열린질문 내용 변경
     public void ModifyQuestion(string text,  int index)
     {
         quizData.openQuestionList[index].questionTitle = text;
