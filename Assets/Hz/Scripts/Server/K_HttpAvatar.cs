@@ -46,12 +46,14 @@ public class K_HttpAvatar : MonoBehaviourPun
 
 
     int userId = 1;
+    int userIds = 10;
     int lessonId = 101;
 
     private void Start()
     {
-        btn_CreateAvatar.onClick.AddListener(() => CreateAvatar(userId, lessonId));
-        
+        //btn_CreateAvatar.onClick.AddListener(() => CreateAvatar(userId, lessonId)); 
+        btn_CreateAvatar.onClick.AddListener(() => StartCoroutine(CreateAndFetchOtherAvatars(userId, lessonId)));
+
     }
 
     // 그림 보내기 POST
@@ -190,18 +192,68 @@ public class K_HttpAvatar : MonoBehaviourPun
         }
     }
 
-    // 아바타 정보 요청
-    public IEnumerator GetAvatarData(int userId, int lessonId)
+    // 아바타 생성, 다른 유저 데이터 가져오기
+    private IEnumerator CreateAndFetchOtherAvatars(int userId, int lessonId)
     {
-        using(UnityWebRequest webRequest = UnityWebRequest.Get(otherUserUrl))
-        {
-            yield return webRequest.SendWebRequest();
+        yield return StartCoroutine(UploadTextureAsPng(userId, lessonId));
 
-            if(webRequest.result == UnityWebRequest.Result.Success)
+        List<int> otherUserIds = GetOtherUserIds();
+        yield return StartCoroutine(GetAvatarData(otherUserIds, lessonId));
+    }
+
+    // 아바타 정보 요청 (GET)
+    public IEnumerator GetAvatarData(List<int> userIds, int lessonId)
+    {
+        foreach(var userId  in userIds)
+        {
+            using (UnityWebRequest webRequest = UnityWebRequest.Get(otherUserUrl))
             {
-                
+                print("서버에게 GET 요청 갔는지");
+
+                yield return webRequest.SendWebRequest();
+
+                if (webRequest.result == UnityWebRequest.Result.Success)
+                {
+                    // JSON 데이터 파싱
+                    List<UserAvatarData> avatarDatalist = JsonUtility.FromJson<List<UserAvatarData>>(webRequest.downloadHandler.text);
+
+                    foreach (var avatarData in avatarDatalist)
+                    {
+                        // 각 이미지 적용
+                        StartCoroutine(OnDownloadImage(avatarData.userId, avatarData.avatarImg, PhotonNetwork.LocalPlayer.ActorNumber));
+
+                        // 각 애니메이션 적용
+                        for (int i = 0; i < avatarData.animations.Count; i++)
+                        {
+                            StartCoroutine(DownloadVideo(avatarData.userId, avatarData.animations[i].animation, $"animation_{avatarData.userId}_{i}", PhotonNetwork.LocalPlayer.ActorNumber));
+                        }
+                    }
+
+                    Debug.LogError("다른 유저 데이터 가져옴");
+
+                }
+                else
+                {
+                    Debug.LogError("다른 유저 데이터 가져오기 실패" + webRequest.error);
+                }
             }
         }
+        
+    }
+
+    private List<int> GetOtherUserIds()
+    {
+        List<int> otherUserIds = new List<int>();
+
+        foreach(var player in PhotonNetwork.PlayerList)
+        {
+            if(player.ActorNumber != PhotonNetwork.LocalPlayer.ActorNumber)
+            {
+                otherUserIds.Add(player.ActorNumber);
+            }
+        }
+
+        return otherUserIds;
     }
 
     [PunRPC]

@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Video;
 
-public class K_AvatarVpSettings : MonoBehaviour
+public class K_AvatarVpSettings : MonoBehaviourPun
 {
     PhotonView pv;
     int index;
@@ -31,19 +31,49 @@ public class K_AvatarVpSettings : MonoBehaviour
         print(PhotonNetwork.LocalPlayer.ActorNumber);
     }
 
-    public void RPC_SelectChar(int characterIndex)
+    public void RPC_SelectCharNum(int characterIndex)
     {
-        pv.RPC(nameof(SelectChar), RpcTarget.All, characterIndex);
+        if(pv != null)
+        {
+            pv.RPC(nameof(SelectCharNum), RpcTarget.AllBuffered, characterIndex);
+        }
+        else
+        {
+            Debug.Log("rpc업슴");
+        }
+        
     }
 
     [PunRPC]
-    void SelectChar(int characterIndex)
+    void SelectCharNum(int characterIndex)
     {
 
         avatarIndex = characterIndex - 1;
-        print(avatarIndex);
+        vp.clip = videoClips[avatarIndex];
+
+        // Debug
+        if(avatarIndex < 0 || avatarIndex >= renderTextures.Length)
+        {
+            Debug.Log("Invalid avatarIndex : " + avatarIndex + ". Array length is " + renderTextures.Length);
+            return;
+        }
+
+        if(rawImage == null || vp == null)
+        {
+            Debug.Log("로우이미지 vp 업슴");
+            return;
+        }
+
+        if (renderTextures[avatarIndex] == null)
+        {
+            Debug.LogError("Render texture at index " + avatarIndex + " is null");
+            return;
+        }
+
+
+        //print(avatarIndex);
         rawImage.texture = vp.targetTexture = renderTextures[avatarIndex];
-        print("renderTexture" + renderTextures[avatarIndex]);
+        //print("renderTexture" + renderTextures[avatarIndex]);
     }
 
 
