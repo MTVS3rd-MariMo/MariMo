@@ -45,17 +45,7 @@ public enum Role
     STUDENT
 }
 
-[Serializable]
-public class SignUpData
-{
-    public Role role;
-    public string school;
-    public int grade;
-    public int classRoom;
-    public int studentNumber;
-    public string name;
-    public string password;
-}
+
 
 public class User
 {

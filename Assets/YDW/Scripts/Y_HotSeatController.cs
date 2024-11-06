@@ -130,11 +130,11 @@ public class Y_HotSeatController : MonoBehaviourPun
         //}
 
         // 네 명이 다 인터뷰 하면 자동으로 활동 종료
-        if(testNum > players.Count && !isEnd)
-        {
-            isEnd = true;
-            StartCoroutine(LastCoroutine());
-        }
+        //if(testNum > players.Count && !isEnd)
+        //{
+        //    isEnd = true;
+        //    StartCoroutine(LastCoroutine());
+        //}
 
         //if(Input.GetKeyDown(KeyCode.Alpha8))
         //{
@@ -227,6 +227,10 @@ public class Y_HotSeatController : MonoBehaviourPun
         if (PhotonNetwork.IsMasterClient)
         {
             playerNums = ShuffleList(Y_BookController.Instance.allPlayers);
+            foreach (int playerNum in playerNums)
+            {
+                print("?????? " + playerNum);
+            }
             RPC_SyncPlayerNums(playerNums.ToArray());
         }
     }
@@ -406,7 +410,7 @@ public class Y_HotSeatController : MonoBehaviourPun
 
                 //int recordTime;
 
-                // 마스터면 15초, 아니면 5초 타이머 시작
+                // 처음 순서면 15초, 아니면 5초 타이머 시작
                 if (i == 0 && PhotonNetwork.IsMasterClient) // 테스트용으로 5초, 시연 땐 15초 정도 할까 /////////////////////////
                 {
                     RPC_StartTimer(i, 5);
@@ -420,13 +424,8 @@ public class Y_HotSeatController : MonoBehaviourPun
                 }
 
                 // 소리 나머지 뮤트
-                RPC_MuteOtherPlayers(playerNums[i]);
-                // 내 차례 됐을 때에만 보이스 켜줌
-                //if (PhotonNetwork.LocalPlayer.ActorNumber == playerNums[i])
-                //{
-                //    Y_VoiceManager.Instance.recorder.TransmitEnabled = true;
-                //    //Y_VoiceManager.Instance.StartRecording(playerNums[i], recordTime);
-                //}
+                MuteOtherPlayers(playerNums[i] + 1);
+                print((playerNums[i] + 1) + " 빼고 뮤트됨! - 자기소개");
 
                 // 자기소개 켜 줌
                 stageScriptImgs[i].gameObject.SetActive(true);
@@ -452,10 +451,12 @@ public class Y_HotSeatController : MonoBehaviourPun
         if(myActorNumber != playerNum)
         {
             Y_VoiceManager.Instance.recorder.TransmitEnabled = false;
+            print(myActorNumber + "번 플레이어 뮤트됨");
         }
         else
         {
             Y_VoiceManager.Instance.recorder.TransmitEnabled = true;
+            print(myActorNumber + "번 플레이어는 뮤트되지 않음");
         }
 
         //// 모든 PhotonVoiceView를 가진 객체를 검색
@@ -489,7 +490,7 @@ public class Y_HotSeatController : MonoBehaviourPun
     public void UnMuteAllPlayers()
     {
         Y_VoiceManager.Instance.recorder.TransmitEnabled = true;
-
+        print("전체 언뮤트 됨");
         //foreach (var voiceView in allVoiceViews)
         //{
         //    PhotonView photonVoiceView = voiceView.GetComponent<PhotonView>();
@@ -553,31 +554,38 @@ public class Y_HotSeatController : MonoBehaviourPun
     {
         yield return new WaitForSeconds(2f);
 
+        Debug.LogError("인덱스 찍어 : " + index);
+
         for(int i = 0; i <= players.Count; i++)
         {
-            if(i < players.Count && i != playerNums[index])
+            if(i < players.Count && i != index) // playerNums[index]
             {
+                Debug.LogError("i 찍어 : " + i);
+                Debug.LogError("playerNums[index] 찍어 : " + playerNums[index]);
+
                 myTurnImgs[i].SetActive(true);
 
                 // 질문하는 사람 보이스 켜주고 녹음 시작
-                RPC_MuteOtherPlayers(playerNums[i]);
-                RPC_RecordVoice(playerNums[i]);
+                MuteOtherPlayers(playerNums[i] + 1); 
+                print((playerNums[i] + 1) + " 빼고 뮤트됨! - 인터뷰 질문");
+                RecordVoice(playerNums[i] + 1);
 
                 // 원래는 30초인데 테스트용 5초
-                yield return new WaitForSeconds(5f);
+                yield return new WaitForSeconds(10f);
                 // 녹음 종료
-                RPC_StopRecordVoice(playerNums[i]);
+                StopRecordVoice(playerNums[i] + 1);
 
                 myTurnImgs[i].SetActive(false);
 
                 // 자기소개 한 사람(답변할 사람) 보이스 켜주고 녹음 시작
-                RPC_MuteOtherPlayers(playerNums[index]);
-                RPC_RecordVoice(playerNums[index]);
+                MuteOtherPlayers(playerNums[index] + 1);
+                print((playerNums[index] + 1) + " 빼고 뮤트됨! - 인터뷰 답변");
+                RecordVoice(playerNums[index] + 1);
 
                 // 원래는 60초인데 일단 5초
-                yield return new WaitForSeconds(5f);
+                yield return new WaitForSeconds(10f);
                 // 녹음 종료
-                RPC_StopRecordVoice(playerNums[index]);
+                StopRecordVoice(playerNums[index] + 1);
             }
 
             if (i == players.Count)
@@ -619,8 +627,9 @@ public class Y_HotSeatController : MonoBehaviourPun
         yield return new WaitForSeconds(2.5f);
         Y_VoiceManager.Instance.recorder.TransmitEnabled = true;
         RPC_ActivateGuide(4);
-        RPC_UnMuteAllPlayers();
+        UnMuteAllPlayers(); ///////////// 원래는 RPC 였음!
     }
+
     void RPC_ActivateGuide(int index)
     {
         photonView.RPC(nameof(ActivateGuide), RpcTarget.All, index);
