@@ -10,6 +10,7 @@ public class P_MakingAsk : MonoBehaviour
 
     public Button btn_Prev;
     public Button btn_Next;
+    public Button btn_OK;
 
     public TMP_InputField askText;
 
@@ -21,6 +22,7 @@ public class P_MakingAsk : MonoBehaviour
         _creatorToolController = GetComponentInParent<P_CreatorToolController>();
         btn_Prev.onClick.AddListener(OnclickPrev);
         btn_Next.onClick.AddListener(OnclickNext);
+        btn_OK.onClick.AddListener(OnclickNext);
 
         // 예시
         askText.text = P_CreatorToolConnectMgr.Instance.GetOpenQuestion(0).questionTitle;
@@ -45,7 +47,10 @@ public class P_MakingAsk : MonoBehaviour
             return;
         else
         {
+            P_CreatorToolConnectMgr.Instance.ModifyQuestion(askText.text, count);
+            
             count--;
+
 
             // 예시
             askText.text = P_CreatorToolConnectMgr.Instance.GetOpenQuestion(0).questionTitle;
@@ -58,12 +63,15 @@ public class P_MakingAsk : MonoBehaviour
         if (count >= 1)
         {
             // 데이터 저장
+            P_CreatorToolConnectMgr.Instance.ModifyQuestion(askText.text, count);
 
             // 다음 창으로 이동
             GoTitle();
         }    
         else
         {
+            P_CreatorToolConnectMgr.Instance.ModifyQuestion(askText.text, count);
+
             count++;
 
             // 예시

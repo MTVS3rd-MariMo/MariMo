@@ -8,6 +8,7 @@ public class P_QuizSelect : MonoBehaviour
     public P_CreatorToolController p_CreatorToolController;
 
     public Button btn_SelectComplete;
+    public Sprite[] sp_SelectComplete;
 
     public Transform contentpanel;
 
@@ -26,10 +27,12 @@ public class P_QuizSelect : MonoBehaviour
         if (selectCount == 2)
         {
             btn_SelectComplete.interactable = true;
+            btn_SelectComplete.image.sprite = sp_SelectComplete[1];
         }
         else
         {
             btn_SelectComplete.interactable = false;
+            btn_SelectComplete.image.sprite = sp_SelectComplete[0];
         }
     }
 

@@ -132,6 +132,19 @@ public class HttpManager : MonoBehaviour
         }
     }
 
+    // Lessons 받는 용도
+    public IEnumerator GetLesson(HttpInfo info)
+    {
+        using (UnityWebRequest webRequest = UnityWebRequest.Get(info.url))
+        {
+            webRequest.SetRequestHeader("userId", "3");
+            // 서버에 요청 보내기
+            yield return webRequest.SendWebRequest();
+
+            // 서버에게 응답이 왔다.
+            DoneRequest(webRequest, info);
+        }
+    }
     // 서버에게 내가 보내는 데이터를 생성해줘
     public IEnumerator Post(HttpInfo info)
     {
