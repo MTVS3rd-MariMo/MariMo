@@ -7,8 +7,9 @@ using Photon.Voice.PUN;
 using UnityEngine.UI;
 using System.IO;
 using System;
+using Photon.Pun.Demo.PunBasics;
 
-public class Y_VoiceManager : MonoBehaviour
+public class Y_VoiceManager : MonoBehaviourPun
 {
     public static Y_VoiceManager Instance { get; private set; }
 
@@ -22,6 +23,9 @@ public class Y_VoiceManager : MonoBehaviour
     private int recordingFrequency = 44100;
     //private int recordingLength = 15; // 최대 녹음 길이 (초 단위)
     private AudioClip currentRecording;
+
+    public int actorNumber;
+    PhotonVoiceView myVoiceView;
 
     private void Awake()
     {
@@ -41,6 +45,31 @@ public class Y_VoiceManager : MonoBehaviour
     void Start()
     {
         recorder = GetComponent<Recorder>();
+        actorNumber = PhotonNetwork.LocalPlayer.ActorNumber;
+
+        //// 현재 로컬 플레이어의 voiceView 찾기
+        //PhotonVoiceView[] allVoiceViews = FindObjectsOfType<PhotonVoiceView>();
+
+        //foreach (var voiceView in allVoiceViews)
+        //{
+        //    PhotonView photonVoiceView = voiceView.GetComponent<PhotonView>();
+
+        //    if(photonVoiceView.)
+        //    myVoiceView = 
+
+
+
+        //    if (voiceView.RecorderInUse.TransmitEnabled)
+        //    {
+        //        noVoiceIcon.gameObject.SetActive(false);
+        //        voiceIcon.gameObject.SetActive(true);
+        //    }
+        //    else
+        //    {
+        //        voiceIcon.gameObject.SetActive(false);
+        //        noVoiceIcon.gameObject.SetActive(true);
+        //    }
+        //}
     }
 
     // Update is called once per frame
@@ -62,6 +91,9 @@ public class Y_VoiceManager : MonoBehaviour
             }
         }
 
+        // 음소거가 되어 있으면 빗금친 스피커 이미지로 바꾼다
+
+
         //if (Input.GetKeyDown(KeyCode.N))
         //{
         //    StartRecording(1, 5);
@@ -71,24 +103,24 @@ public class Y_VoiceManager : MonoBehaviour
         //{
         //    StopRecording(1, "test");
         //}
-
-        if(Input.GetKeyDown(KeyCode.Alpha9))
-        {
-            // 딕셔너리 키 값을 플레이어 아이디로, 오디오 클립은 for 문 돌려서 WAV 로 바꾼 뒤 통신
-        }
     }
 
 
 
     public void StartRecording(int playerId, int recordingLength)
     {
-        currentRecording = Microphone.Start(null, true, recordingLength, recordingFrequency);
-        Debug.Log($"녹음 시작됨: {playerId}");
+        if (PhotonNetwork.LocalPlayer.ActorNumber == playerId)
+        {
+            currentRecording = Microphone.Start(null, true, recordingLength, recordingFrequency);
+            Debug.Log($"녹음 시작됨: {testInt}");
+        }
     }
+
+    int testInt = 0;
 
     public void StopRecording(int playerId, string filename)
     {
-        if (Microphone.IsRecording(null))
+        if (Microphone.IsRecording(null) && PhotonNetwork.LocalPlayer.ActorNumber == playerId)
         {
             int recordingPosition = Microphone.GetPosition(null);
             Microphone.End(null);
@@ -97,13 +129,31 @@ public class Y_VoiceManager : MonoBehaviour
             {
                 // 녹음 데이터를 실제 녹음 길이만큼 잘라내기
                 AudioClip trimmedRecording = TrimAudioClip(currentRecording, recordingPosition);
-                voiceData[playerId] = trimmedRecording;
-                Debug.Log($"녹음 Dictionary 에 저장됨: {playerId}");
 
-                //SaveAsWav(trimmedRecording, "C:\\Users\\Admin\\OneDrive\\문서\\FinalProject\\HotSeatingAudio\\" + filename + ".wav");
-                //Debug.Log($"Wav 파일로 저장됨: {playerId}");
+                /////////////// 딕셔너리에 추가 말고 바로 통신 해야 함 
+
+                //voiceData[playerId] = trimmedRecording;
+                
+                //Debug.Log($"녹음 Dictionary 에 저장됨: {testInt}");
+
+                SaveAsWav(trimmedRecording, "C:\\Users\\Admin\\OneDrive\\문서\\FinalProject\\HotSeatingAudio\\" + testInt + filename + ".wav");
+                Debug.Log($"Wav 파일로 저장됨: {testInt}");
             }
+
+            RPC_UpdateTestInt();
         }
+    }
+
+    public void RPC_UpdateTestInt()
+    {
+        photonView.RPC(nameof(updateTestInt), RpcTarget.All);
+    }
+
+    [PunRPC]
+    public void updateTestInt()
+    {
+        testInt++;
+        print("TestInt Update: " + testInt);
     }
 
     private AudioClip TrimAudioClip(AudioClip clip, int lengthSamples)

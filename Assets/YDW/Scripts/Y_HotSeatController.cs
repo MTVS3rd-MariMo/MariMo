@@ -1,7 +1,9 @@
 ﻿using iTextSharp.text.html.simpleparser;
 using iTextSharp.text.pdf;
 using Photon.Pun;
+using Photon.Pun.Demo.PunBasics;
 using Photon.Pun.UtilityScripts;
+using Photon.Voice.PUN;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -128,11 +130,23 @@ public class Y_HotSeatController : MonoBehaviourPun
         //}
 
         // 네 명이 다 인터뷰 하면 자동으로 활동 종료
-        if(testNum >= players.Count && !isEnd)
+        if(testNum > players.Count && !isEnd)
         {
             isEnd = true;
             StartCoroutine(LastCoroutine());
         }
+
+        //if(Input.GetKeyDown(KeyCode.Alpha8))
+        //{
+        //    photonView.RPC(nameof(MuteOtherPlayers), RpcTarget.All, PhotonNetwork.LocalPlayer.ActorNumber);
+        //    //MuteOtherPlayers(PhotonNetwork.LocalPlayer.ActorNumber);
+        //}
+
+        //if(Input.GetKeyDown(KeyCode.Alpha7))
+        //{
+        //    photonView.RPC(nameof(UnMuteAllPlayers), RpcTarget.All);
+        //    //UnMuteAllPlayers();
+        //}
     }
 
     
@@ -271,7 +285,7 @@ public class Y_HotSeatController : MonoBehaviourPun
     public void AllReady()
     {
         // 보이스 일단 4명 다 꺼줌
-        Y_VoiceManager.Instance.recorder.TransmitEnabled = false;
+        //Y_VoiceManager.Instance.recorder.TransmitEnabled = false;
 
         // 서브밋 누른 플레이어 수 늘림
         selfInt_count++;
@@ -339,7 +353,8 @@ public class Y_HotSeatController : MonoBehaviourPun
     // 순서대로 자기소개 - 질문
     public void StartSpeech(int index)
     {
-        if (index - 1 >= 0)
+        print("!!!!!!!!!! index : " + index);
+        if (index - 1 >= 0 && index - 1 < images.Count)
         {
             images[index - 1].color = originalColor; // 전 플레이어는 이름표 색 원래 색으로
             players[index - 1].transform.position = playerPos; // 이미지 위치도 원위치
@@ -349,7 +364,7 @@ public class Y_HotSeatController : MonoBehaviourPun
             // 녹음 끄기
             //  Y_VoiceManager.Instance.StopRecording(playerNums[index-1], "hotseatingInterview" + playerNums[index-1].ToString());
             // 보이스 꺼 줘야 함
-            Y_VoiceManager.Instance.recorder.TransmitEnabled = false;
+            //Y_VoiceManager.Instance.recorder.TransmitEnabled = false;
         }
 
         if (index < players.Count)
@@ -360,6 +375,11 @@ public class Y_HotSeatController : MonoBehaviourPun
             // 플레이어 무대로 가게 한다
             playerPos = players[index].transform.position;
             StartCoroutine(ChangePos(playerPos, index));
+        }
+
+        if (index == 4)
+        {
+            StartCoroutine(LastCoroutine());
         }
 
     }
@@ -376,6 +396,7 @@ public class Y_HotSeatController : MonoBehaviourPun
                 playerPos = stagePos.position; // 도착점에 위치 맞춰준다
 
                 spotlight.SetActive(true); // 스포트라이트 켜준다
+
 
                 stageScriptImgs[i].gameObject.SetActive(true);
 
@@ -398,23 +419,82 @@ public class Y_HotSeatController : MonoBehaviourPun
                     //recordTime = 5;
                 }
 
+                // 소리 나머지 뮤트
+                RPC_MuteOtherPlayers(playerNums[i]);
                 // 내 차례 됐을 때에만 보이스 켜줌
-                if (PhotonNetwork.LocalPlayer.ActorNumber == playerNums[i])
-                {
-                    Y_VoiceManager.Instance.recorder.TransmitEnabled = true;
-                    //Y_VoiceManager.Instance.StartRecording(playerNums[i], recordTime);
-                }
+                //if (PhotonNetwork.LocalPlayer.ActorNumber == playerNums[i])
+                //{
+                //    Y_VoiceManager.Instance.recorder.TransmitEnabled = true;
+                //    //Y_VoiceManager.Instance.StartRecording(playerNums[i], recordTime);
+                //}
 
                 // 자기소개 켜 줌
                 stageScriptImgs[i].gameObject.SetActive(true);
-
-                // 인터뷰로 넘어감
-                StartCoroutine(InterviewCoroutine(i));
 
                 break;
             }
             yield return null;
         }
+    }
+
+    PhotonVoiceView[] allVoiceViews;
+
+    public void RPC_MuteOtherPlayers(int playerNum)
+    {
+        photonView.RPC(nameof(MuteOtherPlayers), RpcTarget.All, playerNum);
+    }
+
+    [PunRPC]
+    public void MuteOtherPlayers(int playerNum)
+    {
+        int myActorNumber = PhotonNetwork.LocalPlayer.ActorNumber;
+
+        if(myActorNumber != playerNum)
+        {
+            Y_VoiceManager.Instance.recorder.TransmitEnabled = false;
+        }
+        else
+        {
+            Y_VoiceManager.Instance.recorder.TransmitEnabled = true;
+        }
+
+        //// 모든 PhotonVoiceView를 가진 객체를 검색
+        //allVoiceViews = FindObjectsOfType<PhotonVoiceView>();
+        //print("AllVoiceViews 받아옴");
+
+        //foreach (var voiceView in allVoiceViews)
+        //{
+        //    PhotonView photonVoiceView = voiceView.GetComponent<PhotonView>();
+
+        //    // 플레이어가 null이 아닌지 확인하고, 현재 차례 플레이어를 제외하고 전부 음소거
+        //    if (photonVoiceView != null && photonVoiceView.Owner != null && myActorNumber != playerNum)
+        //    {
+        //        voiceView.RecorderInUse.TransmitEnabled = false;
+        //        print("음소거 합니다");
+        //    }
+        //    else if(myActorNumber == playerNum) // 한 명만 음소거 아니게
+        //    {
+        //        voiceView.RecorderInUse.TransmitEnabled = true;
+        //        print("얜 음소거 안 합니다");
+        //    }
+        //}
+    }
+
+    public void RPC_UnMuteAllPlayers()
+    {
+        photonView.RPC(nameof(UnMuteAllPlayers), RpcTarget.All);
+    }
+
+    [PunRPC]
+    public void UnMuteAllPlayers()
+    {
+        Y_VoiceManager.Instance.recorder.TransmitEnabled = true;
+
+        //foreach (var voiceView in allVoiceViews)
+        //{
+        //    PhotonView photonVoiceView = voiceView.GetComponent<PhotonView>();
+        //    voiceView.RecorderInUse.TransmitEnabled = true;
+        //}
     }
 
     float currTime = 0;
@@ -454,13 +534,10 @@ public class Y_HotSeatController : MonoBehaviourPun
 
             if (time - timeSpan.Seconds <= 0)
             {
-                timerImgs[i].gameObject.SetActive(false); // 타이머 끄기
-                //if (PhotonNetwork.LocalPlayer.ActorNumber == playerNums[i]) // 녹음 시작
-                //{
-                    //Y_VoiceManager.Instance.recorder.TransmitEnabled = true;
-                    //Y_VoiceManager.Instance.StartRecording(playerNums[i], 600);
-                    //Y_VoiceManager.Instance.StopRecording(playerNums[i], "hotseatingInterview" + playerNums[i].ToString());
-                //}
+                timerImgs[i].gameObject.SetActive(false); 
+
+                // 인터뷰로 넘어감
+                StartCoroutine(InterviewCoroutine(i));
             }
         }
 
@@ -474,33 +551,63 @@ public class Y_HotSeatController : MonoBehaviourPun
     public GameObject[] myTurnImgs;
     IEnumerator InterviewCoroutine(int index)
     {
-        for(int i = 0; i < players.Count; i++)
+        yield return new WaitForSeconds(2f);
+
+        for(int i = 0; i <= players.Count; i++)
         {
-            if(i != index)
+            if(i < players.Count && i != playerNums[index])
             {
                 myTurnImgs[i].SetActive(true);
 
                 // 질문하는 사람 보이스 켜주고 녹음 시작
-                Y_VoiceManager.Instance.StartRecording(playerNums[i], 600);
+                RPC_MuteOtherPlayers(playerNums[i]);
+                RPC_RecordVoice(playerNums[i]);
 
-                // 원래는 30초인데 테스트용 2초
-                yield return new WaitForSeconds(2f);
+                // 원래는 30초인데 테스트용 5초
+                yield return new WaitForSeconds(5f);
                 // 녹음 종료
+                RPC_StopRecordVoice(playerNums[i]);
 
                 myTurnImgs[i].SetActive(false);
 
-                // 자기소개 한 사람 보이스 켜주고 녹음 시작
-                
-                // 원래는 60초인데 일단 2초
-                yield return new WaitForSeconds(2f);
+                // 자기소개 한 사람(답변할 사람) 보이스 켜주고 녹음 시작
+                RPC_MuteOtherPlayers(playerNums[index]);
+                RPC_RecordVoice(playerNums[index]);
+
+                // 원래는 60초인데 일단 5초
+                yield return new WaitForSeconds(5f);
                 // 녹음 종료
+                RPC_StopRecordVoice(playerNums[index]);
+            }
+
+            if (i == players.Count)
+            {
+                if(PhotonNetwork.IsMasterClient) RPC_ProtoTest();
+                print("다음 사람 자기소개로 넘어갑니다");
             }
         }
+    }
 
-        if(index == players.Count - 1)
-        {
-            RPC_ProtoTest();
-        }
+    public void RPC_RecordVoice(int i)
+    {
+        photonView.RPC(nameof(RecordVoice), RpcTarget.All, i);
+    }
+
+    [PunRPC]
+    public void RecordVoice(int i)
+    {
+        Y_VoiceManager.Instance.StartRecording(i, 600);
+    }
+
+    public void RPC_StopRecordVoice(int i)
+    {
+        photonView.RPC(nameof(StopRecordVoice), RpcTarget.All, i);
+    }
+
+    [PunRPC]
+    public void StopRecordVoice(int i)
+    {
+        Y_VoiceManager.Instance.StopRecording(i, "InterviewFile");
     }
 
 
@@ -512,6 +619,7 @@ public class Y_HotSeatController : MonoBehaviourPun
         yield return new WaitForSeconds(2.5f);
         Y_VoiceManager.Instance.recorder.TransmitEnabled = true;
         RPC_ActivateGuide(4);
+        RPC_UnMuteAllPlayers();
     }
     void RPC_ActivateGuide(int index)
     {

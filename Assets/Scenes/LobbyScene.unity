@@ -2388,10 +2388,6 @@ MonoBehaviour:
   roomPrefab: {fileID: 8315691192266534569, guid: a4ee6e05ee68d8b4b8ecfef481c426b8,
     type: 3}
   scrollContent: {fileID: 618050616}
-  panelList:
-  - {fileID: 56896046}
-  - {fileID: 764375216}
-  - {fileID: 1585524118}
 --- !u!114 &606572790
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4484,13 +4480,13 @@ MonoBehaviour:
   panel_login: {fileID: 56896046}
   btn_login: {fileID: 2073582493}
   input_nickName: {fileID: 817961900}
-  panel_joinOrCreateRoom: {fileID: 764375216}
+  panel_Title: {fileID: 0}
   roomSetting:
   - {fileID: 472599491}
   - {fileID: 1749801535}
   text_logText: {fileID: 956246757}
-  signUpUI: {fileID: 0}
-  logInUI: {fileID: 56896046}
+  enterRoom: {fileID: 0}
+  album: {fileID: 0}
 --- !u!1 &1298127149
 GameObject:
   m_ObjectHideFlags: 0

@@ -62,6 +62,24 @@ public class User
     public string userId;
 }
 
+// 아바타 관련 데이터
+[System.Serializable]
+public struct UserAvatarData
+{
+    public int userId;
+    public int lessonId;
+    public string avatarImg;
+    public List<AnimationData> animations;
+}
+
+// 아바타 애니메이션 데이터
+[System.Serializable]
+public struct AnimationData
+{
+    public int animationId;
+    public string animation;
+}
+
 
 public class HttpManager : MonoBehaviour
 {
@@ -235,7 +253,7 @@ public class HttpManager : MonoBehaviour
 
 
     // 그림판 보내기 
-    public IEnumerator UploadFileByFormDataArt(HttpInfo info, byte[] imgData)
+    public IEnumerator UploadFileByFormDataArt(HttpInfo info, byte[] imgData, int userId, int lessonId)
     {
         // info.data 에는 파일의 위치
         // info.data 에 있는 파일을 byte 배열로 읽어오자
@@ -244,6 +262,7 @@ public class HttpManager : MonoBehaviour
         // data 를 MultipartForm 으로 셋팅
         WWWForm form = new WWWForm();
         form.AddField("body", info.body);
+        form.AddField("lessonId", lessonId.ToString());
         form.AddBinaryData("img", imgData, "img.png", "image/png");
 
         print("요청 체크1");
@@ -253,6 +272,9 @@ public class HttpManager : MonoBehaviour
             print("요청 체크2");
 
             //webRequest.SetRequestHeader("multipart/form-data");
+
+            webRequest.SetRequestHeader("userId", userId.ToString());
+            webRequest.SetRequestHeader("lessonId", lessonId.ToString());
 
             // 서버에 요청 보내기
             yield return webRequest.SendWebRequest();
