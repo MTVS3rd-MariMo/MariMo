@@ -16,6 +16,9 @@ public class P_QuizInfo : MonoBehaviour
     public TMP_Text choice4;
     public Toggle select;
 
+    public Image[] images;
+    public Sprite[] sprites;
+
     public int quizNum;
 
     public void Setquiz(int i)
@@ -28,6 +31,8 @@ public class P_QuizInfo : MonoBehaviour
         choice4.text = quizdata.choices4;
 
         quizNum = quizdata.quizId;
+
+        images[quizdata.answer - 1].sprite = sprites[1];
     }
 
     

@@ -7,6 +7,12 @@ using UnityEngine;
 
 public class K_QuizPos : MonoBehaviourPun
 {
+    // ServerSettings 
+
+    //public string question;
+    //public int answer;
+    //public string[] choices;
+
     // 연출용
     public CinemachineVirtualCamera virtualCamera;
 

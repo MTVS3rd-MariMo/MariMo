@@ -20,6 +20,7 @@ public class Y_HttpLogIn : MonoBehaviour
 {
     static Y_HttpLogIn instance;
     public string userId;
+    public string mainServer;
 
     public static Y_HttpLogIn GetInstance()
     {
@@ -44,6 +45,8 @@ public class Y_HttpLogIn : MonoBehaviour
         {
             Destroy(gameObject);
         }
+
+        mainServer = "http://211.250.74.75:8202/";
     }
 
     // Start is called before the first frame update
@@ -65,7 +68,6 @@ public class Y_HttpLogIn : MonoBehaviour
         {
             // 서버에 요청 보내기
             yield return webRequest.SendWebRequest();
-
 
             // 서버에게 응답이 왔다.
             DoneRequest(webRequest, info);
@@ -92,7 +94,7 @@ public class Y_HttpLogIn : MonoBehaviour
         }
     }
 
-    public string RegisterUrl = "http://211.250.74.75:8202/api/user/signup"; ///////////////////
+    public string RegisterUrl = "api/user/signup"; ///////////////////
 
     public IEnumerator SignUpCoroutine(string username, string password, string school, int grade, int className, int studentNumber, bool isTeacher)
     {
@@ -122,7 +124,7 @@ public class Y_HttpLogIn : MonoBehaviour
         byte[] jsonToSend = new System.Text.UTF8Encoding().GetBytes(jsonBody);
 
         // 서버 요청 설정
-        using (UnityWebRequest webRequest = new UnityWebRequest(RegisterUrl, "POST"))
+        using (UnityWebRequest webRequest = new UnityWebRequest(mainServer + RegisterUrl, "POST"))
         {
             webRequest.uploadHandler = new UploadHandlerRaw(jsonToSend); // 로우 데이터 업로드
             webRequest.downloadHandler = new DownloadHandlerBuffer(); // 서버가 다운로드 할 수 있는 공간 만듦
@@ -143,7 +145,7 @@ public class Y_HttpLogIn : MonoBehaviour
         }
     }
 
-    public string logInUrl = "http://211.250.74.75:8202/api/user/login";
+    public string logInUrl = "api/user/login";
 
 
     public IEnumerator LogInCoroutine(string username, string password)
@@ -159,7 +161,7 @@ public class Y_HttpLogIn : MonoBehaviour
         byte[] jsonToSend = new System.Text.UTF8Encoding().GetBytes(jsonBody);
 
         // 서버 요청 설정
-        using (UnityWebRequest webRequest = new UnityWebRequest(logInUrl, "POST"))
+        using (UnityWebRequest webRequest = new UnityWebRequest(mainServer + logInUrl, "POST"))
         {
             webRequest.uploadHandler = new UploadHandlerRaw(jsonToSend); // 로우 데이터 업로드
             webRequest.downloadHandler = new DownloadHandlerBuffer(); // 서버가 다운로드 할 수 있는 공간 만듦

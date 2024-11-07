@@ -1521,7 +1521,6 @@ GameObject:
   - component: {fileID: 7021568941675880217}
   - component: {fileID: 6430687014726904515}
   - component: {fileID: 6977969297443956476}
-  - component: {fileID: 2842826565050116396}
   - component: {fileID: 4146154622678911601}
   m_Layer: 0
   m_Name: RealQuiz_1
@@ -1592,18 +1591,6 @@ MonoBehaviour:
   text_Correct: {fileID: 7419860395733467609}
   isQuizStarted: 0
   isInCorrectZone: 0
---- !u!114 &2842826565050116396
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8305077748244996288}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e1fd8db8af8407c4ab05d905040a81e5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &4146154622678911601
 MonoBehaviour:
   m_ObjectHideFlags: 0

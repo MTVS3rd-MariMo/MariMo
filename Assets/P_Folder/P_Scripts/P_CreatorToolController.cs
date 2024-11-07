@@ -24,6 +24,7 @@ public class P_CreatorToolController : MonoBehaviour
     public Sprite[] sp_CreateRoom;
     public Button btn_Library;
     public Sprite[] sp_Library;
+    public TMP_Text[] text_Storys;
     public Button btn_Story1;
     public Button btn_Story2;
     public Button btn_Story3;
@@ -34,9 +35,6 @@ public class P_CreatorToolController : MonoBehaviour
     public Button btn_SendPDF;
     public Button btn_SelectQuiz;
 
-    public TMP_Dropdown dropdown;
-
-    string url_Front = "http://211.250.74.75:8202";
 
 
     void Start()
@@ -59,7 +57,7 @@ public class P_CreatorToolController : MonoBehaviour
 
         btn_SelectStory.image.sprite = sp_SelectStory[1];
 
-        //OnclickSelectStory();
+        LessonUpdate();
     }
 
     private void Update()
@@ -89,20 +87,7 @@ public class P_CreatorToolController : MonoBehaviour
         panel_Library.SetActive(false);
         btn_Library.image.sprite = sp_Library[0];
 
-
-        //HttpInfo info = new HttpInfo();
-        //info.url = url_Front + "api/lesson-material/" + "1";
-        //info.onComplete = (DownloadHandler downloadHandler) =>
-        //{
-        //    print(downloadHandler.text);
-
-        //    //string jsonData = "{ \"data\" : " + downloadHandler.text + "}";
-        //    //// jsonData �� PostInfoArray ������ �ٲ���
-        //    //allPostInfo = JsonUtility.FromJson<PostInfoArray>(jsonData);
-        //};
-
-        //StartCoroutine(HttpManager.GetInstance().Get(info));
-
+        LessonUpdate();
     }
 
     public void OnclickCreateRoom()
@@ -225,12 +210,13 @@ public class P_CreatorToolController : MonoBehaviour
     public void OnFinishMaking(QuizData quizData)
     {
         HttpInfo info = new HttpInfo();
-        info.url = url_Front + "/api/lesson-material";
+        info.url = P_CreatorToolConnectMgr.Instance.url_Front + "/api/lesson-material";
         info.body = JsonUtility.ToJson(quizData);
         info.contentType = "application/json";
         info.onComplete = (DownloadHandler downloadHandler) =>
         {
             // 완료시 실행
+            LessonUpdate();
         };
 
         StartCoroutine(HttpManager.GetInstance().Put(info));
@@ -253,17 +239,61 @@ public class P_CreatorToolController : MonoBehaviour
         panel_SelectQuiz.SetActive(false);
     }
 
-    void BtnColor(Color color, Button button)
+
+    public void LessonUpdate()
     {
+        HttpInfo info = new HttpInfo();
+        info.url = P_CreatorToolConnectMgr.Instance.url_Front + "/api/lesson-material";
+        info.onComplete = (DownloadHandler downloadHandler) =>
+        {
+            print(downloadHandler.text);
 
-        ColorBlock colorBlock = button.colors;
+            try
+            {
+                // quizmanager의 parsequizdata 메서드 호출하여 데이터 파싱
+                P_CreatorToolConnectMgr.Instance.ParseLessons(downloadHandler.text);
 
-        colorBlock.normalColor = color;
-        colorBlock.highlightedColor = color;
-        colorBlock.selectedColor = color;
+                // 데이터 로드 완료 후 처리할 작업이 있다면 여기에 추가
+                Debug.Log("수업자료 갯수");
+                Debug.Log(P_CreatorToolConnectMgr.Instance.lessons.lessonMaterials.Count);
+                Debug.Log("수업자료 이름들");
+                for(int i = 0; i < P_CreatorToolConnectMgr.Instance.lessons.lessonMaterials.Count; i++)
+                {
+                    Debug.Log(P_CreatorToolConnectMgr.Instance.lessons.lessonMaterials[i].bookTitle);
+                }
 
-        button.colors = colorBlock;
+                StoryButtonSet();
 
+                panel_CreateRoom.GetComponent<P_RoomCreate>().DropDownUpdate();
+            }
+            catch (Exception e)
+            {
+                Debug.LogError($"json 파싱 중 에러 발생: {e.Message}");
+            }
+        };
+
+        StartCoroutine(HttpManager.GetInstance().GetLesson(info));
     }
 
+    void StoryButtonSet()
+    {
+        if (P_CreatorToolConnectMgr.Instance.lessons.lessonMaterials.Count == 0)
+        {
+            return;
+        }
+        else if (P_CreatorToolConnectMgr.Instance.lessons.lessonMaterials.Count == 1)
+        {
+            text_Storys[0].text = P_CreatorToolConnectMgr.Instance.lessons.lessonMaterials[0].bookTitle;
+        }
+
+        for (int i = 0; i < text_Storys.Length; i++)
+        {
+            text_Storys[i].text = "";
+
+            if (i < P_CreatorToolConnectMgr.Instance.lessons.lessonMaterials.Count)
+            {
+                text_Storys[i].text = P_CreatorToolConnectMgr.Instance.lessons.lessonMaterials[i].bookTitle;
+            }
+        }
+    }
 }
