@@ -74,7 +74,7 @@ public class Y_SignUp : MonoBehaviour
     {
         string username = logInInputs[0].text;
         string password = logInInputs[1].text;
-        //StartCoroutine(Y_HttpLogIn.GetInstance().LogInCoroutine(username, password));
+        StartCoroutine(Y_HttpLogIn.GetInstance().LogInCoroutine(username, password));
     }
 
     public void ClickJoin()

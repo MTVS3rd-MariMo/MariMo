@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using Unity.VisualScripting;
@@ -27,7 +27,7 @@ public class HttpTest : MonoBehaviour
 
             StartCoroutine(HttpManager.GetInstance().Get(info));
         }
-
+         
         if (Input.GetKeyDown(KeyCode.Alpha2))
         {
             HttpInfo info = new HttpInfo();

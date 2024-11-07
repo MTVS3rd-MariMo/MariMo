@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Networking;
 using static P_CreatorToolConnectMgr;
 
 
@@ -9,9 +10,9 @@ using static P_CreatorToolConnectMgr;
 [Serializable]
 public class QuizData
 {
-    public long lessonMaterialId;
     public List<Quiz> quizList;
     public List<OpenQuestion> openQuestionList;
+    public long lessonMaterialId;
 }
 
 [Serializable]
@@ -29,9 +30,22 @@ public class Quiz
 [Serializable]
 public class OpenQuestion
 {
-    public int openQuestionId;
     public string questionTitle;
-    public string[] openQuestionAnswerList;
+}
+
+
+// 수업자료 조회용 구조체
+[Serializable]
+public class Lessons
+{
+    public List<LessonMaterials> lessonsList;
+}
+
+[Serializable]
+public class LessonMaterials
+{
+    public int lessonMaterialId;
+    public string bookTitle;
 }
 
 
@@ -58,9 +72,15 @@ public class P_CreatorToolConnectMgr : MonoBehaviour
         }
     }
 
+    public string url_Front = "http://211.250.74.75:8202";
+
     public QuizData quizData;
     public QuizData dummydata;
     public string pdfPath = null;
+
+    public Lessons lessons;
+    // 임시 유저아이디
+    public int userID = 3;
 
     public List<int> selectedID = null;
 
@@ -91,9 +111,9 @@ public class P_CreatorToolConnectMgr : MonoBehaviour
 
         InitializeConnectMgr();
 
+        // 더미데이터 셋팅
         dummydata = new QuizData
         {
-            lessonMaterialId = 1,
             quizList = new List<Quiz>
             {
                 new Quiz
@@ -121,18 +141,19 @@ public class P_CreatorToolConnectMgr : MonoBehaviour
             {
                 new OpenQuestion
                 {
-                    openQuestionId = 5,
                     questionTitle = "나는 어떤 순간에 잘못된 선택을 하려는 유혹을 느꼈을 때, 그 유혹에 저항하기 위해 어떤 방법을 사용할 수 있을까?",
-                    
+
                 },
                 new OpenQuestion
                 {
-                    openQuestionId = 6,
                     questionTitle = "특별한 상황에서 나에게 자신을 지켜줄 멘토나 도움을 줄 수 있는 사람이 누구인지 생각해보면, 그와의 관계를 어떻게 강화할 수 있을까?"
 
                 }
-            }
+            },
+            lessonMaterialId = 1
         };
+
+        InitializeLessons();
     }
 
 
@@ -169,6 +190,24 @@ public class P_CreatorToolConnectMgr : MonoBehaviour
         {
             IsDataLoaded = false;
             Debug.LogError($"Quiz 데이터 파싱 실패: {e.Message}");
+            throw;
+        }
+    }
+
+    // Lesson 데이터 파싱
+    public void ParseLessons(string jsonString)
+    {
+        try
+        {
+            lessons = JsonUtility.FromJson<Lessons>(jsonString);
+            IsDataLoaded = true;
+            LastLoadTime = DateTime.Now;
+        }
+        catch (Exception e)
+        {
+
+            IsDataLoaded = false;
+            Debug.LogError($"Lesson 데이터 파싱 실패: {e.Message}");
             throw;
         }
     }
@@ -228,7 +267,6 @@ public class P_CreatorToolConnectMgr : MonoBehaviour
         }
     }
 
-
     // 데이터 확인용
     private void DisplayQuizData()
     {
@@ -258,8 +296,6 @@ public class P_CreatorToolConnectMgr : MonoBehaviour
             }
         }
     }
-
-
 
     // 데이터 유효성 검사
     private void ValidateData()
@@ -316,4 +352,15 @@ public class P_CreatorToolConnectMgr : MonoBehaviour
     {
         quizData.openQuestionList[index].questionTitle = text;
     }
+
+    // 수업자료 구조체 초기화
+    void InitializeLessons()
+    {
+        lessons = new Lessons
+        {
+            lessonsList = new List<LessonMaterials>()
+        };
+    }
+
+    
 }

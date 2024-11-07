@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -10,6 +11,7 @@ public class P_MakingQuiz : MonoBehaviour
 
     public Button btn_Prev;
     public Button btn_Next;
+    public Button btn_OK;
 
     public TMP_InputField quizText;
     public TMP_InputField quizOption1;
@@ -26,8 +28,8 @@ public class P_MakingQuiz : MonoBehaviour
     {
         btn_Prev.onClick.AddListener(OnclickPrev);
         btn_Next.onClick.AddListener(OnclickNext);
+        btn_Next.onClick.AddListener(OnclickNext);
 
-        dummyquiz = P_CreatorToolConnectMgr.Instance.dummydata.quizList[0];
     }
 
     void Update()
@@ -41,6 +43,7 @@ public class P_MakingQuiz : MonoBehaviour
             btn_Next.GetComponentInChildren<TMP_Text>().text = "Done";
         else
             btn_Next.GetComponentInChildren<TMP_Text>().text = "Next";
+
     }
 
     public void OnclickPrev()
@@ -49,12 +52,12 @@ public class P_MakingQuiz : MonoBehaviour
             return;
         else
         {
+            Savetext();
+            P_CreatorToolConnectMgr.Instance.ModifyQuiz(dummyquiz, count);
+
             count--;
 
-            P_CreatorToolConnectMgr.Instance.ModifyQuiz(dummyquiz, 1);
-
-
-            OpenQuizSet(0);
+            OpenQuizSet(count);
         }
     }
 
@@ -63,24 +66,22 @@ public class P_MakingQuiz : MonoBehaviour
         if (count >= 1)
         {
             // 데이터 저장
-
+            
             panel_MakingAsk.gameObject.SetActive(true);
         }
         else
         {
+            Savetext();
+            P_CreatorToolConnectMgr.Instance.ModifyQuiz(dummyquiz, count);
+
             count++;
 
-            P_CreatorToolConnectMgr.Instance.ModifyQuiz(dummyquiz, 0);
-
-            // 예시
-            OpenQuizSet(1);
+            OpenQuizSet(count);
         }
     }
 
     public void OpenQuizSet(int index)
     {
-        // 디버깅
-        Debug.Log(dummyquiz.question);
 
         dummyquiz.question = P_CreatorToolConnectMgr.Instance.GetQuiz(index).question;
         dummyquiz.choices1 = P_CreatorToolConnectMgr.Instance.GetQuiz(index).choices1;
@@ -93,6 +94,16 @@ public class P_MakingQuiz : MonoBehaviour
         quizOption2.text = dummyquiz.choices2;
         quizOption3.text = dummyquiz.choices3;
         quizOption4.text = dummyquiz.choices4;
+
     }
 
+
+    public void Savetext()
+    {
+        dummyquiz.question = quizText.text;
+        dummyquiz.choices1 = quizOption1.text;
+        dummyquiz.choices2 = quizOption2.text;
+        dummyquiz.choices3 = quizOption3.text;
+        dummyquiz.choices4 = quizOption4.text;
+    }
 }

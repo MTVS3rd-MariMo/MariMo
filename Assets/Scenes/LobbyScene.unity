@@ -2351,6 +2351,7 @@ GameObject:
   - component: {fileID: 606572788}
   - component: {fileID: 606572789}
   - component: {fileID: 606572790}
+  - component: {fileID: 606572791}
   m_Layer: 0
   m_Name: LobbyManager
   m_TagString: Untagged
@@ -2400,6 +2401,28 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 60ddefa747a67a242b8624ce4bf18556, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &606572791
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 606572786}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 0
+  observableSearch: 2
+  ObservedComponents: []
+  sceneViewId: 1
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
 --- !u!1 &618050615
 GameObject:
   m_ObjectHideFlags: 0
@@ -4481,10 +4504,6 @@ MonoBehaviour:
   btn_login: {fileID: 2073582493}
   input_nickName: {fileID: 817961900}
   panel_Title: {fileID: 0}
-  roomSetting:
-  - {fileID: 472599491}
-  - {fileID: 1749801535}
-  text_logText: {fileID: 956246757}
   enterRoom: {fileID: 0}
   album: {fileID: 0}
 --- !u!1 &1298127149
