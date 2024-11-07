@@ -131,11 +131,11 @@ public class Y_HttpRoomSetUp : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Alpha8))
-        {
-            StartCoroutine(GetClassMaterial());
-            //print("userID 프린트하기 : " + Y_HttpLogIn.GetInstance().userId);
-        }
+        //if (Input.GetKeyDown(KeyCode.Alpha8))
+        //{
+        //    StartCoroutine(GetClassMaterial());
+        //    //print("userID 프린트하기 : " + Y_HttpLogIn.GetInstance().userId);
+        //}
     }
 
     public string sendLessonIdUrl = "api/lesson/enter/";
