@@ -81,18 +81,18 @@ public class K_AvatarVpSettings : MonoBehaviourPun
 
     // 이미지 다운로드 적용
     // MP4 다운로드 및 적용
-    public void SetVideoPath(string videoPath)
+    public void SetVideoPath(string videoPath, int actorNumber)
     {
-        int actorNumber = PhotonNetwork.LocalPlayer.ActorNumber - 1;
+        //int actorNumber = PhotonNetwork.LocalPlayer.ActorNumber - 1;
+
+        int adjustActorNumber = actorNumber - 1;
 
         if (vp != null)
         {
             vp.url = videoPath;
-            vp.targetTexture = renderTextures[avatarIndex];
-            vp.clip = videoClips[actorNumber];
+            rawImage.texture = vp.targetTexture = renderTextures[adjustActorNumber];
+            //vp.clip = videoClips[actorNumber];
             vp.Play();
-            //vp.Prepare();
-            //vp.prepareCompleted += OnVideoPrepared;
         }
     }
 
