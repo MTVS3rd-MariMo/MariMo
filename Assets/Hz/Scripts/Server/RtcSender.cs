@@ -25,12 +25,23 @@ public class RtcSender : MonoBehaviour
     // 나와 연결되는 유저들의 peer
     Dictionary<int, RTCPeerConnection> peerList = new Dictionary<int, RTCPeerConnection>();
 
- 
+    private void Awake()
+    {
+        // WebRtc 초기화 
+        WebRTC.Initialize(false);
+    }
+
 
     void Start()
     {
         // WebRtc 업데이트 
         StartCoroutine(WebRTC.Update());
+    }
+
+    private void OnDestroy()
+    {
+        // WebRtc 해제 
+        WebRTC.Dispose();
     }
 
 
@@ -59,6 +70,7 @@ public class RtcSender : MonoBehaviour
     {
         shareCam = GameObject.Find("ShareCam").GetComponent<Camera>();//Camera.main;
 
+
         mediaStream = new MediaStream();
 
         // WebCam 사용시..
@@ -66,14 +78,14 @@ public class RtcSender : MonoBehaviour
         //WebCamDevice webCamDevice = WebCamTexture.devices[0];
         // 선택한 WebCam 을 720x720 , 30 Frame 으로 출력되게 설
         //webCamTexture = new WebCamTexture(webCamDevice.name, 720, 720, 30);
-        // WebCam 을 실행하자 
+        //WebCam 을 실행하자 
         //webCamTexture.Play();
 
         // WebCam 화면을 mediaStream 에 등록할 track 으로 만들기
         //VideoStreamTrack trackCam = new VideoStreamTrack(webCamTexture);
 
         // 카메라가 보고있는 화면을 mediaStream 에 등록할 track 으로 만들기
-        VideoStreamTrack track = shareCam.CaptureStreamTrack(720, 720);
+        VideoStreamTrack track = shareCam.CaptureStreamTrack(720,720);
 
         // track 을 mediaStream 에 추가한다.
         //mediaStream.AddTrack(trackCam);

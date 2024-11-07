@@ -55,12 +55,15 @@ public class GameMgr : MonoBehaviour
         }
     }
 
+    // 캡쳐하는 부분 바꿔보기
     private IEnumerator Capture()
     {
 
         yield return new WaitForSeconds(0.05f);
         if(isDoneCapture)
         {
+            yield return new WaitForEndOfFrame();
+            if (rawImage.texture != null) Destroy(rawImage.texture);
             rawImage.texture = ScreenCapture.CaptureScreenshotAsTexture();
 
             //yield return new WaitForEndOfFrame();
@@ -100,6 +103,7 @@ public class GameMgr : MonoBehaviour
         }
     }
 
+    // 내 화면 공유 안하게
     public void CreateMyWebCamView(Texture texture)
     {
         // Canvas 를 찾아서 RawImage 하나 만들고 자식으로 설정 

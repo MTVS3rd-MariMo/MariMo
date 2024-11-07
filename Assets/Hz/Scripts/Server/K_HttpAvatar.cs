@@ -209,4 +209,14 @@ public class K_HttpAvatar : MonoBehaviourPun
         public string animation;
     }
 
+    public GameObject bookCanvas;
+
+    private void Update()
+    {
+        if(Input.GetKeyDown(KeyCode.Alpha0))
+        {
+            bookCanvas.SetActive(false);
+        }
+    }
+
 }

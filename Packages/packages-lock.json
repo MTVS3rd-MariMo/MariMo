@@ -322,11 +322,10 @@
       "url": "https://packages.unity.com"
     },
     "com.unity.webrtc": {
-      "version": "3.0.0-pre.7",
+      "version": "2.4.0-exp.11",
       "depth": 0,
       "source": "registry",
       "dependencies": {
-        "com.unity.modules.audio": "1.0.0",
         "com.unity.editorcoroutines": "1.0.0",
         "com.unity.modules.jsonserialize": "1.0.0"
       },
