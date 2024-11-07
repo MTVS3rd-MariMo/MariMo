@@ -98,15 +98,11 @@ public class Y_HttpLogIn : MonoBehaviour
 
     public IEnumerator SignUpCoroutine(string username, string password, string school, int grade, int className, int studentNumber, bool isTeacher)
     {
-        Role role;
+        Role role = Role.STUDENT;
 
         if (isTeacher)
         {
             role = Role.TEACHER;
-        }
-        else
-        {
-            role = Role.STUDENT;
         }
 
         SignUpData registerData = new SignUpData

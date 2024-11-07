@@ -138,7 +138,7 @@ public class Y_VoiceManager : MonoBehaviourPun
 
                 //Debug.Log($"녹음 Dictionary 에 저장됨: {testInt}");
 
-                //SaveAsWav(trimmedRecording, "C:\\Users\\Admin\\OneDrive\\문서\\FinalProject\\HotSeatingAudio\\" + testInt + filename + ".wav");
+                SendAsWav(trimmedRecording);
                 Debug.Log($"Wav 파일로 저장됨: {testInt}");
             }
 
@@ -169,7 +169,7 @@ public class Y_VoiceManager : MonoBehaviourPun
         return trimmedClip;
     }
 
-    public void SaveAsWav(AudioClip clip, string filePath)
+    public void SendAsWav(AudioClip clip) // string filePath
     {
         // AudioClip 데이터 추출
         var samples = new float[clip.samples * clip.channels];
@@ -177,9 +177,12 @@ public class Y_VoiceManager : MonoBehaviourPun
 
         byte[] wavData = ConvertToWav(samples, clip.channels, clip.frequency);
 
+        // 통신
+        StartCoroutine(Y_HttpHotSeat.GetInstance().SendInterviewFile(wavData));
+
         // 파일로 저장 -> 나중에 저장 대신 통신으로 바꿔야 함
-        File.WriteAllBytes(filePath, wavData);
-        Debug.Log($"AudioClip saved as WAV at: {filePath}");
+        //File.WriteAllBytes(filePath, wavData);
+        //Debug.Log($"AudioClip saved as WAV at: {filePath}");
     }
 
     private byte[] ConvertToWav(float[] samples, int channels, int frequency)

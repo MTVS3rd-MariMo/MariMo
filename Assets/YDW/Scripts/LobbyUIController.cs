@@ -17,6 +17,13 @@ public class LobbyUIController : MonoBehaviour
 
     string log;
 
+    #region Button Sprite
+
+    public List<Button> buttons = new List<Button>();
+
+    #endregion
+
+
     private void Awake()
     {
         if(lobbyUI == null)
@@ -46,6 +53,7 @@ public class LobbyUIController : MonoBehaviour
     public void PrintLog(string message)
     {
         log += message + '\n';
+        print(message);
     }
 
     public void ShowAlbum()
@@ -59,4 +67,6 @@ public class LobbyUIController : MonoBehaviour
         album.SetActive(false);
         enterRoom.SetActive(true);
     }
+
+
 }

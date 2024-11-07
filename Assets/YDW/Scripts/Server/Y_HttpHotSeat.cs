@@ -145,15 +145,15 @@ public class Y_HttpHotSeat : MonoBehaviour
 
 
     // 핫시팅 자기소개 전송
-    public string sendSelfIntroduceUrl = "api/lesson-result/hot-sitting/self-inroduce";
+    public string sendSelfIntroduceUrl = "api/hot-sitting/self-introduce";
 
-    public IEnumerator SendSelfIntroduce(string content)
+    public IEnumerator SendSelfIntroduce()
     {
         SelfIntroduce selfIntroduce = new SelfIntroduce
         {
-            userId = Int32.Parse(Y_HttpLogIn.GetInstance().userId),
+            //userId = Int32.Parse(Y_HttpLogIn.GetInstance().userId),
             lessonId = 101, // 더미!!!!!
-            selfIntroduce = "안녕하세요" // GetSelfIntroduce();
+            selfIntroduce = GetSelfIntroduce()
         };
 
         // JSON 형식으로 변환
@@ -175,29 +175,42 @@ public class Y_HttpHotSeat : MonoBehaviour
         yield return StartCoroutine(Put(info));
     }
 
+    public void StartSendIntCoroutine()
+    {
+        StartCoroutine(SendSelfIntroduce());
+    }
+
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.Alpha8))
         {
-            GetUserNickName();
+            StartCoroutine(SendSelfIntroduce());
         }
 
         if (Input.GetKeyDown(KeyCode.Alpha7))
         {
-            GetCharacterName();
+            StartCoroutine(voiceTestCoroutine());
         }
+    }
+
+    IEnumerator voiceTestCoroutine()
+    {
+        Y_VoiceManager.Instance.StartRecording(1, 100);
+        yield return new WaitForSeconds(10f);
+        Y_VoiceManager.Instance.StopRecording(1, "dummy");
     }
 
     string mySelfIntroduce;
 
-    void GetSelfIntroduce()
+    string GetSelfIntroduce()
     {
         mySelfIntroduce = Y_HotSeatController.Instance.selfIntroduceInput.text;
         print("자기소개예요 : " + mySelfIntroduce);
+        return mySelfIntroduce;
     }
 
     // 핫시팅 음성파일 전송
-    public string sendInterviewWAV = "api/lesson-result/hot-sitting/record";
+    private string sendInterviewWAV = "api/hot-sitting/wav-file";
 
     public IEnumerator SendInterviewFile(byte[] record)
     {
@@ -269,14 +282,16 @@ public class Y_HttpHotSeat : MonoBehaviour
         //}
     }
 
-    void GetUserNickName()
+    string GetUserNickName()
     {
         print("유저 닉네임입니다 : " + Y_BookController.Instance.myAvatar.pv.Owner.NickName);
+        return Y_BookController.Instance.myAvatar.pv.Owner.NickName;
     }
 
-    void GetCharacterName()
+    string GetCharacterName()
     {
         print("캐릭터 이름입니다 : " + Y_HotSeatController.Instance.characterNames[Y_BookController.Instance.characterNum - 1].text);
+        return Y_HotSeatController.Instance.characterNames[Y_BookController.Instance.characterNum - 1].text;
     }
 
 

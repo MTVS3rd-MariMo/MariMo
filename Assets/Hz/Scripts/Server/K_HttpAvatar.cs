@@ -44,6 +44,7 @@ public class K_HttpAvatar : MonoBehaviourPun
     // 다른 유저 조회 URL
     private string otherUserUrl = "http://211.250.74.75:8202/api/avatar/participant/101/1";
 
+    public GameObject bookCanvas;
 
     int userId = 1;
     int userIds = 10;
@@ -54,6 +55,14 @@ public class K_HttpAvatar : MonoBehaviourPun
         btn_CreateAvatar.onClick.AddListener(() => CreateAvatar(userId, lessonId)); 
         //btn_CreateAvatar.onClick.AddListener(() => StartCoroutine(CreateAndFetchOtherAvatars(userId, lessonId)));
 
+    }
+
+    private void Update()
+    {
+        if(Input.GetKeyDown(KeyCode.Alpha0))
+        {
+            bookCanvas.SetActive(false);
+        }
     }
 
     // 그림 보내기 POST
@@ -85,13 +94,13 @@ public class K_HttpAvatar : MonoBehaviourPun
                 //animationUrls = new List<string>();
                 animationUrls = avatarData.animations.Select(anim => anim.animation).ToList();
 
-                // 버튼 체인지
-                btn_DoneCreateAvatar.gameObject.SetActive(true);
+                // 버튼 체인지 -> 생성하는 버튼 삭제되면 off 로 갈아끼워짐
+                //btn_CreateAvatar.gameObject.SetActive(false);
 
                 // 업로드 완료되면 UI 활성화 관리
                 PaintUI.SetActive(false);
                 ChooseCharacterUI.SetActive(true);
-                btn_CreateAvatar.gameObject.SetActive(false);
+                //btn_CreateAvatar.gameObject.SetActive(false);
                 btn_ToMap.SetActive(true);
 
                 int actorNumber = PhotonNetwork.LocalPlayer.ActorNumber;
@@ -114,10 +123,11 @@ public class K_HttpAvatar : MonoBehaviourPun
         //photonView.RPC(nameof(OnDownloadImage), RpcTarget.All, userId, avatarImgUrl, actorNumber);
 
 
-
+        // 이미지 다운로드 받아오기
         StartCoroutine(OnDownloadImage(userId, avatarImgUrl, actorNumber));
 
 
+        // 애니메이션 다운로드 받아오기
         for (int i = 0; i < animationUrls.Length; i++)
         {
             StartCoroutine(DownloadVideo(userId, animationUrls[i], $"animation_{i}", actorNumber));
@@ -129,12 +139,6 @@ public class K_HttpAvatar : MonoBehaviourPun
     [PunRPC]
     public IEnumerator OnDownloadImage(int userId, string imageUrl, int actorNum)
     {
-        if (string.IsNullOrEmpty(imageUrl))
-        {
-            Debug.LogError("다운로드 URL이 설정되지 않았습니다.");
-            yield break;
-        }
-
         using (UnityWebRequest webRequest = UnityWebRequestTexture.GetTexture(imageUrl))
         {
             yield return webRequest.SendWebRequest();
@@ -180,11 +184,12 @@ public class K_HttpAvatar : MonoBehaviourPun
 
                 // 애니메이션 데이터를 로컬 파일로 저장
                 // 모바일 -> persistnetDataPath 무조건 사용
+                // 다른 컴퓨터 환경에서 테스트해보기
                 string filePath;
 //#if UNITY_EDITOR
-                filePath = Application.persistentDataPath + "/" + PhotonNetwork.LocalPlayer.ActorNumber + "/" + fileName + actorNumber + ".mp4";
+                //filePath = Application.persistentDataPath + "/" + PhotonNetwork.LocalPlayer.ActorNumber + "/" + fileName + actorNumber + ".mp4";
 //#else
-                //filePath = Application.persistentDataPath + "/" + fileName + actorNumber + ".mp4";
+                filePath = Application.persistentDataPath + "/" + fileName + actorNumber + ".mp4";
 //#endif
                 System.IO.File.WriteAllBytes(filePath, videoData);
 
@@ -318,6 +323,9 @@ public class K_HttpAvatar : MonoBehaviourPun
         Debug.Log("createAvatar 호출됨");
         // 아바타 만든거 보내기 (POST)
         //StartCoroutine(UploadTextureAsPng(userId, lessonId));
+
+        // UI 변경 -> 버튼 OFF로
+        btn_CreateAvatar.gameObject.SetActive(false);
 
         // 내 아바타 보내고, 다른 유저의 데이터도 가져올꺼임
         StartCoroutine(CreateAndFetchOtherAvatars(lessonId, userId));

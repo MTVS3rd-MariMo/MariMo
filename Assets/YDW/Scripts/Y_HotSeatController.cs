@@ -209,6 +209,8 @@ public class Y_HotSeatController : MonoBehaviourPun
         selfIntroduce.SetActive(false);
         panel_waiting.SetActive(true);
 
+        Y_HttpHotSeat.GetInstance().StartSendIntCoroutine();
+
         // 플레이어 순서 랜덤으로 섞음
         Shuffle();
 
