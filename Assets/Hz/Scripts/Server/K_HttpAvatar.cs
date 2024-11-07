@@ -94,13 +94,13 @@ public class K_HttpAvatar : MonoBehaviourPun
                 //animationUrls = new List<string>();
                 animationUrls = avatarData.animations.Select(anim => anim.animation).ToList();
 
-                // 버튼 체인지
-                btn_DoneCreateAvatar.gameObject.SetActive(true);
+                // 버튼 체인지 -> 생성하는 버튼 삭제되면 off 로 갈아끼워짐
+                btn_CreateAvatar.gameObject.SetActive(false);
 
                 // 업로드 완료되면 UI 활성화 관리
                 PaintUI.SetActive(false);
                 ChooseCharacterUI.SetActive(true);
-                btn_CreateAvatar.gameObject.SetActive(false);
+                //btn_CreateAvatar.gameObject.SetActive(false);
                 btn_ToMap.SetActive(true);
 
                 int actorNumber = PhotonNetwork.LocalPlayer.ActorNumber;
