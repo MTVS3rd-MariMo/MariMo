@@ -37,7 +37,7 @@ public class K_HttpAvatar : MonoBehaviourPun
     //public int avatarIndex;
 
     // URL
-    public string uploadUrl = "http://211.250.74.75:8202/api/avatar/upload-img";
+    public string uploadUrl = "http://125.132.216.28:8203/api/avatar/upload-img";
     private string avatarImgUrl;
     private List<string> animationUrls;
 
@@ -111,12 +111,18 @@ public class K_HttpAvatar : MonoBehaviourPun
         // 잠만
         //StartCoroutine(OnDownloadImage(userId, avatarImgUrl));
 
-        photonView.RPC(nameof(OnDownloadImage), RpcTarget.All, userId, avatarImgUrl, actorNumber);
+        //photonView.RPC(nameof(OnDownloadImage), RpcTarget.All, userId, avatarImgUrl, actorNumber);
+
+
+
+        StartCoroutine(OnDownloadImage(userId, avatarImgUrl, actorNumber));
+
 
         for (int i = 0; i < animationUrls.Length; i++)
         {
             StartCoroutine(DownloadVideo(userId, animationUrls[i], $"animation_{i}", actorNumber));
         }
+
     }
 
     // actorNum = chararcterNum으로 받아옴 
@@ -173,7 +179,7 @@ public class K_HttpAvatar : MonoBehaviourPun
                 print(fileName);
 
                 // 애니메이션 데이터를 로컬 파일로 저장
-                string filePath = Application.persistentDataPath + "/" + fileName + ".mp4";
+                string filePath = Application.persistentDataPath + "/" + fileName + actorNumber + ".mp4";
                 System.IO.File.WriteAllBytes(filePath, videoData);
 
                 Debug.Log($"MP4 파일 다운로드 및 저장 성공: {filePath}");
@@ -182,7 +188,9 @@ public class K_HttpAvatar : MonoBehaviourPun
 
                 // RPC 비디오 파일 경로 동기화
                 //photonView.RPC(nameof(OnDownloadImage), RpcTarget.All, userId, avatarImgUrl, actorNumber);
-                photonView.RPC(nameof(ApplayVideoToPlayer), RpcTarget.All, videoPathWithProtocol, actorNumber);
+                //photonView.RPC(nameof(ApplayVideoToPlayer), RpcTarget.All, videoPathWithProtocol, actorNumber);
+                Y_BookController.Instance.allPlayers[actorNumber - 1].GetComponent<K_AvatarVpSettings>().SetVideoPath(videoPathWithProtocol, actorNumber);
+
 
             }
             else
@@ -202,25 +210,25 @@ public class K_HttpAvatar : MonoBehaviourPun
         print("서버에 업로드 됨");
 
         // 서버 응답에서 받은 url 통해서 ui에 띄울거임
-        yield return StartCoroutine(OnDownloadImage(userId, avatarImgUrl, PhotonNetwork.LocalPlayer.ActorNumber));
+        //yield return StartCoroutine(OnDownloadImage(userId, avatarImgUrl, PhotonNetwork.LocalPlayer.ActorNumber));
 
         print("이미지 띄움!");
 
         // 업로드 완료 시, 다른 유저들의 아바타 데이터를 가져옴
-        List<int> otherUserIds = GetOtherUserIds();
-        // 디버그
-        Debug.Log("다른 유저 ID 리스트: " + string.Join(", ", otherUserIds));
+        //List<int> otherUserIds = GetOtherUserIds();
+        //// 디버그
+        //Debug.Log("다른 유저 ID 리스트: " + string.Join(", ", otherUserIds));
 
-        if (otherUserIds.Count > 0)
-        {
-            yield return StartCoroutine(GetAvatarData(lessonId, otherUserIds));
-        }
-        else
-        {
-            Debug.Log("다른 유저 없음: 아바타 데이터를 가져올 유저가 없습니다.");
-        }
+        //if (otherUserIds.Count > 0)
+        //{
+        //    yield return StartCoroutine(GetAvatarData(lessonId, otherUserIds));
+        //}
+        //else
+        //{
+        //    Debug.Log("다른 유저 없음: 아바타 데이터를 가져올 유저가 없습니다.");
+        //}
 
-        yield return StartCoroutine(GetAvatarData(lessonId, otherUserIds));
+        //yield return StartCoroutine(GetAvatarData(lessonId, otherUserIds));
     }
 
     // 아바타 정보 요청 (GET)
@@ -293,7 +301,7 @@ public class K_HttpAvatar : MonoBehaviourPun
     [PunRPC]
     private void ApplayVideoToPlayer(string videoPath, int actorNumber)
     {
-        Y_BookController.Instance.allPlayers[actorNumber - 1].GetComponent<K_AvatarVpSettings>().SetVideoPath(videoPath);
+        Y_BookController.Instance.allPlayers[actorNumber - 1].GetComponent<K_AvatarVpSettings>().SetVideoPath(videoPath, actorNumber);
     }
 
     // 캐릭터 생성하기 버튼 누르면 서버에 전송

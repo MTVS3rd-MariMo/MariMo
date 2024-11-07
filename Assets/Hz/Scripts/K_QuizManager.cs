@@ -54,6 +54,12 @@ public class K_QuizManager : MonoBehaviourPun
         }
     }
 
+    // Server
+    public void UpdateQuizFromServer()
+    {
+        // 
+    }
+
 
     [PunRPC]
     public void CountDown()
