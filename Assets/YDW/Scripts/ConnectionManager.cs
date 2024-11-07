@@ -153,7 +153,14 @@ public class ConnectionManager : MonoBehaviourPunCallbacks
 
         PhotonNetwork.LoadLevel(1);
 
-        // 수업자료들 (퀴즈 같은 거) 받아오기
+        // 수업에 들어온 유저가 서버에 본인의 userId를 보낸다.
+
+
+        // 5명이 다 들어오면 (일단 테스트 땐 4명)
+        // 참가자들dl lessonId로 참가자들의 userId리스트를 받는다.
+
+        // 수업에서 사용할 수업자료 호출 (퀴즈 같은 거)
+
 
     }
 
