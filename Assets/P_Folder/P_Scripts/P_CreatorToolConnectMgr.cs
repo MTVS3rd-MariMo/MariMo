@@ -38,11 +38,11 @@ public class OpenQuestion
 [Serializable]
 public class Lessons
 {
-    public List<LessonMaterials> lessonsList;
+    public List<LessonMaterial> lessonMaterials;
 }
 
 [Serializable]
-public class LessonMaterials
+public class LessonMaterial
 {
     public int lessonMaterialId;
     public string bookTitle;
@@ -358,7 +358,7 @@ public class P_CreatorToolConnectMgr : MonoBehaviour
     {
         lessons = new Lessons
         {
-            lessonsList = new List<LessonMaterials>()
+            lessonMaterials = new List<LessonMaterial>()
         };
     }
 
