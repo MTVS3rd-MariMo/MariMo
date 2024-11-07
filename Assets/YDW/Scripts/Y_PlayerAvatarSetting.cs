@@ -55,9 +55,9 @@ public class Y_PlayerAvatarSetting : MonoBehaviour
         //print("avatarIndex from SelectChar: " + avatarIndex);
 
         // MP4 -> characterIndex
-        vp.clip = videoClips[avatarIndex];
+        //vp.clip = videoClips[avatarIndex];
         // VideoRenderer
-        rawImage.texture = vp.targetTexture = renderTextures[avatarIndex];
+        //rawImage.texture = vp.targetTexture = renderTextures[avatarIndex];
     }
 
     public void RPC_UpdatePhoto(int index)

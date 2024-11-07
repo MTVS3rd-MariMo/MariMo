@@ -85,14 +85,14 @@ public class K_AvatarVpSettings : MonoBehaviourPun
     {
         //int actorNumber = PhotonNetwork.LocalPlayer.ActorNumber - 1;
 
+        int adjustActorNumber = actorNumber - 1;
+
         if (vp != null)
         {
             vp.url = videoPath;
-            vp.targetTexture = renderTextures[avatarIndex];
-            vp.clip = videoClips[actorNumber];
+            rawImage.texture = vp.targetTexture = renderTextures[adjustActorNumber];
+            //vp.clip = videoClips[actorNumber];
             vp.Play();
-            //vp.Prepare();
-            //vp.prepareCompleted += OnVideoPrepared;
         }
     }
 

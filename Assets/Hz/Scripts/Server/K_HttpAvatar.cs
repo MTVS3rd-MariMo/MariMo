@@ -179,7 +179,13 @@ public class K_HttpAvatar : MonoBehaviourPun
                 print(fileName);
 
                 // 애니메이션 데이터를 로컬 파일로 저장
-                string filePath = Application.persistentDataPath + "/" + fileName + actorNumber + ".mp4";
+                // 모바일 -> persistnetDataPath 무조건 사용
+                string filePath;
+//#if UNITY_EDITOR
+                filePath = Application.persistentDataPath + "/" + PhotonNetwork.LocalPlayer.ActorNumber + "/" + fileName + actorNumber + ".mp4";
+//#else
+                //filePath = Application.persistentDataPath + "/" + fileName + actorNumber + ".mp4";
+//#endif
                 System.IO.File.WriteAllBytes(filePath, videoData);
 
                 Debug.Log($"MP4 파일 다운로드 및 저장 성공: {filePath}");
@@ -189,9 +195,11 @@ public class K_HttpAvatar : MonoBehaviourPun
                 // RPC 비디오 파일 경로 동기화
                 //photonView.RPC(nameof(OnDownloadImage), RpcTarget.All, userId, avatarImgUrl, actorNumber);
                 //photonView.RPC(nameof(ApplayVideoToPlayer), RpcTarget.All, videoPathWithProtocol, actorNumber);
-                Y_BookController.Instance.allPlayers[actorNumber - 1].GetComponent<K_AvatarVpSettings>().SetVideoPath(videoPathWithProtocol, actorNumber);
-
-
+                
+                if(fileName.Equals("animation_0"))
+                {
+                    Y_BookController.Instance.allPlayers[actorNumber - 1].GetComponent<K_AvatarVpSettings>().SetVideoPath(videoPathWithProtocol, actorNumber);
+                }
             }
             else
             {
