@@ -88,10 +88,6 @@ public class K_KeyManager : MonoBehaviour
         // 열쇠 획득 안내 ui (활동 끝날때마다 띄워줘야함 - 2초 활성화 후 꺼지고 - 열쇠 아이콘 띄워주기)
         if (totalKeys < 4)
         {
-            // 일단 없애고 코루틴으로 변경해보기
-            //K_KeyUiManager.instance.img_getKeyDir.gameObject.SetActive(true);
-            //K_KeyUiManager.instance.StartCoroutine(K_KeyUiManager.instance.HideGetKeyDir(2f));
-
             StartCoroutine(DisplayGetKeyUI());
         }
 
@@ -105,18 +101,49 @@ public class K_KeyManager : MonoBehaviour
     // 키 안내창 -> 키 아이콘 생성 딜레이 함수
     private IEnumerator DisplayGetKeyUI()
     {
-        // 열쇠 획득 안내 해주고
-        K_KeyUiManager.instance.img_getKeyDir.gameObject.SetActive(true);
-        // 2초 대기 하고
-        yield return new WaitForSeconds(2f);
-        // 열쇠 획득 안내 사라지셈
-        print("1번");
-        K_KeyUiManager.instance.img_getKeyDir.gameObject.SetActive(false);
-        yield return new WaitForSeconds(2f);
-        print("2번");
+        //// 열쇠 획득 안내 해주고
+        //K_KeyUiManager.instance.img_getKeyDir.gameObject.SetActive(true);
+        //// 2초 대기 하고
+        //yield return new WaitForSeconds(2f);
+        //// 열쇠 획득 안내 사라지셈
+        //print("1번");
+        //K_KeyUiManager.instance.img_getKeyDir.gameObject.SetActive(false);
+        //yield return new WaitForSeconds(2f);
+        //print("2번");
 
-        // 그리고 열쇠 아이콘 업데이트
-        K_KeyUiManager.instance.UpdateKeyUI(totalKeys);
+        //// 그리고 열쇠 아이콘 업데이트
+        //K_KeyUiManager.instance.UpdateKeyUI(totalKeys);
+
+
+        // 다시. 
+        // 열린질문
+        if (isDoneOpenQnA)
+        {
+            K_KeyUiManager.instance.img_QuestionBookmark.gameObject.SetActive(true);
+            yield return new WaitForSeconds(2f);
+            K_KeyUiManager.instance.img_QuestionBookmark.gameObject.SetActive(false);
+        }
+        // 핫시팅
+        if (isDoneHotSitting)
+        {
+            K_KeyUiManager.instance.img_HotSeatBookmark.gameObject.SetActive(true);
+            yield return new WaitForSeconds(2f);
+            K_KeyUiManager.instance.img_HotSeatBookmark.gameObject.SetActive(false);
+        }
+        // 퀴즈1
+        if (isDoneQuiz_1)
+        {
+            K_KeyUiManager.instance.img_Quiz1Bookmark.gameObject.SetActive(true);
+            yield return new WaitForSeconds(2f);
+            K_KeyUiManager.instance.img_Quiz1Bookmark.gameObject.SetActive(false);
+        }
+        // 퀴즈2
+        if (isDoneQuiz_2)
+        {
+            K_KeyUiManager.instance.img_Quiz2Bookmark.gameObject.SetActive(true);
+            yield return new WaitForSeconds(2f);
+            K_KeyUiManager.instance.img_Quiz2Bookmark.gameObject.SetActive(false);
+        }
 
     }
 

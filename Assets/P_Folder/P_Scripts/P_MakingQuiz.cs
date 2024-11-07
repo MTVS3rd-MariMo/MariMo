@@ -23,13 +23,13 @@ public class P_MakingQuiz : MonoBehaviour
 
     public int count = 0;
 
+    public Sprite[] sprites;
 
     void Start()
     {
         btn_Prev.onClick.AddListener(OnclickPrev);
         btn_Next.onClick.AddListener(OnclickNext);
-        btn_Next.onClick.AddListener(OnclickNext);
-
+        btn_OK.onClick.AddListener(OnclickOK);
     }
 
     void Update()
@@ -40,10 +40,15 @@ public class P_MakingQuiz : MonoBehaviour
             btn_Prev.interactable = true;
 
         if (count == 1)
-            btn_Next.GetComponentInChildren<TMP_Text>().text = "Done";
+        {
+            btn_OK.image.sprite = sprites[1];
+            btn_OK.interactable = true;
+        }
         else
-            btn_Next.GetComponentInChildren<TMP_Text>().text = "Next";
-
+        {
+            btn_OK.image.sprite = sprites[0];
+            btn_OK.interactable = false;
+        }
     }
 
     public void OnclickPrev()
@@ -64,11 +69,7 @@ public class P_MakingQuiz : MonoBehaviour
     public void OnclickNext()
     {
         if (count >= 1)
-        {
-            // 데이터 저장
-            
-            panel_MakingAsk.gameObject.SetActive(true);
-        }
+            return;
         else
         {
             Savetext();
@@ -78,6 +79,11 @@ public class P_MakingQuiz : MonoBehaviour
 
             OpenQuizSet(count);
         }
+    }
+
+    public void OnclickOK()
+    {
+        panel_MakingAsk.gameObject.SetActive(true);
     }
 
     public void OpenQuizSet(int index)

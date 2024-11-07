@@ -16,13 +16,14 @@ public class P_MakingAsk : MonoBehaviour
 
     public int count = 0;
 
+    public Sprite[] sprites;
 
     void Start()
     {
         _creatorToolController = GetComponentInParent<P_CreatorToolController>();
         btn_Prev.onClick.AddListener(OnclickPrev);
         btn_Next.onClick.AddListener(OnclickNext);
-        btn_OK.onClick.AddListener(OnclickNext);
+        btn_OK.onClick.AddListener(OnclickOK);
 
         // 예시
         askText.text = P_CreatorToolConnectMgr.Instance.GetOpenQuestion(0).questionTitle;
@@ -36,9 +37,15 @@ public class P_MakingAsk : MonoBehaviour
             btn_Prev.interactable = true;
 
         if (count == 1)
-            btn_Next.GetComponentInChildren<TMP_Text>().text = "Done";
+        {
+            btn_OK.image.sprite = sprites[1];
+            btn_OK.interactable = true;
+        }
         else
-            btn_Next.GetComponentInChildren<TMP_Text>().text = "Next";
+        {
+            btn_OK.image.sprite = sprites[0];
+            btn_OK.interactable = false;
+        }
     }
 
     public void OnclickPrev()
@@ -62,11 +69,7 @@ public class P_MakingAsk : MonoBehaviour
     {
         if (count >= 1)
         {
-            // 데이터 저장
-            P_CreatorToolConnectMgr.Instance.ModifyQuestion(askText.text, count);
-
-            // 다음 창으로 이동
-            GoTitle();
+            return;
         }    
         else
         {
@@ -79,6 +82,14 @@ public class P_MakingAsk : MonoBehaviour
         }
     }
 
+    public void OnclickOK()
+    {
+        // 데이터 저장
+        P_CreatorToolConnectMgr.Instance.ModifyQuestion(askText.text, count);
+
+        // 다음 창으로 이동
+        GoTitle();
+    }
 
     public void GoTitle()
     {

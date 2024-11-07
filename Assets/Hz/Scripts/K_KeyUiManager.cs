@@ -12,6 +12,15 @@ public class K_KeyUiManager : MonoBehaviour
     public Image img_endKeyDir;
     public Image img_doorOpen;
 
+    // 열린질문 - 책갈피 얻음 ui
+    public Image img_QuestionBookmark;
+    // 핫시팅 - 책갈피 얻음 ui
+    public Image img_HotSeatBookmark;
+    // 퀴즈1 - 책갈피 얻음 ui
+    public Image img_Quiz1Bookmark;
+    // 퀴즈2 - 책갈피 얻음 ui
+    public Image img_Quiz2Bookmark;
+
     // Singleton
     public static K_KeyUiManager instance;
 
@@ -33,6 +42,11 @@ public class K_KeyUiManager : MonoBehaviour
         img_getKeyDir.gameObject.SetActive(false);
         img_endKeyDir.gameObject.SetActive(false);
         img_doorOpen.gameObject.SetActive(false);
+
+        img_QuestionBookmark.gameObject.SetActive(false);
+        img_HotSeatBookmark.gameObject.SetActive(false);
+        img_Quiz1Bookmark.gameObject.SetActive(false);
+        img_Quiz2Bookmark.gameObject.SetActive(false);
 
         // 키 아이콘들 처음에 비활성화
         foreach (GameObject keyImage in keyImages)
