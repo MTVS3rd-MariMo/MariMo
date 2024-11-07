@@ -14,6 +14,7 @@ public class P_FileLoader : MonoBehaviour
     public GameObject file;
     public TMP_InputField searchInput;
     public Button searchButton;
+    public Button btn_goBack;
 
     private List<FileSystemInfo> currentItems = new List<FileSystemInfo>();
     private Stack<string> navigationHistory = new Stack<string>();
@@ -22,6 +23,7 @@ public class P_FileLoader : MonoBehaviour
     void Start()
     {
         searchButton.onClick.AddListener(PerformSearch);
+        btn_goBack.onClick.AddListener(GoBack);
         LoadMyComputer();
     }
 
@@ -166,5 +168,10 @@ public class P_FileLoader : MonoBehaviour
         List<FileSystemInfo> searchResults = currentItems.FindAll(item =>
             item.Name.ToLower().Contains(searchTerm));
         DisplayFileList(searchResults);
+    }
+
+    void GoBack()
+    {
+        this.gameObject.SetActive(false);
     }
 }

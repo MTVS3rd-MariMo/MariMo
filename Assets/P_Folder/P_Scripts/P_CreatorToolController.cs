@@ -35,9 +35,6 @@ public class P_CreatorToolController : MonoBehaviour
     public Button btn_SendPDF;
     public Button btn_SelectQuiz;
 
-    public TMP_Dropdown dropdown;
-
-    
 
 
     void Start()
@@ -257,9 +254,17 @@ public class P_CreatorToolController : MonoBehaviour
                 P_CreatorToolConnectMgr.Instance.ParseLessons(downloadHandler.text);
 
                 // 데이터 로드 완료 후 처리할 작업이 있다면 여기에 추가
-                Debug.Log("수업자료 데이터 로드 완료!");
+                Debug.Log("수업자료 갯수");
+                Debug.Log(P_CreatorToolConnectMgr.Instance.lessons.lessonMaterials.Count);
+                Debug.Log("수업자료 이름들");
+                for(int i = 0; i < P_CreatorToolConnectMgr.Instance.lessons.lessonMaterials.Count; i++)
+                {
+                    Debug.Log(P_CreatorToolConnectMgr.Instance.lessons.lessonMaterials[i].bookTitle);
+                }
 
                 StoryButtonSet();
+
+                panel_CreateRoom.GetComponent<P_RoomCreate>().DropDownUpdate();
             }
             catch (Exception e)
             {
@@ -272,22 +277,22 @@ public class P_CreatorToolController : MonoBehaviour
 
     void StoryButtonSet()
     {
-        if (P_CreatorToolConnectMgr.Instance.lessons.lessonsList.Count == 0)
+        if (P_CreatorToolConnectMgr.Instance.lessons.lessonMaterials.Count == 0)
         {
             return;
         }
-        else if (P_CreatorToolConnectMgr.Instance.lessons.lessonsList.Count == 1)
+        else if (P_CreatorToolConnectMgr.Instance.lessons.lessonMaterials.Count == 1)
         {
-            text_Storys[0].text = P_CreatorToolConnectMgr.Instance.lessons.lessonsList[0].bookTitle;
+            text_Storys[0].text = P_CreatorToolConnectMgr.Instance.lessons.lessonMaterials[0].bookTitle;
         }
 
         for (int i = 0; i < text_Storys.Length; i++)
         {
             text_Storys[i].text = "";
 
-            if (i < P_CreatorToolConnectMgr.Instance.lessons.lessonsList.Count)
+            if (i < P_CreatorToolConnectMgr.Instance.lessons.lessonMaterials.Count)
             {
-                text_Storys[i].text = P_CreatorToolConnectMgr.Instance.lessons.lessonsList[i].bookTitle;
+                text_Storys[i].text = P_CreatorToolConnectMgr.Instance.lessons.lessonMaterials[i].bookTitle;
             }
         }
     }
