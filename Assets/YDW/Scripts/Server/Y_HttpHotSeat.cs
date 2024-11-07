@@ -8,7 +8,7 @@ using UnityEngine.Networking;
 [Serializable]
 public class SelfIntroduce
 {
-    public int userId;
+    public int selfIntNum;
     public int lessonId;
     public string selfIntroduce;
 }
@@ -17,6 +17,7 @@ public class SelfIntroduce
 public class InterviewFile
 {
     public int lessonId;
+    public int selfIntNum;
     public string userName;
     public string character;
 }
@@ -147,11 +148,12 @@ public class Y_HttpHotSeat : MonoBehaviour
     // 핫시팅 자기소개 전송
     public string sendSelfIntroduceUrl = "api/hot-sitting/self-introduce";
 
-    public IEnumerator SendSelfIntroduce()
+    public IEnumerator SendSelfIntroduce(int i)
     {
         SelfIntroduce selfIntroduce = new SelfIntroduce
         {
             //userId = Int32.Parse(Y_HttpLogIn.GetInstance().userId),
+            selfIntNum = i,
             lessonId = 101, // 더미!!!!!
             selfIntroduce = GetSelfIntroduce()
         };
@@ -175,16 +177,16 @@ public class Y_HttpHotSeat : MonoBehaviour
         yield return StartCoroutine(Put(info));
     }
 
-    public void StartSendIntCoroutine()
+    public void StartSendIntCoroutine(int i)
     {
-        StartCoroutine(SendSelfIntroduce());
+        StartCoroutine(SendSelfIntroduce(i));
     }
 
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.Alpha8))
         {
-            StartCoroutine(SendSelfIntroduce());
+            StartCoroutine(SendSelfIntroduce(1));
         }
 
         if (Input.GetKeyDown(KeyCode.Alpha7))
@@ -197,7 +199,7 @@ public class Y_HttpHotSeat : MonoBehaviour
     {
         Y_VoiceManager.Instance.StartRecording(1, 100);
         yield return new WaitForSeconds(10f);
-        Y_VoiceManager.Instance.StopRecording(1, "dummy");
+        Y_VoiceManager.Instance.StopRecording(1, 1);
     }
 
     string mySelfIntroduce;
@@ -212,11 +214,12 @@ public class Y_HttpHotSeat : MonoBehaviour
     // 핫시팅 음성파일 전송
     private string sendInterviewWAV = "api/hot-sitting/wav-file";
 
-    public IEnumerator SendInterviewFile(byte[] record)
+    public IEnumerator SendInterviewFile(byte[] record, int selfIntNum)
     {
         InterviewFile interviewFile = new InterviewFile
         {
             lessonId = 101, // 더미
+            selfIntNum = selfIntNum,
             userName =  "정현민",
             // GetUserNickName(),
             character = "바다거북"

@@ -4,25 +4,18 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
 
-public class LobbyUIController : MonoBehaviour
+public class LobbyController : MonoBehaviour
 {
     public GameObject panel_login;
     public Button btn_login;
     public TMP_InputField input_nickName;
     public GameObject panel_Title;
-    public static LobbyUIController lobbyUI;
+    public static LobbyController lobbyUI;
                                                                                                                                                                                                                                                                                                                                    
     public GameObject enterRoom;
     public GameObject album;
 
     string log;
-
-    #region Button Sprite
-
-    public List<Button> buttons = new List<Button>();
-
-    #endregion
-
 
     private void Awake()
     {

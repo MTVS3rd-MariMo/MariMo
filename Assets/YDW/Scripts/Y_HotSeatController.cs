@@ -209,8 +209,6 @@ public class Y_HotSeatController : MonoBehaviourPun
         selfIntroduce.SetActive(false);
         panel_waiting.SetActive(true);
 
-        Y_HttpHotSeat.GetInstance().StartSendIntCoroutine();
-
         // 플레이어 순서 랜덤으로 섞음
         Shuffle();
 
@@ -229,10 +227,10 @@ public class Y_HotSeatController : MonoBehaviourPun
         if (PhotonNetwork.IsMasterClient)
         {
             playerNums = ShuffleList(Y_BookController.Instance.allPlayers);
-            foreach (int playerNum in playerNums)
-            {
-                print("?????? " + playerNum);
-            }
+            //foreach (int playerNum in playerNums)
+            //{
+            //    print("?????? " + playerNum);
+            //}
             RPC_SyncPlayerNums(playerNums.ToArray());
         }
     }
@@ -307,6 +305,22 @@ public class Y_HotSeatController : MonoBehaviourPun
             MatchPlayerPos();
             MatchSelfIntroduce();
 
+            // 자기소개 보낸다
+            // 먼저 자기의 자기소개 순서를 알아야 한다
+            int selfIntCount = 0;
+            for(int i = 0; i < playerNums.Count; i++)
+            {
+                if (PhotonNetwork.LocalPlayer.ActorNumber - 1 == playerNums[i])
+                {
+                    
+                    selfIntCount = i;
+                }
+            }
+
+            Debug.LogError("selfIntCount : " + selfIntCount);
+
+            Y_HttpHotSeat.GetInstance().StartSendIntCoroutine(selfIntCount); //////////////////
+
             Y_VoiceManager.Instance.recorder.TransmitEnabled = false; // 인터뷰 시작하기 전에 일단은 모두 보이스 끈다
             StartSpeech(0);
         }
@@ -355,6 +369,7 @@ public class Y_HotSeatController : MonoBehaviourPun
     }
 
     public GameObject[] timerImgs;
+    public int selfIntNum = 0;
 
     // 순서대로 자기소개 - 질문
     public void StartSpeech(int index)
@@ -381,6 +396,7 @@ public class Y_HotSeatController : MonoBehaviourPun
             // 플레이어 무대로 가게 한다
             playerPos = players[index].transform.position;
             StartCoroutine(ChangePos(playerPos, index));
+            selfIntNum++;
         }
 
         if (index == 4)
@@ -402,7 +418,6 @@ public class Y_HotSeatController : MonoBehaviourPun
                 playerPos = stagePos.position; // 도착점에 위치 맞춰준다
 
                 spotlight.SetActive(true); // 스포트라이트 켜준다
-
 
                 stageScriptImgs[i].gameObject.SetActive(true);
 
@@ -571,7 +586,7 @@ public class Y_HotSeatController : MonoBehaviourPun
                 // 원래는 30초인데 테스트용 5초
                 yield return new WaitForSeconds(10f);
                 // 녹음 종료
-                StopRecordVoice(playerNums[i] + 1);
+                StopRecordVoice(playerNums[i] + 1, index);
 
                 myTurnImgs[i].SetActive(false);
 
@@ -583,7 +598,7 @@ public class Y_HotSeatController : MonoBehaviourPun
                 // 원래는 60초인데 일단 5초
                 yield return new WaitForSeconds(10f);
                 // 녹음 종료
-                StopRecordVoice(playerNums[index] + 1);
+                StopRecordVoice(playerNums[index] + 1, index);
             }
 
             if (i == players.Count)
@@ -605,15 +620,16 @@ public class Y_HotSeatController : MonoBehaviourPun
         Y_VoiceManager.Instance.StartRecording(i, 600);
     }
 
-    public void RPC_StopRecordVoice(int i)
+    public void RPC_StopRecordVoice(int i, int selfIntNum)
     {
-        photonView.RPC(nameof(StopRecordVoice), RpcTarget.All, i);
+        photonView.RPC(nameof(StopRecordVoice), RpcTarget.All, i, selfIntNum);
     }
 
     [PunRPC]
-    public void StopRecordVoice(int i)
+    public void StopRecordVoice(int i, int selfIntNum)
     {
-        Y_VoiceManager.Instance.StopRecording(i, "InterviewFile");
+        Y_VoiceManager.Instance.StopRecording(i, selfIntNum);
+        print("몇 번째 자기소개입니까? : " + selfIntNum);
     }
 
 

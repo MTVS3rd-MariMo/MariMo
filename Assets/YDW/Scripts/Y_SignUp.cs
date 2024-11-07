@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 
 
@@ -15,6 +16,14 @@ public class Y_SignUp : MonoBehaviour
     public GameObject signUpUI;
     public GameObject logInUI;
     public GameObject titleUI;
+
+    #region Button Sprite
+
+    //public GameObject[] 
+    //public Button[] buttons;
+    public List<Sprite> sprites = new List<Sprite>();
+
+    #endregion
 
     public static Y_SignUp signUp;
 

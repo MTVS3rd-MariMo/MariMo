@@ -120,7 +120,7 @@ public class Y_VoiceManager : MonoBehaviourPun
 
     int testInt = 0;
 
-    public void StopRecording(int playerId, string filename)
+    public void StopRecording(int playerId, int selfIntNum)
     {
         if (Microphone.IsRecording(null) && PhotonNetwork.LocalPlayer.ActorNumber == playerId)
         {
@@ -138,7 +138,7 @@ public class Y_VoiceManager : MonoBehaviourPun
 
                 //Debug.Log($"녹음 Dictionary 에 저장됨: {testInt}");
 
-                SendAsWav(trimmedRecording);
+                //SendAsWav(trimmedRecording, selfIntNum);
                 Debug.Log($"Wav 파일로 저장됨: {testInt}");
             }
 
@@ -169,7 +169,7 @@ public class Y_VoiceManager : MonoBehaviourPun
         return trimmedClip;
     }
 
-    public void SendAsWav(AudioClip clip) // string filePath
+    public void SendAsWav(AudioClip clip, int selfIntNum) // string filePath
     {
         // AudioClip 데이터 추출
         var samples = new float[clip.samples * clip.channels];
@@ -178,7 +178,7 @@ public class Y_VoiceManager : MonoBehaviourPun
         byte[] wavData = ConvertToWav(samples, clip.channels, clip.frequency);
 
         // 통신
-        StartCoroutine(Y_HttpHotSeat.GetInstance().SendInterviewFile(wavData));
+        StartCoroutine(Y_HttpHotSeat.GetInstance().SendInterviewFile(wavData, selfIntNum));
 
         // 파일로 저장 -> 나중에 저장 대신 통신으로 바꿔야 함
         //File.WriteAllBytes(filePath, wavData);
