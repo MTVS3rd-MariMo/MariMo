@@ -4929,6 +4929,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8ed0cdd9b1f748f4bba72e5e18bb1a5b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  userList: 
+  realClassMaterial:
+    bookTitle: 
+    bookContents: 
+    quizzes: []
+    openQuestions: []
+    lessonRoles: []
+  sendLessonIdUrl: api/lesson/enter/
 --- !u!1 &807436730
 GameObject:
   m_ObjectHideFlags: 0
