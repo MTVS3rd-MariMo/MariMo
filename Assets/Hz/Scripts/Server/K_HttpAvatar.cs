@@ -25,6 +25,12 @@ public class K_HttpAvatar : MonoBehaviourPun
     public Button btn_DoneCreateAvatar;
     public GameObject PaintUI;
 
+    //// 생성 중 UI
+    //public GameObject img_MakingRect;
+    //public GameObject img_MakingText;
+    //public GameObject img_MakingBox;
+    //public GameObject img_MakingBar;
+
     // 아바타 이미지 받기
     public GameObject ChooseCharacterUI;
     //public Image avatarImage;
@@ -52,7 +58,7 @@ public class K_HttpAvatar : MonoBehaviourPun
 
     private void Start()
     {
-        btn_CreateAvatar.onClick.AddListener(() => CreateAvatar(userId, lessonId)); 
+        btn_CreateAvatar.onClick.AddListener(() => CreateAvatar(userId, lessonId));
         //btn_CreateAvatar.onClick.AddListener(() => StartCoroutine(CreateAndFetchOtherAvatars(userId, lessonId)));
 
     }
