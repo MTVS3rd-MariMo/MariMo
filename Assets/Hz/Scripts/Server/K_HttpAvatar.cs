@@ -95,7 +95,7 @@ public class K_HttpAvatar : MonoBehaviourPun
                 animationUrls = avatarData.animations.Select(anim => anim.animation).ToList();
 
                 // 버튼 체인지 -> 생성하는 버튼 삭제되면 off 로 갈아끼워짐
-                btn_CreateAvatar.gameObject.SetActive(false);
+                //btn_CreateAvatar.gameObject.SetActive(false);
 
                 // 업로드 완료되면 UI 활성화 관리
                 PaintUI.SetActive(false);
@@ -187,9 +187,9 @@ public class K_HttpAvatar : MonoBehaviourPun
                 // 다른 컴퓨터 환경에서 테스트해보기
                 string filePath;
 //#if UNITY_EDITOR
-                filePath = Application.persistentDataPath + "/" + PhotonNetwork.LocalPlayer.ActorNumber + "/" + fileName + actorNumber + ".mp4";
+                //filePath = Application.persistentDataPath + "/" + PhotonNetwork.LocalPlayer.ActorNumber + "/" + fileName + actorNumber + ".mp4";
 //#else
-                //filePath = Application.persistentDataPath + "/" + fileName + actorNumber + ".mp4";
+                filePath = Application.persistentDataPath + "/" + fileName + actorNumber + ".mp4";
 //#endif
                 System.IO.File.WriteAllBytes(filePath, videoData);
 
@@ -323,6 +323,9 @@ public class K_HttpAvatar : MonoBehaviourPun
         Debug.Log("createAvatar 호출됨");
         // 아바타 만든거 보내기 (POST)
         //StartCoroutine(UploadTextureAsPng(userId, lessonId));
+
+        // UI 변경 -> 버튼 OFF로
+        btn_CreateAvatar.gameObject.SetActive(false);
 
         // 내 아바타 보내고, 다른 유저의 데이터도 가져올꺼임
         StartCoroutine(CreateAndFetchOtherAvatars(lessonId, userId));
