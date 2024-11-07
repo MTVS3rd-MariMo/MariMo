@@ -159,6 +159,21 @@ public class HttpManager : MonoBehaviour
         }
     }
 
+    public IEnumerator PostRoom(HttpInfo info)
+    {
+        using (UnityWebRequest webRequest = UnityWebRequest.Post(info.url, info.body, info.contentType))
+        {
+            webRequest.SetRequestHeader("userId", "3");
+
+            // 서버에 요청 보내기
+            yield return webRequest.SendWebRequest();
+
+
+            // 서버에게 응답이 왔다.
+            DoneRequest(webRequest, info);
+        }
+    }
+
     // 수정용
     public IEnumerator Put(HttpInfo info)
     {
