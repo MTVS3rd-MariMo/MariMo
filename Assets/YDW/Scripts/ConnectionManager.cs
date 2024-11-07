@@ -164,16 +164,6 @@ public class ConnectionManager : MonoBehaviourPunCallbacks
 
     }
 
-    /// <summary>
-    /// 패널의 변경을 하기 위한 함수
-    /// </summary>
-    /// <param name="offIndex">꺼야될 패널 인덱스</param>
-    /// <param name="onIndex">켜야될 패널 인덱스</param>
-    //void ChangePanel(int offIndex, int onIndex)
-    //{
-    //    panelList[offIndex].SetActive(false);
-    //    panelList[onIndex].SetActive(true);
-    //}
 
     public override void OnCreatedRoom()
     {
