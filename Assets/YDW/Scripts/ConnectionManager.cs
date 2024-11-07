@@ -25,7 +25,7 @@ public class ConnectionManager : MonoBehaviourPunCallbacks
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Alpha1)) StartLogin();
+        if (Input.GetKeyDown(KeyCode.Alpha7)) CreateRoom("테스트");
     }
 
     public void StartLogin()
@@ -107,14 +107,14 @@ public class ConnectionManager : MonoBehaviourPunCallbacks
         // 서버 로비에 들어갔음을 알려준다.
         print(MethodInfo.GetCurrentMethod().Name + " is Call!");
         LobbyUIController.lobbyUI.ShowRoomPanel();
-        CreateRoom();
+        CreateRoom("마리모");
     }
 
-    public void CreateRoom()
+    public void CreateRoom(string roomname)
     {
         //string roomName = LobbyUIController.lobbyUI.roomSetting[0].text;
         //int playerCount = Convert.ToInt32(LobbyUIController.lobbyUI.roomSetting[1].text);
-        string roomName = "마리모"; /////////////////////////////////// To. 효근 : 나중에 선생님이 입력한 Inputbox.text 값으로 바꿔놓으면 됨!
+        string roomName = roomname; /////////////////////////////////// To. 효근 : 나중에 선생님이 입력한 Inputbox.text 값으로 바꿔놓으면 됨!
         int playerCount = 4;
 
         if (roomName.Length > 0 && playerCount > 1)
