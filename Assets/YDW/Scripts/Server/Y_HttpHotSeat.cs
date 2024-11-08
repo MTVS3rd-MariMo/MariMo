@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Photon.Pun;
+using Photon.Voice.PUN;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
@@ -8,7 +10,7 @@ using UnityEngine.Networking;
 [Serializable]
 public class SelfIntroduce
 {
-    public int userId;
+    public int selfIntNum;
     public int lessonId;
     public string selfIntroduce;
 }
@@ -17,6 +19,7 @@ public class SelfIntroduce
 public class InterviewFile
 {
     public int lessonId;
+    public int selfIntNum;
     public string userName;
     public string character;
 }
@@ -80,19 +83,47 @@ public class Y_HttpHotSeat : MonoBehaviour
         }
     }
 
+    public IEnumerator UploadFileByFormData(HttpInfo info)
+    {
+        // info.data 에는 파일의 위치
+        // info.data 에 있는 파일을 byte 배열로 읽어오자
+        byte[] data = File.ReadAllBytes(info.body);
+
+       
+
+        // data 를 MultipartForm 으로 셋팅
+        List<IMultipartFormSection> formData = new List<IMultipartFormSection>();
+        formData.Add(new MultipartFormDataSection("lessonId", "101"));
+
+        //formData.Add(new MultipartFormFileSection("file", data, "image.jpg", info.contentType));
+        formData.Add(new MultipartFormFileSection("file", System.Convert.FromBase64String(info.body), "image.png", "image/png"));
+
+
+        using (UnityWebRequest webRequest = UnityWebRequest.Post(info.url, formData))
+        {
+            // 서버에 요청 보내기
+            yield return webRequest.SendWebRequest();
+
+            // 서버에게 응답이 왔다.
+            DoneRequest(webRequest, info);
+        }
+    }
+
     public IEnumerator UploadFileByFormDataWav(HttpInfo info, byte[] wavFile)
     {
         // data 를 MultipartForm 으로 셋팅
-        List<IMultipartFormSection> formData = new List<IMultipartFormSection>
-        {
-            new MultipartFormFileSection("wav", wavFile, "interview.wav", "application/wav")
-        };
+        List<IMultipartFormSection> formData = new List<IMultipartFormSection>();
+        formData.Add(new MultipartFormDataSection("lessonId", "101"));
+        formData.Add(new MultipartFormDataSection("userName", "정현민")); // GetUserNickName()
+        formData.Add(new MultipartFormDataSection("character", "바다거북")); // GetCharacterName()
+        formData.Add(new MultipartFormDataSection("selfIntNum", "1"));
+
+        formData.Add(new MultipartFormFileSection("wavFile", wavFile, "interview.wav", "audio/wav"));
 
         using (UnityWebRequest webRequest = UnityWebRequest.Post(info.url, formData))
         {
             webRequest.SetRequestHeader("userId", Y_HttpLogIn.GetInstance().userId.ToString());
-            webRequest.SetRequestHeader("lessonId", "101"); // 더미
-
+            
             // 서버에 요청 보내기
             yield return webRequest.SendWebRequest();
 
@@ -147,12 +178,13 @@ public class Y_HttpHotSeat : MonoBehaviour
     // 핫시팅 자기소개 전송
     public string sendSelfIntroduceUrl = "api/hot-sitting/self-introduce";
 
-    public IEnumerator SendSelfIntroduce()
+    public IEnumerator SendSelfIntroduce(int i)
     {
         SelfIntroduce selfIntroduce = new SelfIntroduce
         {
             //userId = Int32.Parse(Y_HttpLogIn.GetInstance().userId),
-            lessonId = 101, // 더미!!!!!
+            selfIntNum = i,
+            lessonId = 101, // 더미!!!!! 도원
             selfIntroduce = GetSelfIntroduce()
         };
 
@@ -175,21 +207,39 @@ public class Y_HttpHotSeat : MonoBehaviour
         yield return StartCoroutine(Put(info));
     }
 
-    public void StartSendIntCoroutine()
+    public void StartSendIntCoroutine(int i)
     {
-        StartCoroutine(SendSelfIntroduce());
+        StartCoroutine(SendSelfIntroduce(i));
     }
 
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.Alpha8))
         {
-            StartCoroutine(SendSelfIntroduce());
+            StartCoroutine(SendSelfIntroduce(1));
         }
 
         if (Input.GetKeyDown(KeyCode.Alpha7))
         {
+            //PrintAvailableMicrophones();
             StartCoroutine(voiceTestCoroutine());
+        }
+    }
+
+    void PrintAvailableMicrophones()
+    {
+        string[] devices = Microphone.devices;
+        if (devices.Length == 0)
+        {
+            Debug.LogError("사용 가능한 마이크 장치가 없습니다.");
+        }
+        else
+        {
+            Debug.Log($"마이크 장치 목록 ({devices.Length}개):");
+            for (int i = 0; i < devices.Length; i++)
+            {
+                Debug.Log($"[{i}] {devices[i]}");
+            }
         }
     }
 
@@ -197,7 +247,7 @@ public class Y_HttpHotSeat : MonoBehaviour
     {
         Y_VoiceManager.Instance.StartRecording(1, 100);
         yield return new WaitForSeconds(10f);
-        Y_VoiceManager.Instance.StopRecording(1, "dummy");
+        Y_VoiceManager.Instance.StopRecording(1, 1);
     }
 
     string mySelfIntroduce;
@@ -212,24 +262,15 @@ public class Y_HttpHotSeat : MonoBehaviour
     // 핫시팅 음성파일 전송
     private string sendInterviewWAV = "api/hot-sitting/wav-file";
 
-    public IEnumerator SendInterviewFile(byte[] record)
+    public IEnumerator SendInterviewFile(byte[] record, int selfIntNum)
     {
-        InterviewFile interviewFile = new InterviewFile
-        {
-            lessonId = 101, // 더미
-            userName =  "정현민",
-            // GetUserNickName(),
-            character = "바다거북"
-            // GetCharacterName()
-        };
-
-        string jsonBody = JsonUtility.ToJson(interviewFile);
+        //string jsonBody = JsonUtility.ToJson(interviewFile);
 
         // HttpInfo 설정
         HttpInfo info = new HttpInfo
         {
             url = Y_HttpLogIn.GetInstance().mainServer + sendInterviewWAV,
-            body = jsonBody,
+            body = "wavFile",
             contentType = "multipart/form-data",
             onComplete = (DownloadHandler downloadHandler) =>
             {

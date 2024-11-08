@@ -42,14 +42,22 @@ public class Y_GameManager : MonoBehaviour
         // 룸에 입장이 완료될 때까지 기다린다.
         yield return new WaitUntil(() => { return PhotonNetwork.InRoom; });
 
-        // 현재 플레이어의 인덱스(순서)를 가져옴
-        int playerIndex = PhotonNetwork.LocalPlayer.ActorNumber - 1;
+        // 현재 플레이어의 인덱스(순서)를 가져옴 (원래 네명일 땐 - 1 였는데 이제 5명이라 -2 (선생님이 언제나 Master, ActorNum = 1))
+        int playerIndex = PhotonNetwork.LocalPlayer.ActorNumber - 2;
 
-        // 지정된 스폰 지점의 위치 가져옴
+        // 지정된 스폰 지점의 위치 가져옴 
         Vector3 spawnPosition = spawnPoints[playerIndex].position;
 
-        // 플레이어를 해당 스폰 지점에 생성
-        GameObject player = PhotonNetwork.Instantiate("Player", spawnPosition, Quaternion.identity);
+        if(playerIndex >= 0)
+        {
+            // 플레이어를 해당 스폰 지점에 생성
+            GameObject player = PhotonNetwork.Instantiate("Player", spawnPosition, Quaternion.identity);
+        }
+        else
+        {
+            GameObject player = PhotonNetwork.Instantiate("Player", spawnPoints[4].position, Quaternion.identity);
+        }
+        
         //VideoPlayer videoPlayer = player.GetComponentInChildren<VideoPlayer>();
         //RawImage rawImage = player.GetComponentInChildren<RawImage>();
 

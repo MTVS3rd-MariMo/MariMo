@@ -4,25 +4,21 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
 
-public class LobbyUIController : MonoBehaviour
+public class LobbyController : MonoBehaviour
 {
     public GameObject panel_login;
     public Button btn_login;
     public TMP_InputField input_nickName;
     public GameObject panel_Title;
-    public static LobbyUIController lobbyUI;
+    public static LobbyController lobbyUI;
                                                                                                                                                                                                                                                                                                                                    
     public GameObject enterRoom;
     public GameObject album;
 
+    public Button[] buttons;
+    public Sprite[] sprites;
+
     string log;
-
-    #region Button Sprite
-
-    public List<Button> buttons = new List<Button>();
-
-    #endregion
-
 
     private void Awake()
     {
@@ -58,12 +54,18 @@ public class LobbyUIController : MonoBehaviour
 
     public void ShowAlbum()
     {
+        buttons[0].GetComponent<Image>().sprite = sprites[2];
+        buttons[1].GetComponent<Image>().sprite = sprites[1];
+
         enterRoom.SetActive(false);
         album.SetActive(true);
     }
 
     public void ShowEnterRoom()
     {
+        buttons[0].GetComponent<Image>().sprite = sprites[3];
+        buttons[1].GetComponent<Image>().sprite = sprites[0];
+
         album.SetActive(false);
         enterRoom.SetActive(true);
     }

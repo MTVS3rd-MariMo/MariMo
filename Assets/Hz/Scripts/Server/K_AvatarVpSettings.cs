@@ -7,6 +7,18 @@ using UnityEngine.Video;
 
 public class K_AvatarVpSettings : MonoBehaviourPun
 {
+    // 상태전환
+    private enum AnimState
+    {
+        Idle,
+        Walk
+    }
+    // 기본 셋팅 Idle 상태
+    private AnimState currState = AnimState.Idle;
+
+    private string idleUrl;
+    private string walkUrl;
+
     PhotonView pv;
     int index;
     string name;
@@ -29,6 +41,24 @@ public class K_AvatarVpSettings : MonoBehaviourPun
         index = pv.Owner.ActorNumber - 1;
         name = pv.Owner.NickName;
         print(PhotonNetwork.LocalPlayer.ActorNumber);
+    }
+
+    private void Update()
+    {
+        bool isWalking = Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.D);
+        // 이동 키 입력을 받게 되면
+        if (isWalking)
+        {
+            // 키 입력 받으면 Walk MP4 재생
+            currState = AnimState.Walk;
+            walkUrl = "";
+        }
+        else
+        {
+            // 키 입력 안받으면 idle MP4 재생
+            currState = AnimState.Idle;
+            idleUrl = "";
+        }
     }
 
     public void RPC_SelectCharNum(int characterIndex)
@@ -77,9 +107,8 @@ public class K_AvatarVpSettings : MonoBehaviourPun
     }
 
 
-    // 서버에서 전달받은 이미지와 비디오 URL 적용
+    // 서버에서 전달받은 비디오 URL 적용
 
-    // 이미지 다운로드 적용
     // MP4 다운로드 및 적용
     public void SetVideoPath(string videoPath, int actorNumber)
     {
