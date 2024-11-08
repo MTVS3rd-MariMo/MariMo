@@ -93,7 +93,8 @@ public class Y_HotSeatController : MonoBehaviourPun
         if(Y_BookController.Instance.characterNum - 1 >= 0)
         {
             Txt_TitleText.text = characterNames[Y_BookController.Instance.characterNum - 1].text;
-            myAvatarImage.sprite = myAvatarSetting.images[myAvatarSetting.avatarIndex - 1]; ///// 이거 -1 해야 되나?
+            //Debug.LogError("찍어봐 : " + (myAvatarSetting.avatarIndex - 1));
+            myAvatarImage.sprite = myAvatarSetting.images[Y_BookController.Instance.characterNum - 1]; ///// 이거 -1 해야 되나? myAvatarSetting.avatarIndex - 1
         }
         else
         {

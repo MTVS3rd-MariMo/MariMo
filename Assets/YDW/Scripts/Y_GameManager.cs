@@ -64,6 +64,7 @@ public class Y_GameManager : MonoBehaviour
         {
             bookUI.currentPlayerNum = playerIndex;
             if(playerIndex >= 0) bookUI.RPC_AddPlayer(playerIndex, PhotonNetwork.NickName);
+            Debug.LogError(playerIndex + PhotonNetwork.NickName);
 
             // RenderTexture 로드
             //RenderTexture renderTexture = Resources.Load<RenderTexture>(videoRendererPaths[playerIndex]);

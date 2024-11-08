@@ -126,7 +126,7 @@ public class Y_BookController : MonoBehaviour
     private void Update()
     {
 
-        if (PhotonNetwork.IsMasterClient && isSync) //&& !(PhotonNetwork.PlayerList.Length == 2)
+        if ( PhotonNetwork.LocalPlayer.ActorNumber == 2 && isSync) // 첫번째 조건이 PhotonNetwork.IsMasterClient 조건이었음
         {
             SyncAllPlayers();
         }
@@ -171,7 +171,7 @@ public class Y_BookController : MonoBehaviour
         {
             int idx = player.ActorNumber - 1;
             string name = player.NickName;
-            pv.RPC("AddPlayer", RpcTarget.All, idx, name);
+            pv.RPC(nameof(AddPlayer), RpcTarget.All, idx, name);
         }
     }
 
@@ -281,6 +281,7 @@ public class Y_BookController : MonoBehaviour
     void ActivateNameUI(int characterIndex, int playerIndex)
     {
         string playerName = playerNames.ContainsKey(playerIndex) ? playerNames[playerIndex] : "Not Found";
+        Debug.LogError("playerName : " + playerName + ", playerNames[playerIndex] : " + playerNames[playerIndex]);
 
         switch (characterIndex)
         {
@@ -427,7 +428,7 @@ public class Y_BookController : MonoBehaviour
     public void AddPlayer(PhotonView pv)
     {
         // 원래는 -1 이었는데 -2로?
-        if(pv.Owner.ActorNumber - 2 >= 0) allPlayers[pv.Owner.ActorNumber - 1] = pv;
+        if(pv.Owner.ActorNumber - 2 >= 0) allPlayers[pv.Owner.ActorNumber - 2] = pv;
 
         if(pv.IsMine)
         {
