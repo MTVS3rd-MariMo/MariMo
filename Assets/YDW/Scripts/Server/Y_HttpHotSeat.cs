@@ -92,7 +92,7 @@ public class Y_HttpHotSeat : MonoBehaviour
         using (UnityWebRequest webRequest = UnityWebRequest.Post(info.url, formData))
         {
             webRequest.SetRequestHeader("userId", Y_HttpLogIn.GetInstance().userId.ToString());
-            webRequest.SetRequestHeader("lessonId", "101"); // 더미
+            //webRequest.SetRequestHeader("lessonId", "101"); // 더미
 
             // 서버에 요청 보내기
             yield return webRequest.SendWebRequest();
@@ -191,7 +191,25 @@ public class Y_HttpHotSeat : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Alpha7))
         {
-            StartCoroutine(voiceTestCoroutine());
+            PrintAvailableMicrophones();
+            //StartCoroutine(voiceTestCoroutine());
+        }
+    }
+
+    void PrintAvailableMicrophones()
+    {
+        string[] devices = Microphone.devices;
+        if (devices.Length == 0)
+        {
+            Debug.LogError("사용 가능한 마이크 장치가 없습니다.");
+        }
+        else
+        {
+            Debug.Log($"마이크 장치 목록 ({devices.Length}개):");
+            for (int i = 0; i < devices.Length; i++)
+            {
+                Debug.Log($"[{i}] {devices[i]}");
+            }
         }
     }
 

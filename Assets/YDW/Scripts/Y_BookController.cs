@@ -88,6 +88,9 @@ public class Y_BookController : MonoBehaviour
 
     public GameObject[] buttons;
 
+    public Button[] buttonsToChange;
+    public Sprite[] buttonSprites;
+
     #endregion
 
     #region 캐릭터 선택 후
@@ -154,7 +157,7 @@ public class Y_BookController : MonoBehaviour
         if (!playerNames.ContainsKey(playerIndex))
         {
             // 마스터 클라이언트인 경우에만 전체 동기화 실행
-            if (PhotonNetwork.IsMasterClient)
+            if (PhotonNetwork.IsMasterClient) ///// 액터 넘버 2일 경우에? 그리고 마스터 클라이언트일 경우에는 그냥 리턴해야
             {
                 SyncAllPlayers();
             }
