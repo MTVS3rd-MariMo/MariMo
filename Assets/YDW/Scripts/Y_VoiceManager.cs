@@ -138,7 +138,7 @@ public class Y_VoiceManager : MonoBehaviourPun
 
                 //Debug.Log($"녹음 Dictionary 에 저장됨: {testInt}");
 
-                //SendAsWav(trimmedRecording, selfIntNum);
+                SendAsWav(trimmedRecording, selfIntNum);
                 Debug.Log($"Wav 파일로 저장됨: {testInt}");
             }
 
