@@ -206,7 +206,10 @@ public class K_HttpAvatar : MonoBehaviourPun
                 // RPC 비디오 파일 경로 동기화
                 //photonView.RPC(nameof(OnDownloadImage), RpcTarget.All, userId, avatarImgUrl, actorNumber);
                 //photonView.RPC(nameof(ApplayVideoToPlayer), RpcTarget.All, videoPathWithProtocol, actorNumber);
-                
+
+                // 비디오 경로 설정해주기 -> 이거 일단 주석
+                //Y_BookController.Instance.allPlayers[actorNumber - 1].GetComponent<K_AvatarVpSettings>().SetVideoPath(videoPathWithProtocol, actorNumber);
+
                 if(fileName.Equals("animation_0"))
                 {
                     Y_BookController.Instance.allPlayers[actorNumber - 1].GetComponent<K_AvatarVpSettings>().SetVideoPath(videoPathWithProtocol, actorNumber);
