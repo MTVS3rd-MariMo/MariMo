@@ -31,11 +31,11 @@ public class ConnectionManager : MonoBehaviourPunCallbacks
     public void StartLogin()
     {
         
-        if (LobbyUIController.lobbyUI.input_nickName.text.Length > 0)
+        if (LobbyController.lobbyUI.input_nickName.text.Length > 0)
         {
             // 접속을 위한 설정
             PhotonNetwork.GameVersion = "1.0.0";
-            PhotonNetwork.NickName = LobbyUIController.lobbyUI.input_nickName.text;
+            PhotonNetwork.NickName = LobbyController.lobbyUI.input_nickName.text;
             PhotonNetwork.AutomaticallySyncScene = true;
             print("접속 설정 완료");
 
@@ -45,7 +45,7 @@ public class ConnectionManager : MonoBehaviourPunCallbacks
                                                   // 마스터 서버: 유저들 간의 Match making 을 해주는 공간. 룸을 만들고 룸에 조인을 하고 룸의 플레이어끼리 플레이를 하는 식. 방장의 씬을 기준으로 설정하고 나의 씬에 동기화
             print("서버에 요청 중....");
 
-            LobbyUIController.lobbyUI.btn_login.interactable = false;
+            LobbyController.lobbyUI.btn_login.interactable = false;
             //int playerColor = LobbyUIController.lobbyUI.drop_playerColor.value;
             //PhotonNetwork.LocalPlayer.CustomProperties.Add("CHARACTER_COLOR", playerColor);
         }
@@ -65,7 +65,7 @@ public class ConnectionManager : MonoBehaviourPunCallbacks
         base.OnDisconnected(cause);
         // 실패 원인을 출력한다.
         Debug.LogError("Disconnected from Server - " + cause);
-        LobbyUIController.lobbyUI.btn_login.interactable = true;
+        LobbyController.lobbyUI.btn_login.interactable = true;
     }
 
     public override void OnConnectedToMaster()
@@ -106,7 +106,7 @@ public class ConnectionManager : MonoBehaviourPunCallbacks
 
         // 서버 로비에 들어갔음을 알려준다.
         print(MethodInfo.GetCurrentMethod().Name + " is Call!");
-        LobbyUIController.lobbyUI.ShowRoomPanel();
+        LobbyController.lobbyUI.ShowRoomPanel();
         CreateRoom("마리모");
     }
 
@@ -115,7 +115,7 @@ public class ConnectionManager : MonoBehaviourPunCallbacks
         //string roomName = LobbyUIController.lobbyUI.roomSetting[0].text;
         //int playerCount = Convert.ToInt32(LobbyUIController.lobbyUI.roomSetting[1].text);
         string roomName = roomname; /////////////////////////////////// To. 효근 : 나중에 선생님이 입력한 Inputbox.text 값으로 바꿔놓으면 됨!
-        int playerCount = 4;
+        int playerCount = 5;
 
         if (roomName.Length > 0 && playerCount > 1)
         {
@@ -171,7 +171,7 @@ public class ConnectionManager : MonoBehaviourPunCallbacks
 
         // 성공적으로 방이 개설되었음을 알려준다.
         print(MethodInfo.GetCurrentMethod().Name + " is Call!");
-        LobbyUIController.lobbyUI.PrintLog("방 만들어짐!");
+        LobbyController.lobbyUI.PrintLog("방 만들어짐!");
     }
 
     public override void OnJoinedRoom()
@@ -180,7 +180,7 @@ public class ConnectionManager : MonoBehaviourPunCallbacks
 
         // 성공적으로 방에 입장되었음을 알려준다.
         print(MethodInfo.GetCurrentMethod().Name + " is Call!");
-        LobbyUIController.lobbyUI.PrintLog("방에 입장 성공!");
+        LobbyController.lobbyUI.PrintLog("방에 입장 성공!");
 
         // 방에 입장한 친구들은 모두 1번 씬으로 이동하자!
        
@@ -193,7 +193,7 @@ public class ConnectionManager : MonoBehaviourPunCallbacks
 
         // 룸에 입장이 실패한 이유를 출력한다.
         Debug.LogError(message);
-        LobbyUIController.lobbyUI.PrintLog("입장 실패..." + message);
+        LobbyController.lobbyUI.PrintLog("입장 실패..." + message);
         
     }
 
@@ -203,7 +203,7 @@ public class ConnectionManager : MonoBehaviourPunCallbacks
         base.OnPlayerEnteredRoom(newPlayer);
 
         string playerMsg = $"{newPlayer.NickName}님이 입장하셨습니다.";
-        LobbyUIController.lobbyUI.PrintLog(playerMsg);
+        LobbyController.lobbyUI.PrintLog(playerMsg);
     }
 
     // 룸에 있던 다른 플레이어가 퇴장했을 때의 콜백 함수
@@ -212,7 +212,7 @@ public class ConnectionManager : MonoBehaviourPunCallbacks
         base.OnPlayerLeftRoom(otherPlayer);
 
         string playerMsg = $"{otherPlayer.NickName}님이 퇴장하셨습니다.";
-        LobbyUIController.lobbyUI.PrintLog(playerMsg);
+        LobbyController.lobbyUI.PrintLog(playerMsg);
     }
 
     // 현재 로비에서 룸의 변경사항을 알려주는 콜백 함수

@@ -30,6 +30,7 @@ public class Quiz
 [Serializable]
 public class OpenQuestion
 {
+    public int questionId;
     public string questionTitle;
 }
 
@@ -350,7 +351,8 @@ public class P_CreatorToolConnectMgr : MonoBehaviour
     // 열린질문 내용 변경
     public void ModifyQuestion(string text,  int index)
     {
-        quizData.openQuestionList[index].questionTitle = text;
+        if(quizData.openQuestionList[index] != null)
+            quizData.openQuestionList[index].questionTitle = text;
     }
 
     // 수업자료 구조체 초기화

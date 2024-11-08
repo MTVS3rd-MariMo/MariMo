@@ -145,6 +145,8 @@ public class HttpManager : MonoBehaviour
             DoneRequest(webRequest, info);
         }
     }
+
+
     // 서버에게 내가 보내는 데이터를 생성해줘
     public IEnumerator Post(HttpInfo info)
     {
@@ -183,6 +185,24 @@ public class HttpManager : MonoBehaviour
             webRequest.uploadHandler = new UploadHandlerRaw(jsonToSend);
             webRequest.downloadHandler = new DownloadHandlerBuffer();
             webRequest.SetRequestHeader("Content-Type", "application/json");
+
+            // 서버에 요청 보내기
+            yield return webRequest.SendWebRequest();
+
+            // 서버에게 응답이 왔다.
+            DoneRequest(webRequest, info);
+        }
+    }
+
+    // 열린질문용
+    public IEnumerator PutOpenQ(HttpInfo info, string userId )
+    {
+        using (UnityWebRequest webRequest = new UnityWebRequest(info.url, "PUT"))
+        {
+            byte[] jsonToSend = new System.Text.UTF8Encoding().GetBytes(info.body);
+            webRequest.uploadHandler = new UploadHandlerRaw(jsonToSend);
+            webRequest.downloadHandler = new DownloadHandlerBuffer();
+            webRequest.SetRequestHeader("userId", userId);
 
             // 서버에 요청 보내기
             yield return webRequest.SendWebRequest();

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Photon.Pun;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -8,12 +9,16 @@ using UnityEngine.UI;
 
 public class P_RoomCreate : MonoBehaviour
 {
+    public P_RoomMgr roomMgr;
+
     public TMP_InputField RoomName;
     public TMP_InputField Class;
     public TMP_InputField PlayerNum;
     public Button btn_RoomCreate;
     public Sprite[] sprites;
-    private int players;
+    public int players;
+    public int lessenId;
+    public int lessenNum;
 
     [SerializeField]
     private TMP_Dropdown dropdown;
@@ -66,8 +71,9 @@ public class P_RoomCreate : MonoBehaviour
     void OnclickRoomCreate()
     {
         players = Convert.ToInt32(PlayerNum.text);
+        lessenNum = P_CreatorToolConnectMgr.Instance.lessons.lessonMaterials[dropdown.value].lessonMaterialId;
 
-        if (players == 0)
+        if (players < 1)
             return;
         else if (dropdown.itemText == null)
             return;
@@ -77,17 +83,25 @@ public class P_RoomCreate : MonoBehaviour
 
     public void GetLessonId()
     {
+        Debug.Log(lessenNum);
+
         HttpInfo info = new HttpInfo();
-        info.url = P_CreatorToolConnectMgr.Instance.url_Front + "api/lesson/lesson-material";
-        info.body = JsonUtility.ToJson(P_CreatorToolConnectMgr.Instance.lessons.lessonMaterials[dropdown.value].lessonMaterialId);
-        info.contentType = "application/json";
+        info.url = P_CreatorToolConnectMgr.Instance.url_Front + "/api/lesson/" + lessenNum;
+
+        //var requestBody = new { lessonMaterialId = P_CreatorToolConnectMgr.Instance.lessons.lessonMaterials[dropdown.value].lessonMaterialId };
+        //info.body = JsonUtility.ToJson(requestBody);
+        //info.contentType = "application/json";
         info.onComplete = (DownloadHandler downloadHandler) =>
         {
             print(downloadHandler.text);
 
             // 받은 데이터 파싱할 함수 호출
-            int lessenId = JsonUtility.FromJson<int>(downloadHandler.text);
-            // 포톤 방 생성 ( 파싱 완료 후 )
+            lessenId = Convert.ToInt32(downloadHandler.text);
+            Debug.Log(lessenId);
+
+            // 포톤 방생성 요청
+            roomMgr.CreateRoom(RoomName.text);
+
 
             // 그림그리기 요청
 
@@ -99,7 +113,7 @@ public class P_RoomCreate : MonoBehaviour
     public void DrawPicture()
     {
         HttpInfo info = new HttpInfo();
-        info.url = P_CreatorToolConnectMgr.Instance.url_Front + "";
+        info.url = P_CreatorToolConnectMgr.Instance.url_Front + "/api/lesson/" + lessenNum;
         info.onComplete = (DownloadHandler downloadHandler) =>
         {
 

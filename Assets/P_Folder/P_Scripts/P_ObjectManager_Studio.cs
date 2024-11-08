@@ -23,9 +23,9 @@ public class P_ObjectManager_Studio : MonoBehaviourPun
     public Image studioUI2_Img;
     public TMP_Text timeCount_Text;
 
-
-    // 투명벽 (플레이어 움직임을 멈춘다면 필요없을 예정)
-    public GameObject wall;
+    // 사진배경용
+    public GameObject backgrond;
+    public Material backgrondMaterial;
 
     // 연출용
     public PlayableDirector timeline;
@@ -63,7 +63,6 @@ public class P_ObjectManager_Studio : MonoBehaviourPun
             if (triggerNum >= testNum && !act)
             {
                 act = true;
-                wall.SetActive(true);
 
                 if (photonView.IsMine)
                 {
@@ -298,7 +297,6 @@ public class P_ObjectManager_Studio : MonoBehaviourPun
         // 사진관 모든 UI 종료
         studioUI_Panel.SetActive(false);
         blackScreen.gameObject.SetActive(false);
-        wall.SetActive(false);
 
         RPC_MoveControl(true);
     }
@@ -334,5 +332,12 @@ public class P_ObjectManager_Studio : MonoBehaviourPun
     {
         // 모바일로 사용시 추가 경로지정 필요
         ScreenCapture.CaptureScreenshot(fileName);
+    }
+
+    public void StudioSet(Texture2D texture)
+    {
+        backgrondMaterial.mainTexture = texture;
+
+        backgrond.GetComponent<MeshRenderer>().material = backgrondMaterial;
     }
 }

@@ -11,7 +11,7 @@ public class K_KeyManager : MonoBehaviour
     // 퀴즈2 끝났는가
     public bool isDoneQuiz_2 = false;
     // 핫시팅 끝났는가 
-    public bool isDoneHotSitting = false;
+    public bool isDoneHotSeating = false;
 
     // 획득한 총 열쇠 개수
     public int totalKeys = 0;
@@ -26,7 +26,7 @@ public class K_KeyManager : MonoBehaviour
 
     // 사용시
     // Hot Sitting 활동 완료 시 KeyManager의 bool 값을 true로 설정
-    //K_KeyManager.Instance.isDoneHotSitting = true;
+    //K_KeyManager.Instance.isDoneHotSeating = true;
 
     private void Awake()
     {
@@ -55,10 +55,10 @@ public class K_KeyManager : MonoBehaviour
             isDoneQuiz_1 = false;
         }
 
-        if (isDoneHotSitting)
+        if (isDoneHotSeating)
         {
             GetKey();
-            isDoneHotSitting = false;
+            isDoneHotSeating = false;
         }
 
         if (isDoneQuiz_2)
@@ -129,7 +129,7 @@ public class K_KeyManager : MonoBehaviour
 
         }
         // 핫시팅
-        if (isDoneHotSitting)
+        if (isDoneHotSeating)
         {
             K_KeyUiManager.instance.img_HotSeatBookmark.gameObject.SetActive(true);
             yield return new WaitForSeconds(2f);

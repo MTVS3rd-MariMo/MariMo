@@ -5,11 +5,20 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Networking;
 using UnityEngine.Playables;
 using UnityEngine.UI;
 
 public class P_ObjectManager_Question : MonoBehaviourPun
 {
+    public class QuestionAnswer
+    {
+        public int lessnId;
+        public int questionId;
+        public string answer;
+    }
+
+
     public float testNum = 4;
 
     float triggerNum = 0;
@@ -29,7 +38,7 @@ public class P_ObjectManager_Question : MonoBehaviourPun
     public TMP_Text answer_Test3;
     public TMP_Text answer_Test4;
 
-    string answer;
+    string q_answer;
 
     // 투명벽 (플레이어 움직임을 멈춘다면 필요없을 예정)
     public GameObject wall_Q;
@@ -50,12 +59,11 @@ public class P_ObjectManager_Question : MonoBehaviourPun
     // 질문 카운트
     float question_count = 0f;
     // 답변 인원 카운트
-    float answer_count = 0f;
+    int answer_count = 0;
 
     void Start()
     {
         btn_Submit.onClick.AddListener(Submit);
-        btn_speaker.onClick.AddListener(Speaker);
 
         black = blackScreen.color;
         BtnState(false);
@@ -142,16 +150,35 @@ public class P_ObjectManager_Question : MonoBehaviourPun
     void Submit()
     {
         // 입력내용 저장
-        answer = answer_InputField.text;
+        q_answer = answer_InputField.text;
         answerUI_Canvas.SetActive(true);
         answer_InputField.gameObject.SetActive(false);
         btn_Submit.gameObject.SetActive(false);
 
+        QuestionAnswer questionAnswer = new QuestionAnswer()
+        {
+            lessnId = 1,
+            questionId = 3,//Y_HttpRoomSetUp.GetInstance().realClassMaterial.openQuestions[answer_count].questionId,
+            answer = q_answer,
+        };
+
         // 인풋필드 비우기
         answer_InputField.text = "";
 
+        // 데이터 백엔드에 전송
+        HttpInfo info = new HttpInfo();
+        info.url = Y_HttpLogIn.GetInstance().mainServer + "api/open-question";
+        info.body = JsonUtility.ToJson(questionAnswer);
+        info.contentType = "application/json";
+        info.onComplete = (DownloadHandler downloadHandler) =>
+        {
+
+        };
+
+        StartCoroutine(HttpManager.GetInstance().PutOpenQ(info, Y_HttpLogIn.GetInstance().userId.ToString()));
+
         // 포톤으로 실행
-        RPC_NextStep(answer);
+        RPC_NextStep(q_answer);
     }
 
     
@@ -183,7 +210,6 @@ public class P_ObjectManager_Question : MonoBehaviourPun
             answer_Test4.text = answer;
         }
 
-
         // 4명 모두 답을 제출하면
         // 테스트용으로 1로 설정
         if (answer_count >= testNum)
@@ -204,11 +230,6 @@ public class P_ObjectManager_Question : MonoBehaviourPun
             }
 
         }
-    }
-
-    void Speaker()
-    {
-
     }
 
 

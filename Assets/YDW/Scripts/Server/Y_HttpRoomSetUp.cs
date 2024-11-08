@@ -245,6 +245,7 @@ public class Y_HttpRoomSetUp : MonoBehaviour
 
                 foreach(OpenQuestion openQuestion in classMaterial.openQuestions)
                 {
+                    print("열린 질문 아이디 : " + openQuestion.questionId);
                     print("열린 질문 : " + openQuestion.questionTitle);
                 }
 
