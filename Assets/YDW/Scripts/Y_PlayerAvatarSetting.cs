@@ -40,7 +40,6 @@ public class Y_PlayerAvatarSetting : MonoBehaviour
         bookController.AddPlayer(pv);
         index = pv.Owner.ActorNumber - 1;
         name = pv.Owner.NickName;
-        print(PhotonNetwork.LocalPlayer.ActorNumber);
     }
 
     public void RPC_SelectChar(int characterIndex)

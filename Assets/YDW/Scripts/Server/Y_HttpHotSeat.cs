@@ -83,32 +83,6 @@ public class Y_HttpHotSeat : MonoBehaviour
         }
     }
 
-    public IEnumerator UploadFileByFormData(HttpInfo info)
-    {
-        // info.data 에는 파일의 위치
-        // info.data 에 있는 파일을 byte 배열로 읽어오자
-        byte[] data = File.ReadAllBytes(info.body);
-
-       
-
-        // data 를 MultipartForm 으로 셋팅
-        List<IMultipartFormSection> formData = new List<IMultipartFormSection>();
-        formData.Add(new MultipartFormDataSection("lessonId", "101"));
-
-        //formData.Add(new MultipartFormFileSection("file", data, "image.jpg", info.contentType));
-        formData.Add(new MultipartFormFileSection("file", System.Convert.FromBase64String(info.body), "image.png", "image/png"));
-
-
-        using (UnityWebRequest webRequest = UnityWebRequest.Post(info.url, formData))
-        {
-            // 서버에 요청 보내기
-            yield return webRequest.SendWebRequest();
-
-            // 서버에게 응답이 왔다.
-            DoneRequest(webRequest, info);
-        }
-    }
-
     public IEnumerator UploadFileByFormDataWav(HttpInfo info, byte[] wavFile)
     {
         // data 를 MultipartForm 으로 셋팅
@@ -280,47 +254,6 @@ public class Y_HttpHotSeat : MonoBehaviour
 
         yield return StartCoroutine(UploadFileByFormDataWav(info, record));
 
-        //// 서버 요청 설정
-        //using (UnityWebRequest webRequest = new UnityWebRequest(Y_HttpLogIn.GetInstance().mainServer + sendInterviewWAV, "POST"))
-        //{
-        //    webRequest.uploadHandler = new UploadHandlerRaw(jsonToSend); // 로우 데이터 업로드
-        //    webRequest.downloadHandler = new DownloadHandlerBuffer(); // 서버가 다운로드 할 수 있는 공간 만듦
-        //    webRequest.SetRequestHeader("Content-Type", "multipart/form-data");
-
-        //    // 서버에 요청 보내기
-        //    yield return webRequest.SendWebRequest();
-
-        //    // 서버 응답 처리
-        //    if (webRequest.result == UnityWebRequest.Result.Success)
-        //    {
-        //        Debug.Log("WAV 파일 보내기 성공: " + webRequest.downloadHandler.text);
-        //    }
-        //    else
-        //    {
-        //        Debug.LogError("WAV 파일 보내기 실패: " + webRequest.error);
-        //    }
-        //}
-
-        //using (UnityWebRequest webRequest = new UnityWebRequest(Y_HttpLogIn.GetInstance().mainServer + sendInterviewWAV, "POST"))
-        //{
-        //    webRequest.uploadHandler = new UploadHandlerRaw(jsonToSend); // 로우 데이터 업로드
-        //    webRequest.downloadHandler = new DownloadHandlerBuffer(); // 서버가 다운로드 할 수 있는 공간 만듦
-        //    webRequest.SetRequestHeader("Content-Type", "application/json");
-        //    webRequest.SetRequestHeader("userId", Y_HttpLogIn.GetInstance().userId.ToString());
-
-        //    // 서버에 요청 보내기
-        //    yield return webRequest.SendWebRequest();
-
-        //    // 서버 응답 처리
-        //    if (webRequest.result == UnityWebRequest.Result.Success)
-        //    {
-        //        Debug.Log("WAV 파일 업로드 성공: " + webRequest.downloadHandler.text);
-        //    }
-        //    else
-        //    {
-        //        Debug.LogError("수업자료 받아오기 실패: " + webRequest.error);
-        //    }
-        //}
     }
 
     string GetUserNickName()
