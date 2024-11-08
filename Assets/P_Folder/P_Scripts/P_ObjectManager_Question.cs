@@ -8,6 +8,7 @@ using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.Playables;
 using UnityEngine.UI;
+using static P_ObjectManager_Question;
 
 public class P_ObjectManager_Question : MonoBehaviourPun
 {
@@ -57,7 +58,7 @@ public class P_ObjectManager_Question : MonoBehaviourPun
     Color black;
 
     // 질문 카운트
-    float question_count = 0f;
+    int question_count = 0;
     // 답변 인원 카운트
     int answer_count = 0;
 
@@ -157,8 +158,8 @@ public class P_ObjectManager_Question : MonoBehaviourPun
 
         QuestionAnswer questionAnswer = new QuestionAnswer()
         {
-            lessnId = 1,
-            questionId = 3,//Y_HttpRoomSetUp.GetInstance().realClassMaterial.openQuestions[answer_count].questionId,
+            lessnId = 2,
+            questionId = Y_HttpRoomSetUp.GetInstance().realClassMaterial.openQuestions[question_count].questionId,
             answer = q_answer,
         };
 
@@ -166,21 +167,25 @@ public class P_ObjectManager_Question : MonoBehaviourPun
         answer_InputField.text = "";
 
         // 데이터 백엔드에 전송
-        HttpInfo info = new HttpInfo();
-        info.url = Y_HttpLogIn.GetInstance().mainServer + "api/open-question";
-        info.body = JsonUtility.ToJson(questionAnswer);
-        info.contentType = "application/json";
-        info.onComplete = (DownloadHandler downloadHandler) =>
-        {
-
-        };
-
-        StartCoroutine(HttpManager.GetInstance().PutOpenQ(info, Y_HttpLogIn.GetInstance().userId.ToString()));
+        SendAnswer(questionAnswer);
 
         // 포톤으로 실행
         RPC_NextStep(q_answer);
     }
 
+    void SendAnswer(QuestionAnswer answer)
+    {
+        HttpInfo info = new HttpInfo();
+        info.url = Y_HttpLogIn.GetInstance().mainServer + "api/open-question";
+        info.body = JsonUtility.ToJson(answer);
+        info.contentType = "application/json";
+        info.onComplete = (DownloadHandler downloadHandler) =>
+        {
+            Debug.Log("저장 성공");
+        };
+
+        StartCoroutine(HttpManager.GetInstance().PutOpenQ(info, Y_HttpLogIn.GetInstance().userId.ToString()));
+    }
     
     void RPC_NextStep(string answer)
     {
@@ -256,7 +261,7 @@ public class P_ObjectManager_Question : MonoBehaviourPun
         questionUI_Panel.SetActive(true);
 
         // 질문 세팅
-        question_Text.text = "수남이가 주인 영감님을 좋아하는 이유는 무엇인가요?\n여러분에게도 주변에서 격려와 응원을 해 주는 사람이 있나요?";
+        question_Text.text = Y_HttpRoomSetUp.GetInstance().realClassMaterial.openQuestions[question_count].questionTitle;
         answer_InputField.text = "";
 
         yield return new WaitForSeconds(1.5f);
@@ -305,7 +310,7 @@ public class P_ObjectManager_Question : MonoBehaviourPun
         question_PopUp_Img.gameObject.SetActive(false);
 
         // 다음 질문 세팅
-        question_Text.text = "수남이는 자전거를 타고 도망치면서 자유와 해방감을 느꼈습니다.\n여러분에게도 기분이 좋아지는 특별한 활동이 있나요? 그 활동을 하면 어떤 기분이 드나요?";
+        question_Text.text = Y_HttpRoomSetUp.GetInstance().realClassMaterial.openQuestions[question_count].questionTitle;
         answerUI_Canvas.SetActive(false);
         answer_InputField.gameObject.SetActive(true);
         btn_Submit.gameObject.SetActive(true);

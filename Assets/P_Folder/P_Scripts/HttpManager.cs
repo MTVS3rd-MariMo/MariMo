@@ -202,7 +202,25 @@ public class HttpManager : MonoBehaviour
             byte[] jsonToSend = new System.Text.UTF8Encoding().GetBytes(info.body);
             webRequest.uploadHandler = new UploadHandlerRaw(jsonToSend);
             webRequest.downloadHandler = new DownloadHandlerBuffer();
+            webRequest.SetRequestHeader("Content-Type", info.contentType);
             webRequest.SetRequestHeader("userId", userId);
+
+            // 서버에 요청 보내기
+            yield return webRequest.SendWebRequest();
+
+            // 서버에게 응답이 왔다.
+            DoneRequest(webRequest, info);
+        }
+    }
+
+    public IEnumerator PutPicture(HttpInfo info)
+    {
+        WWWForm form = new WWWForm();
+        form.AddBinaryData("img", System.IO.File.ReadAllBytes(info.body), System.IO.Path.GetFileName(info.body), "image/png");
+
+        using (UnityWebRequest webRequest = UnityWebRequest.Post(info.url, form))
+        {
+            webRequest.downloadHandler = new DownloadHandlerBuffer();
 
             // 서버에 요청 보내기
             yield return webRequest.SendWebRequest();
@@ -288,6 +306,7 @@ public class HttpManager : MonoBehaviour
             }
         }
     }
+
 
 
     // 그림판 보내기 

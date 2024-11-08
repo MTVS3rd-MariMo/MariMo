@@ -3,8 +3,10 @@ using Org.BouncyCastle.Asn1.Crmf;
 using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Networking;
 using UnityEngine.Playables;
 using UnityEngine.UI;
 
@@ -14,7 +16,6 @@ public class P_ObjectManager_Studio : MonoBehaviourPun
 
     List<GameObject> players = new List<GameObject>();
 
-    //public List<Transform> objectList = new List<Transform>();
     float triggerNum = 0;
 
     // UI들
@@ -153,7 +154,6 @@ public class P_ObjectManager_Studio : MonoBehaviourPun
         // 타임라인 일시정지
         timeline.Pause();
 
-
         Dictionary<int, PhotonView> allPlayers = Y_BookController.Instance.allPlayers;
 
         for (int i = 0; i < allPlayers.Count; i++)
@@ -202,7 +202,6 @@ public class P_ObjectManager_Studio : MonoBehaviourPun
             yield return null;
         }
 
-
         while (color1.a <= 1)
         {
             color1.a += Time.deltaTime;
@@ -222,7 +221,7 @@ public class P_ObjectManager_Studio : MonoBehaviourPun
 
             yield return null;
         }
-        
+
         timeCount_Text.gameObject.SetActive(true);
 
         Color tcolor = timeCount_Text.color;
@@ -258,6 +257,10 @@ public class P_ObjectManager_Studio : MonoBehaviourPun
 
         
         TakePicture();
+
+        // 사진 틀 이미지 띄우기
+
+        yield return new WaitForSeconds(2f);
 
         // 페이드 아웃
         while (black.a <= 1)
@@ -321,18 +324,42 @@ public class P_ObjectManager_Studio : MonoBehaviourPun
 
     private void CaptureScreenForPC(string fileName)
     {
-        // 다운로드 폴더에 저장 ( 실패 )
-        //ScreenCapture.CaptureScreenshot("~/Downloads/" + fileName);
+        string path = System.IO.Path.Combine(Application.dataPath, fileName);
 
         // 경로 미지정시 프로젝트 파일에 저장
-        ScreenCapture.CaptureScreenshot(fileName);
+        ScreenCapture.CaptureScreenshot(path);
+
+        SendCapture(path);
     }
 
     private void CaptureScreenForMobile(string fileName)
     {
+        string path = System.IO.Path.Combine(Application.dataPath, fileName);
+
         // 모바일로 사용시 추가 경로지정 필요
-        ScreenCapture.CaptureScreenshot(fileName);
+        ScreenCapture.CaptureScreenshot(path);
+
+        SendCapture(path);
     }
+
+    public void SendCapture(string filePath)
+    {
+        HttpInfo info = new HttpInfo();
+        info.url = Y_HttpLogIn.GetInstance().mainServer + "api/lesson/photo/" + "2";
+        info.body = filePath;
+        info.contentType = "multipart/form-data";
+        info.onComplete = (DownloadHandler downloadHandler) =>
+        {
+            // 완료시 실행
+            Debug.Log("사진전송 완료");
+
+            // 스크린샷 삭제
+            System.IO.File.Delete(filePath);
+        };
+
+        StartCoroutine(HttpManager.GetInstance().PutPicture(info));
+    }
+
 
     public void StudioSet(Texture2D texture)
     {
