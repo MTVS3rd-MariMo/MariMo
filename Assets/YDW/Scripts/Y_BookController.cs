@@ -93,20 +93,6 @@ public class Y_BookController : MonoBehaviour
 
     #endregion
 
-    #region 캐릭터 선택 후
-
-    ////////////////////////////////
-    //// 각 플레이어에 할당할 MP4 파일 경로 배열
-    //public string[] videoFilePaths = new string[]
-    //{
-    //    @"C:\Users\Admin\MariMo\Assets\YDW\VideoPlayer\garlic.mp4",
-    //    @"C:\Users\Admin\MariMo\Assets\YDW\VideoPlayer\pngman_center.mp4",
-    //    @"C:\Users\Admin\MariMo\Assets\YDW\VideoPlayer\pngman_animation.mp4",
-    //    @"C:\Users\Admin\MariMo\Assets\YDW\VideoPlayer\pngman_dab.mp4"
-    //};
-
-    #endregion
-
     private void Awake()
     {
         // Singleton 인스턴스 설정
@@ -164,7 +150,7 @@ public class Y_BookController : MonoBehaviour
             else
             {
                 // 마스터가 아닌 경우 자신의 정보만 전송
-                pv.RPC("AddPlayer", RpcTarget.All, playerIndex, nickName);
+                pv.RPC(nameof(AddPlayer), RpcTarget.All, playerIndex, nickName);
             }
         }
     }
@@ -184,6 +170,7 @@ public class Y_BookController : MonoBehaviour
     [PunRPC]
     void AddPlayer(int playerIndex, string nickName)
     {
+        if(playerIndex >= 0)
         playerNames[playerIndex] = nickName;
     }
 

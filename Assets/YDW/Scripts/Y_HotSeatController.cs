@@ -58,6 +58,8 @@ public class Y_HotSeatController : MonoBehaviourPun
     public GameObject panel_question;
     public GameObject panel_good;
 
+    public Sprite[] sprites;
+
 
     private void Awake()
     {
@@ -104,7 +106,7 @@ public class Y_HotSeatController : MonoBehaviourPun
         if(gm == guides[4]) // 마지막 "참 잘했어요!" UI 의 경우
         {
             yield return new WaitForSeconds(3f);
-            K_KeyManager.instance.isDoneHotSitting = true;
+            K_KeyManager.instance.isDoneHotSeating = true;
             Y_HotSeatManager.Instance.MoveControl(true);
             gameObject.SetActive(false);
         }

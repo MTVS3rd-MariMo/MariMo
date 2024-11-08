@@ -115,7 +115,7 @@ public class ConnectionManager : MonoBehaviourPunCallbacks
         //string roomName = LobbyUIController.lobbyUI.roomSetting[0].text;
         //int playerCount = Convert.ToInt32(LobbyUIController.lobbyUI.roomSetting[1].text);
         string roomName = roomname; /////////////////////////////////// To. 효근 : 나중에 선생님이 입력한 Inputbox.text 값으로 바꿔놓으면 됨!
-        int playerCount = 4;
+        int playerCount = 5;
 
         if (roomName.Length > 0 && playerCount > 1)
         {

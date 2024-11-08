@@ -2,7 +2,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
-using UnityEditor.U2D;
 using UnityEngine;
 using UnityEngine.UI;
 using WebSocketSharp;
@@ -106,7 +105,7 @@ public class Y_SignUp : MonoBehaviour
         {
             grade = signUpInputs[6].text;
             className = signUpInputs[7].text;
-            studentNumber = "";
+            studentNumber = "1";
         }
 
         StartCoroutine(Y_HttpLogIn.GetInstance().SignUpCoroutine(username, password, school, Int32.Parse(grade), Int32.Parse(className), Int32.Parse(studentNumber), isTeacher));

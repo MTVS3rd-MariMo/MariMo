@@ -22,7 +22,7 @@ public class K_KeyMgrTest : MonoBehaviour
         {
             print("되나?");
             // K_KeyManager의 GetKey 메서드 호출 (인스턴스 함수)
-            K_KeyManager.instance.isDoneHotSitting = true;  // 인스턴스 함수 호출
+            K_KeyManager.instance.isDoneHotSeating = true;  // 인스턴스 함수 호출
         }
     }
 }

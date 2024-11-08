@@ -30,6 +30,7 @@ public class Quiz
 [Serializable]
 public class OpenQuestion
 {
+    public int questionId;
     public string questionTitle;
 }
 
