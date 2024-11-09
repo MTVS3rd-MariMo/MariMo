@@ -114,22 +114,27 @@ public class K_AvatarVpSettings : MonoBehaviourPun
     {
         int adjustActorNumber = actorNumber - 1;
 
+        print("adjustActorNum 뭐니? " + adjustActorNumber);
+
         if (vp != null && adjustActorNumber >= 0 && adjustActorNumber <= 3)
         {
             if (idlePath != null)
             {
                 idleUrl = idlePath;
+                print("idleUrl 은 머야 " + idleUrl);
             }
 
             if(walkPath != null)
             {
                 walkUrl = walkPath;
+                print("walkUrl 은 머야 " + walkUrl);
             }
 
             // 연산자 사용해보기
             //print(videoPath);
             rawImage.texture = vp.targetTexture = renderTextures[adjustActorNumber];
             vp.prepareCompleted += OnVideoPrepared;
+            print("준비됐나요? ");
             PlayCurrAnim();
         }
 
@@ -156,7 +161,7 @@ public class K_AvatarVpSettings : MonoBehaviourPun
         currState = isWalking ? AnimState.Walk : AnimState.Idle;
         PlayCurrAnim();
 
-        print("SetWalkingState?");
+        //print("SetWalkingState?");
     }
 
     public void PlayCurrAnim()
@@ -164,7 +169,7 @@ public class K_AvatarVpSettings : MonoBehaviourPun
         vp.url = currState == AnimState.Idle ? idleUrl : walkUrl;
         vp.Play();
 
-        print("PlayAnim?");
+        //print("PlayAnim?");
     }
 
 

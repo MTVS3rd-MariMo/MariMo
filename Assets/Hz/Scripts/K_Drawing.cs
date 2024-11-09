@@ -70,7 +70,7 @@ public class K_Drawing : MonoBehaviour
     {
         if (pen_Active)
         {
-            print("pen Activated!");
+            //print("pen Activated!");
             RectTransformUtility.ScreenPointToLocalPointInRectangle(paint_RT, Input.mousePosition, null, out currPosition);
             //currPosition.x = Mathf.Clamp((int)currPosition.x, 0, pixel_Width - 1);
             //currPosition.y = Mathf.Clamp((int)currPosition.y, 0, pixel_Height - 1);

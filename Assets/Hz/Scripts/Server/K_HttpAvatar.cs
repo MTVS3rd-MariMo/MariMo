@@ -204,17 +204,20 @@ public class K_HttpAvatar : MonoBehaviourPun
                     Debug.Log($"MP4 파일 다운로드 및 저장 성공: {filePath}");
 
                     string videoPathWithProtocol = "file://" + filePath; // 로컬 파일을 위한 파일 프로토콜 추가
-
+                    Debug.Log("videoPath : 들어왔니? " + videoPathWithProtocol);
                     // K_AvatarVpSettings에서 상태별 비디오 경로 설정
                     var avatarSettings = Y_BookController.Instance.allPlayers[actorNumber - 1].GetComponent<K_AvatarVpSettings>();
+                    print("avatarSettings 들어왔니? : " + avatarSettings);
 
                     // 파일 이름이 "animation_0"일 경우 idle 경로 설정, "animation_1"일 경우 walk 경로 설정
                     if (fileName.Equals("animation_0"))
                     {
+                        print("animation_0 니? 웅");
                         avatarSettings.SetVideoPath(videoPathWithProtocol, null, actorNumber); // idle 경로 설정
                     }
                     else if (fileName.Equals("animation_1"))
                     {
+                        print("animation_1 니? 웅");
                         avatarSettings.SetVideoPath(null, videoPathWithProtocol, actorNumber); // walk 경로 설정
                     }
 
