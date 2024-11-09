@@ -7,6 +7,18 @@ using UnityEngine.Video;
 
 public class K_AvatarVpSettings : MonoBehaviourPun
 {
+    // 상태전환
+    private enum AnimState
+    {
+        Idle,
+        Walk
+    }
+    // 기본 셋팅 Idle 상태
+    private AnimState currState = AnimState.Idle;
+
+    private string idleUrl;
+    private string walkUrl;
+
     PhotonView pv;
     int index;
     string name;
@@ -29,6 +41,22 @@ public class K_AvatarVpSettings : MonoBehaviourPun
         index = pv.Owner.ActorNumber - 1;
         name = pv.Owner.NickName;
         print(PhotonNetwork.LocalPlayer.ActorNumber);
+    }
+
+    private void Update()
+    {
+        bool isWalking = Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.D);
+        
+        if(isWalking && currState != AnimState.Walk)
+        {
+            currState = AnimState.Walk;
+            SetVideoPath(walkUrl, PhotonNetwork.LocalPlayer.ActorNumber);
+        }
+        else if(!isWalking && currState != AnimState.Idle)
+        {
+            currState = AnimState.Idle;
+            SetVideoPath(idleUrl, PhotonNetwork.LocalPlayer.ActorNumber);
+        }
     }
 
     public void RPC_SelectCharNum(int characterIndex)
@@ -76,24 +104,47 @@ public class K_AvatarVpSettings : MonoBehaviourPun
         //print("renderTexture" + renderTextures[avatarIndex]);
     }
 
+    // 서버에서 전달받은 비디오 URL 적용
 
-    // 서버에서 전달받은 이미지와 비디오 URL 적용
-
-    // 이미지 다운로드 적용
     // MP4 다운로드 및 적용
     public void SetVideoPath(string videoPath, int actorNumber)
     {
-        //int actorNumber = PhotonNetwork.LocalPlayer.ActorNumber - 1;
-
-        int adjustActorNumber = actorNumber - 1;
-
-        if (vp != null)
+        // vp가 널이 아니라면 ~~~
+        if(vp != null)
         {
-            vp.url = videoPath;
-            rawImage.texture = vp.targetTexture = renderTextures[adjustActorNumber];
-            //vp.clip = videoClips[actorNumber];
+            if(videoPath.Contains("animation_0"))
+            {
+                // Idle
+                idleUrl = videoPath;
+                currState = AnimState.Idle;
+                print("idle GO");
+            }
+            else if(videoPath.Contains("animation_1"))
+            {
+                // Walk
+                walkUrl = videoPath;
+                currState = AnimState.Walk;
+                print("Walk GO");
+            }
+
+            //URL 재설정
+            vp.url = currState == AnimState.Idle ? idleUrl : walkUrl;
+            rawImage.texture = vp.targetTexture = renderTextures[avatarIndex];
             vp.Play();
         }
+
+        // ?????????????????
+        //int actorNumber = PhotonNetwork.LocalPlayer.ActorNumber - 1;
+
+        //int adjustActorNumber = actorNumber - 1;
+
+        //if (vp != null)
+        //{
+        //    vp.url = videoPath;
+        //    rawImage.texture = vp.targetTexture = renderTextures[adjustActorNumber];
+        //    //vp.clip = videoClips[actorNumber];
+        //    vp.Play();
+        //}
     }
 
     private void OnVideoPrepared(VideoPlayer source)

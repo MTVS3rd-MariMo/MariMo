@@ -5,11 +5,21 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Networking;
 using UnityEngine.Playables;
 using UnityEngine.UI;
+using static P_ObjectManager_Question;
 
 public class P_ObjectManager_Question : MonoBehaviourPun
 {
+    public class QuestionAnswer
+    {
+        public int lessnId;
+        public int questionId;
+        public string answer;
+    }
+
+
     public float testNum = 4;
 
     float triggerNum = 0;
@@ -29,7 +39,7 @@ public class P_ObjectManager_Question : MonoBehaviourPun
     public TMP_Text answer_Test3;
     public TMP_Text answer_Test4;
 
-    string answer;
+    string q_answer;
 
     // 투명벽 (플레이어 움직임을 멈춘다면 필요없을 예정)
     public GameObject wall_Q;
@@ -48,14 +58,13 @@ public class P_ObjectManager_Question : MonoBehaviourPun
     Color black;
 
     // 질문 카운트
-    float question_count = 0f;
+    int question_count = 0;
     // 답변 인원 카운트
-    float answer_count = 0f;
+    int answer_count = 0;
 
     void Start()
     {
         btn_Submit.onClick.AddListener(Submit);
-        btn_speaker.onClick.AddListener(Speaker);
 
         black = blackScreen.color;
         BtnState(false);
@@ -142,18 +151,41 @@ public class P_ObjectManager_Question : MonoBehaviourPun
     void Submit()
     {
         // 입력내용 저장
-        answer = answer_InputField.text;
+        q_answer = answer_InputField.text;
         answerUI_Canvas.SetActive(true);
         answer_InputField.gameObject.SetActive(false);
         btn_Submit.gameObject.SetActive(false);
 
+        QuestionAnswer questionAnswer = new QuestionAnswer()
+        {
+            lessnId = 2,
+            questionId = Y_HttpRoomSetUp.GetInstance().realClassMaterial.openQuestions[question_count].questionId,
+            answer = q_answer,
+        };
+
         // 인풋필드 비우기
         answer_InputField.text = "";
 
+        // 데이터 백엔드에 전송
+        SendAnswer(questionAnswer);
+
         // 포톤으로 실행
-        RPC_NextStep(answer);
+        RPC_NextStep(q_answer);
     }
 
+    void SendAnswer(QuestionAnswer answer)
+    {
+        HttpInfo info = new HttpInfo();
+        info.url = Y_HttpLogIn.GetInstance().mainServer + "api/open-question";
+        info.body = JsonUtility.ToJson(answer);
+        info.contentType = "application/json";
+        info.onComplete = (DownloadHandler downloadHandler) =>
+        {
+            Debug.Log("저장 성공");
+        };
+
+        StartCoroutine(HttpManager.GetInstance().PutOpenQ(info, Y_HttpLogIn.GetInstance().userId.ToString()));
+    }
     
     void RPC_NextStep(string answer)
     {
@@ -183,7 +215,6 @@ public class P_ObjectManager_Question : MonoBehaviourPun
             answer_Test4.text = answer;
         }
 
-
         // 4명 모두 답을 제출하면
         // 테스트용으로 1로 설정
         if (answer_count >= testNum)
@@ -204,11 +235,6 @@ public class P_ObjectManager_Question : MonoBehaviourPun
             }
 
         }
-    }
-
-    void Speaker()
-    {
-
     }
 
 
@@ -235,7 +261,7 @@ public class P_ObjectManager_Question : MonoBehaviourPun
         questionUI_Panel.SetActive(true);
 
         // 질문 세팅
-        question_Text.text = "수남이가 주인 영감님을 좋아하는 이유는 무엇인가요?\n여러분에게도 주변에서 격려와 응원을 해 주는 사람이 있나요?";
+        question_Text.text = Y_HttpRoomSetUp.GetInstance().realClassMaterial.openQuestions[question_count].questionTitle;
         answer_InputField.text = "";
 
         yield return new WaitForSeconds(1.5f);
@@ -284,7 +310,7 @@ public class P_ObjectManager_Question : MonoBehaviourPun
         question_PopUp_Img.gameObject.SetActive(false);
 
         // 다음 질문 세팅
-        question_Text.text = "수남이는 자전거를 타고 도망치면서 자유와 해방감을 느꼈습니다.\n여러분에게도 기분이 좋아지는 특별한 활동이 있나요? 그 활동을 하면 어떤 기분이 드나요?";
+        question_Text.text = Y_HttpRoomSetUp.GetInstance().realClassMaterial.openQuestions[question_count].questionTitle;
         answerUI_Canvas.SetActive(false);
         answer_InputField.gameObject.SetActive(true);
         btn_Submit.gameObject.SetActive(true);

@@ -17,6 +17,7 @@ public class P_CreatorToolController : MonoBehaviour
     public GameObject panel_SelectQuiz;
     public GameObject panel_MakingQuiz;
     public GameObject panel_MakingAsk;
+    public GameObject panel_Option;
 
     public Button btn_SelectStory;
     public Sprite[] sp_SelectStory;
@@ -25,15 +26,15 @@ public class P_CreatorToolController : MonoBehaviour
     public Button btn_Library;
     public Sprite[] sp_Library;
     public TMP_Text[] text_Storys;
-    public Button btn_Story1;
-    public Button btn_Story2;
-    public Button btn_Story3;
+    public Button[] btn_Story;
     public Button btn_Back_NewStory;
     public Button btn_SerchPDF;
     public Button btn_Checking;
     public Button btn_Back_SerchPDF;
     public Button btn_SendPDF;
     public Button btn_SelectQuiz;
+
+    public Button btn_Option;
 
 
 
@@ -44,15 +45,13 @@ public class P_CreatorToolController : MonoBehaviour
         btn_SelectStory.onClick.AddListener(OnclickSelectStory);
         btn_CreateRoom.onClick.AddListener(OnclickCreateRoom);
         btn_Library.onClick.AddListener(OnclickLibrary);
-        btn_Story1.onClick.AddListener(OnclickStory1);
-        btn_Story2.onClick.AddListener(OnclickStory2);
-        btn_Story3.onClick.AddListener(OnclickStory3);
         btn_Back_NewStory.onClick.AddListener(OnclickBack_NewStory);
         btn_SerchPDF.onClick.AddListener(OnclickSerchPDF);
         btn_SendPDF.onClick.AddListener(OnclickSend);
         btn_CreateRoom.onClick.AddListener(OnclickCreateRoom);
         btn_Checking.onClick.AddListener(OnclickChecking);
         btn_SelectQuiz.onClick.AddListener(OnclickSelectComplete);
+        btn_Option.onClick.AddListener(OnclickOption);
 
 
         btn_SelectStory.image.sprite = sp_SelectStory[1];
@@ -120,15 +119,7 @@ public class P_CreatorToolController : MonoBehaviour
         btn_Library.image.sprite = sp_Library[1];
     }
 
-    public void OnclickStory1()
-    {
-        panel_NewStory.SetActive(true);
-    }
-    public void OnclickStory2()
-    {
-        panel_NewStory.SetActive(true);
-    }
-    public void OnclickStory3()
+    public void OnclickStory()
     {
         panel_NewStory.SetActive(true);
     }
@@ -153,6 +144,11 @@ public class P_CreatorToolController : MonoBehaviour
         panel_SelectQuiz.SetActive(true);
 
         panel_SelectQuiz.GetComponent<P_QuizSelect>().QuizSetting();
+    }
+
+    public void OnclickOption()
+    {
+        panel_Option.SetActive(true);
     }
 
     public void OnclickSend()
@@ -277,22 +273,16 @@ public class P_CreatorToolController : MonoBehaviour
 
     void StoryButtonSet()
     {
-        if (P_CreatorToolConnectMgr.Instance.lessons.lessonMaterials.Count == 0)
-        {
-            return;
-        }
-        else if (P_CreatorToolConnectMgr.Instance.lessons.lessonMaterials.Count == 1)
-        {
-            text_Storys[0].text = P_CreatorToolConnectMgr.Instance.lessons.lessonMaterials[0].bookTitle;
-        }
-
+        
         for (int i = 0; i < text_Storys.Length; i++)
         {
-            text_Storys[i].text = "";
+            text_Storys[i].text = "+";
+            btn_Story[i].onClick.AddListener(OnclickStory);
 
             if (i < P_CreatorToolConnectMgr.Instance.lessons.lessonMaterials.Count)
             {
                 text_Storys[i].text = P_CreatorToolConnectMgr.Instance.lessons.lessonMaterials[i].bookTitle;
+                btn_Story[i].onClick.RemoveAllListeners();
             }
         }
     }
