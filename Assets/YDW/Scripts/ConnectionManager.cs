@@ -9,6 +9,7 @@ using ExitGames.Client.Photon;
 using Hashtable = ExitGames.Client.Photon.Hashtable;
 using UnityEngine.UI;
 using UnityEngine.Networking;
+using TMPro;
 
 
 public class ConnectionManager : MonoBehaviourPunCallbacks
@@ -26,7 +27,7 @@ public class ConnectionManager : MonoBehaviourPunCallbacks
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Alpha7)) CreateRoom("테스트");
+        if (Input.GetKeyDown(KeyCode.Alpha6)) CreateRoom("테스트", Y_HttpRoomSetUp.GetInstance().userlessonId, 1);
     }
 
     public void StartLogin()
@@ -110,11 +111,45 @@ public class ConnectionManager : MonoBehaviourPunCallbacks
         //LobbyController.lobbyUI.ShowRoomPanel();
     }
 
-    public void CreateRoom(string roomname)
+    //public void CreateRoom(string roomname)
+    //{
+    //    //string roomName = LobbyUIController.lobbyUI.roomSetting[0].text;
+    //    //int playerCount = Convert.ToInt32(LobbyUIController.lobbyUI.roomSetting[1].text);
+    //    string roomName = roomname; /////////////////////////////////// To. 효근 : 나중에 선생님이 입력한 Inputbox.text 값으로 바꿔놓으면 됨!
+    //    int playerCount = 5;
+
+    //    if (roomName.Length > 0 && playerCount > 1)
+    //    {
+    //        // 나의 룸을 만든다.
+    //        RoomOptions roomOpt = new RoomOptions();
+    //        roomOpt.MaxPlayers = playerCount;
+    //        roomOpt.IsOpen = true;
+    //        roomOpt.IsVisible = true;
+
+    //        // 룸의 커스텀 정보를 추가한다.
+    //        // - 선택한 맵 번호를 룸 정보에 추가한다.
+    //        // 키 값 등록하기
+    //        roomOpt.CustomRoomPropertiesForLobby = new string[] {"MASTER_NAME", "ROOM_ID"}; // , "PASSWORD", "SCENE_NUMBER"
+
+    //        // 키에 맞는 해시 테이블 추가하기
+    //        Hashtable roomTable = new Hashtable();
+    //        roomTable.Add("MASTER_NAME", PhotonNetwork.NickName);
+
+    //        // 서버에서 Room_ID 받아오고 -> 받아올 때까지 기다려
+    //        // 해시테이블에 추가
+
+    //        //roomTable.Add("PASSWORD", 1234);
+    //        //roomTable.Add("SCENE_NUMBER", LobbyUIController.lobbyUI.drop_mapSelection.value + 2);
+    //        roomOpt.CustomRoomProperties = roomTable;
+
+    //        PhotonNetwork.CreateRoom(roomName, roomOpt, TypedLobby.Default);
+
+    //    }
+    //}
+
+    public void CreateRoom(string roomname, int lessonId, int lessonMaterialNum)
     {
-        //string roomName = LobbyUIController.lobbyUI.roomSetting[0].text;
-        //int playerCount = Convert.ToInt32(LobbyUIController.lobbyUI.roomSetting[1].text);
-        string roomName = roomname; /////////////////////////////////// To. 효근 : 나중에 선생님이 입력한 Inputbox.text 값으로 바꿔놓으면 됨!
+        string roomName = roomname;
         int playerCount = 5;
 
         if (roomName.Length > 0 && playerCount > 1)
@@ -128,21 +163,15 @@ public class ConnectionManager : MonoBehaviourPunCallbacks
             // 룸의 커스텀 정보를 추가한다.
             // - 선택한 맵 번호를 룸 정보에 추가한다.
             // 키 값 등록하기
-            roomOpt.CustomRoomPropertiesForLobby = new string[] {"MASTER_NAME", "ROOM_ID"}; // , "PASSWORD", "SCENE_NUMBER"
-
             // 키에 맞는 해시 테이블 추가하기
             Hashtable roomTable = new Hashtable();
             roomTable.Add("MASTER_NAME", PhotonNetwork.NickName);
-
-            // 서버에서 Room_ID 받아오고 -> 받아올 때까지 기다려
-            // 해시테이블에 추가
-
-            //roomTable.Add("PASSWORD", 1234);
-            //roomTable.Add("SCENE_NUMBER", LobbyUIController.lobbyUI.drop_mapSelection.value + 2);
+            roomTable.Add("lessonId", lessonId.ToString());
+            roomTable.Add("lessonMaterialId", lessonMaterialNum.ToString());
+            roomOpt.CustomRoomPropertiesForLobby = new string[] { "MASTER_NAME", "lessonId", "lessonMaterialId" };
             roomOpt.CustomRoomProperties = roomTable;
 
             PhotonNetwork.CreateRoom(roomName, roomOpt, TypedLobby.Default);
-            
         }
     }
 
@@ -185,7 +214,7 @@ public class ConnectionManager : MonoBehaviourPunCallbacks
         // 방 id 받기
         if (PhotonNetwork.CurrentRoom.CustomProperties.TryGetValue("lessonId", out object lesson))
         {
-            Y_HttpRoomSetUp.GetInstance().userlessonId = (int)lesson;
+            Y_HttpRoomSetUp.GetInstance().userlessonId = Convert.ToInt32(lesson);
             Debug.Log("Joined Room with room ID: " + Y_HttpRoomSetUp.GetInstance().userlessonId);
 
             // 수업에 유저 등록
@@ -200,7 +229,7 @@ public class ConnectionManager : MonoBehaviourPunCallbacks
         // 수업자료 id 받기
         if (PhotonNetwork.CurrentRoom.CustomProperties.TryGetValue("lessonMaterialId", out object lessonMaterialNum))
         {
-            int lessonMaterialId = (int)lessonMaterialNum;
+            int lessonMaterialId = Convert.ToInt32(lessonMaterialNum);
             Debug.Log("Joined Room with lessonMaterial ID: " + lessonMaterialId);
 
             // 수업 데이터 받아오기
@@ -250,6 +279,9 @@ public class ConnectionManager : MonoBehaviourPunCallbacks
         LobbyController.lobbyUI.PrintLog(playerMsg);
     }
 
+
+    public GameObject[] buttons;
+
     // 현재 로비에서 룸의 변경사항을 알려주는 콜백 함수
     public override void OnRoomListUpdate(List<RoomInfo> roomList)
     {
@@ -285,6 +317,13 @@ public class ConnectionManager : MonoBehaviourPunCallbacks
 
         foreach (RoomInfo room in cachedRoomList)
         {
+            for(int i = 0; i < cachedRoomList.Count; i++)
+            {
+                buttons[i].SetActive(true);
+                buttons[i].GetComponent<TMP_Text>().text = room.Name;
+            }
+            
+            
             // cachedRoomList에 있는 모든 방을 만들어서 스크롤뷰에 추가한다.
             GameObject go = Instantiate(roomPrefab, scrollContent);
             RoomPanel roomPanel = go.GetComponent<RoomPanel>();

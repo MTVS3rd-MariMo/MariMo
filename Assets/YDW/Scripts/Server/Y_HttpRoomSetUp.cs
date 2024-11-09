@@ -47,6 +47,7 @@ public class Y_HttpRoomSetUp : MonoBehaviourPun
     public ClassMaterial realClassMaterial;
 
     public int userlessonId;
+    public int classMaterialId;
 
 
     public static Y_HttpRoomSetUp GetInstance()
