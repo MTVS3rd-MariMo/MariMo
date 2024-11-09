@@ -237,7 +237,7 @@ public class ConnectionManager : MonoBehaviourPunCallbacks
         if(PhotonNetwork.CurrentRoom.PlayerCount == 5 && PhotonNetwork.IsMasterClient)
         {
             // 포톤 RPC로 전체 호출
-            Y_HttpRoomSetUp.GetInstance().GetUserIdList();
+            Y_HttpRoomSetUp.GetInstance().RPC_GetUserIds();
         }
     }
 

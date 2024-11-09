@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Photon.Pun;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -37,7 +38,7 @@ public class ClassMaterial
     public List<string> lessonRoles;
 }
 
-public class Y_HttpRoomSetUp : MonoBehaviour
+public class Y_HttpRoomSetUp : MonoBehaviourPun
 {
     static Y_HttpRoomSetUp instance;
 
@@ -173,6 +174,18 @@ public class Y_HttpRoomSetUp : MonoBehaviour
         yield return StartCoroutine(Put(info));
     }
 
+    public void RPC_GetUserIds()
+    {
+        photonView.RPC("GetUserIds", RpcTarget.All);
+    }
+
+    [PunRPC]
+    public void GetUserIds()
+    {
+        StartCoroutine(GetUserIdList());
+    }
+
+    
     public IEnumerator GetUserIdList()
     {
         SendLessonId sendLessonId = new SendLessonId
