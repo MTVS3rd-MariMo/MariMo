@@ -194,9 +194,9 @@ public class K_HttpAvatar : MonoBehaviourPun
                 // 다른 컴퓨터 환경에서 테스트해보기
                 string filePath;
 //#if UNITY_EDITOR
-                //filePath = Application.persistentDataPath + "/" + PhotonNetwork.LocalPlayer.ActorNumber + "/" + fileName + actorNumber + ".mp4";
+                filePath = Application.persistentDataPath + "/" + PhotonNetwork.LocalPlayer.ActorNumber + "/" + fileName + actorNumber + ".mp4";
 //#else
-                filePath = Application.persistentDataPath + "/" + fileName + actorNumber + ".mp4";
+                //filePath = Application.persistentDataPath + "/" + fileName + actorNumber + ".mp4";
 //#endif
                 System.IO.File.WriteAllBytes(filePath, videoData);
 

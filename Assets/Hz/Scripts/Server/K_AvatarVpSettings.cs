@@ -101,10 +101,11 @@ public class K_AvatarVpSettings : MonoBehaviourPun
         int adjustActorNumber = actorNumber - 1;
         //print("알려줘" + adjustActorNumber);
 
-        if (vp != null && adjustActorNumber >= 1)
+        if (vp != null && adjustActorNumber >= 0 && adjustActorNumber <= 3)
         {
             vp.url = videoPath;
-            rawImage.texture = vp.targetTexture = renderTextures[adjustActorNumber];
+            print(videoPath);
+            rawImage.texture = vp.targetTexture = renderTextures[adjustActorNumber ];
             //vp.clip = videoClips[actorNumber];
             vp.Play();
         }
