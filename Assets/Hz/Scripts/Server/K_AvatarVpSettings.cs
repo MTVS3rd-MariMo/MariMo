@@ -109,29 +109,6 @@ public class K_AvatarVpSettings : MonoBehaviourPun
     // MP4 다운로드 및 적용
     public void SetVideoPath(string videoPath, int actorNumber)
     {
-        //// vp가 널이 아니라면 ~~~
-        //if(vp != null)
-        //{
-        //    if(videoPath.Contains($"animation_0"))
-        //    {
-        //        // Idle
-        //        idleUrl = videoPath;
-        //        currState = AnimState.Idle;
-        //        print("idle GO");
-        //    }
-        //    else if(videoPath.Contains($"animation_1"))
-        //    {
-        //        // Walk
-        //        walkUrl = videoPath;
-        //        currState = AnimState.Walk;
-        //        print("Walk GO");
-        //    }
-
-        //    //URL 재설정
-        //    vp.url = currState == AnimState.Idle ? idleUrl : walkUrl;
-        //    rawImage.texture = vp.targetTexture = renderTextures[avatarIndex];
-        //    vp.Play();
-        //}
 
         // ?????????????????
         //int actorNumber = PhotonNetwork.LocalPlayer.ActorNumber - 1;

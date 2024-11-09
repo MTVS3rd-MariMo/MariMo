@@ -109,7 +109,8 @@ public class K_HttpAvatar : MonoBehaviourPun
                 //btn_CreateAvatar.gameObject.SetActive(false);
                 btn_ToMap.SetActive(true);
 
-                int actorNumber = PhotonNetwork.LocalPlayer.ActorNumber;
+                // 수정
+                int actorNumber = PhotonNetwork.LocalPlayer.ActorNumber - 1;
 
                 // 동기화
                 photonView.RPC(nameof(SyncAvatarData), RpcTarget.All, avatarData.userId, avatarData.lessonId, avatarImgUrl, animationUrls.ToArray(), actorNumber);
