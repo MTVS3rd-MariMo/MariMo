@@ -321,19 +321,21 @@ public class ConnectionManager : MonoBehaviourPunCallbacks
             {
                 buttons[i].SetActive(true);
                 buttons[i].GetComponent<TMP_Text>().text = room.Name;
-            }
-            
-            
-            // cachedRoomList에 있는 모든 방을 만들어서 스크롤뷰에 추가한다.
-            GameObject go = Instantiate(roomPrefab, scrollContent);
-            RoomPanel roomPanel = go.GetComponent<RoomPanel>();
-            roomPanel.SetRoomInfo(room);
-            // 버튼에 방 입장 기능 연결하기
 
-            roomPanel.btn_Room.onClick.AddListener(() =>
-            {
-                PhotonNetwork.JoinRoom(room.Name);
-            });
+                // 버튼에 방 입장 기능 연결하기
+                buttons[i].GetComponent<Button>().onClick.AddListener(() =>
+                {
+                    PhotonNetwork.JoinRoom(room.Name);
+                });
+            }
+
+
+            // cachedRoomList에 있는 모든 방을 만들어서 스크롤뷰에 추가한다.
+            //GameObject go = Instantiate(roomPrefab, scrollContent);
+            //RoomPanel roomPanel = go.GetComponent<RoomPanel>();
+            //roomPanel.SetRoomInfo(room);
+
+            
 
         }
     }

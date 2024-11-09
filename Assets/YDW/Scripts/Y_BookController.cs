@@ -283,6 +283,7 @@ public class Y_BookController : MonoBehaviourPun
         photonView.RPC(nameof(IncreaseClickSelectCount), RpcTarget.All);
     }
 
+    [PunRPC]
     void IncreaseClickSelectCount()
     {
         clickSelectCnt++;
