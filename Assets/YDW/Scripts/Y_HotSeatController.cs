@@ -58,6 +58,7 @@ public class Y_HotSeatController : MonoBehaviourPun
     public GameObject panel_question;
     public GameObject panel_good;
 
+    public GameObject[] buttons;
     public Sprite[] sprites;
 
 
@@ -94,7 +95,7 @@ public class Y_HotSeatController : MonoBehaviourPun
         {
             Txt_TitleText.text = characterNames[Y_BookController.Instance.characterNum - 1].text;
             //Debug.LogError("찍어봐 : " + (myAvatarSetting.avatarIndex - 1));
-            myAvatarImage.sprite = myAvatarSetting.images[Y_BookController.Instance.characterNum - 1]; ///// 이거 -1 해야 되나? myAvatarSetting.avatarIndex - 1
+            myAvatarImage.sprite = myAvatarSetting.images[Y_BookController.Instance.characterNum - 1];
         }
         else
         {
@@ -122,13 +123,21 @@ public class Y_HotSeatController : MonoBehaviourPun
     }
 
     bool isEnd = false;
+    bool over100 = false;
 
     private void Update()
     {
         if(Input.GetKeyDown(KeyCode.Alpha0) && testNum <= players.Count)
         {
             RPC_ProtoTest();
-        }  
+        } 
+        
+        if(selfIntroduceInput.text.Length >= 100 && !over100)
+        {
+            buttons[0].GetComponent<Button>().interactable = true;
+            buttons[0].GetComponent<Image>().sprite = sprites[5];
+            over100 = true;
+        }
 
         //if(Input.GetKeyDown(KeyCode.Alpha0) && testNum == players.Count)
         //{
@@ -224,7 +233,7 @@ public class Y_HotSeatController : MonoBehaviourPun
         Shuffle();
 
         // 작성한 순서대로 추가됨
-        RPC_AddSelfIntroduce(PhotonNetwork.LocalPlayer.ActorNumber, selfIntroduceInput.text);
+        RPC_AddSelfIntroduce(PhotonNetwork.LocalPlayer.ActorNumber - 1, selfIntroduceInput.text);
 
         RPC_AllReady();
     }
@@ -287,6 +296,7 @@ public class Y_HotSeatController : MonoBehaviourPun
     [PunRPC]
     void AddSelfIntroduce(int actorNumber, string selfIntroduce)
     {
+        if(actorNumber > 0)
         selfIntroduces.Add(actorNumber, selfIntroduce); 
     }
 
@@ -305,8 +315,8 @@ public class Y_HotSeatController : MonoBehaviourPun
         // 서브밋 누른 플레이어 수 늘림
         selfInt_count++;
 
-        // 4명이 다 차면
-        if (selfInt_count >= 4)
+        // 5명이 다 차면
+        if (selfInt_count >= 5)
         {
             panel_waiting.SetActive(false);
             stage.SetActive(true);
@@ -376,7 +386,7 @@ public class Y_HotSeatController : MonoBehaviourPun
         {
             int playerNum = playerNums[i];
 
-            stageScriptTxts[i].text = selfIntroduces[playerNum + 1];
+            stageScriptTxts[i].text = selfIntroduces[playerNum + 1]; // selfIntroduces[playerNum + 1] -> selfIntroduces[playerNum]
         }
     }
 
@@ -389,7 +399,8 @@ public class Y_HotSeatController : MonoBehaviourPun
         print("!!!!!!!!!! index : " + index);
         if (index - 1 >= 0 && index - 1 < images.Count)
         {
-            images[index - 1].color = originalColor; // 전 플레이어는 이름표 색 원래 색으로
+            images[index - 1].sprite = sprites[2]; // 전 플레이어는 이름표 색 원래 색으로
+            buttons[4 + index - 1].GetComponent<Image>().sprite = sprites[0];
             players[index - 1].transform.position = playerPos; // 이미지 위치도 원위치
             stageScriptImgs[index - 1].gameObject.SetActive(false); // 전 플레이어의 자기소개 끄기
             spotlight.SetActive(false); // 스포트라이트 끔
@@ -403,7 +414,8 @@ public class Y_HotSeatController : MonoBehaviourPun
         if (index < players.Count)
         {
             // 이름 UI 색깔 바꾸고
-            images[index].color = Color.red;
+            images[index].sprite = sprites[3];
+            buttons[4 + index].GetComponent<Image>().sprite = sprites[1];
 
             // 플레이어 무대로 가게 한다
             playerPos = players[index].transform.position;
@@ -477,15 +489,17 @@ public class Y_HotSeatController : MonoBehaviourPun
     {
         int myActorNumber = PhotonNetwork.LocalPlayer.ActorNumber;
 
-        if(myActorNumber != playerNum)
+        if (PhotonNetwork.LocalPlayer.IsMasterClient) return;
+
+        if(myActorNumber - 1 != playerNum)
         {
             Y_VoiceManager.Instance.recorder.TransmitEnabled = false;
-            print(myActorNumber + "번 플레이어 뮤트됨");
+            print(myActorNumber - 1 + "번 플레이어 뮤트됨");
         }
         else
         {
             Y_VoiceManager.Instance.recorder.TransmitEnabled = true;
-            print(myActorNumber + "번 플레이어는 뮤트되지 않음");
+            print(myActorNumber - 1 + "번 플레이어는 뮤트되지 않음");
         }
 
         //// 모든 PhotonVoiceView를 가진 객체를 검색
@@ -585,6 +599,7 @@ public class Y_HotSeatController : MonoBehaviourPun
 
         for(int i = 0; i <= players.Count; i++)
         {
+            Debug.LogError(players.Count);
             if(i < players.Count && i != index) // playerNums[index]
             {
 
@@ -593,24 +608,24 @@ public class Y_HotSeatController : MonoBehaviourPun
                 // 질문하는 사람 보이스 켜주고 녹음 시작
                 MuteOtherPlayers(playerNums[i] + 1); 
                 print((playerNums[i] + 1) + " 빼고 뮤트됨! - 인터뷰 질문");
-                RecordVoice(playerNums[i] + 1);
+                RecordVoice(playerNums[i] + 2);
 
                 // 원래는 30초인데 테스트용 5초
                 yield return new WaitForSeconds(10f);
                 // 녹음 종료
-                StopRecordVoice(playerNums[i] + 1, index);
+                StopRecordVoice(playerNums[i] + 2, index);
 
                 myTurnImgs[i].SetActive(false);
 
                 // 자기소개 한 사람(답변할 사람) 보이스 켜주고 녹음 시작
                 MuteOtherPlayers(playerNums[index] + 1);
                 print((playerNums[index] + 1) + " 빼고 뮤트됨! - 인터뷰 답변");
-                RecordVoice(playerNums[index] + 1);
+                RecordVoice(playerNums[index] + 2);
 
                 // 원래는 60초인데 일단 5초
                 yield return new WaitForSeconds(10f);
                 // 녹음 종료
-                StopRecordVoice(playerNums[index] + 1, index);
+                StopRecordVoice(playerNums[index] + 2, index);
             }
 
             if (i == players.Count)

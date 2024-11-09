@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Org.BouncyCastle.Asn1.Ocsp;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -14,6 +15,19 @@ public class SignUpData
     public int studentNumber;
     public string name;
     public string password;
+}
+
+[System.Serializable]
+public class ResponseData
+{
+    public string userId;
+    public string role;
+}
+
+public enum Role
+{
+    TEACHER,
+    STUDENT
 }
 
 public class Y_HttpLogIn : MonoBehaviour
@@ -142,7 +156,7 @@ public class Y_HttpLogIn : MonoBehaviour
     }
 
     public string logInUrl = "api/user/login";
-
+    public bool isTeacher;
 
     public IEnumerator LogInCoroutine(string username, string password)
     {
@@ -171,10 +185,14 @@ public class Y_HttpLogIn : MonoBehaviour
             if (webRequest.result == UnityWebRequest.Result.Success)
             {
                 Debug.Log("로그인 성공: " + webRequest.downloadHandler.text);
-                string jsonRaw = webRequest.downloadHandler.text;
-                print(jsonRaw);
-                userId = jsonRaw;
+                ResponseData responseData = JsonUtility.FromJson<ResponseData>(webRequest.downloadHandler.text);
+                userId = responseData.userId;
                 print(userId);
+
+                Role userRole;
+                Enum.TryParse(responseData.role, true, out userRole);
+                isTeacher = userRole == Role.TEACHER;
+                print(isTeacher);
 
                 Y_SignUp.signUp.logInUI.SetActive(false);
                 Y_SignUp.signUp.titleUI.SetActive(true);

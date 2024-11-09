@@ -39,11 +39,7 @@ public class HttpInfo
 
 }
 
-public enum Role
-{
-    TEACHER,
-    STUDENT
-}
+
 
 
 
