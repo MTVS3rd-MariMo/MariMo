@@ -10,6 +10,11 @@ public class SendLessonId
     public int lessonId;
 }
 
+public class SendMaterialId
+{
+    public int lessonMaterialId;
+}
+
 [Serializable]
 public class RequestClassMaterial
 {
@@ -39,6 +44,8 @@ public class Y_HttpRoomSetUp : MonoBehaviour
     public List<int> userList = new List<int>();
 
     public ClassMaterial realClassMaterial;
+
+    public int userlessonId;
 
 
     public static Y_HttpRoomSetUp GetInstance()
@@ -144,8 +151,7 @@ public class Y_HttpRoomSetUp : MonoBehaviour
     {
         SendLessonId sendLessonId = new SendLessonId
         {
-            lessonId = 101
-            // 더미!!!!!
+            lessonId = userlessonId
         };
 
         // JSON 형식으로 변환
@@ -171,7 +177,7 @@ public class Y_HttpRoomSetUp : MonoBehaviour
     {
         SendLessonId sendLessonId = new SendLessonId
         {
-            lessonId = 101 // 더미!!!!!
+            lessonId = userlessonId
         };
 
         string jsonBody = JsonUtility.ToJson(sendLessonId);
@@ -206,17 +212,17 @@ public class Y_HttpRoomSetUp : MonoBehaviour
 
     }
 
-    public IEnumerator GetClassMaterial()
+    public IEnumerator GetClassMaterial(int Id)
     {
-        SendLessonId sendLessonId = new SendLessonId
+        SendMaterialId sendMaterialId = new SendMaterialId
         {
-            lessonId = 101 // 더미!!!!!
+            lessonMaterialId = Id // 더미!!!!!
         };
 
-        string jsonBody = JsonUtility.ToJson(sendLessonId);
+        string jsonBody = JsonUtility.ToJson(sendMaterialId);
         string requestUserListUrl = "api/lesson/";
 
-        using (UnityWebRequest webRequest = UnityWebRequest.Get(Y_HttpLogIn.GetInstance().mainServer + requestUserListUrl + sendLessonId.lessonId.ToString()))
+        using (UnityWebRequest webRequest = UnityWebRequest.Get(Y_HttpLogIn.GetInstance().mainServer + requestUserListUrl + sendMaterialId.lessonMaterialId.ToString()))
         {
             webRequest.downloadHandler = new DownloadHandlerBuffer(); // 서버가 다운로드 할 수 있는 공간 만듦
 

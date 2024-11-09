@@ -17,6 +17,7 @@ public class Y_SignUp : MonoBehaviour
     public GameObject signUpUI;
     public GameObject logInUI;
     public GameObject titleUI;
+    public GameObject creatorUI;
 
     #region Button Sprite
 

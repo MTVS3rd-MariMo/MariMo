@@ -8,6 +8,7 @@ using System;
 using ExitGames.Client.Photon;
 using Hashtable = ExitGames.Client.Photon.Hashtable;
 using UnityEngine.UI;
+using UnityEngine.Networking;
 
 
 public class ConnectionManager : MonoBehaviourPunCallbacks
@@ -107,7 +108,6 @@ public class ConnectionManager : MonoBehaviourPunCallbacks
         // 서버 로비에 들어갔음을 알려준다.
         print(MethodInfo.GetCurrentMethod().Name + " is Call!");
         LobbyController.lobbyUI.ShowRoomPanel();
-        CreateRoom("마리모");
     }
 
     public void CreateRoom(string roomname)
@@ -182,8 +182,37 @@ public class ConnectionManager : MonoBehaviourPunCallbacks
         print(MethodInfo.GetCurrentMethod().Name + " is Call!");
         LobbyController.lobbyUI.PrintLog("방에 입장 성공!");
 
+        // 방 id 받기
+        if (PhotonNetwork.CurrentRoom.CustomProperties.TryGetValue("lessonId", out object lesson))
+        {
+            Y_HttpRoomSetUp.GetInstance().userlessonId = (int)lesson;
+            Debug.Log("Joined Room with room ID: " + Y_HttpRoomSetUp.GetInstance().userlessonId);
+
+            // 수업에 유저 등록
+            StartCoroutine(Y_HttpRoomSetUp.GetInstance().SendLessonId());
+        }
+        else
+        {
+            Debug.LogError("room ID not found in the room properties.");
+        }
+
+
+        // 수업자료 id 받기
+        if (PhotonNetwork.CurrentRoom.CustomProperties.TryGetValue("lessonMaterialId", out object lessonMaterialNum))
+        {
+            int lessonMaterialId = (int)lessonMaterialNum;
+            Debug.Log("Joined Room with lessonMaterial ID: " + lessonMaterialId);
+
+            // 수업 데이터 받아오기
+            Y_HttpRoomSetUp.GetInstance().GetClassMaterial(lessonMaterialId);
+        }
+        else
+        {
+            Debug.LogError("lessonMaterial ID not found in the room properties.");
+        }
+
         // 방에 입장한 친구들은 모두 1번 씬으로 이동하자!
-       
+
         PhotonNetwork.LoadLevel(1);
     }
 
@@ -194,7 +223,7 @@ public class ConnectionManager : MonoBehaviourPunCallbacks
         // 룸에 입장이 실패한 이유를 출력한다.
         Debug.LogError(message);
         LobbyController.lobbyUI.PrintLog("입장 실패..." + message);
-        
+
     }
 
     // 룸에 다른 플레이어가 입장했을 때의 콜백 함수
@@ -204,6 +233,12 @@ public class ConnectionManager : MonoBehaviourPunCallbacks
 
         string playerMsg = $"{newPlayer.NickName}님이 입장하셨습니다.";
         LobbyController.lobbyUI.PrintLog(playerMsg);
+
+        if(PhotonNetwork.CurrentRoom.PlayerCount == 5 && PhotonNetwork.IsMasterClient)
+        {
+            // 포톤 RPC로 전체 호출
+            Y_HttpRoomSetUp.GetInstance().GetUserIdList();
+        }
     }
 
     // 룸에 있던 다른 플레이어가 퇴장했을 때의 콜백 함수

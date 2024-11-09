@@ -13,7 +13,7 @@ public class P_RoomMgr : MonoBehaviourPunCallbacks
 {
     public P_RoomCreate p_creat;
 
-    public void CreateRoom(string roomname)
+    public void CreateRoom(string roomname, int lessonId, int lessonMaterialNum)
     {
         string roomName = roomname; 
         int playerCount = p_creat.players;
@@ -29,12 +29,12 @@ public class P_RoomMgr : MonoBehaviourPunCallbacks
             // 룸의 커스텀 정보를 추가한다.
             // - 선택한 맵 번호를 룸 정보에 추가한다.
             // 키 값 등록하기
-            roomOpt.CustomRoomPropertiesForLobby = new string[] {p_creat.lessenNum.ToString(), p_creat.lessenId.ToString() }; // , "자료 id", "방 id"
-
             // 키에 맞는 해시 테이블 추가하기
             Hashtable roomTable = new Hashtable();
             roomTable.Add("MASTER_NAME", PhotonNetwork.NickName);
-
+            roomTable.Add("lessonId", lessonId.ToString());
+            roomTable.Add("lessonMaterialId", lessonMaterialNum.ToString());
+            roomOpt.CustomRoomPropertiesForLobby = new string[] { "MASTER_NAME", "lessonId", "lessonMaterialId" };
             roomOpt.CustomRoomProperties = roomTable;
 
             PhotonNetwork.CreateRoom(roomName, roomOpt, TypedLobby.Default);

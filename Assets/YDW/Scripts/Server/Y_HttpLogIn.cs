@@ -195,7 +195,15 @@ public class Y_HttpLogIn : MonoBehaviour
                 print(isTeacher);
 
                 Y_SignUp.signUp.logInUI.SetActive(false);
-                Y_SignUp.signUp.titleUI.SetActive(true);
+
+                if (isTeacher)
+                {
+                    Y_SignUp.signUp.creatorUI.SetActive(true);
+                }
+                else
+                {
+                    Y_SignUp.signUp.titleUI.SetActive(true);
+                }
                 //SceneManager.LoadScene(1);
             }
             else
