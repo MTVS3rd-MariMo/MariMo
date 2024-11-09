@@ -109,7 +109,8 @@ public class K_HttpAvatar : MonoBehaviourPun
                 //btn_CreateAvatar.gameObject.SetActive(false);
                 btn_ToMap.SetActive(true);
 
-                int actorNumber = PhotonNetwork.LocalPlayer.ActorNumber;
+                // 수정
+                int actorNumber = PhotonNetwork.LocalPlayer.ActorNumber - 1;
 
                 // 동기화
                 photonView.RPC(nameof(SyncAvatarData), RpcTarget.All, avatarData.userId, avatarData.lessonId, avatarImgUrl, animationUrls.ToArray(), actorNumber);
@@ -211,17 +212,18 @@ public class K_HttpAvatar : MonoBehaviourPun
                 //Y_BookController.Instance.allPlayers[actorNumber - 1].GetComponent<K_AvatarVpSettings>().SetVideoPath(videoPathWithProtocol, actorNumber);
 
                 // 백엔드에서 애니메이션 받아올때 animation0, animation1 이렇게줌 
-                //if (fileName.Equals($"animation_0"))
+                if (fileName.Equals($"animation_0"))
+                {
+                    Y_BookController.Instance.allPlayers[actorNumber - 1].GetComponent<K_AvatarVpSettings>().SetVideoPath(videoPathWithProtocol, actorNumber);
+                }
+
                 // 0은 idle 재생
-                if (fileName.Equals($"animation_0{actorNumber}") /*|| fileName.Equals("animation_1")*/)
-                {
-                    Y_BookController.Instance.allPlayers[actorNumber - 1].GetComponent<K_AvatarVpSettings>().SetVideoPath(videoPathWithProtocol, actorNumber);
-                }
-                // 1은 walk 재생
-                else if(fileName.Equals($"animation_1{actorNumber}"))
-                {
-                    Y_BookController.Instance.allPlayers[actorNumber - 1].GetComponent<K_AvatarVpSettings>().SetVideoPath(videoPathWithProtocol, actorNumber);
-                }
+                //if (fileName.Equals($"animation_0{actorNumber}") || fileName.Equals($"animation_1{actorNumber}"))
+                //// 1은 walk 재생
+                //else if(fileName.Equals($"animation_1{actorNumber}"))
+                //{
+                //    Y_BookController.Instance.allPlayers[actorNumber - 1].GetComponent<K_AvatarVpSettings>().SetVideoPath(videoPathWithProtocol, actorNumber);
+                //}
             }
             else
             {
