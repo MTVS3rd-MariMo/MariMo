@@ -8,7 +8,7 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/Scenes/SampleScene.unity
     guid: 99c9720ab356a0642a771bea13969a05
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/LobbyScene.unity
     guid: ccac6c073d8c55844bdcfb429225ff8b
   - enabled: 0
@@ -29,10 +29,10 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/Scenes/Proto_Real_Park.unity
     guid: b8d1891fbc1663b4aa5d71aa2a358b65
-  - enabled: 1
+  - enabled: 0
     path: Assets/Hz/Scenes/K_Alpha.unity
     guid: 8e5ce8e25807d4f488a236f2367af703
-  - enabled: 0
+  - enabled: 1
     path: Assets/YDW/Scenes/LobbyScene_YDW.unity
     guid: 5fae077d5e0ae444bba96c3c0328e7eb
   - enabled: 1
