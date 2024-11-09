@@ -201,7 +201,7 @@ public class K_HttpAvatar : MonoBehaviourPun
 
                 Debug.Log($"MP4 파일 다운로드 및 저장 성공: {filePath}");
 
-                string videoPathWithProtocol = "file://" + filePath;
+                string videoPathWithProtocol = " " + filePath;
 
                 // RPC 비디오 파일 경로 동기화
                 //photonView.RPC(nameof(OnDownloadImage), RpcTarget.All, userId, avatarImgUrl, actorNumber);
@@ -210,7 +210,15 @@ public class K_HttpAvatar : MonoBehaviourPun
                 // 비디오 경로 설정해주기 -> 이거 일단 주석
                 //Y_BookController.Instance.allPlayers[actorNumber - 1].GetComponent<K_AvatarVpSettings>().SetVideoPath(videoPathWithProtocol, actorNumber);
 
-                if(fileName.Equals("animation_0"))
+                // 백엔드에서 애니메이션 받아올때 animation0, animation1 이렇게줌 
+                //if (fileName.Equals($"animation_0"))
+                // 0은 idle 재생
+                if (fileName.Equals($"animation_0{actorNumber}") /*|| fileName.Equals("animation_1")*/)
+                {
+                    Y_BookController.Instance.allPlayers[actorNumber - 1].GetComponent<K_AvatarVpSettings>().SetVideoPath(videoPathWithProtocol, actorNumber);
+                }
+                // 1은 walk 재생
+                else if(fileName.Equals($"animation_1{actorNumber}"))
                 {
                     Y_BookController.Instance.allPlayers[actorNumber - 1].GetComponent<K_AvatarVpSettings>().SetVideoPath(videoPathWithProtocol, actorNumber);
                 }

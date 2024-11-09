@@ -46,18 +46,16 @@ public class K_AvatarVpSettings : MonoBehaviourPun
     private void Update()
     {
         bool isWalking = Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.D);
-        // 이동 키 입력을 받게 되면
-        if (isWalking)
+        
+        if(isWalking && currState != AnimState.Walk)
         {
-            // 키 입력 받으면 Walk MP4 재생
             currState = AnimState.Walk;
-            walkUrl = "";
+            SetVideoPath(walkUrl, PhotonNetwork.LocalPlayer.ActorNumber);
         }
-        else
+        else if(!isWalking && currState != AnimState.Idle)
         {
-            // 키 입력 안받으면 idle MP4 재생
             currState = AnimState.Idle;
-            idleUrl = "";
+            SetVideoPath(idleUrl, PhotonNetwork.LocalPlayer.ActorNumber);
         }
     }
 
@@ -106,23 +104,47 @@ public class K_AvatarVpSettings : MonoBehaviourPun
         //print("renderTexture" + renderTextures[avatarIndex]);
     }
 
-
     // 서버에서 전달받은 비디오 URL 적용
 
     // MP4 다운로드 및 적용
     public void SetVideoPath(string videoPath, int actorNumber)
     {
-        //int actorNumber = PhotonNetwork.LocalPlayer.ActorNumber - 1;
-
-        int adjustActorNumber = actorNumber - 1;
-
-        if (vp != null)
+        // vp가 널이 아니라면 ~~~
+        if(vp != null)
         {
-            vp.url = videoPath;
-            rawImage.texture = vp.targetTexture = renderTextures[adjustActorNumber];
-            //vp.clip = videoClips[actorNumber];
+            if(videoPath.Contains("animation_0"))
+            {
+                // Idle
+                idleUrl = videoPath;
+                currState = AnimState.Idle;
+                print("idle GO");
+            }
+            else if(videoPath.Contains("animation_1"))
+            {
+                // Walk
+                walkUrl = videoPath;
+                currState = AnimState.Walk;
+                print("Walk GO");
+            }
+
+            //URL 재설정
+            vp.url = currState == AnimState.Idle ? idleUrl : walkUrl;
+            rawImage.texture = vp.targetTexture = renderTextures[avatarIndex];
             vp.Play();
         }
+
+        // ?????????????????
+        //int actorNumber = PhotonNetwork.LocalPlayer.ActorNumber - 1;
+
+        //int adjustActorNumber = actorNumber - 1;
+
+        //if (vp != null)
+        //{
+        //    vp.url = videoPath;
+        //    rawImage.texture = vp.targetTexture = renderTextures[adjustActorNumber];
+        //    //vp.clip = videoClips[actorNumber];
+        //    vp.Play();
+        //}
     }
 
     private void OnVideoPrepared(VideoPlayer source)
