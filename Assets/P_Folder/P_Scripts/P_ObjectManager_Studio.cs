@@ -23,6 +23,7 @@ public class P_ObjectManager_Studio : MonoBehaviourPun
     public Image studioUI1_Img;
     public Image studioUI2_Img;
     public TMP_Text timeCount_Text;
+    public Image film_Img;
 
     // 사진배경용
     public GameObject backgrond;
@@ -259,9 +260,11 @@ public class P_ObjectManager_Studio : MonoBehaviourPun
         TakePicture();
 
         // 사진 틀 이미지 띄우기
+        film_Img.gameObject.SetActive(true);
 
         yield return new WaitForSeconds(2f);
 
+        
         // 페이드 아웃
         while (black.a <= 1)
         {
@@ -271,6 +274,8 @@ public class P_ObjectManager_Studio : MonoBehaviourPun
 
             yield return null;
         }
+
+        film_Img.gameObject.SetActive(false);
 
         // 타임라인 재생
         timeline.Play();
