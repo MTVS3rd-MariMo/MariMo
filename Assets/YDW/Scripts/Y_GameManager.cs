@@ -55,6 +55,8 @@ public class Y_GameManager : MonoBehaviour
         else
         {
             GameObject player = PhotonNetwork.Instantiate("Player", spawnPoints[4].position, Quaternion.identity);
+            player.GetComponent<MeshRenderer>().enabled = false;
+            player.GetComponent<BoxCollider>().enabled = false;
         }
         
         //VideoPlayer videoPlayer = player.GetComponentInChildren<VideoPlayer>();
