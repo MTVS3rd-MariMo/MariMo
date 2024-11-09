@@ -16,7 +16,7 @@ using UnityEngine.Video;
 // 버튼들에 연결하는 식들
 // UI 에서 참조하는 변수들
 
-public class Y_BookController : MonoBehaviour
+public class Y_BookController : MonoBehaviourPun
 {
     #region Server
     // Server 
@@ -260,6 +260,8 @@ public class Y_BookController : MonoBehaviour
     // 다른 사람이 버튼 이미 눌렀으면 못 선택하게 나중에 처리할 것
     /////////////////////////////////////////////
 
+    int clickSelectCnt = 0;
+
     public void Select(int num)
     {
         // 선생님이면 아무 일도 일어나지 않는다
@@ -271,6 +273,21 @@ public class Y_BookController : MonoBehaviour
 
         // 아바타 인덱스를 설정한다. 
         allPlayers[currentPlayerNum].GetComponent<Y_PlayerAvatarSetting>().RPC_SelectChar(characterNum);
+
+        RPC_IncreaseClickSelectCount();
+
+    }
+
+    void RPC_IncreaseClickSelectCount()
+    {
+        photonView.RPC(nameof(IncreaseClickSelectCount), RpcTarget.All);
+    }
+
+    void IncreaseClickSelectCount()
+    {
+        clickSelectCnt++;
+
+        if(clickSelectCnt >= 4) btn_toMap.GetComponent<Button>().interactable = true;
     }
    
      public void RPC_ActivateNameUI(int characterIndex, int playerIndex)
@@ -287,7 +304,7 @@ public class Y_BookController : MonoBehaviour
         {
             case 1:
                 img_charName1.SetActive(true);
-                img_charName1.GetComponentInChildren<TMP_Text>().text = playerName; // 원래 playerNames[playerIndex] 밑에 것두 다
+                img_charName1.GetComponentInChildren<TMP_Text>().text = playerName;
                 break;
             case 2:
                 img_charName2.SetActive(true);
