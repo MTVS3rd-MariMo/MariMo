@@ -1,4 +1,5 @@
-﻿using System;
+﻿using JetBrains.Annotations;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
@@ -217,6 +218,20 @@ public class HttpManager : MonoBehaviour
         using (UnityWebRequest webRequest = UnityWebRequest.Post(info.url, form))
         {
             webRequest.downloadHandler = new DownloadHandlerBuffer();
+
+            // 서버에 요청 보내기
+            yield return webRequest.SendWebRequest();
+
+            // 서버에게 응답이 왔다.
+            DoneRequest(webRequest, info);
+        }
+    }
+
+    public IEnumerator PutUser(HttpInfo info, string userId)
+    {
+        using (UnityWebRequest webRequest = new UnityWebRequest(info.url, "PUT"))
+        {
+            webRequest.SetRequestHeader("userId", userId);
 
             // 서버에 요청 보내기
             yield return webRequest.SendWebRequest();

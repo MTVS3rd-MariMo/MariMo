@@ -55,6 +55,12 @@ public class Y_PlayerMove : MonoBehaviour, IPunObservable
         {
             // 친구들을 기다리고 있어요! UI
         }
+
+        if (PhotonNetwork.LocalPlayer.IsMasterClient)
+        {
+            this.transform.position = GetComponent<Y_SetCamera>().playerAverage.transform.position;
+        } 
+            
     }
 
     // 당겨지는 강도 

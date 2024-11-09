@@ -17,8 +17,8 @@ public class P_RoomCreate : MonoBehaviour
     public Button btn_RoomCreate;
     public Sprite[] sprites;
     public int players;
-    public int lessenId;
-    public int lessenNum;
+    public int lessonId;
+    public int lessonMaterialNum;
 
     [SerializeField]
     private TMP_Dropdown dropdown;
@@ -71,7 +71,7 @@ public class P_RoomCreate : MonoBehaviour
     void OnclickRoomCreate()
     {
         players = Convert.ToInt32(PlayerNum.text);
-        lessenNum = P_CreatorToolConnectMgr.Instance.lessons.lessonMaterials[dropdown.value].lessonMaterialId;
+        lessonMaterialNum = P_CreatorToolConnectMgr.Instance.lessons.lessonMaterials[dropdown.value].lessonMaterialId;
 
         if (players < 1)
             return;
@@ -83,10 +83,10 @@ public class P_RoomCreate : MonoBehaviour
 
     public void GetLessonId()
     {
-        Debug.Log(lessenNum);
+        Debug.Log(lessonMaterialNum);
 
         HttpInfo info = new HttpInfo();
-        info.url = P_CreatorToolConnectMgr.Instance.url_Front + "/api/lesson/" + lessenNum;
+        info.url = P_CreatorToolConnectMgr.Instance.url_Front + "/api/lesson/" + lessonMaterialNum;
 
         //var requestBody = new { lessonMaterialId = P_CreatorToolConnectMgr.Instance.lessons.lessonMaterials[dropdown.value].lessonMaterialId };
         //info.body = JsonUtility.ToJson(requestBody);
@@ -96,11 +96,11 @@ public class P_RoomCreate : MonoBehaviour
             print(downloadHandler.text);
 
             // 받은 데이터 파싱할 함수 호출
-            lessenId = Convert.ToInt32(downloadHandler.text);
-            Debug.Log(lessenId);
+            lessonId = Convert.ToInt32(downloadHandler.text);
+            Debug.Log(lessonId);
 
             // 포톤 방생성 요청
-            roomMgr.CreateRoom(RoomName.text);
+            roomMgr.CreateRoom(RoomName.text, lessonId, lessonMaterialNum);
 
 
             // 그림그리기 요청
@@ -113,7 +113,7 @@ public class P_RoomCreate : MonoBehaviour
     public void DrawPicture()
     {
         HttpInfo info = new HttpInfo();
-        info.url = P_CreatorToolConnectMgr.Instance.url_Front + "/api/lesson/" + lessenNum;
+        info.url = P_CreatorToolConnectMgr.Instance.url_Front + "/api/lesson/" + lessonMaterialNum;
         info.onComplete = (DownloadHandler downloadHandler) =>
         {
 

@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class P_CreatorToolOption : MonoBehaviour
 {
-    public GameObject canvas_CreatorTool;
+    public GameObject panel_CreatorTool;
 
     public Button btn_LogOut;
     public Button btn_Close;
@@ -18,7 +18,7 @@ public class P_CreatorToolOption : MonoBehaviour
 
     void OnclickLogOut()
     {
-        canvas_CreatorTool.SetActive(false);
+        panel_CreatorTool.SetActive(false);
     }
 
     void OnclickClose()
