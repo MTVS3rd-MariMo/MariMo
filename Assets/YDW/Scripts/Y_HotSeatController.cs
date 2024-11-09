@@ -400,7 +400,7 @@ public class Y_HotSeatController : MonoBehaviourPun
         if (index - 1 >= 0 && index - 1 < images.Count)
         {
             images[index - 1].sprite = sprites[2]; // 전 플레이어는 이름표 색 원래 색으로
-            buttons[4 + index - 1].GetComponent<Image>().sprite = sprites[0];
+            buttons[5 + index - 1].GetComponent<Image>().sprite = sprites[0];
             players[index - 1].transform.position = playerPos; // 이미지 위치도 원위치
             stageScriptImgs[index - 1].gameObject.SetActive(false); // 전 플레이어의 자기소개 끄기
             spotlight.SetActive(false); // 스포트라이트 끔
@@ -415,7 +415,7 @@ public class Y_HotSeatController : MonoBehaviourPun
         {
             // 이름 UI 색깔 바꾸고
             images[index].sprite = sprites[3];
-            buttons[4 + index].GetComponent<Image>().sprite = sprites[1];
+            buttons[5 + index].GetComponent<Image>().sprite = sprites[1];
 
             // 플레이어 무대로 가게 한다
             playerPos = players[index].transform.position;
@@ -501,27 +501,6 @@ public class Y_HotSeatController : MonoBehaviourPun
             Y_VoiceManager.Instance.recorder.TransmitEnabled = true;
             print(myActorNumber - 1 + "번 플레이어는 뮤트되지 않음");
         }
-
-        //// 모든 PhotonVoiceView를 가진 객체를 검색
-        //allVoiceViews = FindObjectsOfType<PhotonVoiceView>();
-        //print("AllVoiceViews 받아옴");
-
-        //foreach (var voiceView in allVoiceViews)
-        //{
-        //    PhotonView photonVoiceView = voiceView.GetComponent<PhotonView>();
-
-        //    // 플레이어가 null이 아닌지 확인하고, 현재 차례 플레이어를 제외하고 전부 음소거
-        //    if (photonVoiceView != null && photonVoiceView.Owner != null && myActorNumber != playerNum)
-        //    {
-        //        voiceView.RecorderInUse.TransmitEnabled = false;
-        //        print("음소거 합니다");
-        //    }
-        //    else if(myActorNumber == playerNum) // 한 명만 음소거 아니게
-        //    {
-        //        voiceView.RecorderInUse.TransmitEnabled = true;
-        //        print("얜 음소거 안 합니다");
-        //    }
-        //}
     }
 
     public void RPC_UnMuteAllPlayers()
@@ -617,6 +596,8 @@ public class Y_HotSeatController : MonoBehaviourPun
 
                 myTurnImgs[i].SetActive(false);
 
+                myTurnImgs[index].SetActive(true);
+
                 // 자기소개 한 사람(답변할 사람) 보이스 켜주고 녹음 시작
                 MuteOtherPlayers(playerNums[index] + 1);
                 print((playerNums[index] + 1) + " 빼고 뮤트됨! - 인터뷰 답변");
@@ -626,6 +607,8 @@ public class Y_HotSeatController : MonoBehaviourPun
                 yield return new WaitForSeconds(10f);
                 // 녹음 종료
                 StopRecordVoice(playerNums[index] + 2, index);
+
+                myTurnImgs[index].SetActive(false);
             }
 
             if (i == players.Count)
