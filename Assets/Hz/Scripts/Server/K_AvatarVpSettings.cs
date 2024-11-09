@@ -43,22 +43,6 @@ public class K_AvatarVpSettings : MonoBehaviourPun
         print(PhotonNetwork.LocalPlayer.ActorNumber);
     }
 
-    private void Update()
-    {
-        bool isWalking = Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.D);
-        
-        if(isWalking && currState ==AnimState.Walk)
-        {
-            currState = AnimState.Walk;
-            SetVideoPath(walkUrl, PhotonNetwork.LocalPlayer.ActorNumber);
-        }
-        else if(!isWalking && currState == AnimState.Idle)
-        {
-            currState = AnimState.Idle;
-            SetVideoPath(idleUrl, PhotonNetwork.LocalPlayer.ActorNumber);
-        }
-    }
-
     public void RPC_SelectCharNum(int characterIndex)
     {
         if(pv != null)
@@ -77,7 +61,8 @@ public class K_AvatarVpSettings : MonoBehaviourPun
     {
 
         avatarIndex = characterIndex - 1;
-        vp.clip = videoClips[avatarIndex];
+        // 원래 videClips[avatarIndex]
+        vp.clip = videoClips[avatarIndex - 1];
 
         // Debug
         if(avatarIndex < 0 || avatarIndex >= renderTextures.Length)
@@ -114,8 +99,9 @@ public class K_AvatarVpSettings : MonoBehaviourPun
         //int actorNumber = PhotonNetwork.LocalPlayer.ActorNumber - 1;
 
         int adjustActorNumber = actorNumber - 1;
+        //print("알려줘" + adjustActorNumber);
 
-        if (vp != null)
+        if (vp != null && adjustActorNumber >= 1)
         {
             vp.url = videoPath;
             rawImage.texture = vp.targetTexture = renderTextures[adjustActorNumber];
