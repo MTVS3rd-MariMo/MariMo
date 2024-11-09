@@ -27,11 +27,11 @@ public class Y_MapSetUp : MonoBehaviour
         }
 
         classMaterial = Y_HttpRoomSetUp.GetInstance().realClassMaterial;
-        Y_BookController.Instance.text = classMaterial.bookContents;
-        role1.text = classMaterial.lessonRoles[0];
-        role2.text = classMaterial.lessonRoles[1];
-        role3.text = classMaterial.lessonRoles[2];
-        role4.text = classMaterial.lessonRoles[3];
+        //Y_BookController.Instance.text = classMaterial.bookContents;
+        //role1.text = classMaterial.lessonRoles[0];
+        //role2.text = classMaterial.lessonRoles[1];
+        //role3.text = classMaterial.lessonRoles[2];
+        //role4.text = classMaterial.lessonRoles[3];
     }
 
     // Start is called before the first frame update

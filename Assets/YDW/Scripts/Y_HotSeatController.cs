@@ -90,8 +90,17 @@ public class Y_HotSeatController : MonoBehaviourPun
         // 자기소개 화면 본인 닉네임과 캐릭터, 이미지 표시
         myAvatarSetting = Y_BookController.Instance.myAvatar;
         txt_playerName.text = myAvatarSetting.pv.Owner.NickName;
-        Txt_TitleText.text = characterNames[Y_BookController.Instance.characterNum - 1].text;
-        myAvatarImage.sprite = myAvatarSetting.images[myAvatarSetting.avatarIndex];
+        if(Y_BookController.Instance.characterNum - 1 >= 0)
+        {
+            Txt_TitleText.text = characterNames[Y_BookController.Instance.characterNum - 1].text;
+            //Debug.LogError("찍어봐 : " + (myAvatarSetting.avatarIndex - 1));
+            myAvatarImage.sprite = myAvatarSetting.images[Y_BookController.Instance.characterNum - 1]; ///// 이거 -1 해야 되나? myAvatarSetting.avatarIndex - 1
+        }
+        else
+        {
+            Txt_TitleText.text = "선생님";
+        }
+        
 
         // 안내 가이드 띄워주기
         guide.SetActive(true);
@@ -226,7 +235,7 @@ public class Y_HotSeatController : MonoBehaviourPun
     // 셔플 돌린 후 싱크 맞춤
     public void Shuffle()
     {
-        if (PhotonNetwork.IsMasterClient)
+        if (PhotonNetwork.LocalPlayer.ActorNumber == 2) // 원래는 PhotonNetwork.IsMasterClient
         {
             playerNums = ShuffleList(Y_BookController.Instance.allPlayers);
             //foreach (int playerNum in playerNums)
@@ -338,6 +347,7 @@ public class Y_HotSeatController : MonoBehaviourPun
     // Stage 단계의 상단 이름표 부분 구현 : 랜덤으로 순서 섞어서 보여주기
     void MatchNameTags()
     {
+
         // playerNums 순서대로 이름표 안의 텍스트 배치
         for (int i = 0; i < characterNameTags.Length; i++)
         {

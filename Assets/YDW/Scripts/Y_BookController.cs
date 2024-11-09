@@ -126,12 +126,12 @@ public class Y_BookController : MonoBehaviour
     private void Update()
     {
 
-        if (PhotonNetwork.IsMasterClient && isSync) //&& !(PhotonNetwork.PlayerList.Length == 2)
+        if (PhotonNetwork.LocalPlayer.ActorNumber == 2 && isSync) // 첫번째 조건이 PhotonNetwork.IsMasterClient 조건이었음
         {
             SyncAllPlayers();
         }
 
-        if (PhotonNetwork.PlayerList.Length == 4) //////////////
+        if (PhotonNetwork.PlayerList.Length == 5) //////////////
         {
             isSync = false;
         }
@@ -143,9 +143,18 @@ public class Y_BookController : MonoBehaviour
         if (!playerNames.ContainsKey(playerIndex))
         {
             // 마스터 클라이언트인 경우에만 전체 동기화 실행
-            if (PhotonNetwork.IsMasterClient) ///// 액터 넘버 2일 경우에? 그리고 마스터 클라이언트일 경우에는 그냥 리턴해야
+            //if (PhotonNetwork.IsMasterClient) ///// 액터 넘버 2일 경우에? 그리고 마스터 클라이언트일 경우에는 그냥 리턴해야
+            //{
+            //    SyncAllPlayers();
+            //}
+            if (PhotonNetwork.LocalPlayer.ActorNumber == 2)
             {
+                Debug.Log("RPC_AddPlayer 에서 하는 싱크");
                 SyncAllPlayers();
+            }
+            else if (PhotonNetwork.IsMasterClient) ///// 액터 넘버 2일 경우에? 그리고 마스터 클라이언트일 경우에는 그냥 리턴해야
+            {
+                return;
             }
             else
             {
@@ -163,15 +172,14 @@ public class Y_BookController : MonoBehaviour
         {
             int idx = player.ActorNumber - 1;
             string name = player.NickName;
-            pv.RPC("AddPlayer", RpcTarget.All, idx, name);
+            if(idx > 0) pv.RPC(nameof(AddPlayer), RpcTarget.All, idx - 1, name);
         }
     }
 
     [PunRPC]
     void AddPlayer(int playerIndex, string nickName)
     {
-        if(playerIndex >= 0)
-        playerNames[playerIndex] = nickName;
+        if(playerIndex >= 0) playerNames[playerIndex] = nickName;
     }
 
     #region BookUI
@@ -254,16 +262,20 @@ public class Y_BookController : MonoBehaviour
 
     public void Select(int num)
     {
+        // 선생님이면 아무 일도 일어나지 않는다
+        if (currentPlayerNum == -1) return;
+
         RPC_DeactivateAllNameUI(characterNum);
         characterNum = num;
-        RPC_ActivateNameUI(characterNum, currentPlayerNum);
+        RPC_ActivateNameUI(characterNum, currentPlayerNum); // 5명으로 바꾸면서 currentPlayerNum + 1 로 바꿨었는데 이제 다시 currentPlayerNum 으로 바꿈??
 
+        // 아바타 인덱스를 설정한다. 
         allPlayers[currentPlayerNum].GetComponent<Y_PlayerAvatarSetting>().RPC_SelectChar(characterNum);
     }
    
      public void RPC_ActivateNameUI(int characterIndex, int playerIndex)
      {  
-        pv.RPC("ActivateNameUI", RpcTarget.All, characterIndex, playerIndex);
+        pv.RPC(nameof(ActivateNameUI), RpcTarget.All, characterIndex, playerIndex);
      }
 
     [PunRPC]
@@ -275,19 +287,19 @@ public class Y_BookController : MonoBehaviour
         {
             case 1:
                 img_charName1.SetActive(true);
-                img_charName1.GetComponentInChildren<TMP_Text>().text = playerNames[playerIndex];
+                img_charName1.GetComponentInChildren<TMP_Text>().text = playerName; // 원래 playerNames[playerIndex] 밑에 것두 다
                 break;
             case 2:
                 img_charName2.SetActive(true);
-                img_charName2.GetComponentInChildren<TMP_Text>().text = playerNames[playerIndex];
+                img_charName2.GetComponentInChildren<TMP_Text>().text = playerName;
                 break;
             case 3:
                 img_charName3.SetActive(true);
-                img_charName3.GetComponentInChildren<TMP_Text>().text = playerNames[playerIndex];
+                img_charName3.GetComponentInChildren<TMP_Text>().text = playerName;
                 break;
             case 4:
                 img_charName4.SetActive(true);
-                img_charName4.GetComponentInChildren<TMP_Text>().text = playerNames[playerIndex];
+                img_charName4.GetComponentInChildren<TMP_Text>().text = playerName;
                 break;
         }
     }
@@ -384,7 +396,7 @@ public class Y_BookController : MonoBehaviour
         //mainCam.gameObject.SetActive(true);
         //virtualCam.gameObject.SetActive(true);
         //paintCam.gameObject.SetActive(false);
-        allPlayers[currentPlayerNum].GetComponent<Y_PlayerAvatarSetting>().RPC_UpdatePhoto(characterNum);
+        if(currentPlayerNum >= 0) allPlayers[currentPlayerNum].GetComponent<Y_PlayerAvatarSetting>().RPC_UpdatePhoto(characterNum);
         PaintUI.SetActive(false);
         ChooseCharacterUI.SetActive(true);
         for(int i = 0; i < buttons.Length; i++)
@@ -415,7 +427,8 @@ public class Y_BookController : MonoBehaviour
     public Dictionary<int, PhotonView> allPlayers = new Dictionary<int, PhotonView>(); // MyAvatar 로 바꾸기
     public void AddPlayer(PhotonView pv)
     {
-        allPlayers[pv.Owner.ActorNumber - 1] = pv;
+        // 원래는 -1 이었는데 -2로?
+        if(pv.Owner.ActorNumber - 2 >= 0) allPlayers[pv.Owner.ActorNumber - 2] = pv;
 
         if(pv.IsMine)
         {

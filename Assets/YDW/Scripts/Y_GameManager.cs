@@ -46,10 +46,9 @@ public class Y_GameManager : MonoBehaviour
         int playerIndex = PhotonNetwork.LocalPlayer.ActorNumber - 2;
 
         // 지정된 스폰 지점의 위치 가져옴 
-        Vector3 spawnPosition = spawnPoints[playerIndex].position;
-
         if(playerIndex >= 0)
         {
+            Vector3 spawnPosition = spawnPoints[playerIndex].position;
             // 플레이어를 해당 스폰 지점에 생성
             GameObject player = PhotonNetwork.Instantiate("Player", spawnPosition, Quaternion.identity);
         }
@@ -64,7 +63,7 @@ public class Y_GameManager : MonoBehaviour
         if (bookUI != null)
         {
             bookUI.currentPlayerNum = playerIndex;
-            bookUI.RPC_AddPlayer(playerIndex, PhotonNetwork.NickName);
+            if(playerIndex >= 0) bookUI.RPC_AddPlayer(playerIndex, PhotonNetwork.NickName);
 
             // RenderTexture 로드
             //RenderTexture renderTexture = Resources.Load<RenderTexture>(videoRendererPaths[playerIndex]);
