@@ -167,7 +167,7 @@ public class K_AvatarVpSettings : MonoBehaviourPun
     public void PlayCurrAnim()
     {
         vp.url = currState == AnimState.Idle ? idleUrl : walkUrl;
-        vp.Play();
+        vp.Prepare();
 
         //print("PlayAnim?");
     }

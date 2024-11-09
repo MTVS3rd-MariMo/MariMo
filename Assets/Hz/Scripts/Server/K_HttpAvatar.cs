@@ -203,7 +203,7 @@ public class K_HttpAvatar : MonoBehaviourPun
 
                     Debug.Log($"MP4 파일 다운로드 및 저장 성공: {filePath}");
 
-                    string videoPathWithProtocol = "file://" + filePath; // 로컬 파일을 위한 파일 프로토콜 추가
+                    string videoPathWithProtocol = "file:///" + filePath.Replace("\\", "/"); // 로컬 파일을 위한 파일 프로토콜 추가
                     Debug.Log("videoPath : 들어왔니? " + videoPathWithProtocol);
                     // K_AvatarVpSettings에서 상태별 비디오 경로 설정
                     var avatarSettings = Y_BookController.Instance.allPlayers[actorNumber - 1].GetComponent<K_AvatarVpSettings>();
