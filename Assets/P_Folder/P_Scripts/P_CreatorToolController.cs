@@ -17,6 +17,7 @@ public class P_CreatorToolController : MonoBehaviour
     public GameObject panel_SelectQuiz;
     public GameObject panel_MakingQuiz;
     public GameObject panel_MakingAsk;
+    public GameObject panel_Option;
 
     public Button btn_SelectStory;
     public Sprite[] sp_SelectStory;
@@ -33,6 +34,8 @@ public class P_CreatorToolController : MonoBehaviour
     public Button btn_SendPDF;
     public Button btn_SelectQuiz;
 
+    public Button btn_Option;
+
 
 
     void Start()
@@ -48,6 +51,7 @@ public class P_CreatorToolController : MonoBehaviour
         btn_CreateRoom.onClick.AddListener(OnclickCreateRoom);
         btn_Checking.onClick.AddListener(OnclickChecking);
         btn_SelectQuiz.onClick.AddListener(OnclickSelectComplete);
+        btn_Option.onClick.AddListener(OnclickOption);
 
 
         btn_SelectStory.image.sprite = sp_SelectStory[1];
@@ -140,6 +144,11 @@ public class P_CreatorToolController : MonoBehaviour
         panel_SelectQuiz.SetActive(true);
 
         panel_SelectQuiz.GetComponent<P_QuizSelect>().QuizSetting();
+    }
+
+    public void OnclickOption()
+    {
+        panel_Option.SetActive(true);
     }
 
     public void OnclickSend()
