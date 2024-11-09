@@ -134,7 +134,7 @@ public class HttpManager : MonoBehaviour
     {
         using (UnityWebRequest webRequest = UnityWebRequest.Get(info.url))
         {
-            webRequest.SetRequestHeader("userId", "3");
+            webRequest.SetRequestHeader("userId", Y_HttpLogIn.GetInstance().userId);
             // 서버에 요청 보내기
             yield return webRequest.SendWebRequest();
 

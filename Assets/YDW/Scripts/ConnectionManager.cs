@@ -107,7 +107,7 @@ public class ConnectionManager : MonoBehaviourPunCallbacks
 
         // 서버 로비에 들어갔음을 알려준다.
         print(MethodInfo.GetCurrentMethod().Name + " is Call!");
-        LobbyController.lobbyUI.ShowRoomPanel();
+        //LobbyController.lobbyUI.ShowRoomPanel();
     }
 
     public void CreateRoom(string roomname)

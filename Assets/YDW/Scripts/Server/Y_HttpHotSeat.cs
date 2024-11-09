@@ -158,7 +158,7 @@ public class Y_HttpHotSeat : MonoBehaviour
         {
             //userId = Int32.Parse(Y_HttpLogIn.GetInstance().userId),
             selfIntNum = i,
-            lessonId = 101, // 더미!!!!! 도원 Y_HttpRoomSetUp.GetInstance().userlessonId
+            lessonId = Y_HttpRoomSetUp.GetInstance().userlessonId,
             selfIntroduce = GetSelfIntroduce()
         };
 
