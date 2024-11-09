@@ -126,7 +126,7 @@ public class Y_BookController : MonoBehaviour
     private void Update()
     {
 
-        if ( PhotonNetwork.LocalPlayer.ActorNumber == 2 && isSync) // 첫번째 조건이 PhotonNetwork.IsMasterClient 조건이었음
+        if (PhotonNetwork.LocalPlayer.ActorNumber == 2 && isSync) // 첫번째 조건이 PhotonNetwork.IsMasterClient 조건이었음
         {
             SyncAllPlayers();
         }
@@ -147,8 +147,9 @@ public class Y_BookController : MonoBehaviour
             //{
             //    SyncAllPlayers();
             //}
-            if(PhotonNetwork.LocalPlayer.ActorNumber == 2)
+            if (PhotonNetwork.LocalPlayer.ActorNumber == 2)
             {
+                Debug.Log("RPC_AddPlayer 에서 하는 싱크");
                 SyncAllPlayers();
             }
             else if (PhotonNetwork.IsMasterClient) ///// 액터 넘버 2일 경우에? 그리고 마스터 클라이언트일 경우에는 그냥 리턴해야
@@ -171,7 +172,7 @@ public class Y_BookController : MonoBehaviour
         {
             int idx = player.ActorNumber - 1;
             string name = player.NickName;
-            pv.RPC(nameof(AddPlayer), RpcTarget.All, idx, name);
+            if(idx > 0) pv.RPC(nameof(AddPlayer), RpcTarget.All, idx - 1, name);
         }
     }
 
@@ -266,7 +267,7 @@ public class Y_BookController : MonoBehaviour
 
         RPC_DeactivateAllNameUI(characterNum);
         characterNum = num;
-        RPC_ActivateNameUI(characterNum, currentPlayerNum + 1); // 5명으로 바꾸면서 currentPlayerNum + 1 로 바꿨다
+        RPC_ActivateNameUI(characterNum, currentPlayerNum); // 5명으로 바꾸면서 currentPlayerNum + 1 로 바꿨었는데 이제 다시 currentPlayerNum 으로 바꿈??
 
         // 아바타 인덱스를 설정한다. 
         allPlayers[currentPlayerNum].GetComponent<Y_PlayerAvatarSetting>().RPC_SelectChar(characterNum);
@@ -281,25 +282,24 @@ public class Y_BookController : MonoBehaviour
     void ActivateNameUI(int characterIndex, int playerIndex)
     {
         string playerName = playerNames.ContainsKey(playerIndex) ? playerNames[playerIndex] : "Not Found";
-        Debug.LogError("playerName : " + playerName + ", playerNames[playerIndex] : " + playerNames[playerIndex]);
 
         switch (characterIndex)
         {
             case 1:
                 img_charName1.SetActive(true);
-                img_charName1.GetComponentInChildren<TMP_Text>().text = playerNames[playerIndex];
+                img_charName1.GetComponentInChildren<TMP_Text>().text = playerName; // 원래 playerNames[playerIndex] 밑에 것두 다
                 break;
             case 2:
                 img_charName2.SetActive(true);
-                img_charName2.GetComponentInChildren<TMP_Text>().text = playerNames[playerIndex];
+                img_charName2.GetComponentInChildren<TMP_Text>().text = playerName;
                 break;
             case 3:
                 img_charName3.SetActive(true);
-                img_charName3.GetComponentInChildren<TMP_Text>().text = playerNames[playerIndex];
+                img_charName3.GetComponentInChildren<TMP_Text>().text = playerName;
                 break;
             case 4:
                 img_charName4.SetActive(true);
-                img_charName4.GetComponentInChildren<TMP_Text>().text = playerNames[playerIndex];
+                img_charName4.GetComponentInChildren<TMP_Text>().text = playerName;
                 break;
         }
     }
