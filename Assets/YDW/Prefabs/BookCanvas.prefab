@@ -787,6 +787,17 @@ MonoBehaviour:
   - {fileID: 6153061716283109476}
   - {fileID: 1307655549106926283}
   - {fileID: 7903746606302057217}
+  buttonsToChange:
+  - {fileID: 8452503188516184426}
+  - {fileID: 1945844926745153566}
+  - {fileID: 6156176745129055931}
+  buttonSprites:
+  - {fileID: 21300000, guid: d5395b2d8bebe9644957eceeee9e137f, type: 3}
+  - {fileID: 21300000, guid: aab1dd431d3aa384ea6f9f124b1a3ae5, type: 3}
+  - {fileID: 21300000, guid: 77b52bbca49dea04e8b0288f3f335db1, type: 3}
+  - {fileID: 21300000, guid: 16d1ffa0d2c546749b53b01d0dcd4441, type: 3}
+  - {fileID: 21300000, guid: 16aeed2cc7bfe8548aa68dfb10d67876, type: 3}
+  - {fileID: 21300000, guid: e9af6feef30c99e43a72aafb633b1061, type: 3}
   isSync: 1
   myAvatar: {fileID: 0}
 --- !u!114 &5643849911912166752
@@ -1215,7 +1226,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 0.87843144, b: 0.6627451, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -3618,7 +3629,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 0.87843144, b: 0.6627451, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
