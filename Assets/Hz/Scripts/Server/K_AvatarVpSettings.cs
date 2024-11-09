@@ -33,6 +33,9 @@ public class K_AvatarVpSettings : MonoBehaviourPun
     public VideoClip[] videoClips;
     public Sprite[] images;
 
+    // 걷냐
+    private bool isWalking = false;
+
     void Start()
     {
         pv = GetComponent<PhotonView>();
@@ -41,6 +44,21 @@ public class K_AvatarVpSettings : MonoBehaviourPun
         index = pv.Owner.ActorNumber - 1;
         name = pv.Owner.NickName;
         print(PhotonNetwork.LocalPlayer.ActorNumber);
+    }
+
+    private void Update()
+    {
+        // W, A, S, D 중 하나라도 눌려 있으면 walk 상태로 설정
+        if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.D))
+        {
+            // Walk 상태
+            SetWalkingState(true);
+        }
+        else
+        {
+            // Idle 상태
+            SetWalkingState(false);
+        }
     }
 
     public void RPC_SelectCharNum(int characterIndex)
@@ -92,23 +110,64 @@ public class K_AvatarVpSettings : MonoBehaviourPun
     // 서버에서 전달받은 비디오 URL 적용
 
     // MP4 다운로드 및 적용
-    public void SetVideoPath(string videoPath, int actorNumber)
+    public void SetVideoPath(/*string videoPath*/ string idlePath, string walkPath, int actorNumber)
     {
-
-        // ?????????????????
-        //int actorNumber = PhotonNetwork.LocalPlayer.ActorNumber - 1;
-
         int adjustActorNumber = actorNumber - 1;
-        //print("알려줘" + adjustActorNumber);
 
-        if (vp != null && adjustActorNumber >= 1)
+        if (vp != null && adjustActorNumber >= 0 && adjustActorNumber <= 3)
         {
-            vp.url = videoPath;
+            if (idlePath != null)
+            {
+                idleUrl = idlePath;
+            }
+
+            if(walkPath != null)
+            {
+                walkUrl = walkPath;
+            }
+
+            // 연산자 사용해보기
+            //print(videoPath);
             rawImage.texture = vp.targetTexture = renderTextures[adjustActorNumber];
-            //vp.clip = videoClips[actorNumber];
-            vp.Play();
+            vp.prepareCompleted += OnVideoPrepared;
+            PlayCurrAnim();
         }
+
+
+
+        //// ?????????????????
+        ////int actorNumber = PhotonNetwork.LocalPlayer.ActorNumber - 1;
+
+        //int adjustActorNumber = actorNumber - 1;
+        ////print("알려줘" + adjustActorNumber);
+
+        //if (vp != null && adjustActorNumber >= 0 && adjustActorNumber <= 3)
+        //{
+        //    // 연산자 사용해보기
+        //    //print(videoPath);
+        //    rawImage.texture = vp.targetTexture = renderTextures[adjustActorNumber];
+        //    vp.Play();
+        //}
     }
+
+    public void SetWalkingState(bool walking)
+    {
+        isWalking = walking;
+        currState = isWalking ? AnimState.Walk : AnimState.Idle;
+        PlayCurrAnim();
+
+        print("SetWalkingState?");
+    }
+
+    public void PlayCurrAnim()
+    {
+        vp.url = currState == AnimState.Idle ? idleUrl : walkUrl;
+        vp.Play();
+
+        print("PlayAnim?");
+    }
+
+
 
     private void OnVideoPrepared(VideoPlayer source)
     {
