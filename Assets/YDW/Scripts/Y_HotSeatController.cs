@@ -127,10 +127,10 @@ public class Y_HotSeatController : MonoBehaviourPun
 
     private void Update()
     {
-        if(Input.GetKeyDown(KeyCode.Alpha0) && testNum <= players.Count)
-        {
-            RPC_ProtoTest();
-        } 
+        //if(Input.GetKeyDown(KeyCode.Alpha0) && testNum <= players.Count)
+        //{
+        //    RPC_ProtoTest();
+        //} 
         
         if(selfIntroduceInput.text.Length >= 100 && !over100)
         {
