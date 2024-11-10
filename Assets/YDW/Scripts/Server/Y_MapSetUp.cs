@@ -18,25 +18,13 @@ public class Y_MapSetUp : MonoBehaviour
 
     private void Awake()
     {
-        if (mapSetUp == null)
-        {
-            mapSetUp = this;
-        }
-        else
-        {
-            Destroy(gameObject);
-        }
 
         print("awake 시작");
 
+        bookController = GameObject.Find("BookCanvas").GetComponent<Y_BookController>();
+
         classMaterial = Y_HttpRoomSetUp.GetInstance().realClassMaterial;
-        bookController.text = classMaterial.bookContents;
-        bookTitle.text = classMaterial.bookTitle;
-        print(classMaterial.bookContents);
-        role1.text = classMaterial.lessonRoles[0];
-        role2.text = classMaterial.lessonRoles[1];
-        role3.text = classMaterial.lessonRoles[2];
-        role4.text = classMaterial.lessonRoles[3];
+        
 
     }
 
@@ -50,5 +38,16 @@ public class Y_MapSetUp : MonoBehaviour
     void Update()
     {
         
+    }
+
+    public void ApplyClassMaterial()
+    {
+        bookController.text = classMaterial.bookContents;
+        bookTitle.text = classMaterial.bookTitle;
+        print(classMaterial.bookContents);
+        role1.text = classMaterial.lessonRoles[0];
+        role2.text = classMaterial.lessonRoles[1];
+        role3.text = classMaterial.lessonRoles[2];
+        role4.text = classMaterial.lessonRoles[3];
     }
 }

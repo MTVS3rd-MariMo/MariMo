@@ -40,7 +40,7 @@ public class K_AvatarVpSettings : MonoBehaviourPun
     {
         pv = GetComponent<PhotonView>();
         bookController = GameObject.Find("BookCanvas").GetComponent<Y_BookController>();
-        bookController.AddPlayer(pv);
+        //bookController.AddPlayer(pv);
         index = pv.Owner.ActorNumber - 1;
         name = pv.Owner.NickName;
         print(PhotonNetwork.LocalPlayer.ActorNumber);
