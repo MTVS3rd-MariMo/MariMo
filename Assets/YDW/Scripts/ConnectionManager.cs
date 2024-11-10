@@ -241,12 +241,12 @@ public class ConnectionManager : MonoBehaviourPunCallbacks
         }
 
 
-        
-       
+        if (PhotonNetwork.CurrentRoom.PlayerCount == 5)
+        {
+            // 포톤 RPC로 전체 호출
+            StartCoroutine(Y_HttpRoomSetUp.GetInstance().GetUserIdList());
+        }
 
-        // 방에 입장한 친구들은 모두 1번 씬으로 이동하자!
-
-        
     }
 
     public override void OnJoinRoomFailed(short returnCode, string message)
@@ -267,10 +267,10 @@ public class ConnectionManager : MonoBehaviourPunCallbacks
         string playerMsg = $"{newPlayer.NickName}님이 입장하셨습니다.";
         LobbyController.lobbyUI.PrintLog(playerMsg);
 
-        if(PhotonNetwork.CurrentRoom.PlayerCount == 5 && PhotonNetwork.IsMasterClient)
+        if(PhotonNetwork.CurrentRoom.PlayerCount == 5)
         {
             // 포톤 RPC로 전체 호출
-            Y_HttpRoomSetUp.GetInstance().RPC_GetUserIds();
+            StartCoroutine(Y_HttpRoomSetUp.GetInstance().GetUserIdList());
         }
     }
 
