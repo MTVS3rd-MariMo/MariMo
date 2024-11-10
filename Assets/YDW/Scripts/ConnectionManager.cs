@@ -285,6 +285,8 @@ public class ConnectionManager : MonoBehaviourPunCallbacks
     // 현재 로비에서 룸의 변경사항을 알려주는 콜백 함수
     public override void OnRoomListUpdate(List<RoomInfo> roomList)
     {
+        if (Y_HttpLogIn.GetInstance().isTeacher) return;
+
         base.OnRoomListUpdate(roomList);
 
         foreach(RoomInfo room in roomList)
@@ -309,24 +311,23 @@ public class ConnectionManager : MonoBehaviourPunCallbacks
             }
         }
 
-        // 기존의 모든 방 정보를 삭제한다.
-        for(int i=0; i< scrollContent.childCount; i++)
-        {
-            Destroy(scrollContent.GetChild(i).gameObject);
-        }
-
         foreach (RoomInfo room in cachedRoomList)
         {
-            for(int i = 0; i < cachedRoomList.Count; i++)
+            for(int i = 0; i < 3; i++)
             {
-                buttons[i].SetActive(true);
-                buttons[i].GetComponent<TMP_Text>().text = room.Name;
+                buttons[i].GetComponent<Button>().onClick.RemoveAllListeners();
 
-                // 버튼에 방 입장 기능 연결하기
-                buttons[i].GetComponent<Button>().onClick.AddListener(() =>
+                if (cachedRoomList.Count > i)
                 {
-                    PhotonNetwork.JoinRoom(room.Name);
-                });
+                    buttons[i].SetActive(true);
+                    buttons[i].GetComponent<TMP_Text>().text = room.Name;
+
+                    // 버튼에 방 입장 기능 연결하기
+                    buttons[i].GetComponent<Button>().onClick.AddListener(() =>
+                    {
+                        PhotonNetwork.JoinRoom(room.Name);
+                    });
+                }
             }
 
 
