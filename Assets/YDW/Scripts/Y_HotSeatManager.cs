@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class Y_HotSeatManager : MonoBehaviourPun
 {
-    public static Y_HotSeatManager Instance { get; private set; }
+    //public static Y_HotSeatManager Instance { get; private set; }
 
     float triggerNum = 0;
     bool act = false;
@@ -14,16 +14,16 @@ public class Y_HotSeatManager : MonoBehaviourPun
 
     private void Awake()
     {
-        // Singleton 인스턴스 설정
-        if (Instance == null)
-        {
-            Instance = this;
-            DontDestroyOnLoad(gameObject);
-        }
-        else
-        {
-            Destroy(gameObject);
-        }
+        //// Singleton 인스턴스 설정
+        //if (Instance == null)
+        //{
+        //    Instance = this;
+        //    DontDestroyOnLoad(gameObject);
+        //}
+        //else
+        //{
+        //    Destroy(gameObject);
+        //}
     }
 
     private void OnTriggerEnter(Collider other)
