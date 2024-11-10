@@ -271,10 +271,11 @@ public class HttpManager : MonoBehaviour
         // info.data 에 있는 파일을 byte 배열로 읽어오자
         byte[] data = File.ReadAllBytes(info.body);
 
+        string fileName = Path.GetFileName(info.body);
+
         // data 를 MultipartForm 으로 셋팅
         List<IMultipartFormSection> formData = new List<IMultipartFormSection>();
-        //formData.Add(new MultipartFormFileSection("file", data, "image.jpg", info.contentType));
-        formData.Add(new MultipartFormFileSection("pdf", data, "file.pdf", "application/pdf"));
+        formData.Add(new MultipartFormFileSection("pdf", data, fileName, "application/pdf"));
 
 
         using (UnityWebRequest webRequest = UnityWebRequest.Post(info.url, formData))
