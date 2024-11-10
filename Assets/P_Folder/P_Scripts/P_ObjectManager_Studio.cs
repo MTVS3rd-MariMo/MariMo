@@ -155,7 +155,7 @@ public class P_ObjectManager_Studio : MonoBehaviourPun
         // 타임라인 일시정지
         timeline.Pause();
 
-        Dictionary<int, PhotonView> allPlayers = Y_BookController.Instance.allPlayers;
+        Dictionary<int, PhotonView> allPlayers = GameObject.Find("BookCanvas").GetComponent<Y_BookController>().allPlayers;
 
         for (int i = 0; i < allPlayers.Count; i++)
         {

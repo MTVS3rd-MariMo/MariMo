@@ -53,6 +53,13 @@ public class Y_HttpHotSeat : MonoBehaviour
         }
     }
 
+    Y_BookController bookController;
+
+    private void Start()
+    {
+        bookController = GameObject.Find("BookCanvas").GetComponent<Y_BookController>();
+    }
+
     public IEnumerator Post(HttpInfo info)
     {
         using (UnityWebRequest webRequest = UnityWebRequest.Post(info.url, info.body, info.contentType))
@@ -261,14 +268,14 @@ public class Y_HttpHotSeat : MonoBehaviour
 
     string GetUserNickName()
     {
-        print("유저 닉네임입니다 : " + Y_BookController.Instance.myAvatar.pv.Owner.NickName);
-        return Y_BookController.Instance.myAvatar.pv.Owner.NickName;
+        print("유저 닉네임입니다 : " + bookController.myAvatar.pv.Owner.NickName);
+        return bookController.myAvatar.pv.Owner.NickName;
     }
 
     string GetCharacterName()
     {
-        print("캐릭터 이름입니다 : " + Y_HotSeatController.Instance.characterNames[Y_BookController.Instance.characterNum - 1].text);
-        return Y_HotSeatController.Instance.characterNames[Y_BookController.Instance.characterNum - 1].text;
+        print("캐릭터 이름입니다 : " + Y_HotSeatController.Instance.characterNames[bookController.characterNum - 1].text);
+        return Y_HotSeatController.Instance.characterNames[bookController.characterNum - 1].text;
     }
 
 

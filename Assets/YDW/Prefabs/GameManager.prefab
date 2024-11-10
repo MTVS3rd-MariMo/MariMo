@@ -10,6 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 6329433239712005016}
   - component: {fileID: 6196892014394581395}
+  - component: {fileID: 1144481142027656498}
+  - component: {fileID: 7175512582599700352}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -56,3 +58,34 @@ MonoBehaviour:
   - C:\Users\Admin\MariMo\Assets\YDW\VideoPlayer\ChromaKey3.renderTexture
   - C:\Users\Admin\MariMo\Assets\YDW\VideoPlayer\ChromaKey4.renderTexture
   hotSeat: {fileID: 0}
+--- !u!114 &1144481142027656498
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3587622457389817133}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b65352996d24da540b5d9e3bcc106c2b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bookTitle: {fileID: 0}
+  role1: {fileID: 0}
+  role2: {fileID: 0}
+  role3: {fileID: 0}
+  role4: {fileID: 0}
+  bookController: {fileID: 0}
+--- !u!114 &7175512582599700352
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3587622457389817133}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 81283147c1854f446b8b662d9f8ac306, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sendSelfIntroduceUrl: api/hot-sitting/self-introduce

@@ -78,6 +78,8 @@ public class Y_HotSeatController : MonoBehaviourPun
 
     public TMP_Text txt_playerName;
 
+    Y_BookController bookController;
+
     void Start()
     {
         // 자기소개 인풋필드 터치 키보드 올라오면 위치/크기 변경할 준비
@@ -88,14 +90,16 @@ public class Y_HotSeatController : MonoBehaviourPun
         originalColor = images[0].color;
         playerPos = players[0].transform.position;
 
+        bookController = GameObject.Find("BookCanvas").GetComponent<Y_BookController>();
+
         // 자기소개 화면 본인 닉네임과 캐릭터, 이미지 표시
-        myAvatarSetting = Y_BookController.Instance.myAvatar;
+        myAvatarSetting = bookController.myAvatar;
         txt_playerName.text = myAvatarSetting.pv.Owner.NickName;
-        if(Y_BookController.Instance.characterNum - 1 >= 0)
+        if(bookController.characterNum - 1 >= 0)
         {
-            Txt_TitleText.text = characterNames[Y_BookController.Instance.characterNum - 1].text;
+            Txt_TitleText.text = characterNames[bookController.characterNum - 1].text;
             //Debug.LogError("찍어봐 : " + (myAvatarSetting.avatarIndex - 1));
-            myAvatarImage.sprite = myAvatarSetting.images[Y_BookController.Instance.characterNum - 1];
+            myAvatarImage.sprite = myAvatarSetting.images[bookController.characterNum - 1];
         }
         else
         {
@@ -117,7 +121,7 @@ public class Y_HotSeatController : MonoBehaviourPun
         {
             yield return new WaitForSeconds(3f);
             K_KeyManager.instance.isDoneHotSeating = true;
-            Y_HotSeatManager.Instance.MoveControl(true);
+            GameObject.Find("Object_HotSeat").GetComponent<Y_HotSeatManager>().MoveControl(true);
             gameObject.SetActive(false);
         }
     }
@@ -246,7 +250,7 @@ public class Y_HotSeatController : MonoBehaviourPun
     {
         if (PhotonNetwork.LocalPlayer.ActorNumber == 2) // 원래는 PhotonNetwork.IsMasterClient
         {
-            playerNums = ShuffleList(Y_BookController.Instance.allPlayers);
+            playerNums = ShuffleList(bookController.allPlayers);
             //foreach (int playerNum in playerNums)
             //{
             //    print("?????? " + playerNum);
@@ -361,8 +365,8 @@ public class Y_HotSeatController : MonoBehaviourPun
         // playerNums 순서대로 이름표 안의 텍스트 배치
         for (int i = 0; i < characterNameTags.Length; i++)
         {
-            string name = Y_BookController.Instance.allPlayers[playerNums[i]].Owner.NickName;
-            int avatarIndex = Y_BookController.Instance.allPlayers[playerNums[i]].GetComponent<Y_PlayerAvatarSetting>().avatarIndex;
+            string name = bookController.allPlayers[playerNums[i]].Owner.NickName;
+            int avatarIndex = bookController.allPlayers[playerNums[i]].GetComponent<Y_PlayerAvatarSetting>().avatarIndex;
             characterNameTags[i].text = characterNames[avatarIndex].text; // 캐릭터 이름
             playerNameTags[i].text = name; // 플레이어 이름
         }
@@ -374,7 +378,7 @@ public class Y_HotSeatController : MonoBehaviourPun
         // playerNums 순서대로 캐릭터 MP4 순서대로 배치
         for (int i = 0; i < rawImages.Length; i++)
         {
-            int avatarIndex = Y_BookController.Instance.allPlayers[playerNums[i]].GetComponent<Y_PlayerAvatarSetting>().avatarIndex;
+            int avatarIndex = bookController.allPlayers[playerNums[i]].GetComponent<Y_PlayerAvatarSetting>().avatarIndex;
             rawImages[i].GetComponentInChildren<VideoPlayer>().clip = myAvatarSetting.videoClips[avatarIndex];
         }
     }
