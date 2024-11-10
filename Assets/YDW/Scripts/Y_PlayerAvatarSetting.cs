@@ -36,7 +36,7 @@ public class Y_PlayerAvatarSetting : MonoBehaviour
     {
         originalScale = gameObject.transform.localScale;
         pv = GetComponent<PhotonView>();
-        bookController = GameObject.Find("BookCanvas").GetComponent<Y_BookController>();
+        bookController = Y_BookController.Instance; // GameObject.Find("BookCanvas").GetComponent<Y_BookController>();
         bookController.AddPlayer(pv);
         index = pv.Owner.ActorNumber - 1;
         name = pv.Owner.NickName;

@@ -93,7 +93,7 @@ public class K_KeyManager : MonoBehaviour
 
 
         // 열쇠 아이콘 업데이트 함수
-        K_KeyUiManager.instance.UpdateKeyUI(totalKeys);
+        //K_KeyUiManager.instance.UpdateKeyUI(totalKeys);
         print("열쇠 획득! 현재 열쇠 갯수 : " + totalKeys);
         
     }
@@ -124,8 +124,8 @@ public class K_KeyManager : MonoBehaviour
             K_KeyUiManager.instance.img_QuestionBookmark.gameObject.SetActive(true);
             yield return new WaitForSeconds(2f);
             K_KeyUiManager.instance.img_QuestionBookmark.gameObject.SetActive(false);
+            yield return new WaitForSeconds(1f);
             K_KeyUiManager.instance.keyImages[0].gameObject.SetActive(true);
-            //yield return new WaitForSeconds(1f);
 
         }
         // 핫시팅
@@ -134,6 +134,7 @@ public class K_KeyManager : MonoBehaviour
             K_KeyUiManager.instance.img_HotSeatBookmark.gameObject.SetActive(true);
             yield return new WaitForSeconds(2f);
             K_KeyUiManager.instance.img_HotSeatBookmark.gameObject.SetActive(false);
+            yield return new WaitForSeconds(1f);
             K_KeyUiManager.instance.keyImages[1].gameObject.SetActive(true);
         }
         // 퀴즈1
@@ -142,6 +143,7 @@ public class K_KeyManager : MonoBehaviour
             K_KeyUiManager.instance.img_Quiz1Bookmark.gameObject.SetActive(true);
             yield return new WaitForSeconds(2f);
             K_KeyUiManager.instance.img_Quiz1Bookmark.gameObject.SetActive(false);
+            yield return new WaitForSeconds(1f);
             K_KeyUiManager.instance.keyImages[2].gameObject.SetActive(true);
         }
         // 퀴즈2
@@ -150,6 +152,7 @@ public class K_KeyManager : MonoBehaviour
             K_KeyUiManager.instance.img_Quiz2Bookmark.gameObject.SetActive(true);
             yield return new WaitForSeconds(2f);
             K_KeyUiManager.instance.img_Quiz2Bookmark.gameObject.SetActive(false);
+            yield return new WaitForSeconds(1f);
             K_KeyUiManager.instance.keyImages[3].gameObject.SetActive(true);
         }
 
