@@ -143,7 +143,7 @@ public class K_QuizManager : MonoBehaviourPun
 
         isDirecting = false;
 
-        Dictionary<int, PhotonView> allPlayers = Y_BookController.Instance.allPlayers;
+        Dictionary<int, PhotonView> allPlayers = GameObject.Find("BookCanvas").GetComponent<Y_BookController>().allPlayers;
 
         for (int i = 0; i < allPlayers.Count; i++)
         {
