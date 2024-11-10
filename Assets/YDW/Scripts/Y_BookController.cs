@@ -93,19 +93,6 @@ public class Y_BookController : MonoBehaviourPun
 
     #endregion
 
-    private void Awake()
-    {
-        // Singleton 인스턴스 설정
-        //if (Instance == null)
-        //{
-        //    Instance = this;
-        //    DontDestroyOnLoad(gameObject);
-        //}
-        //else
-        //{
-        //    Destroy(gameObject);
-        //}
-    }
 
     private void Start()
     {
@@ -116,8 +103,8 @@ public class Y_BookController : MonoBehaviourPun
         texts = new List<string>();
         pageNo = int.Parse(pageNoTxt.text);
 
-        SplitTextIntoPages();
-        DisplayPage(pageNo);
+        StartCoroutine(SplitTextIntoPages());
+        //StartCoroutine(DisplayPage(pageNo));
 
     }
 
@@ -134,22 +121,23 @@ public class Y_BookController : MonoBehaviourPun
         if (PhotonNetwork.PlayerList.Length == 5) //////////////
         {
             isSync = false;
+            //StartCoroutine(WaitUntilSync());
         }
     }
+
 
     // 플레이어가 참여할 때 호출
     public void RPC_AddPlayer(int playerIndex, string nickName)
     {
         if (!playerNames.ContainsKey(playerIndex))
         {
-            // 마스터 클라이언트인 경우에만 전체 동기화 실행
+            //마스터 클라이언트인 경우에만 전체 동기화 실행
             //if (PhotonNetwork.IsMasterClient) ///// 액터 넘버 2일 경우에? 그리고 마스터 클라이언트일 경우에는 그냥 리턴해야
             //{
             //    SyncAllPlayers();
             //}
-            if (PhotonNetwork.LocalPlayer.ActorNumber == 2)
+            if (PhotonNetwork.LocalPlayer.ActorNumber >= 2)
             {
-                Debug.Log("RPC_AddPlayer 에서 하는 싱크");
                 SyncAllPlayers();
             }
             else if (PhotonNetwork.IsMasterClient) ///// 액터 넘버 2일 경우에? 그리고 마스터 클라이언트일 경우에는 그냥 리턴해야
@@ -185,8 +173,12 @@ public class Y_BookController : MonoBehaviourPun
     #region BookUI
 
     // 텍스트 쪼개기
-    void SplitTextIntoPages()
+    IEnumerator SplitTextIntoPages()
     {
+        yield return new WaitForSeconds(2f);
+
+        GameObject.Find("MapSetUpManager").GetComponent<Y_MapSetUp>().ApplyClassMaterial();
+
         string[] words = text.Split(' ');
         string currentText = "";
 
@@ -213,11 +205,15 @@ public class Y_BookController : MonoBehaviourPun
         {
             texts.Add(currentText);
         }
+
+        DisplayPage(pageNo);
     }
 
     // 페이지에 띄우기
     void DisplayPage(int pageIndex)
     {
+        //yield return new WaitForSeconds(3f);
+
         pageNoTxt.text = pageIndex.ToString();
 
         leftTxt.text = texts[pageNo * 2 - 2];
@@ -438,12 +434,14 @@ public class Y_BookController : MonoBehaviourPun
     public void AddPlayer(PhotonView pv)
     {
         // 원래는 -1 이었는데 -2로?
-        if(pv.Owner.ActorNumber - 2 >= 0) allPlayers[pv.Owner.ActorNumber - 2] = pv;
+        if (pv.Owner.ActorNumber - 2 >= 0)
+        {
+            allPlayers[pv.Owner.ActorNumber - 2] = pv;
+        }
 
         if(pv.IsMine)
         {
             myAvatar = pv.GetComponent<Y_PlayerAvatarSetting>();
-            print("avatarIndex from AddPlayer: " + myAvatar.avatarIndex);
         }
     }
 
