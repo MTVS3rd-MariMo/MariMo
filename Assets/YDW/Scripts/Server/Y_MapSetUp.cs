@@ -14,6 +14,7 @@ public class Y_MapSetUp : MonoBehaviour
     public TMP_Text role4;
 
     public static Y_MapSetUp mapSetUp;
+    public Y_BookController bookController;
 
     private void Awake()
     {
@@ -26,18 +27,23 @@ public class Y_MapSetUp : MonoBehaviour
             Destroy(gameObject);
         }
 
+        print("awake 시작");
+
         classMaterial = Y_HttpRoomSetUp.GetInstance().realClassMaterial;
-        //Y_BookController.Instance.text = classMaterial.bookContents;
-        //role1.text = classMaterial.lessonRoles[0];
-        //role2.text = classMaterial.lessonRoles[1];
-        //role3.text = classMaterial.lessonRoles[2];
-        //role4.text = classMaterial.lessonRoles[3];
+        bookController.text = classMaterial.bookContents;
+        bookTitle.text = classMaterial.bookTitle;
+        print(classMaterial.bookContents);
+        role1.text = classMaterial.lessonRoles[0];
+        role2.text = classMaterial.lessonRoles[1];
+        role3.text = classMaterial.lessonRoles[2];
+        role4.text = classMaterial.lessonRoles[3];
+
     }
 
     // Start is called before the first frame update
     void Start()
     {
-
+        
     }
 
     // Update is called once per frame

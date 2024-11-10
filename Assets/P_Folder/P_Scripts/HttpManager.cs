@@ -134,7 +134,7 @@ public class HttpManager : MonoBehaviour
     {
         using (UnityWebRequest webRequest = UnityWebRequest.Get(info.url))
         {
-            webRequest.SetRequestHeader("userId", Y_HttpLogIn.GetInstance().userId);
+            webRequest.SetRequestHeader("userId", Y_HttpLogIn.GetInstance().userId.ToString());
             // 서버에 요청 보내기
             yield return webRequest.SendWebRequest();
 
@@ -162,7 +162,7 @@ public class HttpManager : MonoBehaviour
     {
         using (UnityWebRequest webRequest = UnityWebRequest.Post(info.url, info.body, info.contentType))
         {
-            webRequest.SetRequestHeader("userId", "3");
+            webRequest.SetRequestHeader("userId", Y_HttpLogIn.GetInstance().userId.ToString());
 
             // 서버에 요청 보내기
             yield return webRequest.SendWebRequest();
@@ -280,6 +280,7 @@ public class HttpManager : MonoBehaviour
         using (UnityWebRequest webRequest = UnityWebRequest.Post(info.url, formData))
         {
             //webRequest.SetRequestHeader("Content-Type", "multipart/form-data");
+            webRequest.SetRequestHeader("userId", Y_HttpLogIn.GetInstance().userId.ToString());
 
             // 서버에 요청 보내기
             yield return webRequest.SendWebRequest();

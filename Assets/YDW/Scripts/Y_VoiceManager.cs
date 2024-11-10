@@ -9,7 +9,7 @@ using System.IO;
 using System;
 using Photon.Pun.Demo.PunBasics;
 
-public class Y_VoiceManager : MonoBehaviourPun
+public class Y_VoiceManager : MonoBehaviour
 {
     public static Y_VoiceManager Instance { get; private set; }
 
@@ -25,7 +25,7 @@ public class Y_VoiceManager : MonoBehaviourPun
     private AudioClip currentRecording;
 
     public int actorNumber;
-    PhotonVoiceView myVoiceView;
+    //PhotonVoiceView myVoiceView;
 
     private void Awake()
     {
@@ -111,19 +111,19 @@ public class Y_VoiceManager : MonoBehaviourPun
     {
         //print("!!!!!!!!! playerId " + playerId + ", actorNumber: " + PhotonNetwork.LocalPlayer.ActorNumber);
 
-        if (PhotonNetwork.LocalPlayer.ActorNumber == playerId)
-        {
+        //if (PhotonNetwork.LocalPlayer.ActorNumber == playerId)
+        //{
             currentRecording = Microphone.Start(null, true, recordingLength, recordingFrequency);
             Debug.Log($"녹음 시작됨: {testInt}");
-        }
+        //} // 도원
     }
 
     int testInt = 0;
 
     public void StopRecording(int playerId, int selfIntNum)
     {
-        if (Microphone.IsRecording(null) && PhotonNetwork.LocalPlayer.ActorNumber == playerId)
-        {
+        //if (Microphone.IsRecording(null) && PhotonNetwork.LocalPlayer.ActorNumber == playerId)
+        //{
             int recordingPosition = Microphone.GetPosition(null);
             Microphone.End(null);
 
@@ -142,21 +142,21 @@ public class Y_VoiceManager : MonoBehaviourPun
                 Debug.Log($"Wav 파일로 저장됨: {testInt}");
             }
 
-            RPC_UpdateTestInt();
-        }
+            //RPC_UpdateTestInt();
+        //} // 도원
     }
 
-    public void RPC_UpdateTestInt()
-    {
-        photonView.RPC(nameof(updateTestInt), RpcTarget.All);
-    }
+    //public void RPC_UpdateTestInt()
+    //{
+    //    photonView.RPC(nameof(updateTestInt), RpcTarget.All);
+    //}
 
-    [PunRPC]
-    public void updateTestInt()
-    {
-        testInt++;
-        print("TestInt Update: " + testInt);
-    }
+    //[PunRPC]
+    //public void updateTestInt()
+    //{
+    //    testInt++;
+    //    print("TestInt Update: " + testInt);
+    //}
 
     private AudioClip TrimAudioClip(AudioClip clip, int lengthSamples)
     {

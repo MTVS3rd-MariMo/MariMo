@@ -93,8 +93,6 @@ public class P_RoomCreate : MonoBehaviour
         //info.contentType = "application/json";
         info.onComplete = (DownloadHandler downloadHandler) =>
         {
-            print(downloadHandler.text);
-
             // 받은 데이터 파싱할 함수 호출
             lessonId = Convert.ToInt32(downloadHandler.text);
             Debug.Log(lessonId);

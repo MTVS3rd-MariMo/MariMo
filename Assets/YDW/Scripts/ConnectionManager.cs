@@ -16,7 +16,7 @@ public class ConnectionManager : MonoBehaviourPunCallbacks
 {
     public GameObject roomPrefab;
     public Transform scrollContent;
-    //public GameObject[] panelList;
+    int lessonMaterialId = 0;
 
     List<RoomInfo> cachedRoomList = new List<RoomInfo>();
 
@@ -180,7 +180,7 @@ public class ConnectionManager : MonoBehaviourPunCallbacks
         // Join 관련 패널을 활성화한다.
         //ChangePanel(1, 2);
 
-        PhotonNetwork.LoadLevel(1);
+        //PhotonNetwork.LoadLevel(1);
 
         // 수업에 들어온 유저가 서버에 본인의 userId를 보낸다.
 
@@ -211,6 +211,21 @@ public class ConnectionManager : MonoBehaviourPunCallbacks
         print(MethodInfo.GetCurrentMethod().Name + " is Call!");
         LobbyController.lobbyUI.PrintLog("방에 입장 성공!");
 
+        // 수업자료 id 받기
+        if (PhotonNetwork.CurrentRoom.CustomProperties.TryGetValue("lessonMaterialId", out object lessonMaterialNum))
+        {
+            print("여기 들어왔다");
+            lessonMaterialId = Convert.ToInt32(lessonMaterialNum);
+            print("lessonMaterialId : " + lessonMaterialId);
+            Debug.Log("Joined Room with lessonMaterial ID: " + lessonMaterialId);
+
+            
+        }
+        else
+        {
+            Debug.LogError("lessonMaterial ID not found in the room properties.");
+        }
+
         // 방 id 받기
         if (PhotonNetwork.CurrentRoom.CustomProperties.TryGetValue("lessonId", out object lesson))
         {
@@ -218,7 +233,7 @@ public class ConnectionManager : MonoBehaviourPunCallbacks
             Debug.Log("Joined Room with room ID: " + Y_HttpRoomSetUp.GetInstance().userlessonId);
 
             // 수업에 유저 등록
-            StartCoroutine(Y_HttpRoomSetUp.GetInstance().SendLessonId());
+            StartCoroutine(Y_HttpRoomSetUp.GetInstance().SendLessonId(lessonMaterialId));
         }
         else
         {
@@ -226,23 +241,12 @@ public class ConnectionManager : MonoBehaviourPunCallbacks
         }
 
 
-        // 수업자료 id 받기
-        if (PhotonNetwork.CurrentRoom.CustomProperties.TryGetValue("lessonMaterialId", out object lessonMaterialNum))
-        {
-            int lessonMaterialId = Convert.ToInt32(lessonMaterialNum);
-            Debug.Log("Joined Room with lessonMaterial ID: " + lessonMaterialId);
-
-            // 수업 데이터 받아오기
-            Y_HttpRoomSetUp.GetInstance().GetClassMaterial(lessonMaterialId);
-        }
-        else
-        {
-            Debug.LogError("lessonMaterial ID not found in the room properties.");
-        }
+        
+       
 
         // 방에 입장한 친구들은 모두 1번 씬으로 이동하자!
 
-        PhotonNetwork.LoadLevel(1);
+        
     }
 
     public override void OnJoinRoomFailed(short returnCode, string message)
@@ -285,6 +289,8 @@ public class ConnectionManager : MonoBehaviourPunCallbacks
     // 현재 로비에서 룸의 변경사항을 알려주는 콜백 함수
     public override void OnRoomListUpdate(List<RoomInfo> roomList)
     {
+        if (Y_HttpLogIn.GetInstance().isTeacher) return;
+
         base.OnRoomListUpdate(roomList);
 
         foreach(RoomInfo room in roomList)
@@ -309,24 +315,23 @@ public class ConnectionManager : MonoBehaviourPunCallbacks
             }
         }
 
-        // 기존의 모든 방 정보를 삭제한다.
-        for(int i=0; i< scrollContent.childCount; i++)
-        {
-            Destroy(scrollContent.GetChild(i).gameObject);
-        }
-
         foreach (RoomInfo room in cachedRoomList)
         {
-            for(int i = 0; i < cachedRoomList.Count; i++)
+            for(int i = 0; i < 3; i++)
             {
-                buttons[i].SetActive(true);
-                buttons[i].GetComponent<TMP_Text>().text = room.Name;
+                buttons[i].GetComponent<Button>().onClick.RemoveAllListeners();
 
-                // 버튼에 방 입장 기능 연결하기
-                buttons[i].GetComponent<Button>().onClick.AddListener(() =>
+                if (cachedRoomList.Count > i)
                 {
-                    PhotonNetwork.JoinRoom(room.Name);
-                });
+                    buttons[i].SetActive(true);
+                    buttons[i].GetComponentInChildren<TMP_Text>().text = room.Name;
+
+                    // 버튼에 방 입장 기능 연결하기
+                    buttons[i].GetComponent<Button>().onClick.AddListener(() =>
+                    {
+                        PhotonNetwork.JoinRoom(room.Name);
+                    });
+                }
             }
 
 

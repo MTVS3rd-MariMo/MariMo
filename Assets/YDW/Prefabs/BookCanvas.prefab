@@ -116,7 +116,7 @@ MonoBehaviour:
     m_PressedTrigger: Pressed
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
-  m_Interactable: 1
+  m_Interactable: 0
   m_TargetGraphic: {fileID: 1764664065639146749}
   m_OnClick:
     m_PersistentCalls:
@@ -548,7 +548,7 @@ GameObject:
   - component: {fileID: 8072078625061711027}
   - component: {fileID: 3273163468219193285}
   - component: {fileID: 5252311551421808156}
-  - component: {fileID: 5643849911912166752}
+  - component: {fileID: 3895438020937066466}
   m_Layer: 5
   m_Name: BookCanvas
   m_TagString: Untagged
@@ -800,7 +800,7 @@ MonoBehaviour:
   - {fileID: 21300000, guid: e9af6feef30c99e43a72aafb633b1061, type: 3}
   isSync: 1
   myAvatar: {fileID: 0}
---- !u!114 &5643849911912166752
+--- !u!114 &3895438020937066466
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
