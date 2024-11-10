@@ -118,6 +118,7 @@ public class K_QuizManager : MonoBehaviourPun
 
             if(isCorrect)
             {
+                // 오류 ->> EndQuiz를 RPC로 해줘야하나?
                 EndQuiz();
                 // 정답 맞출 시 글씨 색상 변경
                 quizCorrect.text_Correct.color = Color.red;
@@ -128,10 +129,16 @@ public class K_QuizManager : MonoBehaviourPun
                 StartCoroutine(RestartQuiz(5f));
             }    
         }
-
-        // 퀴즈 종료 처리
-        //EndQuiz();
     }
+
+    public void TriggerEndQuiz()
+    {
+        if(photonView.IsMine)
+        {
+            photonView.RPC(nameof(EndQuiz), RpcTarget.All);
+        }
+    }
+
 
     public void EndQuiz()
     {

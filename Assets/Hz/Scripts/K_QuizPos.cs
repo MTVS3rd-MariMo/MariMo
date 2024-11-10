@@ -89,6 +89,10 @@ public class K_QuizPos : MonoBehaviourPun
                 allPlayers[i].gameObject.transform.localScale = allPlayers[i].gameObject.GetComponent<Y_PlayerAvatarSetting>().quizScale;
             }
         }
+        else
+        {
+            Debug.LogError("quiManager 못찾음!");
+        }
 
         //isQuizStarted = true;
         //print("플레이어다 문제풀자");
