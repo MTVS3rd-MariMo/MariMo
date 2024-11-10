@@ -149,7 +149,7 @@ public class Y_HttpRoomSetUp : MonoBehaviourPun
 
     public string sendLessonIdUrl = "api/lesson/enter/";
 
-    public IEnumerator SendLessonId()
+    public IEnumerator SendLessonId(int id)
     {
         SendLessonId sendLessonId = new SendLessonId
         {
@@ -168,6 +168,9 @@ public class Y_HttpRoomSetUp : MonoBehaviourPun
             onComplete = (DownloadHandler downloadHandler) =>
             {
                 Debug.Log("레슨 아이디 보내기 성공: " + downloadHandler.text);
+
+                // 수업 데이터 받아오기
+                StartCoroutine(GetClassMaterial(id));
             }
         };
 
@@ -228,6 +231,7 @@ public class Y_HttpRoomSetUp : MonoBehaviourPun
 
     public IEnumerator GetClassMaterial(int Id)
     {
+        print("외않되 " + Id);
         SendMaterialId sendMaterialId = new SendMaterialId
         {
             lessonMaterialId = Id // 더미!!!!!
@@ -247,6 +251,8 @@ public class Y_HttpRoomSetUp : MonoBehaviourPun
             if (webRequest.result == UnityWebRequest.Result.Success)
             {
                 Debug.Log("수업자료 받아오기 성공: " + webRequest.downloadHandler.text);
+
+
 
                 // JSON 데이터 파싱
                 ClassMaterial classMaterial = JsonUtility.FromJson<ClassMaterial>(webRequest.downloadHandler.text);
@@ -275,6 +281,8 @@ public class Y_HttpRoomSetUp : MonoBehaviourPun
                 }
 
                 realClassMaterial = classMaterial;
+
+                PhotonNetwork.LoadLevel(1);
             }
             else
             {

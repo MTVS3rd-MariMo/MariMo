@@ -87,17 +87,17 @@ public class Y_HttpHotSeat : MonoBehaviour
     {
         // data 를 MultipartForm 으로 셋팅
         List<IMultipartFormSection> formData = new List<IMultipartFormSection>();
-        formData.Add(new MultipartFormDataSection("lessonId", "101"));
-        formData.Add(new MultipartFormDataSection("userName", "정현민")); // GetUserNickName()
-        formData.Add(new MultipartFormDataSection("character", "바다거북")); // GetCharacterName()
-        formData.Add(new MultipartFormDataSection("selfIntNum", "1"));
+        formData.Add(new MultipartFormDataSection("lessonId", Y_HttpRoomSetUp.GetInstance().userlessonId.ToString())); // 도원
+        formData.Add(new MultipartFormDataSection("userName", GetUserNickName())); // 
+        formData.Add(new MultipartFormDataSection("character", GetCharacterName())); // 
+        formData.Add(new MultipartFormDataSection("selfIntNum", Y_HotSeatController.Instance.selfIntNum.ToString())); // 도원
 
         formData.Add(new MultipartFormFileSection("wavFile", wavFile, "interview.wav", "audio/wav"));
 
         using (UnityWebRequest webRequest = UnityWebRequest.Post(info.url, formData))
         {
             webRequest.SetRequestHeader("userId", Y_HttpLogIn.GetInstance().userId.ToString());
-            
+
             // 서버에 요청 보내기
             yield return webRequest.SendWebRequest();
 
@@ -195,6 +195,7 @@ public class Y_HttpHotSeat : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Alpha7))
         {
+            print("7번 눌렀다");
             //PrintAvailableMicrophones();
             StartCoroutine(voiceTestCoroutine());
         }
@@ -219,6 +220,8 @@ public class Y_HttpHotSeat : MonoBehaviour
 
     IEnumerator voiceTestCoroutine()
     {
+        print("코루틴 실행");
+        PrintAvailableMicrophones();
         Y_VoiceManager.Instance.StartRecording(1, 100);
         yield return new WaitForSeconds(10f);
         Y_VoiceManager.Instance.StopRecording(1, 1);

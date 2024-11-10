@@ -2277,7 +2277,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &172709177
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2345,8 +2345,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 24
-  m_fontSizeBase: 24
+  m_fontSize: 70
+  m_fontSizeBase: 70
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -3148,6 +3148,11 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3049645533484931317, guid: 96e3ccfb92e8dec4abba84d5e3f2afe4,
+        type: 3}
+      propertyPath: roomMgr
+      value: 
+      objectReference: {fileID: 1052957129}
     - target: {fileID: 4651134949105320898, guid: 96e3ccfb92e8dec4abba84d5e3f2afe4,
         type: 3}
       propertyPath: m_IsActive
@@ -4411,6 +4416,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 437685223}
   m_CullTransparentMesh: 1
+--- !u!114 &496503620 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3049645533484931317, guid: 96e3ccfb92e8dec4abba84d5e3f2afe4,
+    type: 3}
+  m_PrefabInstance: {fileID: 318782899}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 31f2b9b2b23dcbc429ec450107631ce2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &513785847
 GameObject:
   m_ObjectHideFlags: 0
@@ -4653,6 +4670,7 @@ GameObject:
   - component: {fileID: 606572788}
   - component: {fileID: 606572789}
   - component: {fileID: 606572790}
+  - component: {fileID: 606572791}
   m_Layer: 0
   m_Name: LobbyManager
   m_TagString: Untagged
@@ -4706,6 +4724,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 60ddefa747a67a242b8624ce4bf18556, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &606572791
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 606572786}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2c4a48bf2461e3244a113dccf8c81abf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  userId: 
+  mainServer: 
+  RegisterUrl: api/user/signup
+  logInUrl: api/user/login
+  isTeacher: 0
+  img_background: {fileID: 1245044469}
 --- !u!1 &612359039
 GameObject:
   m_ObjectHideFlags: 0
@@ -5845,8 +5881,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 24
-  m_fontSizeBase: 24
+  m_fontSize: 70
+  m_fontSizeBase: 70
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -7752,7 +7788,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 20f9ac060cf0c644f996ad7517311f26, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  p_creat: {fileID: 0}
+  p_creat: {fileID: 496503620}
 --- !u!4 &1052957130
 Transform:
   m_ObjectHideFlags: 0
@@ -9199,8 +9235,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 24
-  m_fontSizeBase: 24
+  m_fontSize: 70
+  m_fontSizeBase: 70
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18

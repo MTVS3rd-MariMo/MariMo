@@ -157,7 +157,7 @@ public class Y_HttpLogIn : MonoBehaviour
 
     public string logInUrl = "api/user/login";
     public bool isTeacher;
-
+    public GameObject img_background;
     public IEnumerator LogInCoroutine(string username, string password)
     {
 
@@ -199,6 +199,7 @@ public class Y_HttpLogIn : MonoBehaviour
                 if (isTeacher)
                 {
                     Y_SignUp.signUp.creatorUI.SetActive(true);
+                    img_background.SetActive(false);
                 }
                 else
                 {
