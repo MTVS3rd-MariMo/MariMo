@@ -145,10 +145,30 @@ public class K_HttpAvatar : MonoBehaviourPun
 
     }
 
+    // allPlayers 상태 디버깅 출력 메서드
+    private void DebugAllPlayers()
+    {
+        Debug.Log("allPlayers 상태:");
+        foreach (var player in bookController.allPlayers)
+        {
+            Debug.Log($"Key: {player.Key}, Value: {player.Value.Owner.NickName}");
+        }
+    }
+
     // actorNum = chararcterNum으로 받아옴 
     [PunRPC]
     public IEnumerator OnDownloadImage(int userId, string imageUrl, int actorNum)
     {
+
+        DebugAllPlayers();
+
+
+        if( PhotonNetwork.LocalPlayer.ActorNumber == 1)
+        {
+            Debug.Log("연동 제외");
+            yield break;
+        }
+
         using (UnityWebRequest webRequest = UnityWebRequestTexture.GetTexture(imageUrl))
         {
             yield return webRequest.SendWebRequest();
@@ -182,6 +202,12 @@ public class K_HttpAvatar : MonoBehaviourPun
     // 애니메이션 다운로드 및 로컬 저장
     private IEnumerator DownloadVideo(int userId, string videoUrl, string fileName, int actorNumber)
     {
+        if (PhotonNetwork.LocalPlayer.ActorNumber == 1)
+        {
+            Debug.Log("연동 제외");
+            yield break;
+        }
+
         using (UnityWebRequest webRequest = UnityWebRequest.Get(videoUrl))
         {
             yield return webRequest.SendWebRequest();
@@ -304,72 +330,72 @@ public class K_HttpAvatar : MonoBehaviourPun
         //yield return StartCoroutine(GetAvatarData(lessonId, otherUserIds));
     }
 
-    // 아바타 정보 요청 (GET)
-    public IEnumerator GetAvatarData(int lessonId, List<int> userIds)
-    {
-        foreach(var userId  in userIds)
-        {
-            // 동적으로 URL 생성
-            //string specificUserUrl = $"http://211.250.74.75:8202/api/avatar/participant/{lessonId}/{userId}";
+    //// 아바타 정보 요청 (GET)
+    //public IEnumerator GetAvatarData(int lessonId, List<int> userIds)
+    //{
+    //    foreach(var userId  in userIds)
+    //    {
+    //        // 동적으로 URL 생성
+    //        //string specificUserUrl = $"http://211.250.74.75:8202/api/avatar/participant/{lessonId}/{userId}";
 
-            using (UnityWebRequest webRequest = UnityWebRequest.Get(otherUserUrl))
-            {
-                print("서버에게 GET 요청 갔는지" + otherUserUrl);
+    //        using (UnityWebRequest webRequest = UnityWebRequest.Get(otherUserUrl))
+    //        {
+    //            print("서버에게 GET 요청 갔는지" + otherUserUrl);
 
-                yield return webRequest.SendWebRequest();
+    //            yield return webRequest.SendWebRequest();
 
-                if (webRequest.result == UnityWebRequest.Result.Success)
-                {
-                    // JSON 데이터 파싱
-                    UserAvatarData avatarData = JsonUtility.FromJson<UserAvatarData>(webRequest.downloadHandler.text);
+    //            if (webRequest.result == UnityWebRequest.Result.Success)
+    //            {
+    //                // JSON 데이터 파싱
+    //                UserAvatarData avatarData = JsonUtility.FromJson<UserAvatarData>(webRequest.downloadHandler.text);
 
-                    // 이미지, 애니메이션 다운로드
-                    StartCoroutine(OnDownloadImage(avatarData.userId, avatarData.avatarImg, PhotonNetwork.LocalPlayer.ActorNumber));
+    //                // 이미지, 애니메이션 다운로드
+    //                StartCoroutine(OnDownloadImage(avatarData.userId, avatarData.avatarImg, PhotonNetwork.LocalPlayer.ActorNumber));
 
-                    for(int i = 0; i < avatarData.animations.Count; i++)
-                    {
-                        StartCoroutine(DownloadVideo(avatarData.userId, avatarData.animations[i].animation, $"animation_{avatarData.userId}_{i}", PhotonNetwork.LocalPlayer.ActorNumber));
+    //                for(int i = 0; i < avatarData.animations.Count; i++)
+    //                {
+    //                    StartCoroutine(DownloadVideo(avatarData.userId, avatarData.animations[i].animation, $"animation_{avatarData.userId}_{i}", PhotonNetwork.LocalPlayer.ActorNumber));
 
-                    }
+    //                }
 
-                    Debug.Log("다른 유저 데이터 가져옴");
-                }
-                else
-                {
-                    Debug.LogError("다른 유저 데이터 가져오기 실패" + webRequest.error);
-                }
-            }
-        }      
-    }
+    //                Debug.Log("다른 유저 데이터 가져옴");
+    //            }
+    //            else
+    //            {
+    //                Debug.LogError("다른 유저 데이터 가져오기 실패" + webRequest.error);
+    //            }
+    //        }
+    //    }      
+    //}
 
-    // 데이터 처리 메서드 (기존 이미지 및 비디오 적용 로직 유지)
-    private void ApplyAvatarData(UserAvatarData avatarData)
-    {
-        // 각 이미지 적용
-        StartCoroutine(OnDownloadImage(avatarData.userId, avatarData.avatarImg, PhotonNetwork.LocalPlayer.ActorNumber));
+    //// 데이터 처리 메서드 (기존 이미지 및 비디오 적용 로직 유지)
+    //private void ApplyAvatarData(UserAvatarData avatarData)
+    //{
+    //    // 각 이미지 적용
+    //    StartCoroutine(OnDownloadImage(avatarData.userId, avatarData.avatarImg, PhotonNetwork.LocalPlayer.ActorNumber));
 
-        // 각 애니메이션 적용
-        for (int i = 0; i < avatarData.animations.Count; i++)
-        {
-            StartCoroutine(DownloadVideo(avatarData.userId, avatarData.animations[i].animation, $"animation_{avatarData.userId}_{i}", PhotonNetwork.LocalPlayer.ActorNumber));
-        }
-    }
+    //    // 각 애니메이션 적용
+    //    for (int i = 0; i < avatarData.animations.Count; i++)
+    //    {
+    //        StartCoroutine(DownloadVideo(avatarData.userId, avatarData.animations[i].animation, $"animation_{avatarData.userId}_{i}", PhotonNetwork.LocalPlayer.ActorNumber));
+    //    }
+    //}
 
-    private List<int> GetOtherUserIds()
-    {
-        List<int> otherUserIds = new List<int>();
+    //private List<int> GetOtherUserIds()
+    //{
+    //    List<int> otherUserIds = new List<int>();
 
-        foreach(var player in PhotonNetwork.PlayerList)
-        {
-            if(player.ActorNumber != PhotonNetwork.LocalPlayer.ActorNumber)
-            {
-                otherUserIds.Add(player.ActorNumber);
-            }
+    //    foreach(var player in PhotonNetwork.PlayerList)
+    //    {
+    //        if(player.ActorNumber != PhotonNetwork.LocalPlayer.ActorNumber)
+    //        {
+    //            otherUserIds.Add(player.ActorNumber);
+    //        }
 
-            print(player.ActorNumber);
-        }
-        return otherUserIds;
-    }
+    //        print(player.ActorNumber);
+    //    }
+    //    return otherUserIds;
+    //}
 
     //[PunRPC]
     //private void ApplayVideoToPlayer(string videoPath, int actorNumber)
