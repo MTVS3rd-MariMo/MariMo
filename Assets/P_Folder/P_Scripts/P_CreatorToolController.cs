@@ -36,7 +36,7 @@ public class P_CreatorToolController : MonoBehaviour
 
     public Button btn_Option;
 
-
+    bool isSend = false;
 
     void Start()
     {
@@ -61,7 +61,7 @@ public class P_CreatorToolController : MonoBehaviour
 
     private void Update()
     {
-        if (P_CreatorToolConnectMgr.Instance.pdfPath != null)
+        if (P_CreatorToolConnectMgr.Instance.pdfPath != null && !isSend)
             btn_SendPDF.interactable = true;
         else
             btn_SendPDF.interactable = false;
