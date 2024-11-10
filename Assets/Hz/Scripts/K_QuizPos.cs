@@ -82,7 +82,7 @@ public class K_QuizPos : MonoBehaviourPun
             // 연출 테스트
             virtualCamera.gameObject.SetActive(true);
 
-            Dictionary<int, PhotonView> allPlayers = Y_BookController.Instance.allPlayers;
+            Dictionary<int, PhotonView> allPlayers = GameObject.Find("BookCanvas").GetComponent<Y_BookController>().allPlayers;
 
             for (int i = 0; i < allPlayers.Count; i++)
             {
