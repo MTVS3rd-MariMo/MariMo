@@ -21,7 +21,7 @@ public class K_QuizManager : MonoBehaviourPun
     //
     public K_QuizPos quizCorrect;
 
-    public static K_QuizManager instance;
+    //public static K_QuizManager instance;
 
 
     // 연출용 요소들
@@ -30,18 +30,18 @@ public class K_QuizManager : MonoBehaviourPun
 
 
 
-    private void Awake()
-    {
-        if (null == instance)
-        {
-            instance = this;
-            DontDestroyOnLoad(gameObject);
-        }
-        else
-        {
-            Destroy(this.gameObject);
-        }
-    }
+    //private void Awake()
+    //{
+    //    if (null == instance)
+    //    {
+    //        instance = this;
+    //        DontDestroyOnLoad(gameObject);
+    //    }
+    //    else
+    //    {
+    //        Destroy(this.gameObject);
+    //    }
+    //}
 
     void Update()
     {
