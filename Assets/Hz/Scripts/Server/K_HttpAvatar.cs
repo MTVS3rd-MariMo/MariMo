@@ -56,11 +56,14 @@ public class K_HttpAvatar : MonoBehaviourPun
     int userIds = 10;
     int lessonId = 101;
 
+    Y_BookController bookController;
+
     private void Start()
     {
         btn_CreateAvatar.onClick.AddListener(() => CreateAvatar(userId, lessonId));
         //btn_CreateAvatar.onClick.AddListener(() => StartCoroutine(CreateAndFetchOtherAvatars(userId, lessonId)));
 
+        bookController = GameObject.Find("BookCanvas").GetComponent<Y_BookController>();
     }
 
     private void Update()
@@ -161,9 +164,9 @@ public class K_HttpAvatar : MonoBehaviourPun
                     new Vector2(0.5f, 0.5f)
                 );
                 // [PhotonNetwork.LocalPlayer.ActorNumber - 1]
-                int characterNum = Y_BookController.Instance.allPlayers[actorNum - 1].GetComponent<Y_PlayerAvatarSetting>().avatarIndex;
+                int characterNum = bookController.allPlayers[actorNum - 1].GetComponent<Y_PlayerAvatarSetting>().avatarIndex;
                 // 유저가 선택한 캐릭터 화면에 맞게 떠야함
-                Y_BookController.Instance.buttons[characterNum].GetComponent<Image>().sprite = receivedSprite;
+                bookController.buttons[characterNum].GetComponent<Image>().sprite = receivedSprite;
 
                 print("charNum 체크 " + characterNum);
 
@@ -206,7 +209,7 @@ public class K_HttpAvatar : MonoBehaviourPun
                     string videoPathWithProtocol = "file:///" + filePath.Replace("\\", "/"); // 로컬 파일을 위한 파일 프로토콜 추가
                     Debug.Log("videoPath : 들어왔니? " + videoPathWithProtocol);
                     // K_AvatarVpSettings에서 상태별 비디오 경로 설정
-                    var avatarSettings = Y_BookController.Instance.allPlayers[actorNumber - 1].GetComponent<K_AvatarVpSettings>();
+                    var avatarSettings = bookController.allPlayers[actorNumber - 1].GetComponent<K_AvatarVpSettings>();
                     print("avatarSettings 들어왔니? : " + avatarSettings);
 
                     // 파일 이름이 "animation_0"일 경우 idle 경로 설정, "animation_1"일 경우 walk 경로 설정

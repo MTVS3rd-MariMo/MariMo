@@ -43,7 +43,7 @@ public class Y_BookController : MonoBehaviourPun
 
     #endregion
 
-    public static Y_BookController Instance { get; private set; }
+    //public static Y_BookController Instance { get; private set; }
 
     public Camera mainCam;
     public CinemachineVirtualCamera virtualCam;
@@ -96,15 +96,15 @@ public class Y_BookController : MonoBehaviourPun
     private void Awake()
     {
         // Singleton 인스턴스 설정
-        if (Instance == null)
-        {
-            Instance = this;
-            DontDestroyOnLoad(gameObject);
-        }
-        else
-        {
-            Destroy(gameObject);
-        }
+        //if (Instance == null)
+        //{
+        //    Instance = this;
+        //    DontDestroyOnLoad(gameObject);
+        //}
+        //else
+        //{
+        //    Destroy(gameObject);
+        //}
     }
 
     private void Start()
@@ -367,15 +367,6 @@ public class Y_BookController : MonoBehaviourPun
 
 
         
-    }
-
-    private void SetCharacterVideo(int currentPlayerNum, int characterNum)
-    {
-
-        //foreach (KeyValuePair<int, string> items in playerNames)
-        //{
-
-        //}
     }
 
     // 비디오 다운로드 후 설정
