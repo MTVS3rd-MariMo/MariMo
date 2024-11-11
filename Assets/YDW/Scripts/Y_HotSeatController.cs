@@ -20,8 +20,6 @@ using UnityEngine.Video;
 
 public class Y_HotSeatController : MonoBehaviourPun
 {
-    public static Y_HotSeatController Instance { get; private set; }
-
     public GameObject guide;
     public GameObject selfIntroduce;
     public GameObject panel_waiting;
@@ -60,21 +58,6 @@ public class Y_HotSeatController : MonoBehaviourPun
 
     public GameObject[] buttons;
     public Sprite[] sprites;
-
-
-    private void Awake()
-    {
-        // Singleton 인스턴스 설정
-        if (Instance == null)
-        {
-            Instance = this;
-            DontDestroyOnLoad(gameObject);
-        }
-        else
-        {
-            Destroy(gameObject);
-        }
-    }
 
     public TMP_Text txt_playerName;
 

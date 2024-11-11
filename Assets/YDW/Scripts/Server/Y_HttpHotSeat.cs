@@ -97,7 +97,7 @@ public class Y_HttpHotSeat : MonoBehaviour
         formData.Add(new MultipartFormDataSection("lessonId", Y_HttpRoomSetUp.GetInstance().userlessonId.ToString())); // 도원
         formData.Add(new MultipartFormDataSection("userName", GetUserNickName())); // 
         formData.Add(new MultipartFormDataSection("character", GetCharacterName())); // 
-        formData.Add(new MultipartFormDataSection("selfIntNum", Y_HotSeatController.Instance.selfIntNum.ToString())); // 도원
+        formData.Add(new MultipartFormDataSection("selfIntNum", GameObject.Find("HotSeatCanvas").GetComponent<Y_HotSeatController>().selfIntNum.ToString())); // 도원
 
         formData.Add(new MultipartFormFileSection("wavFile", wavFile, "interview.wav", "audio/wav"));
 
@@ -238,7 +238,7 @@ public class Y_HttpHotSeat : MonoBehaviour
 
     string GetSelfIntroduce()
     {
-        mySelfIntroduce = Y_HotSeatController.Instance.selfIntroduceInput.text;
+        mySelfIntroduce = GameObject.Find("HotSeatCanvas").GetComponent<Y_HotSeatController>().selfIntroduceInput.text;
         print("자기소개예요 : " + mySelfIntroduce);
         return mySelfIntroduce;
     }
@@ -274,8 +274,8 @@ public class Y_HttpHotSeat : MonoBehaviour
 
     string GetCharacterName()
     {
-        print("캐릭터 이름입니다 : " + Y_HotSeatController.Instance.characterNames[bookController.characterNum - 1].text);
-        return Y_HotSeatController.Instance.characterNames[bookController.characterNum - 1].text;
+        //print("캐릭터 이름입니다 : " + Y_HotSeatController.Instance.characterNames[bookController.characterNum - 1].text);
+        return GameObject.Find("HotSeatCanvas").GetComponent<Y_HotSeatController>().characterNames[bookController.characterNum - 1].text;
     }
 
 
