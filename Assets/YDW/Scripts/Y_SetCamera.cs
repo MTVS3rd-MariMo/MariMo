@@ -87,10 +87,6 @@ public class Y_SetCamera : MonoBehaviour
 
         if (isFive)
         {
-            for(int i = 0; i < students.Length; i++)
-            {
-                Debug.LogWarning("2222 students == Null ? " + (students[i] == null) + " 이 때 i 는 몇? : " + i);
-            }
 
             UpdateCameraPosition();
         }
