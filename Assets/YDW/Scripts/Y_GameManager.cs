@@ -54,9 +54,9 @@ public class Y_GameManager : MonoBehaviourPun
         // 수업자료 id 받기
         if (PhotonNetwork.CurrentRoom.CustomProperties.TryGetValue("lessonMaterialId", out object lessonMaterialNum))
         {
-            print("여기 들어왔다");
+            //print("여기 들어왔다");
             lessonMaterialId = Convert.ToInt32(lessonMaterialNum);
-            print("lessonMaterialId : " + lessonMaterialId);
+            //print("lessonMaterialId : " + lessonMaterialId);
             Debug.Log("Joined Room with lessonMaterial ID: " + lessonMaterialId);
 
 

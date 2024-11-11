@@ -3070,7 +3070,7 @@ namespace Photon.Pun
             loadingLevelAndPausedNetwork = true;
             _AsyncLevelLoadingOperation = SceneManager.LoadSceneAsync(levelNumber,LoadSceneMode.Single);
 
-            Debug.Log("LoadScene 완료");
+            //Debug.Log("LoadScene 완료");
         }
 
         /// <summary>This method wraps loading a level asynchronously and pausing network messages during the process.</summary>

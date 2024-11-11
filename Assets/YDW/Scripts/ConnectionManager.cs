@@ -60,7 +60,7 @@ public class ConnectionManager : MonoBehaviourPunCallbacks
         base.OnConnected();
 
         // 네임 서버에 접속이 완료되었음을 알려준다.
-        print(MethodInfo.GetCurrentMethod().Name + " is Call!");
+        //print(MethodInfo.GetCurrentMethod().Name + " is Call!");
     }
 
     public override void OnDisconnected(DisconnectCause cause)
@@ -76,7 +76,7 @@ public class ConnectionManager : MonoBehaviourPunCallbacks
         base.OnConnectedToMaster();
 
         // 마스터 서버에 접속이 완료되었음을 알려준다.
-        print(MethodInfo.GetCurrentMethod().Name + " is Call!");
+        //print(MethodInfo.GetCurrentMethod().Name + " is Call!");
 
         // 서버의 로비로 들어간다.
         PhotonNetwork.JoinLobby();
@@ -108,7 +108,7 @@ public class ConnectionManager : MonoBehaviourPunCallbacks
         base.OnJoinedLobby();
 
         // 서버 로비에 들어갔음을 알려준다.
-        print(MethodInfo.GetCurrentMethod().Name + " is Call!");
+        //print(MethodInfo.GetCurrentMethod().Name + " is Call!");
         //LobbyController.lobbyUI.ShowRoomPanel();
     }
 
@@ -210,7 +210,7 @@ public class ConnectionManager : MonoBehaviourPunCallbacks
 
         // 성공적으로 방에 입장되었음을 알려준다.
         print(MethodInfo.GetCurrentMethod().Name + " is Call!");
-        LobbyController.lobbyUI.PrintLog("방에 입장 성공!");
+        //LobbyController.lobbyUI.PrintLog("방에 입장 성공!");
         PhotonNetwork.LoadLevel(1);
         
 

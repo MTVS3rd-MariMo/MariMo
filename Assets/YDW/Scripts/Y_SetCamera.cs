@@ -42,11 +42,11 @@ public class Y_SetCamera : MonoBehaviour
             if (mainCamera != null)
             {
                 cameraTransform = mainCamera.transform;
-                print("메인 카메라 있다");
+                //print("메인 카메라 있다");
             }
             else
             {
-                print("메인 카메라 내놔");
+                //print("메인 카메라 내놔");
             }
 
             if (tpc != null)
@@ -55,7 +55,7 @@ public class Y_SetCamera : MonoBehaviour
             }
             else
             {
-                print("버츄얼 카메라 내놔");
+                //print("버츄얼 카메라 내놔");
             }
 
 

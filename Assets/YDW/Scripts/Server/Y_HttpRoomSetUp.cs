@@ -231,7 +231,7 @@ public class Y_HttpRoomSetUp : MonoBehaviourPun
 
     public IEnumerator GetClassMaterial(int Id)
     {
-        print("외않되 " + Id);
+        //print("외않되 " + Id);
         SendMaterialId sendMaterialId = new SendMaterialId
         {
             lessonMaterialId = Id // 더미!!!!!

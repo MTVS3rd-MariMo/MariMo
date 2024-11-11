@@ -43,7 +43,7 @@ public class K_AvatarVpSettings : MonoBehaviourPun
         bookController.AddAllPlayer(pv);
         index = pv.Owner.ActorNumber - 1;
         name = pv.Owner.NickName;
-        print(PhotonNetwork.LocalPlayer.ActorNumber);
+        //print(PhotonNetwork.LocalPlayer.ActorNumber);
     }
 
     private void Update()
