@@ -87,7 +87,7 @@ public class Y_SetCamera : MonoBehaviour
 
 
         // 모든 플레이어의 위치 가져오기
-        Vector3[] playerPositions = new Vector3[4];
+        Vector3[] playerPositions = new Vector3[5];
         int index = 0;
 
         foreach (var player in PhotonNetwork.PlayerList)
