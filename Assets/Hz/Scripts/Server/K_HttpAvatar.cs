@@ -197,7 +197,7 @@ public class K_HttpAvatar : MonoBehaviourPun
                 );
 
                 // [PhotonNetwork.LocalPlayer.ActorNumber - 1]
-                if(PhotonNetwork.LocalPlayer.ActorNumber != 1)
+                if(actorNum > 1 && actorNum <= bookController.allPlayers.Count)
                 {
                     int characterNum = bookController.allPlayers[actorNum - 1].GetComponent<Y_PlayerAvatarSetting>().avatarIndex;
                     // 유저가 선택한 캐릭터 화면에 맞게 떠야함
