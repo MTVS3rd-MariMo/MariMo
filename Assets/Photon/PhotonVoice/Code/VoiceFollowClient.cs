@@ -1,4 +1,4 @@
-// ----------------------------------------------------------------------------
+﻿// ----------------------------------------------------------------------------
 // <copyright file="VoiceFollowClient.cs" company="Exit Games GmbH">
 // Photon Voice - Copyright (C) 2018 Exit Games GmbH
 // </copyright>
@@ -211,7 +211,7 @@ namespace Photon.Voice
                 RoomName = voiceRoomName
             };
 
-            Debug.Log($"Calling OpJoinOrCreateRoom for room name '{voiceRoomName}' region {this.Client.CloudRegion}.");  // TODO: remove when done debugging VoiceFollowClient
+            //Debug.Log($"Calling OpJoinOrCreateRoom for room name '{voiceRoomName}' region {this.Client.CloudRegion}.");  // TODO: remove when done debugging VoiceFollowClient
             return this.Client.OpJoinOrCreateRoom(roomParams);
         }
 

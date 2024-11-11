@@ -52,7 +52,7 @@ public class K_Drawing : MonoBehaviour
     {
         pen_Active = true;
         K_Erasing.erase_Active = false;
-        print("눌리니?");
+        //print("눌리니?");
 
     }
 

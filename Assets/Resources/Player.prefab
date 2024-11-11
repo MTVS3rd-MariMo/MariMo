@@ -182,6 +182,12 @@ MonoBehaviour:
   cameraTransform: {fileID: 0}
   playerAverage: {fileID: 0}
   tpc: {fileID: 0}
+  isFive: 0
+  students:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
 --- !u!114 &8482240015333793538
 MonoBehaviour:
   m_ObjectHideFlags: 0

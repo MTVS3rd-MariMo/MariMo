@@ -42,11 +42,11 @@ public class Y_SetCamera : MonoBehaviour
             if (mainCamera != null)
             {
                 cameraTransform = mainCamera.transform;
-                print("메인 카메라 있다");
+                //print("메인 카메라 있다");
             }
             else
             {
-                print("메인 카메라 내놔");
+                //print("메인 카메라 내놔");
             }
 
             if (tpc != null)
@@ -55,20 +55,40 @@ public class Y_SetCamera : MonoBehaviour
             }
             else
             {
-                print("버츄얼 카메라 내놔");
+                //print("버츄얼 카메라 내놔");
             }
 
 
         }
     }
 
+    public bool isFive = false;
+    public GameObject[] students = new GameObject[4];
+
     // Update is called once per frame
     void Update()
     {
-        if (PhotonNetwork.CurrentRoom.PlayerCount == 5)
+        if (PhotonNetwork.CurrentRoom.PlayerCount == 5 && !isFive)
         {
+            //Debug.LogWarning("다섯명이 다 들어왔다");
+            //int i = 0;
+            //foreach(var player in PhotonNetwork.PlayerList)
+            //{
+            //    if(player.ActorNumber > 1)
+            //    {
+            //        GameObject playerObject = FindPlayerObjectByActorNumber(player.ActorNumber);
+            //        students[i] = playerObject;
+            //        i++;
+            //    }
+            //}
+
+            //isFive = true;
+        }
+
+        if (isFive)
+        {
+
             UpdateCameraPosition();
-            //playerMove.movable = true;
         }
     }
 
@@ -88,23 +108,28 @@ public class Y_SetCamera : MonoBehaviour
 
         // 모든 플레이어의 위치 가져오기
         Vector3[] playerPositions = new Vector3[4];
-        int index = 0;
-
-        foreach (var player in PhotonNetwork.PlayerList)
+        for(int i = 0; i < playerPositions.Length; i++)
         {
-            GameObject playerObject = FindPlayerObjectByActorNumber(player.ActorNumber);
-            if (playerObject != null)
-            {
-                //if(PhotonNetwork.LocalPlayer.ActorNumber > 1) playerPositions[index] = playerObject.transform.position;
-                index++;
-            }
+            //Debug.LogWarning("students == Null ? " + (students[i] == null) + " 이 때 i 는 몇? : " + i);
+            playerPositions[i] = students[i].transform.position;
         }
-
-        if (index == 0)
-        {
-            Debug.LogWarning("플레이어를 찾지 못했습니다.");
-            return;
-        }
+        //int index = 0;
+        //Debug.LogWarning("루프 시작");
+        //foreach (var player in PhotonNetwork.PlayerList)
+        //{
+        //    GameObject playerObject = FindPlayerObjectByActorNumber(player.ActorNumber);
+        //    Debug.LogWarning("플레이어 찾았다");
+        //    Debug.LogWarning("PlayerObject 가 널인가? : " + playerObject != null);
+        //    Debug.LogWarning("ActorNum 이 1보다 큰가? : " + (PhotonNetwork.LocalPlayer.ActorNumber > 1));
+        //    if (playerObject != null && PhotonNetwork.LocalPlayer.ActorNumber > 1)
+        //    {
+        //        Debug.LogWarning("index ? : " + index);
+        //        playerPositions[index] = playerObject.transform.position;
+        //        Debug.LogWarning("index 늘렸다 : " + index);
+        //        index++;
+        //    }
+        //}
+        //index = 0;
 
         // 플레이어들의 평균 위치 계산
         Vector3 averagePosition = Vector3.zero;
@@ -121,7 +146,7 @@ public class Y_SetCamera : MonoBehaviour
         tpc.SetPlayer(playerAverage);
     }
 
-    private GameObject FindPlayerObjectByActorNumber(int actorNumber)
+    public GameObject FindPlayerObjectByActorNumber(int actorNumber)
     {
         foreach (PhotonView view in FindObjectsOfType<PhotonView>())
         {

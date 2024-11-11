@@ -3,6 +3,7 @@ using Photon.Realtime;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using TMPro;
 using Unity.VisualScripting;
@@ -54,9 +55,9 @@ public class Y_GameManager : MonoBehaviourPun
         // 수업자료 id 받기
         if (PhotonNetwork.CurrentRoom.CustomProperties.TryGetValue("lessonMaterialId", out object lessonMaterialNum))
         {
-            print("여기 들어왔다");
+            //print("여기 들어왔다");
             lessonMaterialId = Convert.ToInt32(lessonMaterialNum);
-            print("lessonMaterialId : " + lessonMaterialId);
+            //print("lessonMaterialId : " + lessonMaterialId);
             Debug.Log("Joined Room with lessonMaterial ID: " + lessonMaterialId);
 
 
@@ -155,6 +156,34 @@ public class Y_GameManager : MonoBehaviourPun
         }
         yield return null;
         //SetUpVideoRenderer(player, playerIndex);
+
+
+
+
+        if (PhotonNetwork.CurrentRoom.PlayerCount == 5)
+        {
+            photonView.RPC("GetPlayerObjects", RpcTarget.All);
+        }
+    }
+
+    [PunRPC]
+    public void GetPlayerObjects()
+    {
+        Y_SetCamera y_SetCamera = FindObjectOfType<Y_SetCamera>();
+
+        Debug.LogWarning("다섯명이 다 들어왔다");
+        int i = 0;
+        foreach (var player in PhotonNetwork.PlayerList)
+        {
+            if (player.ActorNumber > 1)
+            {
+                GameObject playerObject = y_SetCamera.FindPlayerObjectByActorNumber(player.ActorNumber);
+                y_SetCamera.students[i] = playerObject;
+                i++;
+            }
+        }
+
+        y_SetCamera.isFive = true;
     }
 
     //private void SetUpVideoRenderer(GameObject player, int index)
@@ -184,8 +213,8 @@ public class Y_GameManager : MonoBehaviourPun
     {
         if (Input.GetKeyDown(KeyCode.Alpha2))
         {
-            //hotSeat.SetActive(true);
-            photonView.RPC(nameof(AddPlayerCnt), RpcTarget.AllBuffered);
+            hotSeat.SetActive(true);
+            //photonView.RPC(nameof(AddPlayerCnt), RpcTarget.AllBuffered);
         }
     }
 }
