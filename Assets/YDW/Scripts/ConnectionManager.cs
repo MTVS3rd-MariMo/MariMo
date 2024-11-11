@@ -39,7 +39,7 @@ public class ConnectionManager : MonoBehaviourPunCallbacks
             // 접속을 위한 설정
             PhotonNetwork.GameVersion = "1.0.0";
             PhotonNetwork.NickName = LobbyController.lobbyUI.input_nickName.text;
-            PhotonNetwork.AutomaticallySyncScene = true;
+            PhotonNetwork.AutomaticallySyncScene = false;
             print("접속 설정 완료");
 
             // 접속을 서버에 요청하기
@@ -211,42 +211,8 @@ public class ConnectionManager : MonoBehaviourPunCallbacks
         // 성공적으로 방에 입장되었음을 알려준다.
         print(MethodInfo.GetCurrentMethod().Name + " is Call!");
         LobbyController.lobbyUI.PrintLog("방에 입장 성공!");
-
-        // 수업자료 id 받기
-        if (PhotonNetwork.CurrentRoom.CustomProperties.TryGetValue("lessonMaterialId", out object lessonMaterialNum))
-        {
-            print("여기 들어왔다");
-            lessonMaterialId = Convert.ToInt32(lessonMaterialNum);
-            print("lessonMaterialId : " + lessonMaterialId);
-            Debug.Log("Joined Room with lessonMaterial ID: " + lessonMaterialId);
-
-            
-        }
-        else
-        {
-            Debug.LogError("lessonMaterial ID not found in the room properties.");
-        }
-
-        // 방 id 받기
-        if (PhotonNetwork.CurrentRoom.CustomProperties.TryGetValue("lessonId", out object lesson))
-        {
-            Y_HttpRoomSetUp.GetInstance().userlessonId = Convert.ToInt32(lesson);
-            Debug.Log("Joined Room with room ID: " + Y_HttpRoomSetUp.GetInstance().userlessonId);
-
-            // 수업에 유저 등록
-            StartCoroutine(Y_HttpRoomSetUp.GetInstance().SendLessonId(lessonMaterialId));
-        }
-        else
-        {
-            Debug.LogError("room ID not found in the room properties.");
-        }
-
-
-        if (PhotonNetwork.CurrentRoom.PlayerCount == 5)
-        {
-            // 포톤 RPC로 전체 호출
-            StartCoroutine(Y_HttpRoomSetUp.GetInstance().GetUserIdList());
-        }
+        PhotonNetwork.LoadLevel(1);
+        
 
     }
 

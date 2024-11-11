@@ -282,7 +282,7 @@ public class Y_HttpRoomSetUp : MonoBehaviourPun
 
                 realClassMaterial = classMaterial;
 
-                PhotonNetwork.LoadLevel(1);
+                StartCoroutine(GameObject.Find("BookCanvas").GetComponent<Y_BookController>().SplitTextIntoPages());
 
             }
             else

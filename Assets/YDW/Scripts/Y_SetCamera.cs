@@ -95,7 +95,7 @@ public class Y_SetCamera : MonoBehaviour
             GameObject playerObject = FindPlayerObjectByActorNumber(player.ActorNumber);
             if (playerObject != null)
             {
-                if(PhotonNetwork.LocalPlayer.ActorNumber > 1) playerPositions[index] = playerObject.transform.position;
+                //if(PhotonNetwork.LocalPlayer.ActorNumber > 1) playerPositions[index] = playerObject.transform.position;
                 index++;
             }
         }

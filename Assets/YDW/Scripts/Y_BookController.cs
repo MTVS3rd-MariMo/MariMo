@@ -103,7 +103,7 @@ public class Y_BookController : MonoBehaviourPun
         texts = new List<string>();
         pageNo = int.Parse(pageNoTxt.text);
 
-        StartCoroutine(SplitTextIntoPages());
+        //StartCoroutine(SplitTextIntoPages());
         //StartCoroutine(DisplayPage(pageNo));
 
     }
@@ -186,7 +186,7 @@ public class Y_BookController : MonoBehaviourPun
     #region BookUI
 
     // 텍스트 쪼개기
-    IEnumerator SplitTextIntoPages()
+    public IEnumerator SplitTextIntoPages()
     {
         yield return new WaitForSeconds(2f);
 

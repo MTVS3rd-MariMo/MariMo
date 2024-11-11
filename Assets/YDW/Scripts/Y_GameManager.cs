@@ -1,4 +1,5 @@
 ﻿using Photon.Pun;
+using Photon.Realtime;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -32,32 +33,92 @@ public class Y_GameManager : MonoBehaviourPun
 
     void Start()
     {
+        PhotonNetwork.AutomaticallySyncScene = true;
         bookUI = GameObject.Find("BookCanvas").GetComponent<Y_BookController>();
-
-        StartCoroutine(SpawnPlayer());
+        StartHttp();
 
         // OnPhotonSerializeView 에서 데이터 전송 빈도 수 설정하기 (per seconds)
         PhotonNetwork.SerializationRate = 30;
         // 대부분의 데이터 전송 빈도 수 설정하기 (per seconds)
         PhotonNetwork.SendRate = 30;
-        photonView.RPC(nameof(AddPlayerCnt), RpcTarget.AllBuffered);
+
+        StartCoroutine(SpawnPlayer());
+        //
+        //StartCoroutine(AA());
+    }
+
+    void StartHttp()
+    {
+        int lessonMaterialId = 0;
+
+        // 수업자료 id 받기
+        if (PhotonNetwork.CurrentRoom.CustomProperties.TryGetValue("lessonMaterialId", out object lessonMaterialNum))
+        {
+            print("여기 들어왔다");
+            lessonMaterialId = Convert.ToInt32(lessonMaterialNum);
+            print("lessonMaterialId : " + lessonMaterialId);
+            Debug.Log("Joined Room with lessonMaterial ID: " + lessonMaterialId);
+
+
+        }
+        else
+        {
+            Debug.LogError("lessonMaterial ID not found in the room properties.");
+        }
+
+        // 방 id 받기
+        if (PhotonNetwork.CurrentRoom.CustomProperties.TryGetValue("lessonId", out object lesson))
+        {
+            Y_HttpRoomSetUp.GetInstance().userlessonId = Convert.ToInt32(lesson);
+            Debug.Log("Joined Room with room ID: " + Y_HttpRoomSetUp.GetInstance().userlessonId);
+
+            // 수업에 유저 등록
+            StartCoroutine(Y_HttpRoomSetUp.GetInstance().SendLessonId(lessonMaterialId));
+        }
+        else
+        {
+            Debug.LogError("room ID not found in the room properties.");
+        }
+
+
+        if (PhotonNetwork.CurrentRoom.PlayerCount == 5)
+        {
+            // 포톤 RPC로 전체 호출
+            StartCoroutine(Y_HttpRoomSetUp.GetInstance().GetUserIdList());
+        }
     }
 
     public int playerCount = 0;
+
+    IEnumerator AA()
+    {
+        yield return new WaitUntil(() => { return PhotonNetwork.InRoom; });
+        Debug.LogWarning("RPC  시작!!");
+
+        photonView.RPC(nameof(AddPlayerCnt), RpcTarget.AllBuffered);
+        Debug.LogWarning("RPC  끝!!");
+    }
+
 
     [PunRPC]
     void AddPlayerCnt()
     {
         playerCount++;
+        if(playerCount == 5)
+        {
+            Debug.LogWarning("스폰 시작!!");
+
+            StartCoroutine(SpawnPlayer());
+        }
     }
 
     IEnumerator SpawnPlayer()
     {
         // 룸에 입장이 완료될 때까지 기다린다.
-        yield return new WaitUntil(() => { return playerCount == 5; });
-
+        //yield return new WaitUntil(() => { return playerCount == 5; });
+        
         //yield return new WaitForSeconds(5);
-
+        Debug.LogWarning("스폰됐다!!");
         // 현재 플레이어의 인덱스(순서)를 가져옴 (원래 네명일 땐 - 1 였는데 이제 5명이라 -2 (선생님이 언제나 Master, ActorNum = 1))
         int playerIndex = PhotonNetwork.LocalPlayer.ActorNumber - 2;
 
@@ -68,7 +129,7 @@ public class Y_GameManager : MonoBehaviourPun
             // 플레이어를 해당 스폰 지점에 생성
             GameObject player = PhotonNetwork.Instantiate("Player", spawnPosition, Quaternion.identity);
         }
-        else if(PhotonNetwork.LocalPlayer.IsMasterClient)
+        else if(PhotonNetwork.IsMasterClient)
         {
             GameObject player = PhotonNetwork.Instantiate("Player", spawnPoints[4].position, Quaternion.identity);
             player.GetComponent<MeshRenderer>().enabled = false;
@@ -92,7 +153,7 @@ public class Y_GameManager : MonoBehaviourPun
             //rawImage.texture = renderTexture;
 
         }
-
+        yield return null;
         //SetUpVideoRenderer(player, playerIndex);
     }
 
@@ -123,7 +184,8 @@ public class Y_GameManager : MonoBehaviourPun
     {
         if (Input.GetKeyDown(KeyCode.Alpha2))
         {
-            hotSeat.SetActive(true);
+            //hotSeat.SetActive(true);
+            photonView.RPC(nameof(AddPlayerCnt), RpcTarget.AllBuffered);
         }
     }
 }

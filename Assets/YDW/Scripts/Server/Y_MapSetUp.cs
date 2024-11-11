@@ -25,7 +25,7 @@ public class Y_MapSetUp : MonoBehaviour
 
         bookController = GameObject.Find("BookCanvas").GetComponent<Y_BookController>();
 
-        classMaterial = Y_HttpRoomSetUp.GetInstance().realClassMaterial;
+        
         
 
     }
@@ -44,6 +44,9 @@ public class Y_MapSetUp : MonoBehaviour
 
     public void ApplyClassMaterial()
     {
+
+        classMaterial = Y_HttpRoomSetUp.GetInstance().realClassMaterial;
+
         bookController.text = classMaterial.bookContents;
         bookTitle.text = classMaterial.bookTitle;
         bookTitle2.text = classMaterial.bookTitle;
