@@ -92,14 +92,11 @@ public class Y_SetCamera : MonoBehaviour
 
         foreach (var player in PhotonNetwork.PlayerList)
         {
-            if(player.ActorNumber > 1)
+            GameObject playerObject = FindPlayerObjectByActorNumber(player.ActorNumber);
+            if (playerObject != null)
             {
-                GameObject playerObject = FindPlayerObjectByActorNumber(player.ActorNumber);
-                if (playerObject != null)
-                {
-                    playerPositions[index] = playerObject.transform.position;
-                    index++;
-                }
+                if(PhotonNetwork.LocalPlayer.ActorNumber > 1) playerPositions[index] = playerObject.transform.position;
+                index++;
             }
         }
 
