@@ -40,9 +40,8 @@ public class Y_HttpLogIn : MonoBehaviour
     {
         if (instance == null)
         {
-            GameObject go = new GameObject();
-            go.name = "HttpLogIn";
-            go.AddComponent<Y_HttpLogIn>();
+            GameObject go = new GameObject("HttpLogIn");
+            instance = go.AddComponent<Y_HttpLogIn>();
         }
 
         return instance;
@@ -50,16 +49,14 @@ public class Y_HttpLogIn : MonoBehaviour
 
     private void Awake()
     {
-        if (instance == null)
-        {
-            instance = this;
-            DontDestroyOnLoad(gameObject);
-        }
-        else
+        if (instance != null && instance != this)
         {
             Destroy(gameObject);
+            return;
         }
 
+        instance = this;
+        DontDestroyOnLoad(gameObject);
         mainServer = "http://211.250.74.75:8202/";
     }
 
