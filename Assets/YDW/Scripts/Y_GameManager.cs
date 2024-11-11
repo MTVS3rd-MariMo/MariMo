@@ -184,8 +184,8 @@ public class Y_GameManager : MonoBehaviourPun
     {
         if (Input.GetKeyDown(KeyCode.Alpha2))
         {
-            //hotSeat.SetActive(true);
-            photonView.RPC(nameof(AddPlayerCnt), RpcTarget.AllBuffered);
+            hotSeat.SetActive(true);
+            //photonView.RPC(nameof(AddPlayerCnt), RpcTarget.AllBuffered);
         }
     }
 }
