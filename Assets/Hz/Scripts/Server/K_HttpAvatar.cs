@@ -52,14 +52,17 @@ public class K_HttpAvatar : MonoBehaviourPun
 
     public GameObject bookCanvas;
 
-    int userId = Convert.ToInt32(Y_HttpLogIn.GetInstance().userId);
+    int userId;
     //int userIds = Y_HttpRoomSetUp.GetInstance().userList;
-    int lessonId = Y_HttpRoomSetUp.GetInstance().userlessonId;
+    int lessonId;
 
     Y_BookController bookController;
 
     private void Start()
     {
+        userId = Convert.ToInt32(Y_HttpLogIn.GetInstance().userId);
+        lessonId = Y_HttpRoomSetUp.GetInstance().userlessonId;
+
         btn_CreateAvatar.onClick.AddListener(() => CreateAvatar(userId, lessonId));
         //btn_CreateAvatar.onClick.AddListener(() => StartCoroutine(CreateAndFetchOtherAvatars(userId, lessonId)));
 
