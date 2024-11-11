@@ -42,7 +42,6 @@ public class P_ObjectManager_Question : MonoBehaviourPun
     string q_answer;
 
     // 투명벽 (플레이어 움직임을 멈춘다면 필요없을 예정)
-    public GameObject wall_Q;
 
     // 연출용
     public PlayableDirector timeline_Q;
@@ -110,7 +109,6 @@ public class P_ObjectManager_Question : MonoBehaviourPun
             if (triggerNum >= testNum && !act)
             {
                 act = true;
-                wall_Q.SetActive(true);
 
                 RPC_MoveControl(false);
 
@@ -369,7 +367,6 @@ public class P_ObjectManager_Question : MonoBehaviourPun
         // 사진관 모든 UI 종료
         questionUI_Panel.SetActive(false);
         blackScreen.gameObject.SetActive(false);
-        wall_Q.SetActive(false);
 
         MoveControl(true);
 

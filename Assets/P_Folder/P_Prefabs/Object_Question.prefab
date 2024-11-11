@@ -179,7 +179,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 74.7597, y: 2.5, z: -24.832}
-  m_LocalScale: {x: 32, y: 5, z: 27.366161}
+  m_LocalScale: {x: 22.6224, y: 5, z: 16.221292}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1906801496963471579}
@@ -254,8 +254,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1.1425115, y: 1, z: 1.287866}
-  m_Center: {x: 0.005505502, y: 0, z: -0.07929759}
+  m_Size: {x: 1.1425115, y: 1.1426433, z: 1.287866}
+  m_Center: {x: 0.005505502, y: 0.07132163, z: -0.07929759}
 --- !u!114 &7729127573432852741
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -280,7 +280,6 @@ MonoBehaviour:
   answer_Text2: {fileID: 0}
   answer_Test3: {fileID: 0}
   answer_Test4: {fileID: 0}
-  wall_Q: {fileID: 0}
   timeline_Q: {fileID: 0}
   virtual_Camera1: {fileID: 5211334933867479094}
   btn_sprites:
