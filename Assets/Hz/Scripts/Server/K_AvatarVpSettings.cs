@@ -52,12 +52,12 @@ public class K_AvatarVpSettings : MonoBehaviourPun
         if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.D))
         {
             // Walk 상태
-            SetWalkingState(true);
+            //SetWalkingState(true);
         }
         else
         {
             // Idle 상태
-            SetWalkingState(false);
+            //SetWalkingState(false);
         }
     }
 
@@ -132,7 +132,9 @@ public class K_AvatarVpSettings : MonoBehaviourPun
 
             // 연산자 사용해보기
             //print(videoPath);
-            rawImage.texture = vp.targetTexture = renderTextures[adjustActorNumber];
+            vp.targetTexture = renderTextures[adjustActorNumber];
+            rawImage.material = new Material(rawImage.material);
+            rawImage.material.mainTexture = vp.targetTexture;
             vp.prepareCompleted += OnVideoPrepared;
             print("준비됐나요? ");
             PlayCurrAnim();
