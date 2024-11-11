@@ -123,10 +123,6 @@ public class Y_BookController : MonoBehaviourPun
 
         if (PhotonNetwork.PlayerList.Length == 5 && isSync) //////////////
         {
-            foreach (KeyValuePair<int, PhotonView> kv in allPlayers)
-            {
-                Debug.LogError("Null 인가? 아닌가? : " + (allPlayers[kv.Key] == null) + " ActorNum : " + allPlayers[kv.Key].Owner.ActorNumber);
-            }
             StartCoroutine(WaitUntilSync());
         }
     }
