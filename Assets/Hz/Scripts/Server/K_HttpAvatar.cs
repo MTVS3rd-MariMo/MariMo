@@ -181,6 +181,8 @@ public class K_HttpAvatar : MonoBehaviourPun
 
         using (UnityWebRequest webRequest = UnityWebRequestTexture.GetTexture(imageUrl))
         {
+            
+
             yield return webRequest.SendWebRequest();
 
             if (webRequest.result == UnityWebRequest.Result.Success)
@@ -193,14 +195,21 @@ public class K_HttpAvatar : MonoBehaviourPun
                     new Rect(0, 0, receivedTexture.width, receivedTexture.height),
                     new Vector2(0.5f, 0.5f)
                 );
+
                 // [PhotonNetwork.LocalPlayer.ActorNumber - 1]
-                int characterNum = bookController.allPlayers[actorNum - 1].GetComponent<Y_PlayerAvatarSetting>().avatarIndex;
-                // 유저가 선택한 캐릭터 화면에 맞게 떠야함
-                bookController.buttons[characterNum].GetComponent<Image>().sprite = receivedSprite;
+                if(PhotonNetwork.LocalPlayer.ActorNumber != 1)
+                {
+                    int characterNum = bookController.allPlayers[actorNum - 1].GetComponent<Y_PlayerAvatarSetting>().avatarIndex;
+                    // 유저가 선택한 캐릭터 화면에 맞게 떠야함
+                    bookController.buttons[characterNum].GetComponent<Image>().sprite = receivedSprite;
 
-                Debug.LogWarning("charNum 체크 " + characterNum);
+                    Debug.LogWarning("charNum 체크 " + characterNum);
 
-                Debug.Log("아바타 이미지가 UI에 성공적으로 적용되었습니다.");
+                    Debug.Log("아바타 이미지가 UI에 성공적으로 적용되었습니다.");
+
+                }
+
+
             }
             else
             {

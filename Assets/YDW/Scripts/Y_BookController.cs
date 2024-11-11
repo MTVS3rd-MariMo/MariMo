@@ -283,8 +283,8 @@ public class Y_BookController : MonoBehaviourPun
         // 아바타 인덱스를 설정한다. 
         allPlayers[currentPlayerNum].GetComponent<Y_PlayerAvatarSetting>().RPC_SelectChar(characterNum);
 
-        RPC_IncreaseClickSelectCount(); //도원
-        //btn_toMap.GetComponent<Button>().interactable = true; // 도원
+        RPC_IncreaseClickSelectCount();
+        btn_toMap.GetComponent<Button>().interactable = true;
 
     }
 
