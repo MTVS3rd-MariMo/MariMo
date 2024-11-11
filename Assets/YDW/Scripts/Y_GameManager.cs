@@ -54,9 +54,9 @@ public class Y_GameManager : MonoBehaviourPun
     IEnumerator SpawnPlayer()
     {
         // 룸에 입장이 완료될 때까지 기다린다.
-        //yield return new WaitUntil(() => { return playerCount == 5; });
+        yield return new WaitUntil(() => { return playerCount == 5; });
 
-        yield return new WaitForSeconds(5);
+        //yield return new WaitForSeconds(5);
 
         // 현재 플레이어의 인덱스(순서)를 가져옴 (원래 네명일 땐 - 1 였는데 이제 5명이라 -2 (선생님이 언제나 Master, ActorNum = 1))
         int playerIndex = PhotonNetwork.LocalPlayer.ActorNumber - 2;
@@ -68,7 +68,7 @@ public class Y_GameManager : MonoBehaviourPun
             // 플레이어를 해당 스폰 지점에 생성
             GameObject player = PhotonNetwork.Instantiate("Player", spawnPosition, Quaternion.identity);
         }
-        else
+        else if(PhotonNetwork.LocalPlayer.IsMasterClient)
         {
             GameObject player = PhotonNetwork.Instantiate("Player", spawnPoints[4].position, Quaternion.identity);
             player.GetComponent<MeshRenderer>().enabled = false;
