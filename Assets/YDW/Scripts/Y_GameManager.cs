@@ -175,12 +175,13 @@ public class Y_GameManager : MonoBehaviourPun
         int i = 0;
         foreach (var player in PhotonNetwork.PlayerList)
         {
-            if (player.ActorNumber > 1)
+            if (!player.IsMasterClient)
             {
                 GameObject playerObject = y_SetCamera.FindPlayerObjectByActorNumber(player.ActorNumber);
                 y_SetCamera.students[i] = playerObject;
                 i++;
             }
+
         }
 
         y_SetCamera.isFive = true;
