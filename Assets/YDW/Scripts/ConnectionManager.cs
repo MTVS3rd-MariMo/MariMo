@@ -10,6 +10,7 @@ using Hashtable = ExitGames.Client.Photon.Hashtable;
 using UnityEngine.UI;
 using UnityEngine.Networking;
 using TMPro;
+using System.IO;
 
 
 public class ConnectionManager : MonoBehaviourPunCallbacks

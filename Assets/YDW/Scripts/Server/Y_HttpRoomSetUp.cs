@@ -283,6 +283,7 @@ public class Y_HttpRoomSetUp : MonoBehaviourPun
                 realClassMaterial = classMaterial;
 
                 PhotonNetwork.LoadLevel(1);
+
             }
             else
             {

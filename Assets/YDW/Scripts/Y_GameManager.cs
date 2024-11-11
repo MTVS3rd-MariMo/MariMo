@@ -9,10 +9,11 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Video;
 
-public class Y_GameManager : MonoBehaviour
+public class Y_GameManager : MonoBehaviourPun
 {
+    public static Y_GameManager instance;
+
     public Transform[] spawnPoints;
-    PhotonView pv;
     Y_BookController bookUI;
 
     // 각 플레이어에 할당할 VideoRenderTexture 파일 경로 배열
@@ -24,9 +25,13 @@ public class Y_GameManager : MonoBehaviour
         @"C:\Users\Admin\MariMo\Assets\YDW\VideoPlayer\ChromaKey4.renderTexture"
     };
 
+    private void Awake()
+    {
+        instance = this;
+    }
+
     void Start()
     {
-        pv = GetComponent<PhotonView>();
         bookUI = GameObject.Find("BookCanvas").GetComponent<Y_BookController>();
 
         StartCoroutine(SpawnPlayer());
@@ -35,12 +40,23 @@ public class Y_GameManager : MonoBehaviour
         PhotonNetwork.SerializationRate = 30;
         // 대부분의 데이터 전송 빈도 수 설정하기 (per seconds)
         PhotonNetwork.SendRate = 30;
+        photonView.RPC(nameof(AddPlayerCnt), RpcTarget.AllBuffered);
+    }
+
+    public int playerCount = 0;
+
+    [PunRPC]
+    void AddPlayerCnt()
+    {
+        playerCount++;
     }
 
     IEnumerator SpawnPlayer()
     {
         // 룸에 입장이 완료될 때까지 기다린다.
-        yield return new WaitUntil(() => { return PhotonNetwork.InRoom; });
+        //yield return new WaitUntil(() => { return playerCount == 5; });
+
+        yield return new WaitForSeconds(5);
 
         // 현재 플레이어의 인덱스(순서)를 가져옴 (원래 네명일 땐 - 1 였는데 이제 5명이라 -2 (선생님이 언제나 Master, ActorNum = 1))
         int playerIndex = PhotonNetwork.LocalPlayer.ActorNumber - 2;
@@ -67,7 +83,7 @@ public class Y_GameManager : MonoBehaviour
             bookUI.currentPlayerNum = playerIndex;
             if (playerIndex >= 0)
             {
-                bookUI.RPC_AddPlayer(playerIndex, PhotonNetwork.NickName);
+                bookUI.RPC_AddPlayerNames(playerIndex, PhotonNetwork.NickName);
             }
 
             // RenderTexture 로드

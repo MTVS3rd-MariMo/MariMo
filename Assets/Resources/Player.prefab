@@ -165,6 +165,7 @@ MonoBehaviour:
   speed: 0
   agent: {fileID: 2403669846499813768}
   test: {fileID: 0}
+  pv: {fileID: 0}
   movable: 0
 --- !u!114 &2044002936649389299
 MonoBehaviour:

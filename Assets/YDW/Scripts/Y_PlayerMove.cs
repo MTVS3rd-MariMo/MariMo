@@ -20,7 +20,7 @@ public class Y_PlayerMove : MonoBehaviour, IPunObservable
 
     public GameObject test;
 
-    PhotonView pv;
+    public PhotonView pv;
     Vector3 myPos;
 
     public bool movable = false;
@@ -42,7 +42,6 @@ public class Y_PlayerMove : MonoBehaviour, IPunObservable
         //conn = GetComponent<CharacterController>();
         layerMaskGround = LayerMask.GetMask("Ground");
         agent.updateRotation = false;
-
     }
 
     void Update()

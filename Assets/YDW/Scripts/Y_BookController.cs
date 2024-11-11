@@ -112,22 +112,38 @@ public class Y_BookController : MonoBehaviourPun
 
     private void Update()
     {
-
         if (PhotonNetwork.LocalPlayer.ActorNumber == 2 && isSync) // 첫번째 조건이 PhotonNetwork.IsMasterClient 조건이었음
         {
-            SyncAllPlayers();
+            SyncAllPlayerNames();
+            List<int> keys = new List<int>(allPlayers.Keys);
+
         }
 
-        if (PhotonNetwork.PlayerList.Length == 5) //////////////
+        if (isSync) SyncAllPlayers();
+
+        if (PhotonNetwork.PlayerList.Length == 5 && isSync) //////////////
         {
-            isSync = false;
-            //StartCoroutine(WaitUntilSync());
+            foreach (KeyValuePair<int, PhotonView> kv in allPlayers)
+            {
+                Debug.LogError("Null 인가? 아닌가? : " + (allPlayers[kv.Key] == null) + " ActorNum : " + allPlayers[kv.Key].Owner.ActorNumber);
+            }
+            StartCoroutine(WaitUntilSync());
         }
+    }
+
+    IEnumerator WaitUntilSync()
+    {
+        yield return new WaitForSeconds(1f);
+        //foreach(KeyValuePair<int, PhotonView> kv in allPlayers)
+        //{
+        //    Debug.LogError("allPlayers : " + kv.Key);
+        //}
+        isSync =  false;
     }
 
 
     // 플레이어가 참여할 때 호출
-    public void RPC_AddPlayer(int playerIndex, string nickName)
+    public void RPC_AddPlayerNames(int playerIndex, string nickName)
     {
         if (!playerNames.ContainsKey(playerIndex))
         {
@@ -138,7 +154,8 @@ public class Y_BookController : MonoBehaviourPun
             //}
             if (PhotonNetwork.LocalPlayer.ActorNumber >= 2)
             {
-                SyncAllPlayers();
+                SyncAllPlayerNames();
+                
             }
             else if (PhotonNetwork.IsMasterClient) ///// 액터 넘버 2일 경우에? 그리고 마스터 클라이언트일 경우에는 그냥 리턴해야
             {
@@ -147,25 +164,25 @@ public class Y_BookController : MonoBehaviourPun
             else
             {
                 // 마스터가 아닌 경우 자신의 정보만 전송
-                pv.RPC(nameof(AddPlayer), RpcTarget.All, playerIndex, nickName);
+                pv.RPC(nameof(AddPlayerNames), RpcTarget.All, playerIndex, nickName);
             }
         }
     }
 
     // 전체 플레이어 동기화
-    public void SyncAllPlayers()
+    public void SyncAllPlayerNames()
     {
         // 현재 룸의 모든 플레이어 정보 전송
         foreach (var player in PhotonNetwork.PlayerList)
         {
             int idx = player.ActorNumber - 1;
             string name = player.NickName;
-            if(idx > 0) pv.RPC(nameof(AddPlayer), RpcTarget.All, idx - 1, name);
+            if(idx > 0) pv.RPC(nameof(AddPlayerNames), RpcTarget.All, idx - 1, name);
         }
     }
 
     [PunRPC]
-    void AddPlayer(int playerIndex, string nickName)
+    void AddPlayerNames(int playerIndex, string nickName)
     {
         if(playerIndex >= 0) playerNames[playerIndex] = nickName;
     }
@@ -431,7 +448,7 @@ public class Y_BookController : MonoBehaviourPun
 
     public Y_PlayerAvatarSetting myAvatar;
     public Dictionary<int, PhotonView> allPlayers = new Dictionary<int, PhotonView>(); // MyAvatar 로 바꾸기
-    public void AddPlayer(PhotonView pv)
+    public void AddAllPlayer(PhotonView pv)
     {
         // 원래는 -1 이었는데 -2로?
         if (pv.Owner.ActorNumber - 2 >= 0)
@@ -443,6 +460,42 @@ public class Y_BookController : MonoBehaviourPun
         {
             myAvatar = pv.GetComponent<Y_PlayerAvatarSetting>();
         }
+    }
+
+    //public void RPC_SyncAllPlayers(List<int> keys)
+    //{
+    //    photonView.RPC(nameof(SyncAllPlayers), RpcTarget.All, keys);
+    //}
+
+    public void SyncAllPlayers()
+    {
+        // Key 리스트를 따로 저장한 후 수정
+
+        for (int i = 0; i < 4; i++)
+        {
+            foreach (var player in PhotonNetwork.PlayerList)
+            {
+                if(player.ActorNumber - 2 == i)
+                {
+                    PhotonView playerPV = GetPhotonViewByActorNumber(player.ActorNumber);
+                    allPlayers[i] = playerPV;
+                }
+            }
+            //allPlayers[key] = allPlayers[key];
+        }
+    }
+
+    // ActorNumber로 PhotonView 찾기
+    private PhotonView GetPhotonViewByActorNumber(int actorNumber)
+    {
+        foreach (var view in FindObjectsOfType<Y_PlayerMove>())
+        {
+            if (view.pv.Owner != null && view.pv.Owner.ActorNumber == actorNumber)
+            {
+                return view.pv;
+            }
+        }
+        return null;
     }
 
 }

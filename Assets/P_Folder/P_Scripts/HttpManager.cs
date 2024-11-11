@@ -343,8 +343,8 @@ public class HttpManager : MonoBehaviour
 
             //webRequest.SetRequestHeader("multipart/form-data");
 
-            webRequest.SetRequestHeader("userId", userId.ToString());
-            webRequest.SetRequestHeader("lessonId", lessonId.ToString());
+            webRequest.SetRequestHeader("userId", Y_HttpLogIn.GetInstance().userId.ToString());
+            webRequest.SetRequestHeader("lessonId", Y_HttpRoomSetUp.GetInstance().userlessonId.ToString());
 
             // 서버에 요청 보내기
             yield return webRequest.SendWebRequest();
