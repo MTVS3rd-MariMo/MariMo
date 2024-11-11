@@ -3,6 +3,7 @@ using Photon.Realtime;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using TMPro;
 using Unity.VisualScripting;
@@ -155,6 +156,34 @@ public class Y_GameManager : MonoBehaviourPun
         }
         yield return null;
         //SetUpVideoRenderer(player, playerIndex);
+
+
+
+
+        if (PhotonNetwork.CurrentRoom.PlayerCount == 5)
+        {
+            photonView.RPC("GetPlayerObjects", RpcTarget.All);
+        }
+    }
+
+    [PunRPC]
+    public void GetPlayerObjects()
+    {
+        Y_SetCamera y_SetCamera = FindObjectOfType<Y_SetCamera>();
+
+        Debug.LogWarning("다섯명이 다 들어왔다");
+        int i = 0;
+        foreach (var player in PhotonNetwork.PlayerList)
+        {
+            if (player.ActorNumber > 1)
+            {
+                GameObject playerObject = y_SetCamera.FindPlayerObjectByActorNumber(player.ActorNumber);
+                y_SetCamera.students[i] = playerObject;
+                i++;
+            }
+        }
+
+        y_SetCamera.isFive = true;
     }
 
     //private void SetUpVideoRenderer(GameObject player, int index)

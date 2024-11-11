@@ -62,7 +62,7 @@ public class Y_SetCamera : MonoBehaviour
         }
     }
 
-    bool isFive = false;
+    public bool isFive = false;
     public GameObject[] students = new GameObject[4];
 
     // Update is called once per frame
@@ -70,19 +70,19 @@ public class Y_SetCamera : MonoBehaviour
     {
         if (PhotonNetwork.CurrentRoom.PlayerCount == 5 && !isFive)
         {
-            Debug.LogWarning("다섯명이 다 들어왔다");
-            int i = 0;
-            foreach(var player in PhotonNetwork.PlayerList)
-            {
-                if(player.ActorNumber > 1)
-                {
-                    GameObject playerObject = FindPlayerObjectByActorNumber(player.ActorNumber);
-                    students[i] = playerObject;
-                    i++;
-                }
-            }
+            //Debug.LogWarning("다섯명이 다 들어왔다");
+            //int i = 0;
+            //foreach(var player in PhotonNetwork.PlayerList)
+            //{
+            //    if(player.ActorNumber > 1)
+            //    {
+            //        GameObject playerObject = FindPlayerObjectByActorNumber(player.ActorNumber);
+            //        students[i] = playerObject;
+            //        i++;
+            //    }
+            //}
 
-            isFive = true;
+            //isFive = true;
         }
 
         if (isFive)
@@ -150,7 +150,7 @@ public class Y_SetCamera : MonoBehaviour
         tpc.SetPlayer(playerAverage);
     }
 
-    private GameObject FindPlayerObjectByActorNumber(int actorNumber)
+    public GameObject FindPlayerObjectByActorNumber(int actorNumber)
     {
         foreach (PhotonView view in FindObjectsOfType<PhotonView>())
         {
