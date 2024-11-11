@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.UI;
@@ -78,8 +79,13 @@ public class K_HttpAvatar : MonoBehaviourPun
     }
 
     // 그림 보내기 POST
+    public string[] testUrl;
     public IEnumerator UploadTextureAsPng(int userId, int lessonId)
     {
+        //photonView.RPC(nameof(SyncAvatarData), RpcTarget.All, 0, 0, avatarImgUrl, testUrl, PhotonNetwork.LocalPlayer.ActorNumber - 1);
+        //yield break;
+
+
         Texture2D textureToUpload = rawImage.texture as Texture2D;
 
         if (textureToUpload == null)
