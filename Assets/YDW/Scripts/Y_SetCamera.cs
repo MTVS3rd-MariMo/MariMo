@@ -63,7 +63,7 @@ public class Y_SetCamera : MonoBehaviour
     }
 
     public bool isFive = false;
-    public GameObject[] students = new GameObject[4];
+    public GameObject[] students = new GameObject[5];
 
     // Update is called once per frame
     void Update()
@@ -108,10 +108,10 @@ public class Y_SetCamera : MonoBehaviour
 
         // 모든 플레이어의 위치 가져오기
         Vector3[] playerPositions = new Vector3[4];
-        for(int i = 0; i < playerPositions.Length; i++)
+        for(int i = 1; i <= playerPositions.Length; i++)
         {
             //Debug.LogWarning("students == Null ? " + (students[i] == null) + " 이 때 i 는 몇? : " + i);
-            playerPositions[i] = students[i].transform.position;
+            playerPositions[i-1] = students[i].transform.position;
         }
         //int index = 0;
         //Debug.LogWarning("루프 시작");
