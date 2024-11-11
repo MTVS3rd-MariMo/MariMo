@@ -65,7 +65,7 @@ public class Y_SetCamera : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (PhotonNetwork.CurrentRoom.PlayerCount == 4)
+        if (PhotonNetwork.CurrentRoom.PlayerCount == 5)
         {
             UpdateCameraPosition();
             //playerMove.movable = true;
