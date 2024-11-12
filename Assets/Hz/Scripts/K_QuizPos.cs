@@ -9,9 +9,9 @@ public class K_QuizPos : MonoBehaviourPun
 {
     // ServerSettings 
 
-    //public string question;
-    //public int answer;
-    //public string[] choices;
+    public TMP_Text Question;
+    public TMP_Text[] choices;
+    public TMP_Text answer;
 
     // 연출용
     public CinemachineVirtualCamera virtualCamera;
