@@ -18,7 +18,7 @@ public class K_QuizManager : MonoBehaviourPun
     // 카운트 다운 플래그
     public bool isCounting = false;
 
-    //
+    // 정답 글씨 가져오기
     public K_QuizPos quizCorrect;
 
     //public static K_QuizManager instance;
@@ -121,7 +121,7 @@ public class K_QuizManager : MonoBehaviourPun
                 // 오류 ->> EndQuiz를 RPC로 해줘야하나?
                 EndQuiz();
                 // 정답 맞출 시 글씨 색상 변경
-                quizCorrect.text_Correct.color = Color.red;
+                quizCorrect.answer.color = Color.red;
                 StartCoroutine(CompleteQuiz(2f));
             }
             else

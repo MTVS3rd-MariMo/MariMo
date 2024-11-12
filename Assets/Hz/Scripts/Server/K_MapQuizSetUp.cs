@@ -29,7 +29,7 @@ public class K_MapQuizSetUp : MonoBehaviour
         classMaterial = Y_HttpRoomSetUp.GetInstance().realClassMaterial;
     }
     
-
+    // 퀴즈1 텍스트 업뎃
     public void UpdateQuiz1Text(string question, string[] choices)
     {
         k_QuizPos = GameObject.Find("RealQuiz1").GetComponent<K_QuizPos>();
@@ -48,6 +48,7 @@ public class K_MapQuizSetUp : MonoBehaviour
         }
     }
 
+    // 퀴즈2 텍스트 업뎃
     public void UpdateQuiz2Text(string question, string[] choices)
     {
         k_QuizPos = GameObject.Find("RealQuiz2").GetComponent<K_QuizPos>();
