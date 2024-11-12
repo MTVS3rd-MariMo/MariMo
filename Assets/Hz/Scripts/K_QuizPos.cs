@@ -9,9 +9,9 @@ public class K_QuizPos : MonoBehaviourPun
 {
     // ServerSettings 
 
-    public TMP_Text Question;
-    public TMP_Text[] choices;
-    public TMP_Text answer;
+    public TMP_Text text_Question;
+    public TMP_Text[] text_Choices;
+    public TMP_Text text_Answer;
 
     // 연출용
     public CinemachineVirtualCamera virtualCamera;
@@ -51,6 +51,22 @@ public class K_QuizPos : MonoBehaviourPun
         //}
 
     }
+
+    [PunRPC]
+    public void InitializeQuiz(string question, string choice1, string choice2, string choice3, string choice4, int answer)
+    {
+
+        text_Question.text = question;
+
+        text_Choices[0].text = choice1;
+        text_Choices[1].text = choice2;
+        text_Choices[2].text = choice3;
+        text_Choices[3].text = choice4;
+
+        text_Answer.text = answer.ToString();
+
+    }
+
     private void OnTriggerEnter(Collider other)
     {
         //K_QuizUiManager.instance.isPlaying = true;
@@ -199,7 +215,7 @@ public class K_QuizPos : MonoBehaviourPun
     // 퀴즈 상태 초기화
     private void ResetQuiz()
     {
-        if(quizManager != null)
+        if (quizManager != null)
         {
             isInCorrectZone = false;
             isQuizStarted = false;

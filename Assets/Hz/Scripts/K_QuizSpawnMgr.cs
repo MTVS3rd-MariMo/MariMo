@@ -20,10 +20,14 @@ public class K_QuizSpawnMgr : MonoBehaviourPun
     public Vector3 quiz_correctASize;
 
     private ClassMaterial classMaterial;
+    private K_MapQuizSetUp quizSetup;
 
 
     void Start()
     {
+        // 맴퀴즈셋업 가져와
+        quizSetup = FindObjectOfType<K_MapQuizSetUp>();
+
         if(PhotonNetwork.IsMasterClient)
         {
             quiz_correct = new GameObject[quizCount];
@@ -57,6 +61,7 @@ public class K_QuizSpawnMgr : MonoBehaviourPun
 
             yield return new WaitUntil(() => quizInstance != null);
             print("aaaa");
+            
 
             ///////////////////////////////////
             //// 생성된 quizInstance에서 퀴즈 데이터 초기화
@@ -72,6 +77,8 @@ public class K_QuizSpawnMgr : MonoBehaviourPun
             if (k_QuizPos != null)
             {
                 quiz_correct[idx] = k_QuizPos.correct;
+                //quizInstance.GetComponent<PhotonView>().RPC("InitializeQuiz", RpcTarget.AllBuffered);
+                    
             }
             else
             {
