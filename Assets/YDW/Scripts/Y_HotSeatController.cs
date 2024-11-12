@@ -65,6 +65,7 @@ public class Y_HotSeatController : MonoBehaviourPun
 
     public Button[] characterImages;
 
+
     void Start()
     {
         // 자기소개 인풋필드 터치 키보드 올라오면 위치/크기 변경할 준비
@@ -329,7 +330,7 @@ public class Y_HotSeatController : MonoBehaviourPun
 
             //Debug.LogError("selfIntCount : " + selfIntCount);
 
-            //Y_HttpHotSeat.GetInstance().StartSendIntCoroutine(selfIntCount); ////////////////// 도원
+            Y_HttpHotSeat.GetInstance().StartSendIntCoroutine(selfIntCount); ////////////////// 도원
 
             //Y_VoiceManager.Instance.recorder.TransmitEnabled = false; // 인터뷰 시작하기 전에 일단은 모두 보이스 끈다 // 도원
             StartSpeech(0);
@@ -484,11 +485,15 @@ public class Y_HotSeatController : MonoBehaviourPun
         if(myActorNumber - 1 != playerNum)
         {
             Y_VoiceManager.Instance.recorder.TransmitEnabled = false;
+            Y_VoiceManager.Instance.noVoiceIcon.gameObject.SetActive(true);
+            Y_VoiceManager.Instance.voiceIcon.gameObject.SetActive(false);
             print(myActorNumber - 1 + "번 플레이어 뮤트됨");
         }
         else
         {
             Y_VoiceManager.Instance.recorder.TransmitEnabled = true;
+            Y_VoiceManager.Instance.noVoiceIcon.gameObject.SetActive(false);
+            Y_VoiceManager.Instance.voiceIcon.gameObject.SetActive(true);
             print(myActorNumber - 1 + "번 플레이어는 뮤트되지 않음");
         }
     }
@@ -502,6 +507,8 @@ public class Y_HotSeatController : MonoBehaviourPun
     public void UnMuteAllPlayers()
     {
         Y_VoiceManager.Instance.recorder.TransmitEnabled = true;
+        Y_VoiceManager.Instance.noVoiceIcon.gameObject.SetActive(false);
+        Y_VoiceManager.Instance.voiceIcon.gameObject.SetActive(true);
         print("전체 언뮤트 됨");
         //foreach (var voiceView in allVoiceViews)
         //{

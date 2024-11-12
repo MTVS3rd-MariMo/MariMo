@@ -99,10 +99,7 @@ public class Y_VoiceManager : MonoBehaviour
         //    StartRecording(1, 5);
         //}
 
-        //if (Input.GetKeyDown(KeyCode.B))
-        //{
-        //    StopRecording(1, "test");
-        //}
+        
     }
 
 
@@ -132,12 +129,12 @@ public class Y_VoiceManager : MonoBehaviour
                 // 녹음 데이터를 실제 녹음 길이만큼 잘라내기
                 AudioClip trimmedRecording = TrimAudioClip(currentRecording, recordingPosition);
 
-                //SendAsWav(trimmedRecording, selfIntNum); // 도원
+                SendAsWav(trimmedRecording, selfIntNum); // 도원
                 Debug.Log($"Wav 파일로 저장됨: {testInt}");
             }
 
             //RPC_UpdateTestInt();
-        } // 도원
+        }
     }
 
     //public void RPC_UpdateTestInt()
