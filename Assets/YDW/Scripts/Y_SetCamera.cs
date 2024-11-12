@@ -3,6 +3,8 @@ using Photon.Pun;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Y_SetCamera : MonoBehaviour
@@ -62,34 +64,19 @@ public class Y_SetCamera : MonoBehaviour
 
 
         }
+
+        Y_GameManager.instance.SetPlayerObject(pv);
     }
 
     public bool isFive = false;
     public GameObject[] students = new GameObject[5];
 
+
     // Update is called once per frame
     void Update()
     {
-        if (PhotonNetwork.CurrentRoom.PlayerCount == 5 && !isFive)
+        if (isFive && pv.IsMine)
         {
-            //Debug.LogWarning("다섯명이 다 들어왔다");
-            //int i = 0;
-            //foreach(var player in PhotonNetwork.PlayerList)
-            //{
-            //    if(player.ActorNumber > 1)
-            //    {
-            //        GameObject playerObject = FindPlayerObjectByActorNumber(player.ActorNumber);
-            //        students[i] = playerObject;
-            //        i++;
-            //    }
-            //}
-
-            //isFive = true;
-        }
-
-        if (isFive)
-        {
-
             UpdateCameraPosition();
         }
     }
@@ -113,25 +100,8 @@ public class Y_SetCamera : MonoBehaviour
         for(int i = 1; i <= playerPositions.Length; i++)
         {
             //Debug.LogWarning("students == Null ? " + (students[i] == null) + " 이 때 i 는 몇? : " + i);
-            playerPositions[i-1] = students[i].transform.position;
+            playerPositions[i-1] = Y_GameManager.instance.students[i].transform.position;
         }
-        //int index = 0;
-        //Debug.LogWarning("루프 시작");
-        //foreach (var player in PhotonNetwork.PlayerList)
-        //{
-        //    GameObject playerObject = FindPlayerObjectByActorNumber(player.ActorNumber);
-        //    Debug.LogWarning("플레이어 찾았다");
-        //    Debug.LogWarning("PlayerObject 가 널인가? : " + playerObject != null);
-        //    Debug.LogWarning("ActorNum 이 1보다 큰가? : " + (PhotonNetwork.LocalPlayer.ActorNumber > 1));
-        //    if (playerObject != null && PhotonNetwork.LocalPlayer.ActorNumber > 1)
-        //    {
-        //        Debug.LogWarning("index ? : " + index);
-        //        playerPositions[index] = playerObject.transform.position;
-        //        Debug.LogWarning("index 늘렸다 : " + index);
-        //        index++;
-        //    }
-        //}
-        //index = 0;
 
         // 플레이어들의 평균 위치 계산
         Vector3 averagePosition = Vector3.zero;
@@ -150,15 +120,21 @@ public class Y_SetCamera : MonoBehaviour
 
     public PhotonView FindPlayerObjectByActorNumber(int actorNumber)
     {
-        foreach (var view in FindObjectsOfType<Y_PlayerMove>())
+        PhotonView pview = null;
+        Y_PlayerMove[] playerMoves = FindObjectsOfType<Y_PlayerMove>();
+        
+        for (int i = 0; i < playerMoves.Length; i++)
         {
-            Debug.LogError("view.pv.Owner 는? : " + (view.GetComponent<PhotonView>().Owner != null) + " view.pv.Owner.ActorNumber 는? : " + (view.GetComponent<PhotonView>().Owner.ActorNumber == actorNumber) + " 이 때 ActorNum 은? : " + view.pv.Owner.ActorNumber);
-            if (view.GetComponent<PhotonView>().Owner != null && view.GetComponent<PhotonView>().Owner.ActorNumber == actorNumber)
+            Debug.LogError(playerMoves.Length + " i : " + i);
+            Debug.LogError("view.pv.Owner 는? : " + (playerMoves[i].GetComponent<PhotonView>().Owner != null) 
+                + " view.pv.Owner.ActorNumber 는? : " + (playerMoves[i].GetComponent<PhotonView>().Owner.ActorNumber == actorNumber) 
+                + " 이 때 ActorNum 은? : " + (playerMoves[i].pv.Owner.ActorNumber));
+            if (playerMoves[i].GetComponent<PhotonView>().Owner != null && (playerMoves[i].GetComponent<PhotonView>().Owner.ActorNumber == actorNumber))
             {
                 Debug.LogError("반환했다~!");
-                return view.GetComponent<PhotonView>();
+                pview = playerMoves[i].GetComponent<PhotonView>();
             }
         }
-        return null;
+        return pview;
     }
 }
