@@ -19,6 +19,8 @@ public class Y_GameManager : MonoBehaviourPun
     public Transform[] spawnPoints;
     Y_BookController bookUI;
 
+    public string[] urls = new string[4];
+
     // 각 플레이어에 할당할 VideoRenderTexture 파일 경로 배열
     public string[] videoRendererPaths = new string[]
     {

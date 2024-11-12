@@ -195,17 +195,17 @@ public class Y_HttpHotSeat : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Alpha8))
-        {
-            StartCoroutine(SendSelfIntroduce(1));
-        }
+        //if (Input.GetKeyDown(KeyCode.Alpha8))
+        //{
+        //    StartCoroutine(SendSelfIntroduce(1));
+        //}
 
-        if (Input.GetKeyDown(KeyCode.Alpha7))
-        {
-            print("7번 눌렀다");
-            //PrintAvailableMicrophones();
-            StartCoroutine(voiceTestCoroutine());
-        }
+        //if (Input.GetKeyDown(KeyCode.Alpha7))
+        //{
+        //    print("7번 눌렀다");
+        //    //PrintAvailableMicrophones();
+        //    StartCoroutine(voiceTestCoroutine());
+        //}
     }
 
     void PrintAvailableMicrophones()
