@@ -19,6 +19,8 @@ public class K_QuizSpawnMgr : MonoBehaviourPun
     public GameObject [] quiz_correct;
     public Vector3 quiz_correctASize;
 
+    private ClassMaterial classMaterial;
+
 
     void Start()
     {
@@ -55,6 +57,15 @@ public class K_QuizSpawnMgr : MonoBehaviourPun
 
             yield return new WaitUntil(() => quizInstance != null);
             print("aaaa");
+
+            ///////////////////////////////////
+            //// 생성된 quizInstance에서 퀴즈 데이터 초기화
+            //if (classMaterial != null && classMaterial.quizzes != null && classMaterial.quizzes.Count > idx)
+            //{
+            //    Quiz quizData = classMaterial.quizzes[idx];
+            //    quizInstance.GetComponent<PhotonView>().RPC("InitializeQuiz", RpcTarget.AllBuffered, quizData.question, quizData.choices1, quizData.choices2, quizData.choices3, quizData.choices4, quizData.answer);
+            //}
+
 
             // 생성된 quizInstance에서 자식 오브젝트인 quiz_correct를 찾음
             K_QuizPos k_QuizPos = quizInstance.GetComponent<K_QuizPos>();
