@@ -63,6 +63,8 @@ public class K_HttpAvatar : MonoBehaviourPun
     {
         userId = Convert.ToInt32(Y_HttpLogIn.GetInstance().userId);
         lessonId = Y_HttpRoomSetUp.GetInstance().userlessonId;
+        Debug.LogWarning("유저아이디" + userId);
+        Debug.LogWarning("레슨아이디" + lessonId);
 
         btn_CreateAvatar.onClick.AddListener(() => CreateAvatar(userId, lessonId));
         //btn_CreateAvatar.onClick.AddListener(() => StartCoroutine(CreateAndFetchOtherAvatars(userId, lessonId)));
@@ -444,7 +446,7 @@ public class K_HttpAvatar : MonoBehaviourPun
         btn_CreateAvatar.gameObject.SetActive(false);
 
         // 내 아바타 보내고, 다른 유저의 데이터도 가져올꺼임
-        StartCoroutine(CreateAndFetchOtherAvatars(lessonId, userId));
+        StartCoroutine(CreateAndFetchOtherAvatars(userId, lessonId));
 
     }
 

@@ -4086,7 +4086,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &795284051281027570
 RectTransform:
   m_ObjectHideFlags: 0
@@ -4246,6 +4246,12 @@ MonoBehaviour:
   - {fileID: 21300000, guid: a7830b3b1a8ecdc4db6da3debcdd30cc, type: 3}
   - {fileID: 21300000, guid: f7f125ca06fd1aa40ac6514ba8a621ab, type: 3}
   txt_playerName: {fileID: 5529497774436439238}
+  bookController: {fileID: 0}
+  characterImages:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
   characterNameTags:
   - {fileID: 7213956323780943498}
   - {fileID: 457698493260661516}

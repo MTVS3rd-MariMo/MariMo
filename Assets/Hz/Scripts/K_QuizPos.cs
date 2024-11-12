@@ -9,9 +9,9 @@ public class K_QuizPos : MonoBehaviourPun
 {
     // ServerSettings 
 
-    //public string question;
-    //public int answer;
-    //public string[] choices;
+    public TMP_Text Question;
+    public TMP_Text[] choices;
+    public TMP_Text answer;
 
     // 연출용
     public CinemachineVirtualCamera virtualCamera;
@@ -19,7 +19,7 @@ public class K_QuizPos : MonoBehaviourPun
     // 정답 구역의 오브젝트
     public GameObject correct;
     // 정답 텍스트
-    public TextMeshPro text_Correct;
+    //public TextMeshPro text_Correct;
 
     // 퀴즈가 시작되었는지 
     public bool isQuizStarted = false;
@@ -29,15 +29,27 @@ public class K_QuizPos : MonoBehaviourPun
     private int playerCount = 0;
 
     private K_QuizManager quizManager;
+    private K_MapQuizSetUp k_MapQuizSetUp;
 
     private void Start()
     {
+        // 퀴즈 매니저 찾고
         quizManager = FindObjectOfType<K_QuizManager>();
 
         if (quizManager == null)
         {
             print("퀴즈매니저업슴");
         }
+
+        // 퀴즈 셋업하는거 찾음 댐
+        k_MapQuizSetUp = FindObjectOfType<K_MapQuizSetUp>();
+
+        if(k_MapQuizSetUp != null)
+        {
+            //k_MapQuizSetUp.UpdateQuiz1Text(Question, choices[].ToString());
+            //k_MapQuizSetUp.UpdateQuiz2Text(Question, choices[].ToString()); 
+        }
+
     }
     private void OnTriggerEnter(Collider other)
     {

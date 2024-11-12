@@ -28,6 +28,8 @@ public class Y_PlayerMove : MonoBehaviour, IPunObservable
     PhotonVoiceView voiceView;
     Y_PlayerVoice playerVoice;
 
+    public bool isFive;
+
     private void Awake()
     {
         pv = GetComponent<PhotonView>();
@@ -55,12 +57,11 @@ public class Y_PlayerMove : MonoBehaviour, IPunObservable
             // 친구들을 기다리고 있어요! UI
         }
 
-        if (PhotonNetwork.LocalPlayer.IsMasterClient)
+        if (pv.Owner.IsMasterClient && isFive)
         {
             //Debug.LogError("playerAverage 널이니??? : " + (GetComponent<Y_SetCamera>().playerAverage == null)); -> False
             gameObject.transform.position = GetComponent<Y_SetCamera>().playerAverage.position;
-        } 
-            
+        }
     }
 
     // 당겨지는 강도 

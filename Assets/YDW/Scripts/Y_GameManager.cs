@@ -8,6 +8,7 @@ using System.Linq;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.AI;
 using UnityEngine.UI;
 using UnityEngine.Video;
 
@@ -91,28 +92,6 @@ public class Y_GameManager : MonoBehaviourPun
 
     public int playerCount = 0;
 
-    IEnumerator AA()
-    {
-        yield return new WaitUntil(() => { return PhotonNetwork.InRoom; });
-        Debug.LogWarning("RPC  시작!!");
-
-        photonView.RPC(nameof(AddPlayerCnt), RpcTarget.AllBuffered);
-        Debug.LogWarning("RPC  끝!!");
-    }
-
-
-    [PunRPC]
-    void AddPlayerCnt()
-    {
-        playerCount++;
-        if(playerCount == 5)
-        {
-            Debug.LogWarning("스폰 시작!!");
-
-            StartCoroutine(SpawnPlayer());
-        }
-    }
-
     IEnumerator SpawnPlayer()
     {
         // 룸에 입장이 완료될 때까지 기다린다.
@@ -132,13 +111,13 @@ public class Y_GameManager : MonoBehaviourPun
         }
         else if(PhotonNetwork.IsMasterClient)
         {
-            GameObject player = PhotonNetwork.Instantiate("Player", spawnPoints[4].position, Quaternion.identity);
-            player.GetComponent<MeshRenderer>().enabled = false;
-            player.GetComponent<BoxCollider>().enabled = false;
+            GameObject player = PhotonNetwork.Instantiate("Teacher", spawnPoints[4].position, Quaternion.identity);
+            //yield return new WaitUntil(() => player != null);
+
+            //player.GetComponent<MeshRenderer>().enabled = false;
+            //player.GetComponent<BoxCollider>().enabled = false;
+            //player.GetComponent<NavMeshAgent>().enabled = false;
         }
-        
-        //VideoPlayer videoPlayer = player.GetComponentInChildren<VideoPlayer>();
-        //RawImage rawImage = player.GetComponentInChildren<RawImage>();
 
         if (bookUI != null)
         {
@@ -148,73 +127,33 @@ public class Y_GameManager : MonoBehaviourPun
                 bookUI.RPC_AddPlayerNames(playerIndex, PhotonNetwork.NickName);
             }
 
-            // RenderTexture 로드
-            //RenderTexture renderTexture = Resources.Load<RenderTexture>(videoRendererPaths[playerIndex]);
-            //videoPlayer.targetTexture = renderTexture;
-            //rawImage.texture = renderTexture;
-
         }
         yield return null;
-        //SetUpVideoRenderer(player, playerIndex);
-
-
-
-
-        if (PhotonNetwork.CurrentRoom.PlayerCount == 5)
-        {
-            photonView.RPC("GetPlayerObjects", RpcTarget.All);
-        }
     }
 
-    [PunRPC]
-    public void GetPlayerObjects()
+    public List<GameObject> students = new List<GameObject>();
+    PhotonView myPhotonView = null;
+
+    public void SetPlayerObject(PhotonView go)
     {
-        Y_SetCamera y_SetCamera = FindFirstObjectByType<Y_SetCamera>();
-
-        if (y_SetCamera == null)
+        students.Add(go.gameObject);
+        if(go.IsMine)
         {
-            Debug.LogError("y_SetCamera 가 Null 입니다");
-            return;
-        }
-            
-
-        Debug.LogWarning("다섯명이 다 들어왔다");
-        int i = 0;
-        foreach (var player in PhotonNetwork.PlayerList)
-        {
-            PhotonView pv = y_SetCamera.FindPlayerObjectByActorNumber(player.ActorNumber);
-            print("pv 있니? : " + (pv == null));
-            GameObject playerObject = pv.gameObject;
-            print("playerObject 있니? : " + (playerObject == null));
-            y_SetCamera.students[i] = playerObject;
-            i++;
-
+            myPhotonView = go;
         }
 
-        y_SetCamera.isFive = true;
+        if(students.Count >= 5)
+        {
+            myPhotonView.GetComponent<Y_SetCamera>().isFive = true;
+            for (int i = 0; i < students.Count; i++)
+            {
+                students[i].GetComponent<Y_PlayerMove>().isFive = true;
+            }
+        }
+
     }
 
-    //private void SetUpVideoRenderer(GameObject player, int index)
-    //{
-    //    VideoPlayer videoPlayer = player.GetComponentInChildren<VideoPlayer>();
-    //    RawImage rawImage = player.GetComponentInChildren<RawImage>();
-
-    //    if (videoPlayer != null && rawImage != null)
-    //    {
-    //        // 비디오 파일 경로 설정
-    //        if (index < videoRendererPaths.Length)
-    //        {
-    //            videoPlayer.url = videoRendererPaths[index];
-    //        }
-    //        else
-    //        {
-    //            Debug.LogWarning("비디오 파일 경로가 설정되지 않았습니다.");
-    //        }
-
-    //        // Video Player의 RenderTexture를 Raw Image에 설정
-    //        rawImage.texture = videoPlayer.targetTexture;
-    //    }
-    //}
+    
 
     public GameObject hotSeat;
     private void Update()
