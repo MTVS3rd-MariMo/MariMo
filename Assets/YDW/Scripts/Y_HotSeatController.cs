@@ -61,7 +61,7 @@ public class Y_HotSeatController : MonoBehaviourPun
 
     public TMP_Text txt_playerName;
 
-    Y_BookController bookController;
+    public Y_BookController bookController;
 
     void Start()
     {
@@ -73,7 +73,7 @@ public class Y_HotSeatController : MonoBehaviourPun
         originalColor = images[0].color;
         playerPos = players[0].transform.position;
 
-        bookController = GameObject.Find("BookCanvas").GetComponent<Y_BookController>();
+        //bookController = GameObject.Find("BookCanvas").GetComponent<Y_BookController>();
 
         // 자기소개 화면 본인 닉네임과 캐릭터, 이미지 표시
         myAvatarSetting = bookController.myAvatar;

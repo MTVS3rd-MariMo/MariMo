@@ -58,7 +58,7 @@ public class Y_PlayerMove : MonoBehaviour, IPunObservable
         if (PhotonNetwork.LocalPlayer.IsMasterClient)
         {
             //Debug.LogError("playerAverage 널이니??? : " + (GetComponent<Y_SetCamera>().playerAverage == null)); -> False
-            gameObject.transform.position = GetComponent<Y_SetCamera>().playerAverage.transform.position;
+            gameObject.transform.position = GetComponent<Y_SetCamera>().playerAverage.position;
         } 
             
     }
