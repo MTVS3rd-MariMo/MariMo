@@ -567,10 +567,8 @@ public class Y_HotSeatController : MonoBehaviourPun
 
         for(int i = 0; i <= players.Count; i++)
         {
-            Debug.LogError(players.Count);
             if(i < players.Count && i != index) // playerNums[index]
             {
-
                 myTurnImgs[i].SetActive(true);
 
                 // 질문하는 사람 보이스 켜주고 녹음 시작
