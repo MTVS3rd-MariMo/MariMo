@@ -171,11 +171,21 @@ public class Y_GameManager : MonoBehaviourPun
     {
         Y_SetCamera y_SetCamera = FindObjectOfType<Y_SetCamera>();
 
+        if (y_SetCamera == null)
+        {
+            Debug.LogError("y_SetCamera 가 Null 입니다");
+            return;
+        }
+            
+
         Debug.LogWarning("다섯명이 다 들어왔다");
         int i = 0;
         foreach (var player in PhotonNetwork.PlayerList)
         {
-            GameObject playerObject = y_SetCamera.FindPlayerObjectByActorNumber(player.ActorNumber).gameObject;
+            PhotonView pv = y_SetCamera.FindPlayerObjectByActorNumber(player.ActorNumber);
+            print("pv 있니? : " + (pv == null));
+            GameObject playerObject = pv.gameObject;
+            print("playerObject 있니? : " + (playerObject == null));
             y_SetCamera.students[i] = playerObject;
             i++;
 

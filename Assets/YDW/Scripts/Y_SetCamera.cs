@@ -17,6 +17,11 @@ public class Y_SetCamera : MonoBehaviour
     public ThirdPersonCamera tpc;
 
     Y_PlayerMove playerMove;
+    private void Awake()
+    {
+        // 플레이어간의 평균값 찾기
+        playerAverage = GameObject.Find("PlayerAverage").transform;
+    }
 
     // Start is called before the first frame update
     void Start()
@@ -28,9 +33,6 @@ public class Y_SetCamera : MonoBehaviour
         Camera mainCamera = Camera.main;
         // 버츄얼 카메라 찾기
         tpc = FindObjectOfType<ThirdPersonCamera>();
-
-        // 플레이어간의 평균값 찾기
-        playerAverage = GameObject.Find("PlayerAverage").transform;
 
         if (playerAverage == null)
         {
@@ -150,8 +152,10 @@ public class Y_SetCamera : MonoBehaviour
     {
         foreach (var view in FindObjectsOfType<Y_PlayerMove>())
         {
+            Debug.LogError("view.pv.Owner 는? : " + (view.pv.Owner != null) + " view.pv.Owner.ActorNumber 는? : " + (view.pv.Owner.ActorNumber == actorNumber) + " 이 때 ActorNum 은? : " + view.pv.Owner.ActorNumber);
             if (view.pv.Owner != null && view.pv.Owner.ActorNumber == actorNumber)
             {
+                Debug.LogError("반환했다~!");
                 return view.pv;
             }
         }

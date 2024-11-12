@@ -197,7 +197,7 @@ public class K_HttpAvatar : MonoBehaviourPun
                 );
 
                 // [PhotonNetwork.LocalPlayer.ActorNumber - 1]
-                if(PhotonNetwork.LocalPlayer.ActorNumber != 1)
+                if(actorNum != 0)
                 {
                     int characterNum = bookController.allPlayers[actorNum - 1].GetComponent<Y_PlayerAvatarSetting>().avatarIndex;
                     // 유저가 선택한 캐릭터 화면에 맞게 떠야함
@@ -260,20 +260,24 @@ public class K_HttpAvatar : MonoBehaviourPun
                     string videoPathWithProtocol = "file:///" + filePath.Replace("\\", "/"); // 로컬 파일을 위한 파일 프로토콜 추가
                     Debug.Log("videoPath : 들어왔니? " + videoPathWithProtocol);
                     // K_AvatarVpSettings에서 상태별 비디오 경로 설정
-                    Debug.LogError("Null 인가? 아닌가? : " + (bookController.allPlayers[actorNumber - 1] == null) + " ActorNum : " + bookController.allPlayers[actorNumber - 1].Owner.ActorNumber);
-                    var avatarSettings = bookController.allPlayers[actorNumber - 1].GetComponent<K_AvatarVpSettings>();
+                    //Debug.LogError("Null 인가? 아닌가? : " + (bookController.allPlayers[actorNumber - 1] == null) + " ActorNum : " + bookController.allPlayers[actorNumber - 1].Owner.ActorNumber);
+                    K_AvatarVpSettings avatarSettings = null;
+                    if (actorNumber > 0)
+                    {
+                        avatarSettings = bookController.allPlayers[actorNumber - 1].GetComponent<K_AvatarVpSettings>();
+                    }
                     print("avatarSettings 들어왔니? : " + avatarSettings);
 
                     // 파일 이름이 "animation_0"일 경우 idle 경로 설정, "animation_1"일 경우 walk 경로 설정
                     if (fileName.Equals("animation_0"))
                     {
                         print("animation_0 니? 웅");
-                        avatarSettings.SetVideoPath(videoPathWithProtocol, null, actorNumber); // idle 경로 설정
+                        if(avatarSettings != null) avatarSettings.SetVideoPath(videoPathWithProtocol, null, actorNumber); // idle 경로 설정
                     }
                     else if (fileName.Equals("animation_1"))
                     {
                         print("animation_1 니? 웅");
-                        avatarSettings.SetVideoPath(null, videoPathWithProtocol, actorNumber); // walk 경로 설정
+                        if (avatarSettings != null) avatarSettings.SetVideoPath(null, videoPathWithProtocol, actorNumber); // walk 경로 설정
                     }
 
                 }
