@@ -63,6 +63,8 @@ public class Y_HotSeatController : MonoBehaviourPun
 
     public Y_BookController bookController;
 
+    public Button[] characterImages;
+
     void Start()
     {
         // 자기소개 인풋필드 터치 키보드 올라오면 위치/크기 변경할 준비
@@ -82,7 +84,7 @@ public class Y_HotSeatController : MonoBehaviourPun
         {
             Txt_TitleText.text = characterNames[bookController.characterNum - 1].text;
             //Debug.LogError("찍어봐 : " + (myAvatarSetting.avatarIndex - 1));
-            myAvatarImage.sprite = myAvatarSetting.images[bookController.characterNum - 1];
+            myAvatarImage.sprite = characterImages[bookController.characterNum - 1].GetComponent<Image>().sprite;
         }
         else
         {
