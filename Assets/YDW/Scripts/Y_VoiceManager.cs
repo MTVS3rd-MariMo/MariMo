@@ -111,19 +111,19 @@ public class Y_VoiceManager : MonoBehaviour
     {
         //print("!!!!!!!!! playerId " + playerId + ", actorNumber: " + PhotonNetwork.LocalPlayer.ActorNumber);
 
-        //if (PhotonNetwork.LocalPlayer.ActorNumber == playerId)
-        //{
+        if (PhotonNetwork.LocalPlayer.ActorNumber == playerId)
+        {
             currentRecording = Microphone.Start(null, true, recordingLength, recordingFrequency);
             Debug.Log($"녹음 시작됨: {testInt}");
-        //} // 도원
+        } // 도원
     }
 
     int testInt = 0;
 
     public void StopRecording(int playerId, int selfIntNum)
     {
-        //if (Microphone.IsRecording(null) && PhotonNetwork.LocalPlayer.ActorNumber == playerId)
-        //{
+        if (Microphone.IsRecording(null) && PhotonNetwork.LocalPlayer.ActorNumber == playerId)
+        {
             int recordingPosition = Microphone.GetPosition(null);
             Microphone.End(null);
 
@@ -132,18 +132,12 @@ public class Y_VoiceManager : MonoBehaviour
                 // 녹음 데이터를 실제 녹음 길이만큼 잘라내기
                 AudioClip trimmedRecording = TrimAudioClip(currentRecording, recordingPosition);
 
-                /////////////// 딕셔너리에 추가 말고 바로 통신 해야 함 
-
-                //voiceData[playerId] = trimmedRecording;
-
-                //Debug.Log($"녹음 Dictionary 에 저장됨: {testInt}");
-
-                SendAsWav(trimmedRecording, selfIntNum); 
+                //SendAsWav(trimmedRecording, selfIntNum); // 도원
                 Debug.Log($"Wav 파일로 저장됨: {testInt}");
             }
 
             //RPC_UpdateTestInt();
-        //} // 도원
+        } // 도원
     }
 
     //public void RPC_UpdateTestInt()
