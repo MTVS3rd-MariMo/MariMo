@@ -60,7 +60,7 @@ public class Y_HotSeatManager : MonoBehaviourPun
     [PunRPC]
     void ActivateHotSeat()
     {
-        Debug.LogError("Activate Hot Seat 했다");
+        //Debug.LogError("Activate Hot Seat 했다");
         hotSeatCanvas.SetActive(true);
     }
 

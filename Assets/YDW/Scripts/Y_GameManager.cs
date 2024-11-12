@@ -8,6 +8,7 @@ using System.Linq;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.AI;
 using UnityEngine.UI;
 using UnityEngine.Video;
 
@@ -110,9 +111,12 @@ public class Y_GameManager : MonoBehaviourPun
         }
         else if(PhotonNetwork.IsMasterClient)
         {
-            GameObject player = PhotonNetwork.Instantiate("Player", spawnPoints[4].position, Quaternion.identity);
-            player.GetComponent<MeshRenderer>().enabled = false;
-            player.GetComponent<BoxCollider>().enabled = false;
+            GameObject player = PhotonNetwork.Instantiate("Teacher", spawnPoints[4].position, Quaternion.identity);
+            //yield return new WaitUntil(() => player != null);
+
+            //player.GetComponent<MeshRenderer>().enabled = false;
+            //player.GetComponent<BoxCollider>().enabled = false;
+            //player.GetComponent<NavMeshAgent>().enabled = false;
         }
 
         if (bookUI != null)
@@ -141,6 +145,10 @@ public class Y_GameManager : MonoBehaviourPun
         if(students.Count >= 5)
         {
             myPhotonView.GetComponent<Y_SetCamera>().isFive = true;
+            for (int i = 0; i < students.Count; i++)
+            {
+                students[i].GetComponent<Y_PlayerMove>().isFive = true;
+            }
         }
 
     }
