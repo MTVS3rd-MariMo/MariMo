@@ -17,16 +17,27 @@ public class K_MapQuizSetUp : MonoBehaviour
     private PhotonView quiz1pv;
     private PhotonView quiz2pv;
 
+    public Transform spawnPosition;
+
 
     void Start()
     {
 
         // RealQuiz1, RealQuiz2 찾아서 K_QuizPos에 접근
-        quiz1pv = GameObject.Find("RealQuiz_1").GetComponent<PhotonView>();
-        quiz2pv = GameObject.Find("RealQuiz_2").GetComponent<PhotonView>();
+        //quiz1pv = GameObject.Find("RealQuiz_1").GetComponent<PhotonView>();
+        //quiz2pv = GameObject.Find("RealQuiz_2").GetComponent<PhotonView>();
+
+        classMaterial = Y_HttpRoomSetUp.GetInstance().realClassMaterial;
+
+        //StartCoroutine(SpawnQuiz());
 
 
     }
+
+    //IEnumerator SpawnQuiz()
+    //{
+    //    GameObject player = PhotonNetwork.Instantiate("Player", spawnPosition, Quaternion.identity);
+    //}
     
     public void ApplyQuizMaterial()
     {
