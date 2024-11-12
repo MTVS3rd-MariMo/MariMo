@@ -167,17 +167,39 @@ public class Y_GameManager : MonoBehaviourPun
     }
 
     [PunRPC]
-    public void GetPlayerObjects()
+    public IEnumerator GetPlayerObjects()
     {
         Y_SetCamera y_SetCamera = FindObjectOfType<Y_SetCamera>();
+
+        // 널 체크 추가 (혹시라도 Y_SetCamera가 없을 경우 오류 방지)
+        if (y_SetCamera == null)
+        {
+            Debug.LogError("Y_SetCamera를 찾을 수 없습니다. Y_SetCamera가 모든 플레이어 오브젝트에 배치되어 있는지 확인하세요.");
+            yield break;
+        }
+
+        yield return new WaitForSeconds(5f);
 
         Debug.LogWarning("다섯명이 다 들어왔다");
         int i = 0;
         foreach (var player in PhotonNetwork.PlayerList)
         {
-            GameObject playerObject = y_SetCamera.FindPlayerObjectByActorNumber(player.ActorNumber).gameObject;
-            y_SetCamera.students[i] = playerObject;
-            i++;
+            PhotonView playerView = y_SetCamera.FindPlayerObjectByActorNumber(player.ActorNumber);
+            if(playerView != null)
+            {
+                GameObject playerObject = playerView.gameObject;
+
+                if( i < y_SetCamera.students.Length)
+                {
+                    y_SetCamera.students[i] = playerObject;
+                    i++;
+                    print(i);
+                }
+                else
+                {
+                    Debug.Log("Error!!");
+                }
+            }
 
         }
 

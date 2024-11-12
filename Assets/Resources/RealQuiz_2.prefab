@@ -76,6 +76,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fdcdce8646b8dca459a313a65c5bfe7b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Question: {fileID: 0}
+  choices: []
+  answer: {fileID: 0}
   virtualCamera: {fileID: 3277166137135047400}
   correct: {fileID: 8582527140827197051}
   text_Correct: {fileID: 3393719437131581072}
