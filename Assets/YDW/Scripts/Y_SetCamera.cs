@@ -146,13 +146,13 @@ public class Y_SetCamera : MonoBehaviour
         tpc.SetPlayer(playerAverage);
     }
 
-    public GameObject FindPlayerObjectByActorNumber(int actorNumber)
+    public PhotonView FindPlayerObjectByActorNumber(int actorNumber)
     {
-        foreach (PhotonView view in FindObjectsOfType<PhotonView>())
+        foreach (var view in FindObjectsOfType<Y_PlayerMove>())
         {
-            if (view.Owner != null && view.Owner.ActorNumber == actorNumber)
+            if (view.pv.Owner != null && view.pv.Owner.ActorNumber == actorNumber)
             {
-                return view.gameObject;
+                return view.pv;
             }
         }
         return null;

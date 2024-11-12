@@ -53,12 +53,14 @@ public class Y_HotSeatManager : MonoBehaviourPun
 
     void RPC_ActivateHotSeat()
     {
+        Debug.LogError("RPC Hot Seat 했다");
         photonView.RPC(nameof(ActivateHotSeat), RpcTarget.All);
     }
 
     [PunRPC]
     void ActivateHotSeat()
     {
+        Debug.LogError("Activate Hot Seat 했다");
         hotSeatCanvas.SetActive(true);
     }
 
