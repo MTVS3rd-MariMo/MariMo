@@ -169,7 +169,7 @@ public class Y_GameManager : MonoBehaviourPun
     [PunRPC]
     public void GetPlayerObjects()
     {
-        Y_SetCamera y_SetCamera = FindObjectOfType<Y_SetCamera>();
+        Y_SetCamera y_SetCamera = FindFirstObjectByType<Y_SetCamera>();
 
         if (y_SetCamera == null)
         {

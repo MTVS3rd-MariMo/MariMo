@@ -152,11 +152,11 @@ public class Y_SetCamera : MonoBehaviour
     {
         foreach (var view in FindObjectsOfType<Y_PlayerMove>())
         {
-            Debug.LogError("view.pv.Owner 는? : " + (view.pv.Owner != null) + " view.pv.Owner.ActorNumber 는? : " + (view.pv.Owner.ActorNumber == actorNumber) + " 이 때 ActorNum 은? : " + view.pv.Owner.ActorNumber);
-            if (view.pv.Owner != null && view.pv.Owner.ActorNumber == actorNumber)
+            Debug.LogError("view.pv.Owner 는? : " + (view.GetComponent<PhotonView>().Owner != null) + " view.pv.Owner.ActorNumber 는? : " + (view.GetComponent<PhotonView>().Owner.ActorNumber == actorNumber) + " 이 때 ActorNum 은? : " + view.pv.Owner.ActorNumber);
+            if (view.GetComponent<PhotonView>().Owner != null && view.GetComponent<PhotonView>().Owner.ActorNumber == actorNumber)
             {
                 Debug.LogError("반환했다~!");
-                return view.pv;
+                return view.GetComponent<PhotonView>();
             }
         }
         return null;
