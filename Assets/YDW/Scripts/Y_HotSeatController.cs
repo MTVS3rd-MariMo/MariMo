@@ -327,11 +327,11 @@ public class Y_HotSeatController : MonoBehaviourPun
                 }
             }
 
-            Debug.LogError("selfIntCount : " + selfIntCount);
+            //Debug.LogError("selfIntCount : " + selfIntCount);
 
-            Y_HttpHotSeat.GetInstance().StartSendIntCoroutine(selfIntCount); //////////////////
+            //Y_HttpHotSeat.GetInstance().StartSendIntCoroutine(selfIntCount); ////////////////// 도원
 
-            Y_VoiceManager.Instance.recorder.TransmitEnabled = false; // 인터뷰 시작하기 전에 일단은 모두 보이스 끈다
+            //Y_VoiceManager.Instance.recorder.TransmitEnabled = false; // 인터뷰 시작하기 전에 일단은 모두 보이스 끈다 // 도원
             StartSpeech(0);
         }
     }
@@ -364,7 +364,8 @@ public class Y_HotSeatController : MonoBehaviourPun
         for (int i = 0; i < rawImages.Length; i++)
         {
             int avatarIndex = bookController.allPlayers[playerNums[i]].GetComponent<Y_PlayerAvatarSetting>().avatarIndex;
-            rawImages[i].GetComponentInChildren<VideoPlayer>().clip = myAvatarSetting.videoClips[avatarIndex];
+            rawImages[i].GetComponentInChildren<VideoPlayer>().url = Y_GameManager.instance.urls[avatarIndex];
+            //rawImages[i].GetComponentInChildren<VideoPlayer>().clip = myAvatarSetting.videoClips[avatarIndex];
         }
     }
 
