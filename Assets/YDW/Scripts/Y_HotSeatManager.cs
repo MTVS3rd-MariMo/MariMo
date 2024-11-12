@@ -12,6 +12,8 @@ public class Y_HotSeatManager : MonoBehaviourPun
     List<GameObject> players = new List<GameObject>();
     public GameObject hotSeatCanvas;
 
+    // 애니메이션 오브젝트
+    public GameObject Ani_Object;
     private void Awake()
     {
         //// Singleton 인스턴스 설정
@@ -43,6 +45,8 @@ public class Y_HotSeatManager : MonoBehaviourPun
                 //hotSeatCanvas.SetActive(true);
 
                 MoveControl(false);
+
+                Ani_Object.SetActive(true);
             }
         }
     }

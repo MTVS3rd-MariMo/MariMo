@@ -41,8 +41,6 @@ public class P_ObjectManager_Question : MonoBehaviourPun
 
     string q_answer;
 
-    // 투명벽 (플레이어 움직임을 멈춘다면 필요없을 예정)
-
     // 연출용
     public PlayableDirector timeline_Q;
     public CinemachineVirtualCamera virtual_Camera1;
@@ -57,9 +55,12 @@ public class P_ObjectManager_Question : MonoBehaviourPun
     Color black;
 
     // 질문 카운트
-    int question_count = 0;
+    int question_count = 1;
     // 답변 인원 카운트
     int answer_count = 0;
+
+    // 애니메이션 오브젝트
+    public GameObject Ani_Object;
 
     void Start()
     {
@@ -113,6 +114,8 @@ public class P_ObjectManager_Question : MonoBehaviourPun
                 RPC_MoveControl(false);
 
                 StartCoroutine(Question_UI_Start());
+
+                Ani_Object.SetActive(true);
             }
         }
     }
@@ -364,7 +367,6 @@ public class P_ObjectManager_Question : MonoBehaviourPun
 
         
 
-        // 사진관 모든 UI 종료
         questionUI_Panel.SetActive(false);
         blackScreen.gameObject.SetActive(false);
 

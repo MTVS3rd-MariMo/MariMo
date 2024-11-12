@@ -42,17 +42,9 @@ public class P_ObjectManager_Studio : MonoBehaviourPun
     public Image blackScreen;
     public Image whiteScreen;
 
-
-    void Start()
-    {
-
-    }
-
-    void Update()
-    {
-        
-    }
-
+    // 오브젝트 애니메이션
+    public GameObject Ani_Object;
+    
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))
@@ -71,6 +63,8 @@ public class P_ObjectManager_Studio : MonoBehaviourPun
                     RPC_MoveControl(false);
 
                     RPC_Studio();
+
+                    Ani_Object.SetActive(true);
                 }
             }
         }
