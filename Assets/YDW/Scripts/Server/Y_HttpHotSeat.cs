@@ -94,10 +94,10 @@ public class Y_HttpHotSeat : MonoBehaviour
     {
         // data 를 MultipartForm 으로 셋팅
         List<IMultipartFormSection> formData = new List<IMultipartFormSection>();
-        formData.Add(new MultipartFormDataSection("lessonId", Y_HttpRoomSetUp.GetInstance().userlessonId.ToString())); // 도원
+        formData.Add(new MultipartFormDataSection("lessonId", Y_HttpRoomSetUp.GetInstance().userlessonId.ToString()));
         formData.Add(new MultipartFormDataSection("userName", GetUserNickName())); // 
         formData.Add(new MultipartFormDataSection("character", GetCharacterName())); // 
-        formData.Add(new MultipartFormDataSection("selfIntNum", GameObject.Find("HotSeatCanvas").GetComponent<Y_HotSeatController>().selfIntNum.ToString())); // 도원
+        formData.Add(new MultipartFormDataSection("selfIntNum", GameObject.Find("HotSeatCanvas").GetComponent<Y_HotSeatController>().selfIntNum.ToString()));
 
         formData.Add(new MultipartFormFileSection("wavFile", wavFile, "interview.wav", "audio/wav"));
 
@@ -200,12 +200,12 @@ public class Y_HttpHotSeat : MonoBehaviour
         //    StartCoroutine(SendSelfIntroduce(1));
         //}
 
-        //if (Input.GetKeyDown(KeyCode.Alpha7))
-        //{
-        //    print("7번 눌렀다");
-        //    //PrintAvailableMicrophones();
-        //    StartCoroutine(voiceTestCoroutine());
-        //}
+        if (Input.GetKeyDown(KeyCode.Alpha7))
+        {
+            print("7번 눌렀다");
+            //PrintAvailableMicrophones();
+            StartCoroutine(voiceTestCoroutine());
+        }
     }
 
     void PrintAvailableMicrophones()
@@ -229,9 +229,9 @@ public class Y_HttpHotSeat : MonoBehaviour
     {
         print("코루틴 실행");
         PrintAvailableMicrophones();
-        Y_VoiceManager.Instance.StartRecording(1, 100);
+        Y_VoiceManager.Instance.StartRecording(5, 100);
         yield return new WaitForSeconds(10f);
-        Y_VoiceManager.Instance.StopRecording(1, 1);
+        Y_VoiceManager.Instance.StopRecording(5, 1);
     }
 
     string mySelfIntroduce;
@@ -274,6 +274,8 @@ public class Y_HttpHotSeat : MonoBehaviour
 
     string GetCharacterName()
     {
+        Debug.LogError("핫시트컨트롤러있니? : " + GameObject.Find("HotSeatCanvas").GetComponent<Y_HotSeatController>());
+        Debug.LogError("캐릭터 네임스 있니? : " + GameObject.Find("HotSeatCanvas").GetComponent<Y_HotSeatController>().characterNames);
         Debug.LogError("캐릭터네임스 길이 : " + GameObject.Find("HotSeatCanvas").GetComponent<Y_HotSeatController>().characterNames.Length);
         //print("캐릭터 이름입니다 : " + Y_HotSeatController.Instance.characterNames[bookController.characterNum - 1].text);
         return GameObject.Find("HotSeatCanvas").GetComponent<Y_HotSeatController>().characterNames[bookController.characterNum - 1].text;
