@@ -6,7 +6,9 @@ using UnityEngine;
 
 public class K_MapQuizSetUp : MonoBehaviour
 {
+    // 수업자료
     ClassMaterial classMaterial;
+    // 퀴즈 문제, 선지, 정답
     public TMP_Text Question;
     public TMP_Text[] Choices;
     public TMP_Text answer;
@@ -44,7 +46,7 @@ public class K_MapQuizSetUp : MonoBehaviour
         quiz2Pos = GameObject.Find("RealQuiz_2").GetComponent<K_QuizPos>();
 
 
-        
+
         //if (classMaterial != null && classMaterial != null)
         //{
         //    GameObject quiz1 = PhotonNetwork.Instantiate("RealQuiz1", spawnMgr.quiz_spawnSize.Length, rotation);         
