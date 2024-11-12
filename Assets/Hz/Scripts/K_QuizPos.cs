@@ -44,11 +44,11 @@ public class K_QuizPos : MonoBehaviourPun
         // 퀴즈 셋업하는거 찾음 댐
         k_MapQuizSetUp = FindObjectOfType<K_MapQuizSetUp>();
 
-        if(k_MapQuizSetUp != null)
-        {
-            //k_MapQuizSetUp.UpdateQuiz1Text(Question, choices[].ToString());
-            //k_MapQuizSetUp.UpdateQuiz2Text(Question, choices[].ToString()); 
-        }
+        //if(k_MapQuizSetUp != null)
+        //{
+        //    k_MapQuizSetUp.UpdateQuiz1Text(Question, choices[].ToString());
+        //    k_MapQuizSetUp.UpdateQuiz2Text(Question, choices[].ToString());
+        //}
 
     }
     private void OnTriggerEnter(Collider other)
