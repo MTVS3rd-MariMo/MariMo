@@ -11,10 +11,10 @@ public class K_MapQuizSetUp : MonoBehaviour
     // 수업자료
     ClassMaterial classMaterial;
 
-    // 퀴즈 문제, 선지, 정답
-    public TMP_Text Question;
-    public TMP_Text[] Choices;
-    public TMP_Text answer;
+    //// 퀴즈 문제, 선지, 정답
+    //public TMP_Text Question;
+    //public TMP_Text[] Choices;
+    //public TMP_Text answer;
 
     // 퀴즈 안에 있는 스크립트
     K_QuizPos k_QuizPos;
@@ -101,7 +101,8 @@ public class K_MapQuizSetUp : MonoBehaviour
             quizPos.text_Choices[3].text = quiz.choices4;
 
             // 답
-            quizPos.text_Choices[3].text = answer.ToString();
+            int correctIndex = quiz.answer;
+            quizPos.text_Choices[3].text = correctIndex.ToString();
 
             Debug.Log("퀴즈 잘 들어감");
         }
