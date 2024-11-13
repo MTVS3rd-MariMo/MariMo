@@ -73,7 +73,7 @@ public class P_ObjectManager_Question : MonoBehaviourPun
 
     private void Update()
     {
-        if(answer_InputField.text.Length >= 50)
+        if(answer_InputField.text.Length >= 50 || PhotonNetwork.IsMasterClient)
         {
             BtnState(true);
         }

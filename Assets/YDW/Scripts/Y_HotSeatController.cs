@@ -1,4 +1,5 @@
-﻿using iTextSharp.text.html.simpleparser;
+﻿using Cinemachine;
+using iTextSharp.text.html.simpleparser;
 using iTextSharp.text.pdf;
 using Photon.Pun;
 using Photon.Pun.Demo.PunBasics;
@@ -65,6 +66,7 @@ public class Y_HotSeatController : MonoBehaviourPun
 
     public Button[] characterImages;
 
+    public CinemachineVirtualCamera virtualCamera;
 
     void Start()
     {
@@ -660,6 +662,8 @@ public class Y_HotSeatController : MonoBehaviourPun
         RPC_ActivateGuide(4);
         UnMuteAllPlayers(); ///////////// 원래는 RPC 였음!
         Y_SoundManager.instance.PlayBgmSound(Y_SoundManager.EBgmType.BGM_MAIN);
+
+        virtualCamera.gameObject.SetActive(false);
     }
 
     void RPC_ActivateGuide(int index)
