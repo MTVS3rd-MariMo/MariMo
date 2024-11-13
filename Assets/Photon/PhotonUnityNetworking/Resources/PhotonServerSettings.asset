@@ -87,7 +87,7 @@ MonoBehaviour:
   - GetPlayerObjects
   - AddUrls
   - InitializeQuiz
-  - UpdateQuizText
+  - StartQuestion
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 0

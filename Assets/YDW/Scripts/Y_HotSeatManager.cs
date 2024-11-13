@@ -57,7 +57,7 @@ public class Y_HotSeatManager : MonoBehaviourPun
     [PunRPC]
     void ActivateHotSeat()
     {
-        Y_SoundManager.instance.PlayEftSound(Y_SoundManager.ESoundType.EFT_3D_OBJECT_03);
+        //Y_SoundManager.instance.PlayEftSound(Y_SoundManager.ESoundType.EFT_3D_OBJECT_03);
         hotSeatCanvas.SetActive(true);
     }
 

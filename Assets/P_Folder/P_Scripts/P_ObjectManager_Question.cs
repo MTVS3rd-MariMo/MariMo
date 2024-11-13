@@ -4,6 +4,7 @@ using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.Playables;
@@ -136,6 +137,19 @@ public class P_ObjectManager_Question : MonoBehaviourPun
         photonView.RPC(nameof(MoveControl), RpcTarget.All, canmove);
     }
 
+
+    void RPC_StartQuestion()
+    {
+        photonView.RPC(nameof(StartQuestion), RpcTarget.All);
+    }
+
+    [PunRPC]
+    public void StartQuestion()
+    {
+        StartCoroutine(Question_UI_Start());
+
+        Ani_Object.SetActive(true);
+    }
 
     [PunRPC]
     void MoveControl(bool canmove)
