@@ -52,7 +52,7 @@ public class K_Drawing : MonoBehaviour
     {
         pen_Active = true;
         K_Erasing.erase_Active = false;
-        print("눌리니?");
+        //print("눌리니?");
 
     }
 
@@ -70,7 +70,7 @@ public class K_Drawing : MonoBehaviour
     {
         if (pen_Active)
         {
-            print("pen Activated!");
+            //print("pen Activated!");
             RectTransformUtility.ScreenPointToLocalPointInRectangle(paint_RT, Input.mousePosition, null, out currPosition);
             //currPosition.x = Mathf.Clamp((int)currPosition.x, 0, pixel_Width - 1);
             //currPosition.y = Mathf.Clamp((int)currPosition.y, 0, pixel_Height - 1);
@@ -107,9 +107,9 @@ public class K_Drawing : MonoBehaviour
         //print(brush_Height);
         //print(brush_Width);
 
-        for (int height_Plus = -4; height_Plus <= 4; height_Plus++)
+        for (int height_Plus = -3; height_Plus <= 3; height_Plus++)
         {
-            for (int width_Plus = -4; width_Plus <= 4; width_Plus++)
+            for (int width_Plus = -3; width_Plus <= 3; width_Plus++)
             {
                 if (brush_Height + height_Plus >= 0 && brush_Height + height_Plus < pixel_Height
                     && brush_Width + width_Plus >= 0 && brush_Width + width_Plus < pixel_Width)

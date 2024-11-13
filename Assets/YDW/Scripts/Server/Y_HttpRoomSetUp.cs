@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Photon.Pun;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -8,6 +9,11 @@ using UnityEngine.Networking;
 public class SendLessonId
 {
     public int lessonId;
+}
+
+public class SendMaterialId
+{
+    public int lessonMaterialId;
 }
 
 [Serializable]
@@ -32,13 +38,16 @@ public class ClassMaterial
     public List<string> lessonRoles;
 }
 
-public class Y_HttpRoomSetUp : MonoBehaviour
+public class Y_HttpRoomSetUp : MonoBehaviourPun
 {
     static Y_HttpRoomSetUp instance;
 
     public List<int> userList = new List<int>();
 
     public ClassMaterial realClassMaterial;
+
+    public int userlessonId;
+    public int classMaterialId;
 
 
     public static Y_HttpRoomSetUp GetInstance()
@@ -140,12 +149,11 @@ public class Y_HttpRoomSetUp : MonoBehaviour
 
     public string sendLessonIdUrl = "api/lesson/enter/";
 
-    public IEnumerator SendLessonId()
+    public IEnumerator SendLessonId(int id)
     {
         SendLessonId sendLessonId = new SendLessonId
         {
-            lessonId = 101
-            // 더미!!!!!
+            lessonId = userlessonId
         };
 
         // JSON 형식으로 변환
@@ -160,6 +168,9 @@ public class Y_HttpRoomSetUp : MonoBehaviour
             onComplete = (DownloadHandler downloadHandler) =>
             {
                 Debug.Log("레슨 아이디 보내기 성공: " + downloadHandler.text);
+
+                // 수업 데이터 받아오기
+                StartCoroutine(GetClassMaterial(id));
             }
         };
 
@@ -167,11 +178,23 @@ public class Y_HttpRoomSetUp : MonoBehaviour
         yield return StartCoroutine(Put(info));
     }
 
+    public void RPC_GetUserIds()
+    {
+        photonView.RPC("GetUserIds", RpcTarget.All);
+    }
+
+    [PunRPC]
+    public void GetUserIds()
+    {
+        StartCoroutine(GetUserIdList());
+    }
+
+    
     public IEnumerator GetUserIdList()
     {
         SendLessonId sendLessonId = new SendLessonId
         {
-            lessonId = 101 // 더미!!!!!
+            lessonId = userlessonId
         };
 
         string jsonBody = JsonUtility.ToJson(sendLessonId);
@@ -206,17 +229,18 @@ public class Y_HttpRoomSetUp : MonoBehaviour
 
     }
 
-    public IEnumerator GetClassMaterial()
+    public IEnumerator GetClassMaterial(int Id)
     {
-        SendLessonId sendLessonId = new SendLessonId
+        //print("외않되 " + Id);
+        SendMaterialId sendMaterialId = new SendMaterialId
         {
-            lessonId = 101 // 더미!!!!!
+            lessonMaterialId = Id // 더미!!!!!
         };
 
-        string jsonBody = JsonUtility.ToJson(sendLessonId);
+        string jsonBody = JsonUtility.ToJson(sendMaterialId);
         string requestUserListUrl = "api/lesson/";
 
-        using (UnityWebRequest webRequest = UnityWebRequest.Get(Y_HttpLogIn.GetInstance().mainServer + requestUserListUrl + sendLessonId.lessonId.ToString()))
+        using (UnityWebRequest webRequest = UnityWebRequest.Get(Y_HttpLogIn.GetInstance().mainServer + requestUserListUrl + sendMaterialId.lessonMaterialId.ToString()))
         {
             webRequest.downloadHandler = new DownloadHandlerBuffer(); // 서버가 다운로드 할 수 있는 공간 만듦
 
@@ -227,6 +251,8 @@ public class Y_HttpRoomSetUp : MonoBehaviour
             if (webRequest.result == UnityWebRequest.Result.Success)
             {
                 Debug.Log("수업자료 받아오기 성공: " + webRequest.downloadHandler.text);
+
+
 
                 // JSON 데이터 파싱
                 ClassMaterial classMaterial = JsonUtility.FromJson<ClassMaterial>(webRequest.downloadHandler.text);
@@ -245,6 +271,7 @@ public class Y_HttpRoomSetUp : MonoBehaviour
 
                 foreach(OpenQuestion openQuestion in classMaterial.openQuestions)
                 {
+                    print("열린 질문 아이디 : " + openQuestion.questionId);
                     print("열린 질문 : " + openQuestion.questionTitle);
                 }
 
@@ -254,6 +281,9 @@ public class Y_HttpRoomSetUp : MonoBehaviour
                 }
 
                 realClassMaterial = classMaterial;
+
+                StartCoroutine(GameObject.Find("BookCanvas").GetComponent<Y_BookController>().SplitTextIntoPages());
+
             }
             else
             {

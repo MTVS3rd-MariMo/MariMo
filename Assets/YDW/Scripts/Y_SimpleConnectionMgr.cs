@@ -50,7 +50,7 @@ public class Y_SimpleConnectionMgr : MonoBehaviourPunCallbacks
         // 방 생성 옵션
         RoomOptions roomOption = new RoomOptions();
         // 방에 들어 올 수 있는 최대 인원 설정
-        roomOption.MaxPlayers = 4;
+        roomOption.MaxPlayers = 5;
         // 로비에 방을 보이게 할것이니?
         roomOption.IsVisible = true;
         // 방에 참여를 할 수 있니?

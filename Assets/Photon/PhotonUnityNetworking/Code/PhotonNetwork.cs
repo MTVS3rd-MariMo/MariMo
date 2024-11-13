@@ -1,4 +1,4 @@
-// ----------------------------------------------------------------------------
+﻿// ----------------------------------------------------------------------------
 // <copyright file="PhotonNetwork.cs" company="Exit Games GmbH">
 //   PhotonNetwork Framework for Unity - Copyright (C) 2018 Exit Games GmbH
 // </copyright>
@@ -26,7 +26,8 @@ namespace Photon.Pun
     #if UNITY_EDITOR
     using UnityEditor;
     using System.IO;
-    #endif
+    using Org.BouncyCastle.Asn1;
+#endif
 
 
     public struct InstantiateParameters
@@ -3068,6 +3069,8 @@ namespace Photon.Pun
             PhotonNetwork.IsMessageQueueRunning = false;
             loadingLevelAndPausedNetwork = true;
             _AsyncLevelLoadingOperation = SceneManager.LoadSceneAsync(levelNumber,LoadSceneMode.Single);
+
+            //Debug.Log("LoadScene 완료");
         }
 
         /// <summary>This method wraps loading a level asynchronously and pausing network messages during the process.</summary>

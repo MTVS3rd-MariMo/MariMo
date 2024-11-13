@@ -8,35 +8,41 @@ using System;
 using ExitGames.Client.Photon;
 using Hashtable = ExitGames.Client.Photon.Hashtable;
 using UnityEngine.UI;
+using UnityEngine.Networking;
+using TMPro;
+using System.IO;
+using UnityEngine.SceneManagement;
+using Org.BouncyCastle.Bcpg;
 
 
 public class ConnectionManager : MonoBehaviourPunCallbacks
 {
     public GameObject roomPrefab;
     public Transform scrollContent;
-    //public GameObject[] panelList;
+    int lessonMaterialId = 0;
 
     List<RoomInfo> cachedRoomList = new List<RoomInfo>();
 
     void Start()
     {
         Screen.SetResolution(640, 480, FullScreenMode.Windowed);
+        Y_SoundManager.instance.PlayBgmSound(Y_SoundManager.EBgmType.BGM_LOGIN);
     }
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Alpha1)) StartLogin();
+        //if (Input.GetKeyDown(KeyCode.Alpha6)) CreateRoom("테스트", Y_HttpRoomSetUp.GetInstance().userlessonId, 1);
     }
 
     public void StartLogin()
     {
         
-        if (LobbyUIController.lobbyUI.input_nickName.text.Length > 0)
+        if (LobbyController.lobbyUI.input_nickName.text.Length > 0)
         {
             // 접속을 위한 설정
             PhotonNetwork.GameVersion = "1.0.0";
-            PhotonNetwork.NickName = LobbyUIController.lobbyUI.input_nickName.text;
-            PhotonNetwork.AutomaticallySyncScene = true;
+            PhotonNetwork.NickName = LobbyController.lobbyUI.input_nickName.text;
+            PhotonNetwork.AutomaticallySyncScene = false;
             print("접속 설정 완료");
 
             // 접속을 서버에 요청하기
@@ -45,7 +51,7 @@ public class ConnectionManager : MonoBehaviourPunCallbacks
                                                   // 마스터 서버: 유저들 간의 Match making 을 해주는 공간. 룸을 만들고 룸에 조인을 하고 룸의 플레이어끼리 플레이를 하는 식. 방장의 씬을 기준으로 설정하고 나의 씬에 동기화
             print("서버에 요청 중....");
 
-            LobbyUIController.lobbyUI.btn_login.interactable = false;
+            LobbyController.lobbyUI.btn_login.interactable = false;
             //int playerColor = LobbyUIController.lobbyUI.drop_playerColor.value;
             //PhotonNetwork.LocalPlayer.CustomProperties.Add("CHARACTER_COLOR", playerColor);
         }
@@ -57,7 +63,7 @@ public class ConnectionManager : MonoBehaviourPunCallbacks
         base.OnConnected();
 
         // 네임 서버에 접속이 완료되었음을 알려준다.
-        print(MethodInfo.GetCurrentMethod().Name + " is Call!");
+        //print(MethodInfo.GetCurrentMethod().Name + " is Call!");
     }
 
     public override void OnDisconnected(DisconnectCause cause)
@@ -65,7 +71,7 @@ public class ConnectionManager : MonoBehaviourPunCallbacks
         base.OnDisconnected(cause);
         // 실패 원인을 출력한다.
         Debug.LogError("Disconnected from Server - " + cause);
-        LobbyUIController.lobbyUI.btn_login.interactable = true;
+        LobbyController.lobbyUI.btn_login.interactable = true;
     }
 
     public override void OnConnectedToMaster()
@@ -73,7 +79,7 @@ public class ConnectionManager : MonoBehaviourPunCallbacks
         base.OnConnectedToMaster();
 
         // 마스터 서버에 접속이 완료되었음을 알려준다.
-        print(MethodInfo.GetCurrentMethod().Name + " is Call!");
+        //print(MethodInfo.GetCurrentMethod().Name + " is Call!");
 
         // 서버의 로비로 들어간다.
         PhotonNetwork.JoinLobby();
@@ -105,53 +111,80 @@ public class ConnectionManager : MonoBehaviourPunCallbacks
         base.OnJoinedLobby();
 
         // 서버 로비에 들어갔음을 알려준다.
-        print(MethodInfo.GetCurrentMethod().Name + " is Call!");
-        LobbyUIController.lobbyUI.ShowRoomPanel();
-        CreateRoom();
+        //print(MethodInfo.GetCurrentMethod().Name + " is Call!");
+        //LobbyController.lobbyUI.ShowRoomPanel();
     }
 
-    public void CreateRoom()
-    {
-        //string roomName = LobbyUIController.lobbyUI.roomSetting[0].text;
-        //int playerCount = Convert.ToInt32(LobbyUIController.lobbyUI.roomSetting[1].text);
-        string roomName = "마리모"; /////////////////////////////////// To. 효근 : 나중에 선생님이 입력한 Inputbox.text 값으로 바꿔놓으면 됨!
-        int playerCount = 4;
+    //public void CreateRoom(string roomname)
+    //{
+    //    //string roomName = LobbyUIController.lobbyUI.roomSetting[0].text;
+    //    //int playerCount = Convert.ToInt32(LobbyUIController.lobbyUI.roomSetting[1].text);
+    //    string roomName = roomname; /////////////////////////////////// To. 효근 : 나중에 선생님이 입력한 Inputbox.text 값으로 바꿔놓으면 됨!
+    //    int playerCount = 5;
 
-        if (roomName.Length > 0 && playerCount > 1)
-        {
-            // 나의 룸을 만든다.
-            RoomOptions roomOpt = new RoomOptions();
-            roomOpt.MaxPlayers = playerCount;
-            roomOpt.IsOpen = true;
-            roomOpt.IsVisible = true;
+    //    if (roomName.Length > 0 && playerCount > 1)
+    //    {
+    //        // 나의 룸을 만든다.
+    //        RoomOptions roomOpt = new RoomOptions();
+    //        roomOpt.MaxPlayers = playerCount;
+    //        roomOpt.IsOpen = true;
+    //        roomOpt.IsVisible = true;
 
-            // 룸의 커스텀 정보를 추가한다.
-            // - 선택한 맵 번호를 룸 정보에 추가한다.
-            // 키 값 등록하기
-            roomOpt.CustomRoomPropertiesForLobby = new string[] {"MASTER_NAME", "ROOM_ID"}; // , "PASSWORD", "SCENE_NUMBER"
+    //        // 룸의 커스텀 정보를 추가한다.
+    //        // - 선택한 맵 번호를 룸 정보에 추가한다.
+    //        // 키 값 등록하기
+    //        roomOpt.CustomRoomPropertiesForLobby = new string[] { "MASTER_NAME", "ROOM_ID" }; // , "PASSWORD", "SCENE_NUMBER"
 
-            // 키에 맞는 해시 테이블 추가하기
-            Hashtable roomTable = new Hashtable();
-            roomTable.Add("MASTER_NAME", PhotonNetwork.NickName);
+    //        // 키에 맞는 해시 테이블 추가하기
+    //        Hashtable roomTable = new Hashtable();
+    //        roomTable.Add("MASTER_NAME", PhotonNetwork.NickName);
 
-            // 서버에서 Room_ID 받아오고 -> 받아올 때까지 기다려
-            // 해시테이블에 추가
+    //        // 서버에서 Room_ID 받아오고 -> 받아올 때까지 기다려
+    //        // 해시테이블에 추가
 
-            //roomTable.Add("PASSWORD", 1234);
-            //roomTable.Add("SCENE_NUMBER", LobbyUIController.lobbyUI.drop_mapSelection.value + 2);
-            roomOpt.CustomRoomProperties = roomTable;
+    //        //roomTable.Add("PASSWORD", 1234);
+    //        //roomTable.Add("SCENE_NUMBER", LobbyUIController.lobbyUI.drop_mapSelection.value + 2);
+    //        roomOpt.CustomRoomProperties = roomTable;
 
-            PhotonNetwork.CreateRoom(roomName, roomOpt, TypedLobby.Default);
-            
-        }
-    }
+    //        PhotonNetwork.CreateRoom(roomName, roomOpt, TypedLobby.Default);
+
+    //    }
+    //}
+
+    //public void CreateRoom(string roomname, int lessonId, int lessonMaterialNum)
+    //{
+    //    string roomName = roomname;
+    //    int playerCount = 5;
+
+    //    if (roomName.Length > 0 && playerCount > 1)
+    //    {
+    //        // 나의 룸을 만든다.
+    //        RoomOptions roomOpt = new RoomOptions();
+    //        roomOpt.MaxPlayers = playerCount;
+    //        roomOpt.IsOpen = true;
+    //        roomOpt.IsVisible = true;
+
+    //        // 룸의 커스텀 정보를 추가한다.
+    //        // - 선택한 맵 번호를 룸 정보에 추가한다.
+    //        // 키 값 등록하기
+    //        // 키에 맞는 해시 테이블 추가하기
+    //        Hashtable roomTable = new Hashtable();
+    //        roomTable.Add("MASTER_NAME", PhotonNetwork.NickName);
+    //        roomTable.Add("lessonId", lessonId.ToString());
+    //        roomTable.Add("lessonMaterialId", lessonMaterialNum.ToString());
+    //        roomOpt.CustomRoomPropertiesForLobby = new string[] { "MASTER_NAME", "lessonId", "lessonMaterialId" };
+    //        roomOpt.CustomRoomProperties = roomTable;
+
+    //        PhotonNetwork.CreateRoom(roomName, roomOpt, TypedLobby.Default);
+    //    }
+    //}
 
     public void JoinRoom()
     {
         // Join 관련 패널을 활성화한다.
         //ChangePanel(1, 2);
 
-        PhotonNetwork.LoadLevel(1);
+        //PhotonNetwork.LoadLevel(1);
 
         // 수업에 들어온 유저가 서버에 본인의 userId를 보낸다.
 
@@ -164,16 +197,6 @@ public class ConnectionManager : MonoBehaviourPunCallbacks
 
     }
 
-    /// <summary>
-    /// 패널의 변경을 하기 위한 함수
-    /// </summary>
-    /// <param name="offIndex">꺼야될 패널 인덱스</param>
-    /// <param name="onIndex">켜야될 패널 인덱스</param>
-    //void ChangePanel(int offIndex, int onIndex)
-    //{
-    //    panelList[offIndex].SetActive(false);
-    //    panelList[onIndex].SetActive(true);
-    //}
 
     public override void OnCreatedRoom()
     {
@@ -181,7 +204,7 @@ public class ConnectionManager : MonoBehaviourPunCallbacks
 
         // 성공적으로 방이 개설되었음을 알려준다.
         print(MethodInfo.GetCurrentMethod().Name + " is Call!");
-        LobbyUIController.lobbyUI.PrintLog("방 만들어짐!");
+        LobbyController.lobbyUI.PrintLog("방 만들어짐!");
     }
 
     public override void OnJoinedRoom()
@@ -190,11 +213,20 @@ public class ConnectionManager : MonoBehaviourPunCallbacks
 
         // 성공적으로 방에 입장되었음을 알려준다.
         print(MethodInfo.GetCurrentMethod().Name + " is Call!");
-        LobbyUIController.lobbyUI.PrintLog("방에 입장 성공!");
+        //LobbyController.lobbyUI.PrintLog("방에 입장 성공!");
 
-        // 방에 입장한 친구들은 모두 1번 씬으로 이동하자!
-       
+
+
         PhotonNetwork.LoadLevel(1);
+
+        //StartCoroutine(Test());
+    }
+
+    IEnumerator Test()
+    {
+        yield return new WaitForSeconds(5f);
+
+        
     }
 
     public override void OnJoinRoomFailed(short returnCode, string message)
@@ -203,8 +235,8 @@ public class ConnectionManager : MonoBehaviourPunCallbacks
 
         // 룸에 입장이 실패한 이유를 출력한다.
         Debug.LogError(message);
-        LobbyUIController.lobbyUI.PrintLog("입장 실패..." + message);
-        
+        LobbyController.lobbyUI.PrintLog("입장 실패..." + message);
+
     }
 
     // 룸에 다른 플레이어가 입장했을 때의 콜백 함수
@@ -213,7 +245,13 @@ public class ConnectionManager : MonoBehaviourPunCallbacks
         base.OnPlayerEnteredRoom(newPlayer);
 
         string playerMsg = $"{newPlayer.NickName}님이 입장하셨습니다.";
-        LobbyUIController.lobbyUI.PrintLog(playerMsg);
+        LobbyController.lobbyUI.PrintLog(playerMsg);
+
+        if(PhotonNetwork.CurrentRoom.PlayerCount == 5)
+        {
+            // 포톤 RPC로 전체 호출
+            StartCoroutine(Y_HttpRoomSetUp.GetInstance().GetUserIdList());
+        }
     }
 
     // 룸에 있던 다른 플레이어가 퇴장했을 때의 콜백 함수
@@ -222,12 +260,17 @@ public class ConnectionManager : MonoBehaviourPunCallbacks
         base.OnPlayerLeftRoom(otherPlayer);
 
         string playerMsg = $"{otherPlayer.NickName}님이 퇴장하셨습니다.";
-        LobbyUIController.lobbyUI.PrintLog(playerMsg);
+        LobbyController.lobbyUI.PrintLog(playerMsg);
     }
+
+
+    public GameObject[] buttons;
 
     // 현재 로비에서 룸의 변경사항을 알려주는 콜백 함수
     public override void OnRoomListUpdate(List<RoomInfo> roomList)
     {
+        if (Y_HttpLogIn.GetInstance().isTeacher) return;
+
         base.OnRoomListUpdate(roomList);
 
         foreach(RoomInfo room in roomList)
@@ -252,26 +295,43 @@ public class ConnectionManager : MonoBehaviourPunCallbacks
             }
         }
 
-        // 기존의 모든 방 정보를 삭제한다.
-        for(int i=0; i< scrollContent.childCount; i++)
-        {
-            Destroy(scrollContent.GetChild(i).gameObject);
-        }
-
         foreach (RoomInfo room in cachedRoomList)
         {
-            // cachedRoomList에 있는 모든 방을 만들어서 스크롤뷰에 추가한다.
-            GameObject go = Instantiate(roomPrefab, scrollContent);
-            RoomPanel roomPanel = go.GetComponent<RoomPanel>();
-            roomPanel.SetRoomInfo(room);
-            // 버튼에 방 입장 기능 연결하기
-
-            roomPanel.btn_Room.onClick.AddListener(() =>
+            for(int i = 0; i < 3; i++)
             {
-                PhotonNetwork.JoinRoom(room.Name);
-            });
+                buttons[i].GetComponent<Button>().onClick.RemoveAllListeners();
+
+                if (cachedRoomList.Count > i)
+                {
+                    buttons[i].SetActive(true);
+                    buttons[i].GetComponentInChildren<TMP_Text>().text = room.Name;
+
+                    // 버튼에 방 입장 기능 연결하기
+                    buttons[i].GetComponent<Button>().onClick.AddListener(() =>
+                    {
+                        PhotonNetwork.JoinRoom(room.Name);
+                    });
+                }
+            }
+
+
+            // cachedRoomList에 있는 모든 방을 만들어서 스크롤뷰에 추가한다.
+            //GameObject go = Instantiate(roomPrefab, scrollContent);
+            //RoomPanel roomPanel = go.GetComponent<RoomPanel>();
+            //roomPanel.SetRoomInfo(room);
+
+            
 
         }
+    }
+
+    public override void OnLeftRoom()
+    {
+        base.OnLeftRoom();
+
+        SceneManager.LoadScene(0);
+
+        Y_HttpLogIn.GetInstance().ReturnLobby();
     }
 
 }

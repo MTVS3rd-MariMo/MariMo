@@ -20,13 +20,15 @@ public class Y_PlayerMove : MonoBehaviour, IPunObservable
 
     public GameObject test;
 
-    PhotonView pv;
+    public PhotonView pv;
     Vector3 myPos;
 
     public bool movable = false;
 
     PhotonVoiceView voiceView;
     Y_PlayerVoice playerVoice;
+
+    public bool isFive;
 
     private void Awake()
     {
@@ -42,7 +44,6 @@ public class Y_PlayerMove : MonoBehaviour, IPunObservable
         //conn = GetComponent<CharacterController>();
         layerMaskGround = LayerMask.GetMask("Ground");
         agent.updateRotation = false;
-
     }
 
     void Update()
@@ -54,6 +55,12 @@ public class Y_PlayerMove : MonoBehaviour, IPunObservable
         else
         {
             // 친구들을 기다리고 있어요! UI
+        }
+
+        if (pv.Owner.IsMasterClient && isFive)
+        {
+            //Debug.LogError("playerAverage 널이니??? : " + (GetComponent<Y_SetCamera>().playerAverage == null)); -> False
+            gameObject.transform.position = GetComponent<Y_SetCamera>().playerAverage.position;
         }
     }
 

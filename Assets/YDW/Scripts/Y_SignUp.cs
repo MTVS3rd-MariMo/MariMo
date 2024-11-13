@@ -3,6 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
+using WebSocketSharp;
 
 
 
@@ -15,6 +17,15 @@ public class Y_SignUp : MonoBehaviour
     public GameObject signUpUI;
     public GameObject logInUI;
     public GameObject titleUI;
+    public GameObject creatorUI;
+
+    #region Button Sprite
+
+    public GameObject[] teacherOrStudent;
+    public Button[] buttons;
+    public List<Sprite> sprites = new List<Sprite>();
+
+    #endregion
 
     public static Y_SignUp signUp;
 
@@ -30,35 +41,75 @@ public class Y_SignUp : MonoBehaviour
         }
     }
 
+    private void Update()
+    {
+        if (!isTeacher && (String.IsNullOrEmpty(signUpInputs[0].text) || String.IsNullOrEmpty(signUpInputs[1].text) 
+            || String.IsNullOrEmpty(signUpInputs[2].text) || String.IsNullOrEmpty(signUpInputs[3].text) 
+            || String.IsNullOrEmpty(signUpInputs[4].text) || String.IsNullOrEmpty(signUpInputs[5].text)))
+        {
+            buttons[2].GetComponent<Image>().sprite = sprites[4];
+            buttons[2].interactable = false;
+            return;
+        }
+        else if (isTeacher && (String.IsNullOrEmpty(signUpInputs[0].text) || String.IsNullOrEmpty(signUpInputs[6].text)
+            || String.IsNullOrEmpty(signUpInputs[7].text) || String.IsNullOrEmpty(signUpInputs[4].text)
+            || String.IsNullOrEmpty(signUpInputs[5].text)))
+        {
+            buttons[2].GetComponent<Image>().sprite = sprites[4];
+            buttons[2].interactable = false;
+            return;
+        }
+        else
+        {
+            buttons[2].GetComponent<Image>().sprite = sprites[5];
+            buttons[2].interactable = true;
+        }
+    }
+
     public void ClickStudent()
     {
         isTeacher = false;
+        buttons[0].GetComponent<Image>().sprite = sprites[1];
+        buttons[1].GetComponent<Image>().sprite = sprites[2];
+        teacherOrStudent[0].SetActive(true);
+        teacherOrStudent[1].SetActive(false);
     }
 
     public void ClickTeacher()
     {
         isTeacher = true;
+        buttons[0].GetComponent<Image>().sprite = sprites[0];
+        buttons[1].GetComponent<Image>().sprite = sprites[3];
+        teacherOrStudent[0].SetActive(false);
+        teacherOrStudent[1].SetActive(true);
     }
+
+    string username;
+    string password;
+    string school;
+
+    string grade;
+    string className;
+    string studentNumber;
 
     public void ClickConfirm()
     {
-        string username = signUpInputs[4].text;
-        string password = signUpInputs[5].text;
-        string school = signUpInputs[0].text;
-        string grade = signUpInputs[1].text;
-        string className = signUpInputs[2].text;
-        string studentNumber = signUpInputs[3].text;
+        username = signUpInputs[4].text;
+        password = signUpInputs[5].text;
+        school = signUpInputs[0].text;
 
-        if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password))
+        grade = signUpInputs[1].text;
+        className = signUpInputs[2].text;
+        studentNumber = signUpInputs[3].text;
+
+        if (isTeacher)
         {
-            Debug.LogError("입력 안 한 거 있음!!");
-            // UI에 에러 메시지 표시
-            return;
+            grade = signUpInputs[6].text;
+            className = signUpInputs[7].text;
+            studentNumber = "1";
         }
-        else
-        {
-            StartCoroutine(Y_HttpLogIn.GetInstance().SignUpCoroutine(username, password, school, Int32.Parse(grade), Int32.Parse(className), Int32.Parse(studentNumber), isTeacher));
-        }
+
+        StartCoroutine(Y_HttpLogIn.GetInstance().SignUpCoroutine(username, password, school, Int32.Parse(grade), Int32.Parse(className), Int32.Parse(studentNumber), isTeacher));
 
         signUpUI.SetActive(false);
         logInUI.SetActive(true);

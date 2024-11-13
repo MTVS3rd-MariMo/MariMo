@@ -3,6 +3,8 @@ using Photon.Pun;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Y_SetCamera : MonoBehaviour
@@ -17,6 +19,11 @@ public class Y_SetCamera : MonoBehaviour
     public ThirdPersonCamera tpc;
 
     Y_PlayerMove playerMove;
+    private void Awake()
+    {
+        // 플레이어간의 평균값 찾기
+        playerAverage = GameObject.Find("PlayerAverage").transform;
+    }
 
     // Start is called before the first frame update
     void Start()
@@ -29,9 +36,6 @@ public class Y_SetCamera : MonoBehaviour
         // 버츄얼 카메라 찾기
         tpc = FindObjectOfType<ThirdPersonCamera>();
 
-        // 플레이어간의 평균값 찾기
-        playerAverage = GameObject.Find("PlayerAverage").transform;
-
         if (playerAverage == null)
         {
             Debug.LogError("PlayerAverage 오브젝트를 찾을 수 없습니다.");
@@ -42,11 +46,11 @@ public class Y_SetCamera : MonoBehaviour
             if (mainCamera != null)
             {
                 cameraTransform = mainCamera.transform;
-                print("메인 카메라 있다");
+                //print("메인 카메라 있다");
             }
             else
             {
-                print("메인 카메라 내놔");
+                //print("메인 카메라 내놔");
             }
 
             if (tpc != null)
@@ -55,20 +59,25 @@ public class Y_SetCamera : MonoBehaviour
             }
             else
             {
-                print("버츄얼 카메라 내놔");
+                //print("버츄얼 카메라 내놔");
             }
 
 
         }
+
+        Y_GameManager.instance.SetPlayerObject(pv);
     }
+
+    public bool isFive = false;
+    public GameObject[] students = new GameObject[5];
+
 
     // Update is called once per frame
     void Update()
     {
-        if (PhotonNetwork.CurrentRoom.PlayerCount == 4)
+        if (isFive && pv.IsMine)
         {
             UpdateCameraPosition();
-            //playerMove.movable = true;
         }
     }
 
@@ -88,22 +97,10 @@ public class Y_SetCamera : MonoBehaviour
 
         // 모든 플레이어의 위치 가져오기
         Vector3[] playerPositions = new Vector3[4];
-        int index = 0;
-
-        foreach (var player in PhotonNetwork.PlayerList)
+        for(int i = 1; i <= playerPositions.Length; i++)
         {
-            GameObject playerObject = FindPlayerObjectByActorNumber(player.ActorNumber);
-            if (playerObject != null)
-            {
-                playerPositions[index] = playerObject.transform.position;
-                index++;
-            }
-        }
-
-        if (index == 0)
-        {
-            Debug.LogWarning("플레이어를 찾지 못했습니다.");
-            return;
+            //Debug.LogWarning("students == Null ? " + (students[i] == null) + " 이 때 i 는 몇? : " + i);
+            playerPositions[i-1] = Y_GameManager.instance.students[i].transform.position;
         }
 
         // 플레이어들의 평균 위치 계산
@@ -121,15 +118,23 @@ public class Y_SetCamera : MonoBehaviour
         tpc.SetPlayer(playerAverage);
     }
 
-    private GameObject FindPlayerObjectByActorNumber(int actorNumber)
+    public PhotonView FindPlayerObjectByActorNumber(int actorNumber)
     {
-        foreach (PhotonView view in FindObjectsOfType<PhotonView>())
+        PhotonView pview = null;
+        Y_PlayerMove[] playerMoves = FindObjectsOfType<Y_PlayerMove>();
+        
+        for (int i = 0; i < playerMoves.Length; i++)
         {
-            if (view.Owner != null && view.Owner.ActorNumber == actorNumber)
+            Debug.LogError(playerMoves.Length + " i : " + i);
+            Debug.LogError("view.pv.Owner 는? : " + (playerMoves[i].GetComponent<PhotonView>().Owner != null) 
+                + " view.pv.Owner.ActorNumber 는? : " + (playerMoves[i].GetComponent<PhotonView>().Owner.ActorNumber == actorNumber) 
+                + " 이 때 ActorNum 은? : " + (playerMoves[i].pv.Owner.ActorNumber));
+            if (playerMoves[i].GetComponent<PhotonView>().Owner != null && (playerMoves[i].GetComponent<PhotonView>().Owner.ActorNumber == actorNumber))
             {
-                return view.gameObject;
+                Debug.LogError("반환했다~!");
+                pview = playerMoves[i].GetComponent<PhotonView>();
             }
         }
-        return null;
+        return pview;
     }
 }

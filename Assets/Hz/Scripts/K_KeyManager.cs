@@ -4,6 +4,11 @@ using UnityEngine;
 
 public class K_KeyManager : MonoBehaviour
 {
+    // 펜스
+    private Animation anim;
+    public GameObject Fence;
+    public GameObject particle_Destroy;
+
     // 열린 질문 활동 끝났는가
     public bool isDoneOpenQnA = false;
     // 퀴즈1 끝났는가 
@@ -11,7 +16,7 @@ public class K_KeyManager : MonoBehaviour
     // 퀴즈2 끝났는가
     public bool isDoneQuiz_2 = false;
     // 핫시팅 끝났는가 
-    public bool isDoneHotSitting = false;
+    public bool isDoneHotSeating = false;
 
     // 획득한 총 열쇠 개수
     public int totalKeys = 0;
@@ -26,7 +31,7 @@ public class K_KeyManager : MonoBehaviour
 
     // 사용시
     // Hot Sitting 활동 완료 시 KeyManager의 bool 값을 true로 설정
-    //K_KeyManager.Instance.isDoneHotSitting = true;
+    //K_KeyManager.Instance.isDoneHotSeating = true;
 
     private void Awake()
     {
@@ -39,6 +44,12 @@ public class K_KeyManager : MonoBehaviour
         {
             Destroy(this.gameObject);
         }
+    }
+
+    private void Start()
+    {
+        anim = GetComponent<Animation>();
+        anim.enabled = false;
     }
 
     void Update()
@@ -55,10 +66,10 @@ public class K_KeyManager : MonoBehaviour
             isDoneQuiz_1 = false;
         }
 
-        if (isDoneHotSitting)
+        if (isDoneHotSeating)
         {
             GetKey();
-            isDoneHotSitting = false;
+            isDoneHotSeating = false;
         }
 
         if (isDoneQuiz_2)
@@ -77,6 +88,9 @@ public class K_KeyManager : MonoBehaviour
 
             // 여기도 코루틴써야하나 (왕 열쇠 띄워주는 함수..?)
             StartCoroutine(UnlockBarrierAfterKeyUI());
+
+            
+
         }
     }
 
@@ -93,7 +107,7 @@ public class K_KeyManager : MonoBehaviour
 
 
         // 열쇠 아이콘 업데이트 함수
-        K_KeyUiManager.instance.UpdateKeyUI(totalKeys);
+        //K_KeyUiManager.instance.UpdateKeyUI(totalKeys);
         print("열쇠 획득! 현재 열쇠 갯수 : " + totalKeys);
         
     }
@@ -119,16 +133,23 @@ public class K_KeyManager : MonoBehaviour
         // 열린질문
         if (isDoneOpenQnA)
         {
+            // 열린질문 성공 ui 띄워주고
+            //K_KeyUiManager.instance.keyImages[0].gameObject.SetActive(true);
             K_KeyUiManager.instance.img_QuestionBookmark.gameObject.SetActive(true);
             yield return new WaitForSeconds(2f);
             K_KeyUiManager.instance.img_QuestionBookmark.gameObject.SetActive(false);
+            yield return new WaitForSeconds(1f);
+            K_KeyUiManager.instance.keyImages[0].gameObject.SetActive(true);
+
         }
         // 핫시팅
-        if (isDoneHotSitting)
+        if (isDoneHotSeating)
         {
             K_KeyUiManager.instance.img_HotSeatBookmark.gameObject.SetActive(true);
             yield return new WaitForSeconds(2f);
             K_KeyUiManager.instance.img_HotSeatBookmark.gameObject.SetActive(false);
+            yield return new WaitForSeconds(1f);
+            K_KeyUiManager.instance.keyImages[1].gameObject.SetActive(true);
         }
         // 퀴즈1
         if (isDoneQuiz_1)
@@ -136,6 +157,8 @@ public class K_KeyManager : MonoBehaviour
             K_KeyUiManager.instance.img_Quiz1Bookmark.gameObject.SetActive(true);
             yield return new WaitForSeconds(2f);
             K_KeyUiManager.instance.img_Quiz1Bookmark.gameObject.SetActive(false);
+            yield return new WaitForSeconds(1f);
+            K_KeyUiManager.instance.keyImages[2].gameObject.SetActive(true);
         }
         // 퀴즈2
         if (isDoneQuiz_2)
@@ -143,6 +166,8 @@ public class K_KeyManager : MonoBehaviour
             K_KeyUiManager.instance.img_Quiz2Bookmark.gameObject.SetActive(true);
             yield return new WaitForSeconds(2f);
             K_KeyUiManager.instance.img_Quiz2Bookmark.gameObject.SetActive(false);
+            yield return new WaitForSeconds(1f);
+            K_KeyUiManager.instance.keyImages[3].gameObject.SetActive(true);
         }
 
     }
@@ -152,6 +177,14 @@ public class K_KeyManager : MonoBehaviour
     {
         K_KeyUiManager.instance.EndKeyUi();
         yield return new WaitForSeconds(1f);
+
+        // 애니메이션 !!!!!!!!!!!!!!!!!!!!
+        anim.enabled = true;
+        anim.Play("Fence_Animation");
+        particle_Destroy.gameObject.SetActive(true);
+
+        yield return new WaitForSeconds(1.5f);
+
         OpenBarrier();
     }
 

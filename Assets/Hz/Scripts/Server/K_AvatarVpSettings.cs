@@ -7,6 +7,18 @@ using UnityEngine.Video;
 
 public class K_AvatarVpSettings : MonoBehaviourPun
 {
+    // 상태전환
+    private enum AnimState
+    {
+        Idle,
+        Walk
+    }
+    // 기본 셋팅 Idle 상태
+    private AnimState currState = AnimState.Idle;
+
+    private string idleUrl;
+    private string walkUrl;
+
     PhotonView pv;
     int index;
     string name;
@@ -21,14 +33,33 @@ public class K_AvatarVpSettings : MonoBehaviourPun
     public VideoClip[] videoClips;
     public Sprite[] images;
 
+    // 걷냐
+    private bool isWalking = false;
+
     void Start()
     {
         pv = GetComponent<PhotonView>();
         bookController = GameObject.Find("BookCanvas").GetComponent<Y_BookController>();
-        bookController.AddPlayer(pv);
+        bookController.AddAllPlayer(pv);
         index = pv.Owner.ActorNumber - 1;
         name = pv.Owner.NickName;
-        print(PhotonNetwork.LocalPlayer.ActorNumber);
+        //print(PhotonNetwork.LocalPlayer.ActorNumber);
+
+    }
+
+    private void Update()
+    {
+        // W, A, S, D 중 하나라도 눌려 있으면 walk 상태로 설정
+        if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.D))
+        {
+            // Walk 상태
+            SetWalkingState(true);
+        }
+        else
+        {
+            // Idle 상태
+            SetWalkingState(false);
+        }
     }
 
     public void RPC_SelectCharNum(int characterIndex)
@@ -49,7 +80,8 @@ public class K_AvatarVpSettings : MonoBehaviourPun
     {
 
         avatarIndex = characterIndex - 1;
-        vp.clip = videoClips[avatarIndex];
+        // 원래 videClips[avatarIndex]
+        vp.clip = videoClips[avatarIndex - 1];
 
         // Debug
         if(avatarIndex < 0 || avatarIndex >= renderTextures.Length)
@@ -76,25 +108,89 @@ public class K_AvatarVpSettings : MonoBehaviourPun
         //print("renderTexture" + renderTextures[avatarIndex]);
     }
 
+    // 서버에서 전달받은 비디오 URL 적용
 
-    // 서버에서 전달받은 이미지와 비디오 URL 적용
-
-    // 이미지 다운로드 적용
     // MP4 다운로드 및 적용
-    public void SetVideoPath(string videoPath, int actorNumber)
+    public void SetVideoPath(/*string videoPath*/ string idlePath, string walkPath, int actorNumber)
     {
-        //int actorNumber = PhotonNetwork.LocalPlayer.ActorNumber - 1;
-
         int adjustActorNumber = actorNumber - 1;
 
-        if (vp != null)
+        print("adjustActorNum 뭐니? " + adjustActorNumber);
+
+        if (vp != null && adjustActorNumber >= 0 && adjustActorNumber <= 3)
         {
-            vp.url = videoPath;
-            rawImage.texture = vp.targetTexture = renderTextures[adjustActorNumber];
-            //vp.clip = videoClips[actorNumber];
-            vp.Play();
+            if (idlePath != null)
+            {
+                idleUrl = idlePath;
+                print("idleUrl 은 머야 " + idleUrl);
+            }
+
+            if(walkPath != null)
+            {
+                walkUrl = walkPath;
+                print("walkUrl 은 머야 " + walkUrl);
+            }
+
+            // 연산자 사용해보기
+            //print(videoPath);
+            vp.targetTexture = renderTextures[adjustActorNumber];
+            rawImage.material = new Material(rawImage.material);
+            rawImage.material.mainTexture = vp.targetTexture;
+            vp.prepareCompleted += OnVideoPrepared;
+            print("준비됐나요? ");
+            //PlayCurrAnim();
         }
+
+
+
+        //// ?????????????????
+        ////int actorNumber = PhotonNetwork.LocalPlayer.ActorNumber - 1;
+
+        //int adjustActorNumber = actorNumber - 1;
+        ////print("알려줘" + adjustActorNumber);
+
+        //if (vp != null && adjustActorNumber >= 0 && adjustActorNumber <= 3)
+        //{
+        //    // 연산자 사용해보기
+        //    //print(videoPath);
+        //    rawImage.texture = vp.targetTexture = renderTextures[adjustActorNumber];
+        //    vp.Play();
+        //}
     }
+
+    public void SetWalkingState(bool walking)
+    {
+        isWalking = walking;
+        if(walking && currState == AnimState.Idle)
+        {
+            vp.url = idleUrl;
+            vp.Play();
+            currState = isWalking ? AnimState.Walk : AnimState.Idle;
+            print("걷기로 전환");
+        }
+        else if(!walking && currState == AnimState.Walk)
+        {
+            vp.url = walkUrl;
+            currState = isWalking ? AnimState.Walk : AnimState.Idle;
+            vp.Play();
+            print("대기로 전환");
+
+        }
+
+        //PlayCurrAnim();
+
+        //print("SetWalkingState?");
+    }
+
+    public void PlayCurrAnim()
+    {
+        vp.url = currState == AnimState.Idle ? idleUrl : walkUrl;
+        //vp.Prepare();
+
+        //print("PlayAnim?");
+    }
+
+
 
     private void OnVideoPrepared(VideoPlayer source)
     {

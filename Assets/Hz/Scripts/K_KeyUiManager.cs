@@ -110,4 +110,16 @@ public class K_KeyUiManager : MonoBehaviour
         yield return new WaitForSeconds(delay);
         img_doorOpen.gameObject.SetActive(false);
     }
+
+
+    /// <summary>
+    /// /////////시연용
+    /// </summary>
+    private void Update()
+    {
+        if(Input.GetKeyDown(KeyCode.Alpha0))
+        {
+            K_KeyManager.instance.isDoneQuiz_2 = true;
+        }
+    }
 }

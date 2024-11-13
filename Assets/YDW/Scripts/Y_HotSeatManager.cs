@@ -5,25 +5,27 @@ using UnityEngine;
 
 public class Y_HotSeatManager : MonoBehaviourPun
 {
-    public static Y_HotSeatManager Instance { get; private set; }
+    //public static Y_HotSeatManager Instance { get; private set; }
 
     float triggerNum = 0;
     bool act = false;
     List<GameObject> players = new List<GameObject>();
     public GameObject hotSeatCanvas;
 
+    // 애니메이션 오브젝트
+    public GameObject Ani_Object;
     private void Awake()
     {
-        // Singleton 인스턴스 설정
-        if (Instance == null)
-        {
-            Instance = this;
-            DontDestroyOnLoad(gameObject);
-        }
-        else
-        {
-            Destroy(gameObject);
-        }
+        //// Singleton 인스턴스 설정
+        //if (Instance == null)
+        //{
+        //    Instance = this;
+        //    DontDestroyOnLoad(gameObject);
+        //}
+        //else
+        //{
+        //    Destroy(gameObject);
+        //}
     }
 
     private void OnTriggerEnter(Collider other)
@@ -43,19 +45,30 @@ public class Y_HotSeatManager : MonoBehaviourPun
                 //hotSeatCanvas.SetActive(true);
 
                 MoveControl(false);
+
+                StartCoroutine(AniDelay());
             }
         }
     }
 
     void RPC_ActivateHotSeat()
     {
+        Debug.LogError("RPC Hot Seat 했다");
         photonView.RPC(nameof(ActivateHotSeat), RpcTarget.All);
     }
 
     [PunRPC]
     void ActivateHotSeat()
     {
+        //Debug.LogError("Activate Hot Seat 했다");
         hotSeatCanvas.SetActive(true);
+    }
+
+    IEnumerator AniDelay()
+    {
+        yield return new WaitForSeconds(1.5f);
+
+        Ani_Object.SetActive(true);
     }
 
 

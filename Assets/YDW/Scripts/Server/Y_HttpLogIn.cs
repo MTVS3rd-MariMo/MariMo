@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Org.BouncyCastle.Asn1.Ocsp;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -16,6 +17,19 @@ public class SignUpData
     public string password;
 }
 
+[System.Serializable]
+public class ResponseData
+{
+    public string userId;
+    public string role;
+}
+
+public enum Role
+{
+    TEACHER,
+    STUDENT
+}
+
 public class Y_HttpLogIn : MonoBehaviour
 {
     static Y_HttpLogIn instance;
@@ -26,9 +40,8 @@ public class Y_HttpLogIn : MonoBehaviour
     {
         if (instance == null)
         {
-            GameObject go = new GameObject();
-            go.name = "HttpLogIn";
-            go.AddComponent<Y_HttpLogIn>();
+            GameObject go = new GameObject("HttpLogIn");
+            instance = go.AddComponent<Y_HttpLogIn>();
         }
 
         return instance;
@@ -36,16 +49,14 @@ public class Y_HttpLogIn : MonoBehaviour
 
     private void Awake()
     {
-        if (instance == null)
-        {
-            instance = this;
-            DontDestroyOnLoad(gameObject);
-        }
-        else
+        if (instance != null && instance != this)
         {
             Destroy(gameObject);
+            return;
         }
 
+        instance = this;
+        DontDestroyOnLoad(gameObject);
         mainServer = "http://211.250.74.75:8202/";
     }
 
@@ -98,15 +109,11 @@ public class Y_HttpLogIn : MonoBehaviour
 
     public IEnumerator SignUpCoroutine(string username, string password, string school, int grade, int className, int studentNumber, bool isTeacher)
     {
-        Role role;
+        Role role = Role.STUDENT;
 
         if (isTeacher)
         {
             role = Role.TEACHER;
-        }
-        else
-        {
-            role = Role.STUDENT;
         }
 
         SignUpData registerData = new SignUpData
@@ -146,8 +153,8 @@ public class Y_HttpLogIn : MonoBehaviour
     }
 
     public string logInUrl = "api/user/login";
-
-
+    public bool isTeacher;
+    public GameObject img_background;
     public IEnumerator LogInCoroutine(string username, string password)
     {
 
@@ -174,21 +181,51 @@ public class Y_HttpLogIn : MonoBehaviour
             // 서버 응답 처리
             if (webRequest.result == UnityWebRequest.Result.Success)
             {
-                Debug.Log("로그인 성공: " + webRequest.downloadHandler.text);
-                string jsonRaw = webRequest.downloadHandler.text;
-                print(jsonRaw);
-                userId = jsonRaw;
+                //Debug.Log("로그인 성공: " + webRequest.downloadHandler.text);
+                ResponseData responseData = JsonUtility.FromJson<ResponseData>(webRequest.downloadHandler.text);
+                userId = responseData.userId;
                 print(userId);
 
+                Role userRole;
+                Enum.TryParse(responseData.role, true, out userRole);
+                isTeacher = userRole == Role.TEACHER;
+                print(isTeacher);
+
                 Y_SignUp.signUp.logInUI.SetActive(false);
-                Y_SignUp.signUp.titleUI.SetActive(true);
-                //SceneManager.LoadScene(1);
+
+                if (isTeacher)
+                {
+                    Y_SignUp.signUp.creatorUI.SetActive(true);
+                    img_background.SetActive(false);
+                }
+                else
+                {
+                    Y_SignUp.signUp.titleUI.SetActive(true);
+                }
+                //SceneManager.
+                //(1);
             }
             else
             {
                 Debug.LogError("로그인 실패: " + webRequest.error);
 
             }
+        }
+    }
+
+
+    public void ReturnLobby()
+    {
+        Y_SignUp.signUp.logInUI.SetActive(false);
+
+        if (isTeacher)
+        {
+            Y_SignUp.signUp.creatorUI.SetActive(true);
+            img_background.SetActive(false);
+        }
+        else
+        {
+            Y_SignUp.signUp.titleUI.SetActive(true);
         }
     }
 }

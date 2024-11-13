@@ -1,4 +1,5 @@
-﻿using System;
+﻿using JetBrains.Annotations;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
@@ -39,11 +40,7 @@ public class HttpInfo
 
 }
 
-public enum Role
-{
-    TEACHER,
-    STUDENT
-}
+
 
 
 
@@ -124,6 +121,7 @@ public class HttpManager : MonoBehaviour
     {
         using (UnityWebRequest webRequest = UnityWebRequest.Get(info.url))
         {
+            webRequest.SetRequestHeader("userId", Y_HttpLogIn.GetInstance().userId.ToString());
             // 서버에 요청 보내기
             yield return webRequest.SendWebRequest();
 
@@ -137,7 +135,7 @@ public class HttpManager : MonoBehaviour
     {
         using (UnityWebRequest webRequest = UnityWebRequest.Get(info.url))
         {
-            webRequest.SetRequestHeader("userId", "3");
+            webRequest.SetRequestHeader("userId", Y_HttpLogIn.GetInstance().userId.ToString());
             // 서버에 요청 보내기
             yield return webRequest.SendWebRequest();
 
@@ -145,11 +143,28 @@ public class HttpManager : MonoBehaviour
             DoneRequest(webRequest, info);
         }
     }
+
+
     // 서버에게 내가 보내는 데이터를 생성해줘
     public IEnumerator Post(HttpInfo info)
     {
         using (UnityWebRequest webRequest = UnityWebRequest.Post(info.url, info.body, info.contentType))
         {
+            // 서버에 요청 보내기
+            yield return webRequest.SendWebRequest();
+
+
+            // 서버에게 응답이 왔다.
+            DoneRequest(webRequest, info);
+        }
+    }
+
+    public IEnumerator PostRoom(HttpInfo info)
+    {
+        using (UnityWebRequest webRequest = UnityWebRequest.Post(info.url, info.body, info.contentType))
+        {
+            webRequest.SetRequestHeader("userId", Y_HttpLogIn.GetInstance().userId.ToString());
+
             // 서버에 요청 보내기
             yield return webRequest.SendWebRequest();
 
@@ -168,6 +183,56 @@ public class HttpManager : MonoBehaviour
             webRequest.uploadHandler = new UploadHandlerRaw(jsonToSend);
             webRequest.downloadHandler = new DownloadHandlerBuffer();
             webRequest.SetRequestHeader("Content-Type", "application/json");
+
+            // 서버에 요청 보내기
+            yield return webRequest.SendWebRequest();
+
+            // 서버에게 응답이 왔다.
+            DoneRequest(webRequest, info);
+        }
+    }
+
+    // 열린질문용
+    public IEnumerator PutOpenQ(HttpInfo info, string userId )
+    {
+        using (UnityWebRequest webRequest = new UnityWebRequest(info.url, "PUT"))
+        {
+            byte[] jsonToSend = new System.Text.UTF8Encoding().GetBytes(info.body);
+            webRequest.uploadHandler = new UploadHandlerRaw(jsonToSend);
+            webRequest.downloadHandler = new DownloadHandlerBuffer();
+            webRequest.SetRequestHeader("Content-Type", info.contentType);
+            webRequest.SetRequestHeader("userId", userId);
+
+            // 서버에 요청 보내기
+            yield return webRequest.SendWebRequest();
+
+            // 서버에게 응답이 왔다.
+            DoneRequest(webRequest, info);
+        }
+    }
+
+    public IEnumerator PutPicture(HttpInfo info)
+    {
+        WWWForm form = new WWWForm();
+        form.AddBinaryData("img", System.IO.File.ReadAllBytes(info.body), System.IO.Path.GetFileName(info.body), "image/png");
+
+        using (UnityWebRequest webRequest = UnityWebRequest.Post(info.url, form))
+        {
+            webRequest.downloadHandler = new DownloadHandlerBuffer();
+
+            // 서버에 요청 보내기
+            yield return webRequest.SendWebRequest();
+
+            // 서버에게 응답이 왔다.
+            DoneRequest(webRequest, info);
+        }
+    }
+
+    public IEnumerator PutUser(HttpInfo info, string userId)
+    {
+        using (UnityWebRequest webRequest = new UnityWebRequest(info.url, "PUT"))
+        {
+            webRequest.SetRequestHeader("userId", userId);
 
             // 서버에 요청 보내기
             yield return webRequest.SendWebRequest();
@@ -207,15 +272,17 @@ public class HttpManager : MonoBehaviour
         // info.data 에 있는 파일을 byte 배열로 읽어오자
         byte[] data = File.ReadAllBytes(info.body);
 
+        string fileName = Path.GetFileName(info.body);
+
         // data 를 MultipartForm 으로 셋팅
         List<IMultipartFormSection> formData = new List<IMultipartFormSection>();
-        //formData.Add(new MultipartFormFileSection("file", data, "image.jpg", info.contentType));
-        formData.Add(new MultipartFormFileSection("pdf", data, "file.pdf", "application/pdf"));
+        formData.Add(new MultipartFormFileSection("pdf", data, fileName, "application/pdf"));
 
 
         using (UnityWebRequest webRequest = UnityWebRequest.Post(info.url, formData))
         {
             //webRequest.SetRequestHeader("Content-Type", "multipart/form-data");
+            webRequest.SetRequestHeader("userId", Y_HttpLogIn.GetInstance().userId.ToString());
 
             // 서버에 요청 보내기
             yield return webRequest.SendWebRequest();
@@ -255,6 +322,7 @@ public class HttpManager : MonoBehaviour
     }
 
 
+
     // 그림판 보내기 
     public IEnumerator UploadFileByFormDataArt(HttpInfo info, byte[] imgData, int userId, int lessonId)
     {
@@ -276,8 +344,8 @@ public class HttpManager : MonoBehaviour
 
             //webRequest.SetRequestHeader("multipart/form-data");
 
-            webRequest.SetRequestHeader("userId", userId.ToString());
-            webRequest.SetRequestHeader("lessonId", lessonId.ToString());
+            webRequest.SetRequestHeader("userId", Y_HttpLogIn.GetInstance().userId.ToString());
+            webRequest.SetRequestHeader("lessonId", Y_HttpRoomSetUp.GetInstance().userlessonId.ToString());
 
             // 서버에 요청 보내기
             yield return webRequest.SendWebRequest();

@@ -9,7 +9,7 @@ using System.IO;
 using System;
 using Photon.Pun.Demo.PunBasics;
 
-public class Y_VoiceManager : MonoBehaviourPun
+public class Y_VoiceManager : MonoBehaviour
 {
     public static Y_VoiceManager Instance { get; private set; }
 
@@ -25,7 +25,7 @@ public class Y_VoiceManager : MonoBehaviourPun
     private AudioClip currentRecording;
 
     public int actorNumber;
-    PhotonVoiceView myVoiceView;
+    //PhotonVoiceView myVoiceView;
 
     private void Awake()
     {
@@ -99,10 +99,7 @@ public class Y_VoiceManager : MonoBehaviourPun
         //    StartRecording(1, 5);
         //}
 
-        //if (Input.GetKeyDown(KeyCode.B))
-        //{
-        //    StopRecording(1, "test");
-        //}
+        
     }
 
 
@@ -115,12 +112,12 @@ public class Y_VoiceManager : MonoBehaviourPun
         {
             currentRecording = Microphone.Start(null, true, recordingLength, recordingFrequency);
             Debug.Log($"녹음 시작됨: {testInt}");
-        }
+        } // 도원
     }
 
     int testInt = 0;
 
-    public void StopRecording(int playerId, string filename)
+    public void StopRecording(int playerId, int selfIntNum)
     {
         if (Microphone.IsRecording(null) && PhotonNetwork.LocalPlayer.ActorNumber == playerId)
         {
@@ -132,31 +129,25 @@ public class Y_VoiceManager : MonoBehaviourPun
                 // 녹음 데이터를 실제 녹음 길이만큼 잘라내기
                 AudioClip trimmedRecording = TrimAudioClip(currentRecording, recordingPosition);
 
-                /////////////// 딕셔너리에 추가 말고 바로 통신 해야 함 
-
-                //voiceData[playerId] = trimmedRecording;
-
-                //Debug.Log($"녹음 Dictionary 에 저장됨: {testInt}");
-
-                //SaveAsWav(trimmedRecording, "C:\\Users\\Admin\\OneDrive\\문서\\FinalProject\\HotSeatingAudio\\" + testInt + filename + ".wav");
+                SendAsWav(trimmedRecording, selfIntNum); // 도원
                 Debug.Log($"Wav 파일로 저장됨: {testInt}");
             }
 
-            RPC_UpdateTestInt();
+            //RPC_UpdateTestInt();
         }
     }
 
-    public void RPC_UpdateTestInt()
-    {
-        photonView.RPC(nameof(updateTestInt), RpcTarget.All);
-    }
+    //public void RPC_UpdateTestInt()
+    //{
+    //    photonView.RPC(nameof(updateTestInt), RpcTarget.All);
+    //}
 
-    [PunRPC]
-    public void updateTestInt()
-    {
-        testInt++;
-        print("TestInt Update: " + testInt);
-    }
+    //[PunRPC]
+    //public void updateTestInt()
+    //{
+    //    testInt++;
+    //    print("TestInt Update: " + testInt);
+    //}
 
     private AudioClip TrimAudioClip(AudioClip clip, int lengthSamples)
     {
@@ -169,7 +160,7 @@ public class Y_VoiceManager : MonoBehaviourPun
         return trimmedClip;
     }
 
-    public void SaveAsWav(AudioClip clip, string filePath)
+    public void SendAsWav(AudioClip clip, int selfIntNum) // string filePath
     {
         // AudioClip 데이터 추출
         var samples = new float[clip.samples * clip.channels];
@@ -177,9 +168,12 @@ public class Y_VoiceManager : MonoBehaviourPun
 
         byte[] wavData = ConvertToWav(samples, clip.channels, clip.frequency);
 
+        // 통신
+        StartCoroutine(Y_HttpHotSeat.GetInstance().SendInterviewFile(wavData, selfIntNum));
+
         // 파일로 저장 -> 나중에 저장 대신 통신으로 바꿔야 함
-        File.WriteAllBytes(filePath, wavData);
-        Debug.Log($"AudioClip saved as WAV at: {filePath}");
+        //File.WriteAllBytes(filePath, wavData);
+        //Debug.Log($"AudioClip saved as WAV at: {filePath}");
     }
 
     private byte[] ConvertToWav(float[] samples, int channels, int frequency)

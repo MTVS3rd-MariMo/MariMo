@@ -27,7 +27,7 @@ public class Y_PlayerAvatarSetting : MonoBehaviour
     public Sprite[] images;
     public string[] selfIntroduces = new string[4];
 
-    public Vector3 quizScale = new Vector3(2f, 2f, 2f); // 퀴즈 시 사용할 스케일
+    public Vector3 quizScale = new Vector3(1f, 1f, 1f); // 퀴즈 시 사용할 스케일
     public Vector3 studioScale = new Vector3(4f, 4f, 4f); // 사진관에서 사용할 스케일
     public Vector3 originalScale; // 플레이어의 원래 스케일 저장
 
@@ -37,10 +37,13 @@ public class Y_PlayerAvatarSetting : MonoBehaviour
         originalScale = gameObject.transform.localScale;
         pv = GetComponent<PhotonView>();
         bookController = GameObject.Find("BookCanvas").GetComponent<Y_BookController>();
-        bookController.AddPlayer(pv);
+        bookController.AddAllPlayer(pv);
+        //foreach(KeyValuePair<int, PhotonView> kv in bookController.allPlayers)
+        //{
+        //    Debug.LogError("AllPlayers 키 : " + kv.Key);
+        //}
         index = pv.Owner.ActorNumber - 1;
         name = pv.Owner.NickName;
-        print(PhotonNetwork.LocalPlayer.ActorNumber);
     }
 
     public void RPC_SelectChar(int characterIndex)

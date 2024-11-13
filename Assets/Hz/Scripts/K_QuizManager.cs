@@ -18,10 +18,11 @@ public class K_QuizManager : MonoBehaviourPun
     // 카운트 다운 플래그
     public bool isCounting = false;
 
-    //
+    // 정답 글씨 가져오기
     public K_QuizPos quizCorrect;
+    public K_QuizSpawnMgr quizSpawnMgr;
 
-    public static K_QuizManager instance;
+    //public static K_QuizManager instance;
 
 
     // 연출용 요소들
@@ -30,18 +31,18 @@ public class K_QuizManager : MonoBehaviourPun
 
 
 
-    private void Awake()
-    {
-        if (null == instance)
-        {
-            instance = this;
-            DontDestroyOnLoad(gameObject);
-        }
-        else
-        {
-            Destroy(this.gameObject);
-        }
-    }
+    //private void Awake()
+    //{
+    //    if (null == instance)
+    //    {
+    //        instance = this;
+    //        DontDestroyOnLoad(gameObject);
+    //    }
+    //    else
+    //    {
+    //        Destroy(this.gameObject);
+    //    }
+    //}
 
     void Update()
     {
@@ -118,9 +119,10 @@ public class K_QuizManager : MonoBehaviourPun
 
             if(isCorrect)
             {
+                // 오류 ->> EndQuiz를 RPC로 해줘야하나?
                 EndQuiz();
                 // 정답 맞출 시 글씨 색상 변경
-                quizCorrect.text_Correct.color = Color.red;
+                quizCorrect.text_Choices[quizSpawnMgr.answerNumber].color = Color.red;
                 StartCoroutine(CompleteQuiz(2f));
             }
             else
@@ -128,10 +130,16 @@ public class K_QuizManager : MonoBehaviourPun
                 StartCoroutine(RestartQuiz(5f));
             }    
         }
-
-        // 퀴즈 종료 처리
-        //EndQuiz();
     }
+
+    public void TriggerEndQuiz()
+    {
+        if(photonView.IsMine)
+        {
+            photonView.RPC(nameof(EndQuiz), RpcTarget.All);
+        }
+    }
+
 
     public void EndQuiz()
     {
@@ -143,7 +151,7 @@ public class K_QuizManager : MonoBehaviourPun
 
         isDirecting = false;
 
-        Dictionary<int, PhotonView> allPlayers = Y_BookController.Instance.allPlayers;
+        Dictionary<int, PhotonView> allPlayers = GameObject.Find("BookCanvas").GetComponent<Y_BookController>().allPlayers;
 
         for (int i = 0; i < allPlayers.Count; i++)
         {

@@ -26,7 +26,8 @@ public class P_MakingAsk : MonoBehaviour
         btn_OK.onClick.AddListener(OnclickOK);
 
         // 예시
-        askText.text = P_CreatorToolConnectMgr.Instance.GetOpenQuestion(0).questionTitle;
+        if (P_CreatorToolConnectMgr.Instance.GetOpenQuestion(0) != null)
+            askText.text = P_CreatorToolConnectMgr.Instance.GetOpenQuestion(0).questionTitle;
     }
 
     void Update()
@@ -60,7 +61,8 @@ public class P_MakingAsk : MonoBehaviour
 
 
             // 예시
-            askText.text = P_CreatorToolConnectMgr.Instance.GetOpenQuestion(0).questionTitle;
+            if (P_CreatorToolConnectMgr.Instance.GetOpenQuestion(0) != null)
+                askText.text = P_CreatorToolConnectMgr.Instance.GetOpenQuestion(0).questionTitle;
         }
 
     }
@@ -78,7 +80,8 @@ public class P_MakingAsk : MonoBehaviour
             count++;
 
             // 예시
-            askText.text = P_CreatorToolConnectMgr.Instance.GetOpenQuestion(1).questionTitle;
+            if (P_CreatorToolConnectMgr.Instance.GetOpenQuestion(1) != null)
+                askText.text = P_CreatorToolConnectMgr.Instance.GetOpenQuestion(1).questionTitle;
         }
     }
 

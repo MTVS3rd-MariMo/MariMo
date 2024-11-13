@@ -17,6 +17,7 @@ public class P_CreatorToolController : MonoBehaviour
     public GameObject panel_SelectQuiz;
     public GameObject panel_MakingQuiz;
     public GameObject panel_MakingAsk;
+    public GameObject panel_Option;
 
     public Button btn_SelectStory;
     public Sprite[] sp_SelectStory;
@@ -25,9 +26,7 @@ public class P_CreatorToolController : MonoBehaviour
     public Button btn_Library;
     public Sprite[] sp_Library;
     public TMP_Text[] text_Storys;
-    public Button btn_Story1;
-    public Button btn_Story2;
-    public Button btn_Story3;
+    public Button[] btn_Story;
     public Button btn_Back_NewStory;
     public Button btn_SerchPDF;
     public Button btn_Checking;
@@ -35,7 +34,9 @@ public class P_CreatorToolController : MonoBehaviour
     public Button btn_SendPDF;
     public Button btn_SelectQuiz;
 
+    public Button btn_Option;
 
+    bool isSend = false;
 
     void Start()
     {
@@ -44,15 +45,13 @@ public class P_CreatorToolController : MonoBehaviour
         btn_SelectStory.onClick.AddListener(OnclickSelectStory);
         btn_CreateRoom.onClick.AddListener(OnclickCreateRoom);
         btn_Library.onClick.AddListener(OnclickLibrary);
-        btn_Story1.onClick.AddListener(OnclickStory1);
-        btn_Story2.onClick.AddListener(OnclickStory2);
-        btn_Story3.onClick.AddListener(OnclickStory3);
         btn_Back_NewStory.onClick.AddListener(OnclickBack_NewStory);
         btn_SerchPDF.onClick.AddListener(OnclickSerchPDF);
         btn_SendPDF.onClick.AddListener(OnclickSend);
         btn_CreateRoom.onClick.AddListener(OnclickCreateRoom);
         btn_Checking.onClick.AddListener(OnclickChecking);
         btn_SelectQuiz.onClick.AddListener(OnclickSelectComplete);
+        btn_Option.onClick.AddListener(OnclickOption);
 
 
         btn_SelectStory.image.sprite = sp_SelectStory[1];
@@ -62,7 +61,7 @@ public class P_CreatorToolController : MonoBehaviour
 
     private void Update()
     {
-        if (P_CreatorToolConnectMgr.Instance.pdfPath != null)
+        if (P_CreatorToolConnectMgr.Instance.pdfPath != null && !isSend)
             btn_SendPDF.interactable = true;
         else
             btn_SendPDF.interactable = false;
@@ -120,15 +119,7 @@ public class P_CreatorToolController : MonoBehaviour
         btn_Library.image.sprite = sp_Library[1];
     }
 
-    public void OnclickStory1()
-    {
-        panel_NewStory.SetActive(true);
-    }
-    public void OnclickStory2()
-    {
-        panel_NewStory.SetActive(true);
-    }
-    public void OnclickStory3()
+    public void OnclickStory()
     {
         panel_NewStory.SetActive(true);
     }
@@ -155,47 +146,52 @@ public class P_CreatorToolController : MonoBehaviour
         panel_SelectQuiz.GetComponent<P_QuizSelect>().QuizSetting();
     }
 
+    public void OnclickOption()
+    {
+        panel_Option.SetActive(true);
+    }
+
     public void OnclickSend()
     {
-        //// 더미데이터용
-        P_CreatorToolConnectMgr.Instance.quizData = P_CreatorToolConnectMgr.Instance.dummydata;
-
-        btn_SendPDF.interactable = false;
-
-        panel_Making.SetActive(true);
-        ///////
-
-
-        //print(P_CreatorToolConnectMgr.Instance.pdfPath);
-
-        //HttpInfo info = new HttpInfo();
-        //// api/lesson-material/upload-pdf 앤드포인트..?
-        //info.url = url_Front + "/api/lesson-material/upload-pdf";
-        //info.body = P_CreatorToolConnectMgr.Instance.pdfPath;
-        //info.contentType = "multipart/form-data";
-        //info.onComplete = (DownloadHandler downloadHandler) =>
-        //{
-        //    try
-        //    {
-        //        // QuizManager의 ParseQuizData 메서드 호출하여 데이터 파싱
-        //        P_CreatorToolConnectMgr.Instance.ParseQuizData(downloadHandler.text);
-
-        //        // 데이터 로드 완료 후 처리할 작업이 있다면 여기에 추가
-        //        Debug.Log("퀴즈 데이터 로드 완료!");
-        //        Debug.Log($"로드된 퀴즈 개수: {P_CreatorToolConnectMgr.Instance.GetQuizCount()}");
-        //        Debug.Log($"로드된 주관식 문제 개수: {P_CreatorToolConnectMgr.Instance.GetOpenQuestionCount()}");
-
-
-        //    }
-        //    catch (Exception e)
-        //    {
-        //        Debug.LogError($"JSON 파싱 중 에러 발생: {e.Message}");
-        //    }
-        //};
+        ////// 더미데이터용
+        //P_CreatorToolConnectMgr.Instance.quizData = P_CreatorToolConnectMgr.Instance.dummydata;
 
         //btn_SendPDF.interactable = false;
 
-        //StartCoroutine(HttpManager.GetInstance().UploadFileByFormDataPDF(info));
+        //panel_Making.SetActive(true);
+        /////////
+
+
+        print(P_CreatorToolConnectMgr.Instance.pdfPath);
+
+        HttpInfo info = new HttpInfo();
+        // api/lesson-material/upload-pdf 앤드포인트..?
+        info.url = P_CreatorToolConnectMgr.Instance.url_Front + "/api/lesson-material/upload-pdf";
+        info.body = P_CreatorToolConnectMgr.Instance.pdfPath;
+        info.contentType = "multipart/form-data";
+        info.onComplete = (DownloadHandler downloadHandler) =>
+        {
+            try
+            {
+                // QuizManager의 ParseQuizData 메서드 호출하여 데이터 파싱
+                P_CreatorToolConnectMgr.Instance.ParseQuizData(downloadHandler.text);
+
+                // 데이터 로드 완료 후 처리할 작업이 있다면 여기에 추가
+                Debug.Log("퀴즈 데이터 로드 완료!");
+                Debug.Log($"로드된 퀴즈 개수: {P_CreatorToolConnectMgr.Instance.GetQuizCount()}");
+                Debug.Log($"로드된 주관식 문제 개수: {P_CreatorToolConnectMgr.Instance.GetOpenQuestionCount()}");
+
+
+            }
+            catch (Exception e)
+            {
+                Debug.LogError($"JSON 파싱 중 에러 발생: {e.Message}");
+            }
+        };
+
+        btn_SendPDF.interactable = false;
+
+        StartCoroutine(HttpManager.GetInstance().UploadFileByFormDataPDF(info));
 
     }
 
@@ -231,8 +227,6 @@ public class P_CreatorToolController : MonoBehaviour
 
         panel_MakingQuiz.SetActive(true);
 
-        // 디버깅
-        Debug.Log(P_CreatorToolConnectMgr.Instance.GetQuiz(0).question);
 
         panel_MakingQuiz.GetComponent<P_MakingQuiz>().OpenQuizSet(0);
 
@@ -254,14 +248,6 @@ public class P_CreatorToolController : MonoBehaviour
                 P_CreatorToolConnectMgr.Instance.ParseLessons(downloadHandler.text);
 
                 // 데이터 로드 완료 후 처리할 작업이 있다면 여기에 추가
-                Debug.Log("수업자료 갯수");
-                Debug.Log(P_CreatorToolConnectMgr.Instance.lessons.lessonMaterials.Count);
-                Debug.Log("수업자료 이름들");
-                for(int i = 0; i < P_CreatorToolConnectMgr.Instance.lessons.lessonMaterials.Count; i++)
-                {
-                    Debug.Log(P_CreatorToolConnectMgr.Instance.lessons.lessonMaterials[i].bookTitle);
-                }
-
                 StoryButtonSet();
 
                 panel_CreateRoom.GetComponent<P_RoomCreate>().DropDownUpdate();
@@ -277,22 +263,16 @@ public class P_CreatorToolController : MonoBehaviour
 
     void StoryButtonSet()
     {
-        if (P_CreatorToolConnectMgr.Instance.lessons.lessonMaterials.Count == 0)
-        {
-            return;
-        }
-        else if (P_CreatorToolConnectMgr.Instance.lessons.lessonMaterials.Count == 1)
-        {
-            text_Storys[0].text = P_CreatorToolConnectMgr.Instance.lessons.lessonMaterials[0].bookTitle;
-        }
-
+        
         for (int i = 0; i < text_Storys.Length; i++)
         {
-            text_Storys[i].text = "";
+            text_Storys[i].text = "+";
+            btn_Story[i].onClick.AddListener(OnclickStory);
 
             if (i < P_CreatorToolConnectMgr.Instance.lessons.lessonMaterials.Count)
             {
                 text_Storys[i].text = P_CreatorToolConnectMgr.Instance.lessons.lessonMaterials[i].bookTitle;
+                btn_Story[i].onClick.RemoveAllListeners();
             }
         }
     }

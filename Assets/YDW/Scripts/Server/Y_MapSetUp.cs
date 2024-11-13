@@ -7,31 +7,28 @@ public class Y_MapSetUp : MonoBehaviour
 {
     ClassMaterial classMaterial;
     public TMP_Text bookTitle;
+    public TMP_Text bookTitle2;
     string bookContent;
     public TMP_Text role1;
     public TMP_Text role2;
     public TMP_Text role3;
     public TMP_Text role4;
+    public TMP_Text paintTitle;
+
 
     public static Y_MapSetUp mapSetUp;
+    public Y_BookController bookController;
 
     private void Awake()
     {
-        if (mapSetUp == null)
-        {
-            mapSetUp = this;
-        }
-        else
-        {
-            Destroy(gameObject);
-        }
 
-        classMaterial = Y_HttpRoomSetUp.GetInstance().realClassMaterial;
-        Y_BookController.Instance.text = classMaterial.bookContents;
-        role1.text = classMaterial.lessonRoles[0];
-        role2.text = classMaterial.lessonRoles[1];
-        role3.text = classMaterial.lessonRoles[2];
-        role4.text = classMaterial.lessonRoles[3];
+        print("awake 시작");
+
+        bookController = GameObject.Find("BookCanvas").GetComponent<Y_BookController>();
+
+        
+        
+
     }
 
     // Start is called before the first frame update
@@ -44,5 +41,21 @@ public class Y_MapSetUp : MonoBehaviour
     void Update()
     {
         
+    }
+
+    public void ApplyClassMaterial()
+    {
+
+        classMaterial = Y_HttpRoomSetUp.GetInstance().realClassMaterial;
+
+        bookController.text = classMaterial.bookContents;
+        bookTitle.text = classMaterial.bookTitle;
+        bookTitle2.text = classMaterial.bookTitle;
+        paintTitle.text = classMaterial.bookTitle;
+        print(classMaterial.bookContents);
+        role1.text = classMaterial.lessonRoles[0];
+        role2.text = classMaterial.lessonRoles[1];
+        role3.text = classMaterial.lessonRoles[2];
+        role4.text = classMaterial.lessonRoles[3];
     }
 }

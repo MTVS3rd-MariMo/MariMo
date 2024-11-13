@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Photon.Pun;
+using Photon.Voice.PUN;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
@@ -8,7 +10,7 @@ using UnityEngine.Networking;
 [Serializable]
 public class SelfIntroduce
 {
-    public int userId;
+    public int selfIntNum;
     public int lessonId;
     public string selfIntroduce;
 }
@@ -17,6 +19,7 @@ public class SelfIntroduce
 public class InterviewFile
 {
     public int lessonId;
+    public int selfIntNum;
     public string userName;
     public string character;
 }
@@ -48,6 +51,13 @@ public class Y_HttpHotSeat : MonoBehaviour
         {
             Destroy(gameObject);
         }
+    }
+
+    Y_BookController bookController;
+
+    private void Start()
+    {
+        bookController = GameObject.Find("BookCanvas").GetComponent<Y_BookController>();
     }
 
     public IEnumerator Post(HttpInfo info)
@@ -83,15 +93,17 @@ public class Y_HttpHotSeat : MonoBehaviour
     public IEnumerator UploadFileByFormDataWav(HttpInfo info, byte[] wavFile)
     {
         // data 를 MultipartForm 으로 셋팅
-        List<IMultipartFormSection> formData = new List<IMultipartFormSection>
-        {
-            new MultipartFormFileSection("wav", wavFile, "interview.wav", "application/wav")
-        };
+        List<IMultipartFormSection> formData = new List<IMultipartFormSection>();
+        formData.Add(new MultipartFormDataSection("lessonId", Y_HttpRoomSetUp.GetInstance().userlessonId.ToString()));
+        formData.Add(new MultipartFormDataSection("userName", GetUserNickName())); // 
+        formData.Add(new MultipartFormDataSection("character", GetCharacterName())); // 
+        formData.Add(new MultipartFormDataSection("selfIntNum", GameObject.Find("HotSeatCanvas").GetComponent<Y_HotSeatController>().selfIntNum.ToString()));
+
+        formData.Add(new MultipartFormFileSection("wavFile", wavFile, "interview.wav", "audio/wav"));
 
         using (UnityWebRequest webRequest = UnityWebRequest.Post(info.url, formData))
         {
             webRequest.SetRequestHeader("userId", Y_HttpLogIn.GetInstance().userId.ToString());
-            webRequest.SetRequestHeader("lessonId", "101"); // 더미
 
             // 서버에 요청 보내기
             yield return webRequest.SendWebRequest();
@@ -145,15 +157,16 @@ public class Y_HttpHotSeat : MonoBehaviour
 
 
     // 핫시팅 자기소개 전송
-    public string sendSelfIntroduceUrl = "api/lesson-result/hot-sitting/self-inroduce";
+    public string sendSelfIntroduceUrl = "api/hot-sitting/self-introduce";
 
-    public IEnumerator SendSelfIntroduce(string content)
+    public IEnumerator SendSelfIntroduce(int i)
     {
         SelfIntroduce selfIntroduce = new SelfIntroduce
         {
-            userId = Int32.Parse(Y_HttpLogIn.GetInstance().userId),
-            lessonId = 101, // 더미!!!!!
-            selfIntroduce = "안녕하세요" // GetSelfIntroduce();
+            //userId = Int32.Parse(Y_HttpLogIn.GetInstance().userId),
+            selfIntNum = i,
+            lessonId = Y_HttpRoomSetUp.GetInstance().userlessonId,
+            selfIntroduce = GetSelfIntroduce()
         };
 
         // JSON 형식으로 변환
@@ -175,48 +188,73 @@ public class Y_HttpHotSeat : MonoBehaviour
         yield return StartCoroutine(Put(info));
     }
 
+    public void StartSendIntCoroutine(int i)
+    {
+        StartCoroutine(SendSelfIntroduce(i));
+    }
+
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Alpha8))
-        {
-            GetUserNickName();
-        }
+        //if (Input.GetKeyDown(KeyCode.Alpha8))
+        //{
+        //    StartCoroutine(SendSelfIntroduce(1));
+        //}
 
         if (Input.GetKeyDown(KeyCode.Alpha7))
         {
-            GetCharacterName();
+            print("7번 눌렀다");
+            //PrintAvailableMicrophones();
+            StartCoroutine(voiceTestCoroutine());
         }
+    }
+
+    void PrintAvailableMicrophones()
+    {
+        string[] devices = Microphone.devices;
+        if (devices.Length == 0)
+        {
+            Debug.LogError("사용 가능한 마이크 장치가 없습니다.");
+        }
+        else
+        {
+            Debug.Log($"마이크 장치 목록 ({devices.Length}개):");
+            for (int i = 0; i < devices.Length; i++)
+            {
+                Debug.Log($"[{i}] {devices[i]}");
+            }
+        }
+    }
+
+    IEnumerator voiceTestCoroutine()
+    {
+        print("코루틴 실행");
+        PrintAvailableMicrophones();
+        Y_VoiceManager.Instance.StartRecording(5, 100);
+        yield return new WaitForSeconds(10f);
+        Y_VoiceManager.Instance.StopRecording(5, 1);
     }
 
     string mySelfIntroduce;
 
-    void GetSelfIntroduce()
+    string GetSelfIntroduce()
     {
-        mySelfIntroduce = Y_HotSeatController.Instance.selfIntroduceInput.text;
+        mySelfIntroduce = GameObject.Find("HotSeatCanvas").GetComponent<Y_HotSeatController>().selfIntroduceInput.text;
         print("자기소개예요 : " + mySelfIntroduce);
+        return mySelfIntroduce;
     }
 
     // 핫시팅 음성파일 전송
-    public string sendInterviewWAV = "api/lesson-result/hot-sitting/record";
+    private string sendInterviewWAV = "api/hot-sitting/wav-file";
 
-    public IEnumerator SendInterviewFile(byte[] record)
+    public IEnumerator SendInterviewFile(byte[] record, int selfIntNum)
     {
-        InterviewFile interviewFile = new InterviewFile
-        {
-            lessonId = 101, // 더미
-            userName =  "정현민",
-            // GetUserNickName(),
-            character = "바다거북"
-            // GetCharacterName()
-        };
-
-        string jsonBody = JsonUtility.ToJson(interviewFile);
+        //string jsonBody = JsonUtility.ToJson(interviewFile);
 
         // HttpInfo 설정
         HttpInfo info = new HttpInfo
         {
             url = Y_HttpLogIn.GetInstance().mainServer + sendInterviewWAV,
-            body = jsonBody,
+            body = "wavFile",
             contentType = "multipart/form-data",
             onComplete = (DownloadHandler downloadHandler) =>
             {
@@ -226,57 +264,18 @@ public class Y_HttpHotSeat : MonoBehaviour
 
         yield return StartCoroutine(UploadFileByFormDataWav(info, record));
 
-        //// 서버 요청 설정
-        //using (UnityWebRequest webRequest = new UnityWebRequest(Y_HttpLogIn.GetInstance().mainServer + sendInterviewWAV, "POST"))
-        //{
-        //    webRequest.uploadHandler = new UploadHandlerRaw(jsonToSend); // 로우 데이터 업로드
-        //    webRequest.downloadHandler = new DownloadHandlerBuffer(); // 서버가 다운로드 할 수 있는 공간 만듦
-        //    webRequest.SetRequestHeader("Content-Type", "multipart/form-data");
-
-        //    // 서버에 요청 보내기
-        //    yield return webRequest.SendWebRequest();
-
-        //    // 서버 응답 처리
-        //    if (webRequest.result == UnityWebRequest.Result.Success)
-        //    {
-        //        Debug.Log("WAV 파일 보내기 성공: " + webRequest.downloadHandler.text);
-        //    }
-        //    else
-        //    {
-        //        Debug.LogError("WAV 파일 보내기 실패: " + webRequest.error);
-        //    }
-        //}
-
-        //using (UnityWebRequest webRequest = new UnityWebRequest(Y_HttpLogIn.GetInstance().mainServer + sendInterviewWAV, "POST"))
-        //{
-        //    webRequest.uploadHandler = new UploadHandlerRaw(jsonToSend); // 로우 데이터 업로드
-        //    webRequest.downloadHandler = new DownloadHandlerBuffer(); // 서버가 다운로드 할 수 있는 공간 만듦
-        //    webRequest.SetRequestHeader("Content-Type", "application/json");
-        //    webRequest.SetRequestHeader("userId", Y_HttpLogIn.GetInstance().userId.ToString());
-
-        //    // 서버에 요청 보내기
-        //    yield return webRequest.SendWebRequest();
-
-        //    // 서버 응답 처리
-        //    if (webRequest.result == UnityWebRequest.Result.Success)
-        //    {
-        //        Debug.Log("WAV 파일 업로드 성공: " + webRequest.downloadHandler.text);
-        //    }
-        //    else
-        //    {
-        //        Debug.LogError("수업자료 받아오기 실패: " + webRequest.error);
-        //    }
-        //}
     }
 
-    void GetUserNickName()
+    string GetUserNickName()
     {
-        print("유저 닉네임입니다 : " + Y_BookController.Instance.myAvatar.pv.Owner.NickName);
+        print("유저 닉네임입니다 : " + bookController.myAvatar.pv.Owner.NickName);
+        return bookController.myAvatar.pv.Owner.NickName;
     }
 
-    void GetCharacterName()
+    string GetCharacterName()
     {
-        print("캐릭터 이름입니다 : " + Y_HotSeatController.Instance.characterNames[Y_BookController.Instance.characterNum - 1].text);
+        //print("캐릭터 이름입니다 : " + Y_HotSeatController.Instance.characterNames[bookController.characterNum - 1].text);
+        return GameObject.Find("HotSeatCanvas").GetComponent<Y_HotSeatController>().characterNames[bookController.characterNum - 1].text;
     }
 
 
