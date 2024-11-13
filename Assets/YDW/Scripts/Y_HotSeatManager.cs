@@ -54,13 +54,14 @@ public class Y_HotSeatManager : MonoBehaviourPun
 
     void RPC_ActivateHotSeat()
     {
+        
         photonView.RPC(nameof(ActivateHotSeat), RpcTarget.All);
     }
 
     [PunRPC]
     void ActivateHotSeat()
     {
-        //Y_SoundManager.instance.PlayEftSound(Y_SoundManager.ESoundType.EFT_3D_OBJECT_03);
+        Y_SoundManager.instance.PlayEftSound(Y_SoundManager.ESoundType.EFT_3D_OBJECT_03);
         hotSeatCanvas.SetActive(true);
     }
 
@@ -72,6 +73,9 @@ public class Y_HotSeatManager : MonoBehaviourPun
         if (photonView.IsMine) RPC_ActivateHotSeat();
         Y_SoundManager.instance.PlayEftSound(Y_SoundManager.ESoundType.EFT_3D_OBJECT_03);
         Ani_Object.SetActive(true);
+        //Y_SoundManager.instance.PlayEftSound(Y_SoundManager.ESoundType.EFT_3D_OBJECT_03);
+        yield return new WaitForSeconds(1.5f);
+        if(PhotonNetwork.IsMasterClient) RPC_ActivateHotSeat();
     }
 
 
