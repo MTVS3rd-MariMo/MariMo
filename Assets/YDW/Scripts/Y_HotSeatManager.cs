@@ -1,4 +1,5 @@
-﻿using Photon.Pun;
+﻿using Cinemachine;
+using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -14,6 +15,8 @@ public class Y_HotSeatManager : MonoBehaviourPun
 
     // 애니메이션 오브젝트
     public GameObject Ani_Object;
+    public CinemachineVirtualCamera VirtualCamera;
+
     private void Awake()
     {
         //// Singleton 인스턴스 설정
@@ -51,22 +54,28 @@ public class Y_HotSeatManager : MonoBehaviourPun
 
     void RPC_ActivateHotSeat()
     {
+        
         photonView.RPC(nameof(ActivateHotSeat), RpcTarget.All);
     }
 
     [PunRPC]
     void ActivateHotSeat()
     {
-        //Y_SoundManager.instance.PlayEftSound(Y_SoundManager.ESoundType.EFT_3D_OBJECT_03);
+        Y_SoundManager.instance.PlayEftSound(Y_SoundManager.ESoundType.EFT_3D_OBJECT_03);
         hotSeatCanvas.SetActive(true);
     }
 
     IEnumerator AniDelay()
     {
-        Ani_Object.SetActive(true);
-        Y_SoundManager.instance.PlayEftSound(Y_SoundManager.ESoundType.EFT_3D_OBJECT_03);
+        VirtualCamera.gameObject.SetActive(true);
+
         yield return new WaitForSeconds(1.5f);
-        RPC_ActivateHotSeat();
+        if (photonView.IsMine) RPC_ActivateHotSeat();
+        Y_SoundManager.instance.PlayEftSound(Y_SoundManager.ESoundType.EFT_3D_OBJECT_03);
+        Ani_Object.SetActive(true);
+        //Y_SoundManager.instance.PlayEftSound(Y_SoundManager.ESoundType.EFT_3D_OBJECT_03);
+        yield return new WaitForSeconds(1.5f);
+        if(PhotonNetwork.IsMasterClient) RPC_ActivateHotSeat();
     }
 
 
