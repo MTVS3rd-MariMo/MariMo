@@ -1,4 +1,5 @@
-﻿using Photon.Pun;
+﻿using Org.BouncyCastle.Asn1.Crmf;
+using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
@@ -20,17 +21,39 @@ public class K_QuizSpawnMgr : MonoBehaviourPun
     public GameObject [] quiz_correct;
     public Vector3 quiz_correctASize;
 
-    private K_MapQuizSetUp quizSetup;
-
-    public bool isFive;
+    // 수업자료
+    ClassMaterial classMaterial;
 
 
     void Start()
     {
-        // 맴퀴즈셋업 가져와
-        quizSetup = FindObjectOfType<K_MapQuizSetUp>();
 
-        if(PhotonNetwork.IsMasterClient)
+        StartCoroutine(DelayStart(2f));
+        //// classMaterial 받아오기
+        //classMaterial = Y_HttpRoomSetUp.GetInstance().realClassMaterial;
+
+        //if (PhotonNetwork.IsMasterClient)
+        //{
+        //    quiz_correct = new GameObject[quizCount];
+
+        //    for (int i = 0; i < quizCount; i++)
+        //    {
+        //        //SpawnObj(quizzes[i], i);
+
+        //        StartCoroutine(SpawnObj(quizzes_Names[i], i));
+
+        //    }
+        //}
+    }
+
+    IEnumerator DelayStart(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+
+        // classMaterial 받아오기
+        classMaterial = Y_HttpRoomSetUp.GetInstance().realClassMaterial;
+
+        if (PhotonNetwork.IsMasterClient)
         {
             quiz_correct = new GameObject[quizCount];
 
@@ -70,18 +93,14 @@ public class K_QuizSpawnMgr : MonoBehaviourPun
             {
                 quiz_correct[idx] = k_QuizPos.correct;
 
-                /////////////// 추가할거임
-                if(quizSetup != null && isFive)
+                print("퀴즈 받을거임");
+                /////////////////// 퀴즈데이터
+                if(idx < classMaterial.quizzes.Count)
                 {
-                    if(idx == 0)
-                    {
-                        quizSetup.SetQuizObjects(quizInstance, null);
-                    }
-                    else if(idx == 1)
-                    {
-                        quizSetup.SetQuizObjects(null, quizInstance);
-                    }
-                }               
+                    print("퀴즈 받았니?");
+                    Quiz quizData = classMaterial.quizzes[idx];
+                    UpdateQuizText(k_QuizPos, quizData);
+                }
             }
             else
             {
@@ -93,6 +112,37 @@ public class K_QuizSpawnMgr : MonoBehaviourPun
             print("프리팹 없음");
         }    
     }
+
+    public int answerNumber = 0; 
+
+    // 퀴즈1 텍스트 업뎃
+    public void UpdateQuizText(K_QuizPos quizPos, Quiz quiz)
+    {
+        if (quizPos != null)
+        {
+            // 퀴즈 Question 텍스트 설정
+            quizPos.text_Question.text = quiz.question;
+
+            // 문제
+            quizPos.text_Choices[0].text = quiz.choices1;
+            quizPos.text_Choices[1].text = quiz.choices2;
+            quizPos.text_Choices[2].text = quiz.choices3;
+            quizPos.text_Choices[3].text = quiz.choices4;
+
+            // 답 (서버에서 int로 줌)
+            int correctIndex = quiz.answer;
+
+            string correctAnswerText = quizPos.text_Choices[correctIndex].text;
+            answerNumber = correctIndex;
+
+            Debug.Log("퀴즈 잘 들어감");
+        }
+        else
+        {
+            Debug.LogError("퀴즈업슴");
+        }
+    }
+
 
     private void SpawnCorrectA(int idx)
     {
