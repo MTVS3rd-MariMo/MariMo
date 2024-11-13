@@ -214,11 +214,19 @@ public class ConnectionManager : MonoBehaviourPunCallbacks
         // 성공적으로 방에 입장되었음을 알려준다.
         print(MethodInfo.GetCurrentMethod().Name + " is Call!");
         //LobbyController.lobbyUI.PrintLog("방에 입장 성공!");
+
+
+
         PhotonNetwork.LoadLevel(1);
-        Y_SoundManager.instance.StopBgmSound();
-        Y_SoundManager.instance.PlayBgmSound(Y_SoundManager.EBgmType.BGM_MAIN);
 
+        //StartCoroutine(Test());
+    }
 
+    IEnumerator Test()
+    {
+        yield return new WaitForSeconds(5f);
+
+        
     }
 
     public override void OnJoinRoomFailed(short returnCode, string message)

@@ -106,6 +106,8 @@ public class Y_BookController : MonoBehaviourPun
         texts = new List<string>();
         pageNo = int.Parse(pageNoTxt.text);
 
+        Y_SoundManager.instance.StopBgmSound();
+
         //StartCoroutine(SplitTextIntoPages());
         //StartCoroutine(DisplayPage(pageNo));
 
@@ -428,6 +430,8 @@ public class Y_BookController : MonoBehaviourPun
             color.a = 0;
             textComponent.color = color;
         }
+
+        Y_SoundManager.instance.PlayBgmSound(Y_SoundManager.EBgmType.BGM_MAIN);
 
         //btn_chooseChar.SetActive(false);
         //btn_toMap.SetActive(true);
