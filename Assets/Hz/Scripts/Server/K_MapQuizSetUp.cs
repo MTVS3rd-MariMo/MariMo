@@ -40,7 +40,7 @@ public class K_MapQuizSetUp : MonoBehaviour
     {
         // classMaterial 받아오기
         classMaterial = Y_HttpRoomSetUp.GetInstance().realClassMaterial;
-        quizzes = classMaterial.quizzes;
+        //quizzes = classMaterial.quizzes;
 
         //if(quiz1Pos != null && quiz2Pos != null)
         //{
