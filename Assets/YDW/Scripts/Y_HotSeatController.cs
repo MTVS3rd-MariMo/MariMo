@@ -157,6 +157,11 @@ public class Y_HotSeatController : MonoBehaviourPun
         //    photonView.RPC(nameof(UnMuteAllPlayers), RpcTarget.All);
         //    //UnMuteAllPlayers();
         //}
+
+        if(Input.GetKeyDown(KeyCode.Alpha9))
+        {
+            StartCoroutine(LastCoroutine());
+        }
     }
 
     
@@ -308,13 +313,14 @@ public class Y_HotSeatController : MonoBehaviourPun
         // 5명이 다 차면
         if (selfInt_count >= 5)
         {
-            panel_waiting.SetActive(false);
-            stage.SetActive(true);
-
             // 상단의 이름표, 중간의 캐릭터 애니메이션, 하단의 자기소개 순서 모두 랜덤으로 돌린 순서랑 맞춰 줌
             MatchNameTags();
             MatchPlayerPos();
             MatchSelfIntroduce();
+
+            // 순서 다 정렬하고 셋액티브
+            panel_waiting.SetActive(false);
+            stage.SetActive(true);
 
             // 자기소개 보낸다
             // 먼저 자기의 자기소개 순서를 알아야 한다
@@ -445,7 +451,7 @@ public class Y_HotSeatController : MonoBehaviourPun
                 // 처음 순서면 15초, 아니면 5초 타이머 시작
                 if (i == 0 && PhotonNetwork.IsMasterClient) // 테스트용으로 5초, 시연 땐 15초 정도 할까 /////////////////////////
                 {
-                    RPC_StartTimer(i, 5);
+                    RPC_StartTimer(i, 10);
                     //recordTime = 15;
                     
                 }
