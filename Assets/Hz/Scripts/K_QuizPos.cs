@@ -31,6 +31,8 @@ public class K_QuizPos : MonoBehaviourPun
     private K_QuizManager quizManager;
     private K_MapQuizSetUp k_MapQuizSetUp;
 
+    public Y_BookController bookController;
+
     private void Start()
     {
         // 퀴즈 매니저 찾고
@@ -43,6 +45,8 @@ public class K_QuizPos : MonoBehaviourPun
 
         // 퀴즈 셋업하는거 찾음 댐
         k_MapQuizSetUp = FindObjectOfType<K_MapQuizSetUp>();
+
+        bookController = GameObject.Find("BookCanvas").GetComponent<Y_BookController>();
 
         //if(k_MapQuizSetUp != null)
         //{
@@ -110,7 +114,7 @@ public class K_QuizPos : MonoBehaviourPun
             // 연출 테스트
             virtualCamera.gameObject.SetActive(true);
 
-            Dictionary<int, PhotonView> allPlayers = GameObject.Find("BookCanvas").GetComponent<Y_BookController>().allPlayers;
+            Dictionary<int, PhotonView> allPlayers = bookController.allPlayers;
 
             for (int i = 0; i < allPlayers.Count; i++)
             {
