@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class K_QuizSpawnMgr : MonoBehaviourPun
@@ -20,6 +21,8 @@ public class K_QuizSpawnMgr : MonoBehaviourPun
     public Vector3 quiz_correctASize;
 
     private K_MapQuizSetUp quizSetup;
+
+    public bool isFive;
 
 
     void Start()
@@ -68,7 +71,7 @@ public class K_QuizSpawnMgr : MonoBehaviourPun
                 quiz_correct[idx] = k_QuizPos.correct;
 
                 /////////////// 추가할거임
-                if(quizSetup != null)
+                if(quizSetup != null && isFive)
                 {
                     if(idx == 0)
                     {
