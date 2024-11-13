@@ -151,24 +151,28 @@ public class P_ObjectManager_Question : MonoBehaviourPun
 
     void Submit()
     {
-        // 입력내용 저장
-        q_answer = answer_InputField.text;
-        answerUI_Canvas.SetActive(true);
-        answer_InputField.gameObject.SetActive(false);
-        btn_Submit.gameObject.SetActive(false);
-
-        QuestionAnswer questionAnswer = new QuestionAnswer()
+        if (!PhotonNetwork.IsMasterClient)
         {
-            lessnId = 2,
-            questionId = Y_HttpRoomSetUp.GetInstance().realClassMaterial.openQuestions[question_count].questionId,
-            answer = q_answer,
-        };
 
-        // 인풋필드 비우기
-        answer_InputField.text = "";
+            // 입력내용 저장
+            q_answer = answer_InputField.text;
+            answerUI_Canvas.SetActive(true);
+            answer_InputField.gameObject.SetActive(false);
+            btn_Submit.gameObject.SetActive(false);
 
-        // 데이터 백엔드에 전송
-        SendAnswer(questionAnswer);
+            QuestionAnswer questionAnswer = new QuestionAnswer()
+            {
+                lessnId = 2,
+                questionId = Y_HttpRoomSetUp.GetInstance().realClassMaterial.openQuestions[question_count].questionId,
+                answer = q_answer,
+            };
+
+            // 인풋필드 비우기
+            answer_InputField.text = "";
+
+            // 데이터 백엔드에 전송
+            SendAnswer(questionAnswer);
+        }
 
         // 포톤으로 실행
         RPC_NextStep(q_answer);
@@ -196,26 +200,29 @@ public class P_ObjectManager_Question : MonoBehaviourPun
     [PunRPC]
     public void NextStep(string answer)
     {
-        answer_count++;
+        if (!PhotonNetwork.IsMasterClient)
+        {
+            answer_count++;
 
 
-        if (answer_count == 1)
-        {
-            answer_Text1.text = answer;
-        }
-        else if (answer_count == 2)
-        {
-            answer_Text2.text = answer;
-        }
-        else if (answer_count == 3)
-        {
-            answer_Test3.text = answer;
-        }
-        else if (answer_count == 4)
-        {
-            answer_Test4.text = answer;
-        }
+            if (answer_count == 1)
+            {
+                answer_Text1.text = answer;
+            }
+            else if (answer_count == 2)
+            {
+                answer_Text2.text = answer;
+            }
+            else if (answer_count == 3)
+            {
+                answer_Test3.text = answer;
+            }
+            else if (answer_count == 4)
+            {
+                answer_Test4.text = answer;
+            }
 
+        }
         // 4명 모두 답을 제출하면
         // 테스트용으로 1로 설정
         if (answer_count >= testNum)
