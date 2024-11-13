@@ -44,6 +44,13 @@ public class K_QuizManager : MonoBehaviourPun
     //    }
     //}
 
+    public Y_BookController bookController;
+
+    private void Start()
+    {
+        bookController = GameObject.Find("BookCanvas").GetComponent<Y_BookController>();
+    }
+
     void Update()
     {
         // 플레이어 4명 모두 오면 활성화 -> 카운트 다운 하기
@@ -151,7 +158,7 @@ public class K_QuizManager : MonoBehaviourPun
 
         isDirecting = false;
 
-        Dictionary<int, PhotonView> allPlayers = GameObject.Find("BookCanvas").GetComponent<Y_BookController>().allPlayers;
+        Dictionary<int, PhotonView> allPlayers = bookController.allPlayers;
 
         for (int i = 0; i < allPlayers.Count; i++)
         {
