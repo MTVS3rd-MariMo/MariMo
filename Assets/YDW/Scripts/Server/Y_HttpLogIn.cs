@@ -202,13 +202,30 @@ public class Y_HttpLogIn : MonoBehaviour
                 {
                     Y_SignUp.signUp.titleUI.SetActive(true);
                 }
-                //SceneManager.LoadScene(1);
+                //SceneManager.
+                //(1);
             }
             else
             {
                 Debug.LogError("로그인 실패: " + webRequest.error);
 
             }
+        }
+    }
+
+
+    public void ReturnLobby()
+    {
+        Y_SignUp.signUp.logInUI.SetActive(false);
+
+        if (isTeacher)
+        {
+            Y_SignUp.signUp.creatorUI.SetActive(true);
+            img_background.SetActive(false);
+        }
+        else
+        {
+            Y_SignUp.signUp.titleUI.SetActive(true);
         }
     }
 }

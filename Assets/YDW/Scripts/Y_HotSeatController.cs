@@ -68,6 +68,8 @@ public class Y_HotSeatController : MonoBehaviourPun
 
     void Start()
     {
+        Y_SoundManager.instance.StopBgmSound();
+
         // 자기소개 인풋필드 터치 키보드 올라오면 위치/크기 변경할 준비
         originalSize = inputFieldRect.sizeDelta;
         originalPosition = inputFieldRect.gameObject.transform.localPosition;
@@ -653,6 +655,7 @@ public class Y_HotSeatController : MonoBehaviourPun
         Y_VoiceManager.Instance.recorder.TransmitEnabled = true;
         RPC_ActivateGuide(4);
         UnMuteAllPlayers(); ///////////// 원래는 RPC 였음!
+        Y_SoundManager.instance.PlayBgmSound(Y_SoundManager.EBgmType.BGM_MAIN);
     }
 
     void RPC_ActivateGuide(int index)

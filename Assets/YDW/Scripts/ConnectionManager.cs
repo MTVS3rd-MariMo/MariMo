@@ -11,6 +11,8 @@ using UnityEngine.UI;
 using UnityEngine.Networking;
 using TMPro;
 using System.IO;
+using UnityEngine.SceneManagement;
+using Org.BouncyCastle.Bcpg;
 
 
 public class ConnectionManager : MonoBehaviourPunCallbacks
@@ -24,6 +26,7 @@ public class ConnectionManager : MonoBehaviourPunCallbacks
     void Start()
     {
         Screen.SetResolution(640, 480, FullScreenMode.Windowed);
+        Y_SoundManager.instance.PlayBgmSound(Y_SoundManager.EBgmType.BGM_LOGIN);
     }
 
     void Update()
@@ -211,9 +214,19 @@ public class ConnectionManager : MonoBehaviourPunCallbacks
         // 성공적으로 방에 입장되었음을 알려준다.
         print(MethodInfo.GetCurrentMethod().Name + " is Call!");
         //LobbyController.lobbyUI.PrintLog("방에 입장 성공!");
-        PhotonNetwork.LoadLevel(1);
-        
 
+
+
+        PhotonNetwork.LoadLevel(1);
+
+        //StartCoroutine(Test());
+    }
+
+    IEnumerator Test()
+    {
+        yield return new WaitForSeconds(5f);
+
+        
     }
 
     public override void OnJoinRoomFailed(short returnCode, string message)
@@ -310,6 +323,15 @@ public class ConnectionManager : MonoBehaviourPunCallbacks
             
 
         }
+    }
+
+    public override void OnLeftRoom()
+    {
+        base.OnLeftRoom();
+
+        SceneManager.LoadScene(0);
+
+        Y_HttpLogIn.GetInstance().ReturnLobby();
     }
 
 }

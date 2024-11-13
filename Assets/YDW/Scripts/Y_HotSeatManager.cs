@@ -46,7 +46,7 @@ public class Y_HotSeatManager : MonoBehaviourPun
 
                 MoveControl(false);
 
-                Ani_Object.SetActive(true);
+                StartCoroutine(AniDelay());
             }
         }
     }
@@ -62,6 +62,13 @@ public class Y_HotSeatManager : MonoBehaviourPun
     {
         //Debug.LogError("Activate Hot Seat 했다");
         hotSeatCanvas.SetActive(true);
+    }
+
+    IEnumerator AniDelay()
+    {
+        yield return new WaitForSeconds(1.5f);
+
+        Ani_Object.SetActive(true);
     }
 
 
