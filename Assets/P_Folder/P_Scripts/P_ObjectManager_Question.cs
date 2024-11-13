@@ -162,17 +162,18 @@ public class P_ObjectManager_Question : MonoBehaviourPun
 
             QuestionAnswer questionAnswer = new QuestionAnswer()
             {
-                lessnId = 2,
+                lessnId = Y_HttpRoomSetUp.GetInstance().userlessonId,
                 questionId = Y_HttpRoomSetUp.GetInstance().realClassMaterial.openQuestions[question_count].questionId,
                 answer = q_answer,
             };
 
-            // 인풋필드 비우기
-            answer_InputField.text = "";
 
             // 데이터 백엔드에 전송
             SendAnswer(questionAnswer);
         }
+
+        // 인풋필드 비우기
+        answer_InputField.text = "";
 
         // 포톤으로 실행
         RPC_NextStep(q_answer);
