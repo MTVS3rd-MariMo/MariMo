@@ -165,15 +165,14 @@ public class P_ObjectManager_Question : MonoBehaviourPun
 
     void Submit()
     {
+        // 입력내용 저장
+        q_answer = answer_InputField.text;
+        answerUI_Canvas.SetActive(true);
+        answer_InputField.gameObject.SetActive(false);
+        btn_Submit.gameObject.SetActive(false);
+
         if (!PhotonNetwork.IsMasterClient)
         {
-
-            // 입력내용 저장
-            q_answer = answer_InputField.text;
-            answerUI_Canvas.SetActive(true);
-            answer_InputField.gameObject.SetActive(false);
-            btn_Submit.gameObject.SetActive(false);
-
             QuestionAnswer questionAnswer = new QuestionAnswer()
             {
                 lessnId = Y_HttpRoomSetUp.GetInstance().userlessonId,
@@ -181,16 +180,15 @@ public class P_ObjectManager_Question : MonoBehaviourPun
                 answer = q_answer,
             };
 
-
             // 데이터 백엔드에 전송
             SendAnswer(questionAnswer);
+
+            // 포톤으로 실행
+            RPC_NextStep(q_answer);
         }
 
         // 인풋필드 비우기
         answer_InputField.text = "";
-
-        // 포톤으로 실행
-        RPC_NextStep(q_answer);
     }
 
     void SendAnswer(QuestionAnswer answer)
