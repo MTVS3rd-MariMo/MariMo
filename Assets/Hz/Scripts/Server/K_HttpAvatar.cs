@@ -63,10 +63,9 @@ public class K_HttpAvatar : MonoBehaviourPun
     {
         userId = Convert.ToInt32(Y_HttpLogIn.GetInstance().userId);
         lessonId = Y_HttpRoomSetUp.GetInstance().userlessonId;
-        Debug.LogWarning("유저아이디" + userId);
-        Debug.LogWarning("레슨아이디" + lessonId);
+        
 
-        btn_CreateAvatar.onClick.AddListener(() => CreateAvatar(userId, lessonId));
+        btn_CreateAvatar.onClick.AddListener(() => CreateAvatar());
         //btn_CreateAvatar.onClick.AddListener(() => StartCoroutine(CreateAndFetchOtherAvatars(userId, lessonId)));
 
         bookController = GameObject.Find("BookCanvas").GetComponent<Y_BookController>();
@@ -456,17 +455,20 @@ public class K_HttpAvatar : MonoBehaviourPun
     //}
 
     // 캐릭터 생성하기 버튼 누르면 서버에 전송
-    public void CreateAvatar(int userId, int lessonId)
+    public void CreateAvatar()
     {
         Debug.Log("createAvatar 호출됨");
         // 아바타 만든거 보내기 (POST)
         //StartCoroutine(UploadTextureAsPng(userId, lessonId));
 
+        //Debug.LogWarning("유저아이디" + userId);
+        //Debug.LogWarning("레슨아이디" + lessonId);
+
         // UI 변경 -> 버튼 OFF로
         btn_CreateAvatar.gameObject.SetActive(false);
 
         // 내 아바타 보내고, 다른 유저의 데이터도 가져올꺼임
-        StartCoroutine(CreateAndFetchOtherAvatars(userId, lessonId));
+        StartCoroutine(CreateAndFetchOtherAvatars(Convert.ToInt32(Y_HttpLogIn.GetInstance().userId), Y_HttpRoomSetUp.GetInstance().userlessonId));
 
     }
 
