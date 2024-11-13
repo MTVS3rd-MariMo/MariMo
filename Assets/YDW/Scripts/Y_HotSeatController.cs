@@ -97,6 +97,7 @@ public class Y_HotSeatController : MonoBehaviourPun
 
         // 안내 가이드 띄워주기
         guide.SetActive(true);
+        Y_SoundManager.instance.PlayEftSound(Y_SoundManager.ESoundType.EFT_INFO);
         StartCoroutine(Deactivate(guide));
     }
 
@@ -225,6 +226,8 @@ public class Y_HotSeatController : MonoBehaviourPun
     {
         selfIntroduce.SetActive(false);
         panel_waiting.SetActive(true);
+
+        Y_SoundManager.instance.PlayEftSound(Y_SoundManager.ESoundType.EFT_BUTTON);
 
         // 플레이어 순서 랜덤으로 섞음
         Shuffle();
@@ -446,6 +449,7 @@ public class Y_HotSeatController : MonoBehaviourPun
 
                 // "친구들에게 말로 자기소개를 해 봅시다" UI
                 speechGuide.SetActive(true);
+                Y_SoundManager.instance.PlayEftSound(Y_SoundManager.ESoundType.EFT_INFO);
                 StartCoroutine(Deactivate(speechGuide));
 
                 //int recordTime;
@@ -667,6 +671,7 @@ public class Y_HotSeatController : MonoBehaviourPun
     void ActivateGuide(int index)
     {
         guides[index].SetActive(true);
+        Y_SoundManager.instance.PlayEftSound(Y_SoundManager.ESoundType.EFT_INFO);
         StartCoroutine(Deactivate(guides[index]));
     }
 }

@@ -151,6 +151,7 @@ public class Y_GameManager : MonoBehaviourPun
             {
                 students[i].GetComponent<Y_PlayerMove>().isFive = true;
             }
+
         }
 
     }
