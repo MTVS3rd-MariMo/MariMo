@@ -87,6 +87,7 @@ MonoBehaviour:
   correct: {fileID: 8582527140827197051}
   isQuizStarted: 0
   isInCorrectZone: 0
+  bookController: {fileID: 0}
 --- !u!114 &87286079345793747
 MonoBehaviour:
   m_ObjectHideFlags: 0
