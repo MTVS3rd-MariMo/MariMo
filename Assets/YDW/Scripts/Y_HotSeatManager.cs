@@ -40,8 +40,6 @@ public class Y_HotSeatManager : MonoBehaviourPun
             if (triggerNum >= 4 && !act)
             {
                 act = true;
-
-                if (photonView.IsMine) RPC_ActivateHotSeat();
                 //hotSeatCanvas.SetActive(true);
 
                 MoveControl(false);
@@ -53,21 +51,21 @@ public class Y_HotSeatManager : MonoBehaviourPun
 
     void RPC_ActivateHotSeat()
     {
-        Debug.LogError("RPC Hot Seat 했다");
         photonView.RPC(nameof(ActivateHotSeat), RpcTarget.All);
     }
 
     [PunRPC]
     void ActivateHotSeat()
     {
-        //Debug.LogError("Activate Hot Seat 했다");
+        Y_SoundManager.instance.PlayEftSound(Y_SoundManager.ESoundType.EFT_3D_OBJECT_03);
         hotSeatCanvas.SetActive(true);
     }
 
     IEnumerator AniDelay()
     {
         yield return new WaitForSeconds(1.5f);
-
+        //if (photonView.IsMine) RPC_ActivateHotSeat();
+        Y_SoundManager.instance.PlayEftSound(Y_SoundManager.ESoundType.EFT_3D_OBJECT_03);
         Ani_Object.SetActive(true);
     }
 

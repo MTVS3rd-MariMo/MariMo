@@ -249,6 +249,7 @@ public class Y_BookController : MonoBehaviourPun
     public void left()
     {
         pageNo = Mathf.Max(1, --pageNo);
+        Y_SoundManager.instance.PlayEftSound(Y_SoundManager.ESoundType.EFT_BUTTON);
         DisplayPage(pageNo);
     }
 
@@ -258,11 +259,13 @@ public class Y_BookController : MonoBehaviourPun
         if (pageNo + 1 > (texts.Count + 1) / 2)
         {
             bookUI.SetActive(false);
+            Y_SoundManager.instance.PlayEftSound(Y_SoundManager.ESoundType.EFT_BUTTON);
             ChooseCharacterUI.SetActive(true);
         }
         else
         {
             pageNo = Mathf.Min((texts.Count + 1) / 2, ++pageNo);
+            Y_SoundManager.instance.PlayEftSound(Y_SoundManager.ESoundType.EFT_BUTTON);
             DisplayPage(pageNo);
         }  
     }
@@ -290,6 +293,7 @@ public class Y_BookController : MonoBehaviourPun
 
         RPC_IncreaseClickSelectCount();
         btn_toMap.GetComponent<Button>().interactable = true;
+        Y_SoundManager.instance.PlayEftSound(Y_SoundManager.ESoundType.EFT_BUTTON);
 
     }
 
@@ -375,12 +379,12 @@ public class Y_BookController : MonoBehaviourPun
         
         PaintUI.SetActive(true);
 
-         /////////22222222
+        /////////22222222
         // currentPlayerNum 에 따라 RenderTexture, characterNum에 따라 MP4 파일을 설정
         //SetCharacterVideo(currentPlayerNum, characterNum);
 
+        Y_SoundManager.instance.PlayEftSound(Y_SoundManager.ESoundType.EFT_BUTTON);
 
-        
     }
 
     // 비디오 다운로드 후 설정
@@ -431,6 +435,7 @@ public class Y_BookController : MonoBehaviourPun
             textComponent.color = color;
         }
 
+        Y_SoundManager.instance.PlayEftSound(Y_SoundManager.ESoundType.EFT_BUTTON);
         Y_SoundManager.instance.PlayBgmSound(Y_SoundManager.EBgmType.BGM_MAIN);
 
         //btn_chooseChar.SetActive(false);
@@ -445,8 +450,9 @@ public class Y_BookController : MonoBehaviourPun
         // 맵 소개 UI 실행
         K_LobbyUiManager.instance.isAllArrived = true; 
         gameObject.SetActive(false);
-
+        Y_SoundManager.instance.PlayEftSound(Y_SoundManager.ESoundType.EFT_BUTTON);
         Ani_Object.SetActive(true);
+        Y_SoundManager.instance.PlayEftSound(Y_SoundManager.ESoundType.EFT_3D_OBJECT_01);
     }
 
     #endregion
