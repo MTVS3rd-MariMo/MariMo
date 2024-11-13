@@ -4417,7 +4417,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   userId: 
-  mainServer: 
+  mainServer: 125.132.216.190:8202
   RegisterUrl: api/user/signup
   logInUrl: api/user/login
   isTeacher: 0

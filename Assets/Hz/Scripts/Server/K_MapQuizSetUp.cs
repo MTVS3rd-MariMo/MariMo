@@ -26,8 +26,8 @@ public class K_MapQuizSetUp : MonoBehaviour
     private K_QuizPos quiz1Pos;
     private K_QuizPos quiz2Pos;
 
-    // 퀴즈 스폰 받아오기
-    private K_QuizSpawnMgr spawnMgr;
+
+    //public bool isFive;
 
     public static K_MapQuizSetUp Instance {get; private set;}
 
@@ -38,18 +38,21 @@ public class K_MapQuizSetUp : MonoBehaviour
 
     void Start()
     {
-        // SpawnMgr 접근
-        spawnMgr = GameObject.FindObjectOfType<K_QuizSpawnMgr>();
-
-        // 퀴즈
-        quizzes = Y_HttpRoomSetUp.GetInstance().realClassMaterial.quizzes;
         // classMaterial 받아오기
         classMaterial = Y_HttpRoomSetUp.GetInstance().realClassMaterial;
+        quizzes = classMaterial.quizzes;
 
+        //if(quiz1Pos != null && quiz2Pos != null)
+        //{
+        //    ReSetQuizzes();
+        //}
     }
+
 
     public void SetQuizObjects(GameObject quiz1, GameObject quiz2)
     {
+        print("호출댐? ");
+
         if(quiz1 != null)
         {
             quiz1pv = quiz1.GetComponent<PhotonView>();
@@ -71,6 +74,8 @@ public class K_MapQuizSetUp : MonoBehaviour
     // 퀴즈 리셋후 조정
     private void ReSetQuizzes()
     {
+        print("호출댐2? ");
+
         if (classMaterial != null && classMaterial.quizzes.Count >= 2)
         {
             Quiz firstQuiz = classMaterial.quizzes[0];
