@@ -140,6 +140,8 @@ public class K_KeyManager : MonoBehaviour
             K_KeyUiManager.instance.img_QuestionBookmark.gameObject.SetActive(false);
             yield return new WaitForSeconds(1f);
             K_KeyUiManager.instance.keyImages[0].gameObject.SetActive(true);
+            // 북마크 사운드
+            Y_SoundManager.instance.PlayEftSound(Y_SoundManager.ESoundType.EFT_BOOKMARK);
 
         }
         // 핫시팅
@@ -150,6 +152,8 @@ public class K_KeyManager : MonoBehaviour
             K_KeyUiManager.instance.img_HotSeatBookmark.gameObject.SetActive(false);
             yield return new WaitForSeconds(1f);
             K_KeyUiManager.instance.keyImages[1].gameObject.SetActive(true);
+            // 북마크 사운드
+            Y_SoundManager.instance.PlayEftSound(Y_SoundManager.ESoundType.EFT_BOOKMARK);
         }
         // 퀴즈1
         if (isDoneQuiz_1)
@@ -159,6 +163,8 @@ public class K_KeyManager : MonoBehaviour
             K_KeyUiManager.instance.img_Quiz1Bookmark.gameObject.SetActive(false);
             yield return new WaitForSeconds(1f);
             K_KeyUiManager.instance.keyImages[2].gameObject.SetActive(true);
+            // 북마크 사운드
+            Y_SoundManager.instance.PlayEftSound(Y_SoundManager.ESoundType.EFT_BOOKMARK);
         }
         // 퀴즈2
         if (isDoneQuiz_2)
@@ -168,6 +174,8 @@ public class K_KeyManager : MonoBehaviour
             K_KeyUiManager.instance.img_Quiz2Bookmark.gameObject.SetActive(false);
             yield return new WaitForSeconds(1f);
             K_KeyUiManager.instance.keyImages[3].gameObject.SetActive(true);
+            // 북마크 사운드
+            Y_SoundManager.instance.PlayEftSound(Y_SoundManager.ESoundType.EFT_BOOKMARK);
         }
 
     }
@@ -176,6 +184,8 @@ public class K_KeyManager : MonoBehaviour
     private IEnumerator UnlockBarrierAfterKeyUI()
     {
         K_KeyUiManager.instance.EndKeyUi();
+        // 사운드
+        Y_SoundManager.instance.PlayEftSound(Y_SoundManager.ESoundType.EFT_KEY);
         yield return new WaitForSeconds(1f);
 
         // 애니메이션 !!!!!!!!!!!!!!!!!!!!

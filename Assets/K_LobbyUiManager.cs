@@ -64,6 +64,9 @@ public class K_LobbyUiManager : MonoBehaviour
         img_KeyBoxBorder.gameObject.SetActive(true);
         img_KeyEmptyBox.gameObject.SetActive(true);
 
+        // UI 사운드
+        Y_SoundManager.instance.PlayEftSound(Y_SoundManager.ESoundType.EFT_INFO);
+
         // 5초 뒤 비활성화
         StartCoroutine(HideInfo(5f));      
     }

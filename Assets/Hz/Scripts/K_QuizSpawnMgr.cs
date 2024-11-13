@@ -24,9 +24,11 @@ public class K_QuizSpawnMgr : MonoBehaviourPun
     // 수업자료
     ClassMaterial classMaterial;
 
+    PhotonView pv;
 
     void Start()
     {
+        pv = GetComponent<PhotonView>();
 
         StartCoroutine(DelayStart(2f));
         //// classMaterial 받아오기
@@ -99,7 +101,9 @@ public class K_QuizSpawnMgr : MonoBehaviourPun
                 {
                     print("퀴즈 받았니?");
                     Quiz quizData = classMaterial.quizzes[idx];
-                    UpdateQuizText(k_QuizPos, quizData);
+                    //UpdateQuizText(k_QuizPos, quizData);
+                    pv.RPC(nameof(UpdateQuizText), RpcTarget.AllBuffered, idx, quizData.question,
+                          quizData.choices1, quizData.choices2, quizData.choices3, quizData.choices4, quizData.answer);
                 }
             }
             else
@@ -113,8 +117,9 @@ public class K_QuizSpawnMgr : MonoBehaviourPun
         }    
     }
 
-    public int answerNumber = 0; 
 
+    [PunRPC]
+    public int answerNumber = 0; 
     // 퀴즈1 텍스트 업뎃
     public void UpdateQuizText(K_QuizPos quizPos, Quiz quiz)
     {
