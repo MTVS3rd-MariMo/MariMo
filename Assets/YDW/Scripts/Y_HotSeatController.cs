@@ -378,7 +378,9 @@ public class Y_HotSeatController : MonoBehaviourPun
         for (int i = 0; i < rawImages.Length; i++)
         {
             int avatarIndex = bookController.allPlayers[playerNums[i]].GetComponent<Y_PlayerAvatarSetting>().avatarIndex;
+            Debug.LogError("avatarIndex : " + avatarIndex);
             rawImages[i].GetComponentInChildren<VideoPlayer>().url = Y_GameManager.instance.urls[avatarIndex];
+            Debug.LogError("URLS : " + Y_GameManager.instance.urls[avatarIndex]);
             //rawImages[i].GetComponentInChildren<VideoPlayer>().clip = myAvatarSetting.videoClips[avatarIndex];
         }
     }
