@@ -42,7 +42,7 @@ public class AllData
 public class OpenQuestions
 {
     public string question;
-    public ResultAnswer[] reultAnswers;
+    public ResultAnswer[] resultAnswers;
 }
 
 [Serializable]
@@ -75,6 +75,7 @@ public class P_LibraryTeacher : MonoBehaviour
     public GameObject Prefab_logTitle;
 
     public GameObject panel_log;
+    public TMP_Text text_Log;
     public Button btn_CloseLog;
 
     public TeacherLibrary teacherLibrary;
@@ -86,8 +87,7 @@ public class P_LibraryTeacher : MonoBehaviour
         // 수업 기록 조회
         GetLogList();
 
-        // 기록 조회 끝나면 실행
-        
+        btn_CloseLog.onClick.AddListener(OnclickCloseLog);
     }
 
     void GetLogList()
@@ -180,6 +180,8 @@ public class P_LibraryTeacher : MonoBehaviour
 
             // 파싱 끝나고 데이터 입력
             SetLogDetail(allData);
+
+            panel_log.SetActive(true);
         };
 
         StartCoroutine(HttpManager.GetInstance().Get(info));
@@ -236,9 +238,9 @@ public class P_LibraryTeacher : MonoBehaviour
             foreach (var question in allData.openQuestions)
             {
                 Debug.Log("질문: " + question.question);
-                if (question.reultAnswers != null && question.reultAnswers.Length > 0)
+                if (question.resultAnswers != null && question.resultAnswers.Length > 0)
                 {
-                    foreach (var answer in question.reultAnswers)
+                    foreach (var answer in question.resultAnswers)
                     {
                         Debug.Log(" - 사용자: " + answer.userName + ", 답변: " + answer.answer);
                     }
@@ -300,6 +302,103 @@ public class P_LibraryTeacher : MonoBehaviour
 
     void SetLogDetail(AllData allData)
     {
+        if (allData == null)
+        {
+            Debug.LogError("allData가 null입니다. 데이터 로드 실패.");
+            return;
+        }
 
+
+        // 기본 정보
+        text_Log.text = ("책 제목: " + allData.bookTitle);
+        text_Log.text += "\n\n" + ("생성 날짜: " + allData.createdAt);
+        text_Log.text += "\n\n" + ("사진 URL: " + allData.photoUrl);
+
+        // 참가자 정보
+        if (allData.participants != null && allData.participants.Length > 0)
+        {
+            text_Log.text += "\n\n" + ("참가자 목록:");
+            foreach (string participant in allData.participants)
+            {
+                text_Log.text += "\n\n" + ("- " + participant);
+            }
+        }
+        else
+        {
+            text_Log.text += "\n\n" + ("참가자 정보가 없습니다.");
+        }
+
+        // Roles 정보
+        if (allData.roles != null && allData.roles.Length > 0)
+        {
+            text_Log.text += "\n\n" + ("Roles 목록:");
+            foreach (var role in allData.roles)
+            {
+                text_Log.text += "\n\n" + ("사용자 이름: " + role.userName);
+                text_Log.text += "\n\n" + ("캐릭터: " + role.character);
+                text_Log.text += "\n\n" + ("아바타 URL: " + role.avatarUrl);
+            }
+        }
+        else
+        {
+            text_Log.text += "\n\n" + ("Roles 정보가 없습니다.");
+        }
+
+        // OpenQuestions 정보
+        if (allData.openQuestions != null && allData.openQuestions.Length > 0)
+        {
+            text_Log.text += "\n\n" + ("OpenQuestions 목록:");
+            foreach (var question in allData.openQuestions)
+            {
+                text_Log.text += "\n\n" + ("질문: " + question.question);
+                if (question.resultAnswers != null && question.resultAnswers.Length > 0)
+                {
+                    foreach (var answer in question.resultAnswers)
+                    {
+                        text_Log.text += "\n\n" + (" - 사용자: " + answer.userName + ", 답변: " + answer.answer);
+                    }
+                }
+                else
+                {
+                    text_Log.text += "\n\n" + (" - 답변이 없습니다.");
+                }
+            }
+        }
+        else
+        {
+            text_Log.text += "\n\n" + ("OpenQuestions 정보가 없습니다.");
+        }
+
+        // HotSittings 정보
+        if (allData.hotSittings != null && allData.hotSittings.Length > 0)
+        {
+            text_Log.text += "\n\n" + ("HotSittings 목록:");
+            foreach (var sitting in allData.hotSittings)
+            {
+                text_Log.text += "\n\n" + ("자기소개: " + sitting.selfIntroduce);
+                if (sitting.questionAnswers != null && sitting.questionAnswers.Length > 0)
+                {
+                    foreach (var answer in sitting.questionAnswers)
+                    {
+                        text_Log.text += "\n\n" + (" - 질문 답변: " + answer);
+                    }
+                }
+                else
+                {
+                    text_Log.text += "\n\n" + (" - 질문 답변이 없습니다.");
+                }
+            }
+        }
+        else
+        {
+            text_Log.text += "\n\n" + ("HotSittings 정보가 없습니다.");
+        }
+
+        
+    }
+
+    void OnclickCloseLog()
+    {
+        panel_log.SetActive(false);
     }
 }
