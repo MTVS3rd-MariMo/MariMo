@@ -108,9 +108,9 @@ public class K_QuizSpawnMgr : MonoBehaviourPun
                     if(quizPv != null)
                     {
                         print("널2??");
-                        //UpdateQuizText(k_QuizPos, quizData);
+                        UpdateQuizText(k_QuizPos, quizData);
                         //quizPv.RPC(nameof(UpdateQuizText), RpcTarget.AllBuffered, idx, quizData.question,
-                         //     quizData.choices1, quizData.choices2, quizData.choices3, quizData.choices4, quizData.answer);
+                        //      quizData.choices1, quizData.choices2, quizData.choices3, quizData.choices4, quizData.answer);
                     }
                     
                 }
