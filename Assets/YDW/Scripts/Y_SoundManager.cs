@@ -40,6 +40,7 @@ public class Y_SoundManager : MonoBehaviour
         if(instance == null)
         {
             instance = this;
+            DontDestroyOnLoad(gameObject);
         }
         else
         {
@@ -63,7 +64,7 @@ public class Y_SoundManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 
     public void PlayEftSound(ESoundType idx)
