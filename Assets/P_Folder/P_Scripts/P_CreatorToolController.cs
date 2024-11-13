@@ -227,8 +227,6 @@ public class P_CreatorToolController : MonoBehaviour
 
         panel_MakingQuiz.SetActive(true);
 
-        // 디버깅
-        Debug.Log(P_CreatorToolConnectMgr.Instance.GetQuiz(0).question);
 
         panel_MakingQuiz.GetComponent<P_MakingQuiz>().OpenQuizSet(0);
 
@@ -250,14 +248,6 @@ public class P_CreatorToolController : MonoBehaviour
                 P_CreatorToolConnectMgr.Instance.ParseLessons(downloadHandler.text);
 
                 // 데이터 로드 완료 후 처리할 작업이 있다면 여기에 추가
-                Debug.Log("수업자료 갯수");
-                Debug.Log(P_CreatorToolConnectMgr.Instance.lessons.lessonMaterials.Count);
-                Debug.Log("수업자료 이름들");
-                for(int i = 0; i < P_CreatorToolConnectMgr.Instance.lessons.lessonMaterials.Count; i++)
-                {
-                    Debug.Log(P_CreatorToolConnectMgr.Instance.lessons.lessonMaterials[i].bookTitle);
-                }
-
                 StoryButtonSet();
 
                 panel_CreateRoom.GetComponent<P_RoomCreate>().DropDownUpdate();

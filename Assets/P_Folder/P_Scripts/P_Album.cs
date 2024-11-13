@@ -25,13 +25,20 @@ public class StudentResult
 
 public class P_Album : MonoBehaviour
 {
+    public GameObject panel_Photo;
+    public Image Img_Album;
+    public Button btn_ClosePhoto;
+
+    public GameObject Prefab_Album;
+    public Transform contents;
+
     public StudentResultsWrapper results = new StudentResultsWrapper();
 
-    public Button[] buttons;
-    public TMP_Text[] texts;
 
     void Start()
     {
+        btn_ClosePhoto.onClick.AddListener(OnclickClose);
+
         GetResultsList();
     }
 
@@ -54,7 +61,7 @@ public class P_Album : MonoBehaviour
 
 
             // 파싱 끝나고 책제목 적용
-            ButtonSet();
+            ButtonSpawn();
 
         };
 
@@ -81,20 +88,42 @@ public class P_Album : MonoBehaviour
         }
     }
 
-    public void ButtonSet()
+    public void ButtonSpawn()
     {
-        for (int i = 0; i < buttons.Length; i++)
+        if (results.studentResults.Length < 3)
         {
-            texts[i].text = "+";
-            buttons[i].onClick.RemoveAllListeners();
-
-            if (i < results.studentResults.Length)
+            for (int i = 0; i < 3; i++ )
             {
-                texts[i].text = results.studentResults[i].bookTitle;
-                //buttons[i].onClick.AddListener(OnclickStory);
+                GameObject btn_Album = Instantiate(Prefab_Album, contents);
+
+                if (i < results.studentResults.Length)
+                {
+                    btn_Album.GetComponent<P_AlbumInfo>().SetBookTitle(results.studentResults[i].bookTitle);
+                    btn_Album.GetComponent<Button>().onClick.AddListener(() => Open_Album(results.studentResults[i].photo));
+                }
+            }
+        }
+        else
+        {
+            for (int i = 0; i < results.studentResults.Length; i++)
+            {
+                GameObject btn_Album = Instantiate(Prefab_Album, contents);
+
+                btn_Album.GetComponent<P_AlbumInfo>().SetBookTitle(results.studentResults[i].bookTitle);
+                btn_Album.GetComponent<Button>().onClick.AddListener(() => Open_Album(results.studentResults[i].photo));
             }
         }
     }
 
-    
+    void Open_Album(string url)
+    {
+        // url을 Img에 적용
+
+        panel_Photo.SetActive(true);
+    }
+
+    void OnclickClose()
+    {
+        panel_Photo.SetActive(false); 
+    }
 }
