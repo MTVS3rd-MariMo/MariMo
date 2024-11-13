@@ -274,9 +274,6 @@ public class Y_HttpHotSeat : MonoBehaviour
 
     string GetCharacterName()
     {
-        Debug.LogError("핫시트컨트롤러있니? : " + GameObject.Find("HotSeatCanvas").GetComponent<Y_HotSeatController>());
-        Debug.LogError("캐릭터 네임스 있니? : " + GameObject.Find("HotSeatCanvas").GetComponent<Y_HotSeatController>().characterNames);
-        Debug.LogError("캐릭터네임스 길이 : " + GameObject.Find("HotSeatCanvas").GetComponent<Y_HotSeatController>().characterNames.Length);
         //print("캐릭터 이름입니다 : " + Y_HotSeatController.Instance.characterNames[bookController.characterNum - 1].text);
         return GameObject.Find("HotSeatCanvas").GetComponent<Y_HotSeatController>().characterNames[bookController.characterNum - 1].text;
     }

@@ -24,6 +24,7 @@ public class ConnectionManager : MonoBehaviourPunCallbacks
     void Start()
     {
         Screen.SetResolution(640, 480, FullScreenMode.Windowed);
+        Y_SoundManager.instance.PlayBgmSound(Y_SoundManager.EBgmType.BGM_LOGIN);
     }
 
     void Update()
@@ -212,7 +213,9 @@ public class ConnectionManager : MonoBehaviourPunCallbacks
         print(MethodInfo.GetCurrentMethod().Name + " is Call!");
         //LobbyController.lobbyUI.PrintLog("방에 입장 성공!");
         PhotonNetwork.LoadLevel(1);
-        
+        Y_SoundManager.instance.StopBgmSound();
+        Y_SoundManager.instance.PlayBgmSound(Y_SoundManager.EBgmType.BGM_MAIN);
+
 
     }
 

@@ -202,7 +202,8 @@ public class Y_HttpLogIn : MonoBehaviour
                 {
                     Y_SignUp.signUp.titleUI.SetActive(true);
                 }
-                //SceneManager.LoadScene(1);
+                //SceneManager.
+                //(1);
             }
             else
             {
