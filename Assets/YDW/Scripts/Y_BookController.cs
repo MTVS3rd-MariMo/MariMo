@@ -418,9 +418,9 @@ public class Y_BookController : MonoBehaviourPun
         //mainCam.gameObject.SetActive(true);
         //virtualCam.gameObject.SetActive(true);
         //paintCam.gameObject.SetActive(false);
-        if(currentPlayerNum >= 0) allPlayers[currentPlayerNum].GetComponent<Y_PlayerAvatarSetting>().RPC_UpdatePhoto(characterNum);
-        PaintUI.SetActive(false);
-        ChooseCharacterUI.SetActive(true);
+        //if(currentPlayerNum >= 0) allPlayers[currentPlayerNum].GetComponent<Y_PlayerAvatarSetting>().RPC_UpdatePhoto(characterNum);
+        //PaintUI.SetActive(false);
+        //ChooseCharacterUI.SetActive(true);
         for(int i = 0; i < buttons.Length; i++)
         {
             TMP_Text textComponent = buttons[i].GetComponentInChildren<TMP_Text>();
@@ -429,8 +429,8 @@ public class Y_BookController : MonoBehaviourPun
             textComponent.color = color;
         }
 
-        btn_chooseChar.SetActive(false);
-        btn_toMap.SetActive(true);
+        //btn_chooseChar.SetActive(false);
+        //btn_toMap.SetActive(true);
     }
 
     public void ToMap()
