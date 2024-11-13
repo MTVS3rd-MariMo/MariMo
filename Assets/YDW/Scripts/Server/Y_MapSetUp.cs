@@ -13,6 +13,7 @@ public class Y_MapSetUp : MonoBehaviour
     public TMP_Text role2;
     public TMP_Text role3;
     public TMP_Text role4;
+    public TMP_Text paintTitle;
 
 
     public static Y_MapSetUp mapSetUp;
@@ -50,6 +51,7 @@ public class Y_MapSetUp : MonoBehaviour
         bookController.text = classMaterial.bookContents;
         bookTitle.text = classMaterial.bookTitle;
         bookTitle2.text = classMaterial.bookTitle;
+        paintTitle.text = classMaterial.bookTitle;
         print(classMaterial.bookContents);
         role1.text = classMaterial.lessonRoles[0];
         role2.text = classMaterial.lessonRoles[1];
