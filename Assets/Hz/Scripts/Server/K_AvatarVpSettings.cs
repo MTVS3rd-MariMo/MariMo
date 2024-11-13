@@ -44,6 +44,7 @@ public class K_AvatarVpSettings : MonoBehaviourPun
         index = pv.Owner.ActorNumber - 1;
         name = pv.Owner.NickName;
         //print(PhotonNetwork.LocalPlayer.ActorNumber);
+
     }
 
     private void Update()
@@ -52,12 +53,12 @@ public class K_AvatarVpSettings : MonoBehaviourPun
         if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.D))
         {
             // Walk 상태
-            //SetWalkingState(true);
+            SetWalkingState(true);
         }
         else
         {
             // Idle 상태
-            //SetWalkingState(false);
+            SetWalkingState(false);
         }
     }
 
@@ -137,7 +138,7 @@ public class K_AvatarVpSettings : MonoBehaviourPun
             rawImage.material.mainTexture = vp.targetTexture;
             vp.prepareCompleted += OnVideoPrepared;
             print("준비됐나요? ");
-            PlayCurrAnim();
+            //PlayCurrAnim();
         }
 
 
@@ -160,8 +161,23 @@ public class K_AvatarVpSettings : MonoBehaviourPun
     public void SetWalkingState(bool walking)
     {
         isWalking = walking;
-        currState = isWalking ? AnimState.Walk : AnimState.Idle;
-        PlayCurrAnim();
+        if(walking && currState == AnimState.Idle)
+        {
+            vp.url = idleUrl;
+            vp.Play();
+            currState = isWalking ? AnimState.Walk : AnimState.Idle;
+            print("걷기로 전환");
+        }
+        else if(!walking && currState == AnimState.Walk)
+        {
+            vp.url = walkUrl;
+            currState = isWalking ? AnimState.Walk : AnimState.Idle;
+            vp.Play();
+            print("대기로 전환");
+
+        }
+
+        //PlayCurrAnim();
 
         //print("SetWalkingState?");
     }
@@ -169,7 +185,7 @@ public class K_AvatarVpSettings : MonoBehaviourPun
     public void PlayCurrAnim()
     {
         vp.url = currState == AnimState.Idle ? idleUrl : walkUrl;
-        vp.Prepare();
+        //vp.Prepare();
 
         //print("PlayAnim?");
     }
