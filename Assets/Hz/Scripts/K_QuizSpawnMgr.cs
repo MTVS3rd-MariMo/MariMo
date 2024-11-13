@@ -101,9 +101,18 @@ public class K_QuizSpawnMgr : MonoBehaviourPun
                 {
                     print("퀴즈 받았니?");
                     Quiz quizData = classMaterial.quizzes[idx];
-                    //UpdateQuizText(k_QuizPos, quizData);
-                    pv.RPC(nameof(UpdateQuizText), RpcTarget.AllBuffered, idx, quizData.question,
-                          quizData.choices1, quizData.choices2, quizData.choices3, quizData.choices4, quizData.answer);
+                    // Pv
+                    PhotonView quizPv = quizInstance.GetComponent<PhotonView>();
+
+                    print("널?");
+                    if(quizPv != null)
+                    {
+                        print("널2??");
+                        //UpdateQuizText(k_QuizPos, quizData);
+                        //quizPv.RPC(nameof(UpdateQuizText), RpcTarget.AllBuffered, idx, quizData.question,
+                         //     quizData.choices1, quizData.choices2, quizData.choices3, quizData.choices4, quizData.answer);
+                    }
+                    
                 }
             }
             else
@@ -118,13 +127,34 @@ public class K_QuizSpawnMgr : MonoBehaviourPun
     }
 
 
+    
+    public int answerNumber = 0;
     [PunRPC]
-    public int answerNumber = 0; 
     // 퀴즈1 텍스트 업뎃
     public void UpdateQuizText(K_QuizPos quizPos, Quiz quiz)
     {
+        // 참조해
+        //int idx, string question, string choice1, string choice2, string choice3, string choice4, int answerIndex
+        //K_QuizPos quizPos = quizzes[idx].GetComponent<K_QuizPos>();
+
         if (quizPos != null)
         {
+            //// 퀴즈 Question 텍스트 설정
+            //quizPos.text_Question.text = question;
+
+            //// 문제
+            //quizPos.text_Choices[0].text = choice1;
+            //quizPos.text_Choices[1].text = choice2;
+            //quizPos.text_Choices[2].text = choice3;
+            //quizPos.text_Choices[3].text = choice4;
+
+            //// 답 (서버에서 int로 줌)
+            //int correctIndex = answer;
+
+            //string correctAnswerText = quizPos.text_Choices[correctIndex].text;
+            //answerNumber = correctIndex;
+
+
             // 퀴즈 Question 텍스트 설정
             quizPos.text_Question.text = quiz.question;
 
