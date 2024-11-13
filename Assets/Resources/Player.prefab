@@ -161,7 +161,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2f451633bfc3660418e707c185f3575a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  trackingSpeed: 3
+  trackingSpeed: 10
   speed: 0
   agent: {fileID: 2403669846499813768}
   test: {fileID: 0}

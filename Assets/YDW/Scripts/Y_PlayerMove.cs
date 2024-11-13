@@ -11,7 +11,7 @@ using UnityEngine.InputSystem.Utilities;
 
 public class Y_PlayerMove : MonoBehaviour, IPunObservable
 {
-    public float trackingSpeed = 3;
+    public float trackingSpeed = 10;
     public float speed;
     //CharacterController conn;
 
