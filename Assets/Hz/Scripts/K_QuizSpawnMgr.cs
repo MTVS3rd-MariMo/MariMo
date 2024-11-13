@@ -108,9 +108,9 @@ public class K_QuizSpawnMgr : MonoBehaviourPun
                     if(quizPv != null)
                     {
                         print("널2??");
-                        UpdateQuizText(k_QuizPos, quizData);
+                        //UpdateQuizText(k_QuizPos, quizData);
                         //quizPv.RPC(nameof(UpdateQuizText), RpcTarget.AllBuffered, idx, quizData.question,
-                        //      quizData.choices1, quizData.choices2, quizData.choices3, quizData.choices4, quizData.answer);
+                         //     quizData.choices1, quizData.choices2, quizData.choices3, quizData.choices4, quizData.answer);
                     }
                     
                 }
@@ -134,10 +134,27 @@ public class K_QuizSpawnMgr : MonoBehaviourPun
     public void UpdateQuizText(K_QuizPos quizPos, Quiz quiz)
     {
         // 참조해
+        //int idx, string question, string choice1, string choice2, string choice3, string choice4, int answerIndex
         //K_QuizPos quizPos = quizzes[idx].GetComponent<K_QuizPos>();
 
         if (quizPos != null)
         {
+            //// 퀴즈 Question 텍스트 설정
+            //quizPos.text_Question.text = question;
+
+            //// 문제
+            //quizPos.text_Choices[0].text = choice1;
+            //quizPos.text_Choices[1].text = choice2;
+            //quizPos.text_Choices[2].text = choice3;
+            //quizPos.text_Choices[3].text = choice4;
+
+            //// 답 (서버에서 int로 줌)
+            //int correctIndex = answer;
+
+            //string correctAnswerText = quizPos.text_Choices[correctIndex].text;
+            //answerNumber = correctIndex;
+
+
             // 퀴즈 Question 텍스트 설정
             quizPos.text_Question.text = quiz.question;
 
