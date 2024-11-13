@@ -133,6 +133,9 @@ public class K_QuizSpawnMgr : MonoBehaviourPun
     // 퀴즈1 텍스트 업뎃
     public void UpdateQuizText(K_QuizPos quizPos, Quiz quiz)
     {
+        // 참조해
+        //K_QuizPos quizPos = quizzes[idx].GetComponent<K_QuizPos>();
+
         if (quizPos != null)
         {
             // 퀴즈 Question 텍스트 설정
