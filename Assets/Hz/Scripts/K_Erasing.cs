@@ -95,9 +95,9 @@ public class K_Erasing : MonoBehaviour
         //print(brush_Height);
         //print(brush_Width);
 
-        for (int height_Plus = -6; height_Plus <= 6; height_Plus++)
+        for (int height_Plus = -18; height_Plus <= 18; height_Plus++)
         {
-            for (int width_Plus = -6; width_Plus <= 6; width_Plus++)
+            for (int width_Plus = -18; width_Plus <= 18; width_Plus++)
             {
                 if (brush_Height + height_Plus >= 0 && brush_Height + height_Plus < pixel_Height
                     && brush_Width + width_Plus >= 0 && brush_Width + width_Plus < pixel_Width)

@@ -65,6 +65,7 @@ public class Y_HotSeatController : MonoBehaviourPun
 
     public Button[] characterImages;
 
+
     void Start()
     {
         // 자기소개 인풋필드 터치 키보드 올라오면 위치/크기 변경할 준비
@@ -156,6 +157,11 @@ public class Y_HotSeatController : MonoBehaviourPun
         //    photonView.RPC(nameof(UnMuteAllPlayers), RpcTarget.All);
         //    //UnMuteAllPlayers();
         //}
+
+        if(Input.GetKeyDown(KeyCode.Alpha9))
+        {
+            StartCoroutine(LastCoroutine());
+        }
     }
 
     
@@ -307,13 +313,14 @@ public class Y_HotSeatController : MonoBehaviourPun
         // 5명이 다 차면
         if (selfInt_count >= 5)
         {
-            panel_waiting.SetActive(false);
-            stage.SetActive(true);
-
             // 상단의 이름표, 중간의 캐릭터 애니메이션, 하단의 자기소개 순서 모두 랜덤으로 돌린 순서랑 맞춰 줌
             MatchNameTags();
             MatchPlayerPos();
             MatchSelfIntroduce();
+
+            // 순서 다 정렬하고 셋액티브
+            panel_waiting.SetActive(false);
+            stage.SetActive(true);
 
             // 자기소개 보낸다
             // 먼저 자기의 자기소개 순서를 알아야 한다
@@ -329,7 +336,7 @@ public class Y_HotSeatController : MonoBehaviourPun
 
             //Debug.LogError("selfIntCount : " + selfIntCount);
 
-            //Y_HttpHotSeat.GetInstance().StartSendIntCoroutine(selfIntCount); ////////////////// 도원
+            Y_HttpHotSeat.GetInstance().StartSendIntCoroutine(selfIntCount); ////////////////// 도원
 
             //Y_VoiceManager.Instance.recorder.TransmitEnabled = false; // 인터뷰 시작하기 전에 일단은 모두 보이스 끈다 // 도원
             StartSpeech(0);
@@ -444,7 +451,7 @@ public class Y_HotSeatController : MonoBehaviourPun
                 // 처음 순서면 15초, 아니면 5초 타이머 시작
                 if (i == 0 && PhotonNetwork.IsMasterClient) // 테스트용으로 5초, 시연 땐 15초 정도 할까 /////////////////////////
                 {
-                    RPC_StartTimer(i, 5);
+                    RPC_StartTimer(i, 10);
                     //recordTime = 15;
                     
                 }
@@ -484,11 +491,15 @@ public class Y_HotSeatController : MonoBehaviourPun
         if(myActorNumber - 1 != playerNum)
         {
             Y_VoiceManager.Instance.recorder.TransmitEnabled = false;
+            Y_VoiceManager.Instance.noVoiceIcon.gameObject.SetActive(true);
+            Y_VoiceManager.Instance.voiceIcon.gameObject.SetActive(false);
             print(myActorNumber - 1 + "번 플레이어 뮤트됨");
         }
         else
         {
             Y_VoiceManager.Instance.recorder.TransmitEnabled = true;
+            Y_VoiceManager.Instance.noVoiceIcon.gameObject.SetActive(false);
+            Y_VoiceManager.Instance.voiceIcon.gameObject.SetActive(true);
             print(myActorNumber - 1 + "번 플레이어는 뮤트되지 않음");
         }
     }
@@ -502,6 +513,8 @@ public class Y_HotSeatController : MonoBehaviourPun
     public void UnMuteAllPlayers()
     {
         Y_VoiceManager.Instance.recorder.TransmitEnabled = true;
+        Y_VoiceManager.Instance.noVoiceIcon.gameObject.SetActive(false);
+        Y_VoiceManager.Instance.voiceIcon.gameObject.SetActive(true);
         print("전체 언뮤트 됨");
         //foreach (var voiceView in allVoiceViews)
         //{
@@ -599,11 +612,11 @@ public class Y_HotSeatController : MonoBehaviourPun
                 myTurnImgs[index].SetActive(false);
             }
 
-            if (i == players.Count)
-            {
-                if(PhotonNetwork.IsMasterClient) RPC_ProtoTest();
-                print("다음 사람 자기소개로 넘어갑니다");
-            }
+            //if (i == players.Count)
+            //{
+            //    if(PhotonNetwork.IsMasterClient) RPC_ProtoTest();
+            //    print("다음 사람 자기소개로 넘어갑니다");
+            //} // 도원 시연용으로 삭제
         }
     }
 

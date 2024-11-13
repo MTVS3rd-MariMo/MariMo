@@ -4,6 +4,11 @@ using UnityEngine;
 
 public class K_KeyManager : MonoBehaviour
 {
+    // 펜스
+    private Animation anim;
+    public GameObject Fence;
+    public GameObject particle_Destroy;
+
     // 열린 질문 활동 끝났는가
     public bool isDoneOpenQnA = false;
     // 퀴즈1 끝났는가 
@@ -39,6 +44,12 @@ public class K_KeyManager : MonoBehaviour
         {
             Destroy(this.gameObject);
         }
+    }
+
+    private void Start()
+    {
+        anim = GetComponent<Animation>();
+        anim.enabled = false;
     }
 
     void Update()
@@ -77,6 +88,9 @@ public class K_KeyManager : MonoBehaviour
 
             // 여기도 코루틴써야하나 (왕 열쇠 띄워주는 함수..?)
             StartCoroutine(UnlockBarrierAfterKeyUI());
+
+            
+
         }
     }
 
@@ -163,6 +177,14 @@ public class K_KeyManager : MonoBehaviour
     {
         K_KeyUiManager.instance.EndKeyUi();
         yield return new WaitForSeconds(1f);
+
+        // 애니메이션 !!!!!!!!!!!!!!!!!!!!
+        anim.enabled = true;
+        anim.Play("Fence_Animation");
+        particle_Destroy.gameObject.SetActive(true);
+
+        yield return new WaitForSeconds(1.5f);
+
         OpenBarrier();
     }
 

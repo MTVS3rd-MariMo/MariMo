@@ -107,9 +107,9 @@ public class K_Drawing : MonoBehaviour
         //print(brush_Height);
         //print(brush_Width);
 
-        for (int height_Plus = -4; height_Plus <= 4; height_Plus++)
+        for (int height_Plus = -3; height_Plus <= 3; height_Plus++)
         {
-            for (int width_Plus = -4; width_Plus <= 4; width_Plus++)
+            for (int width_Plus = -3; width_Plus <= 3; width_Plus++)
             {
                 if (brush_Height + height_Plus >= 0 && brush_Height + height_Plus < pixel_Height
                     && brush_Width + width_Plus >= 0 && brush_Width + width_Plus < pixel_Width)
