@@ -1522,7 +1522,6 @@ GameObject:
   - component: {fileID: 6430687014726904515}
   - component: {fileID: 6977969297443956476}
   - component: {fileID: 4146154622678911601}
-  - component: {fileID: 879605982622863961}
   m_Layer: 0
   m_Name: RealQuiz_1
   m_TagString: Untagged
@@ -1587,9 +1586,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fdcdce8646b8dca459a313a65c5bfe7b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  text_Question: {fileID: 0}
-  text_Choices: []
-  text_Answer: {fileID: 0}
+  text_Question: {fileID: 2607451519660988709}
+  text_Choices:
+  - {fileID: 6784821383658529549}
+  - {fileID: 6211166623580076950}
+  - {fileID: 6870329719876055184}
+  - {fileID: 7419860395733467609}
+  text_Answer: {fileID: 7419860395733467609}
   virtualCamera: {fileID: 5070900701800271210}
   correct: {fileID: 2857497517678312270}
   isQuizStarted: 0
@@ -1616,18 +1619,3 @@ MonoBehaviour:
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
---- !u!114 &879605982622863961
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8305077748244996288}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: df1a54d38f15c423fbeba187d2f358c6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  text_Question: {fileID: 0}
-  text_Choices: []
-  text_Answer: {fileID: 0}
