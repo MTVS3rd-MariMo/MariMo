@@ -64,7 +64,7 @@ public class Y_HotSeatManager : MonoBehaviourPun
     IEnumerator AniDelay()
     {
         yield return new WaitForSeconds(1.5f);
-        //if (photonView.IsMine) RPC_ActivateHotSeat();
+        if (photonView.IsMine) RPC_ActivateHotSeat();
         Y_SoundManager.instance.PlayEftSound(Y_SoundManager.ESoundType.EFT_3D_OBJECT_03);
         Ani_Object.SetActive(true);
     }
