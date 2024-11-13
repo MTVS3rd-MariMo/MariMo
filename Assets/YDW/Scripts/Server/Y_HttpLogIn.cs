@@ -212,4 +212,20 @@ public class Y_HttpLogIn : MonoBehaviour
             }
         }
     }
+
+
+    public void ReturnLobby()
+    {
+        Y_SignUp.signUp.logInUI.SetActive(false);
+
+        if (isTeacher)
+        {
+            Y_SignUp.signUp.creatorUI.SetActive(true);
+            img_background.SetActive(false);
+        }
+        else
+        {
+            Y_SignUp.signUp.titleUI.SetActive(true);
+        }
+    }
 }

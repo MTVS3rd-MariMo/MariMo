@@ -11,6 +11,8 @@ using UnityEngine.UI;
 using UnityEngine.Networking;
 using TMPro;
 using System.IO;
+using UnityEngine.SceneManagement;
+using Org.BouncyCastle.Bcpg;
 
 
 public class ConnectionManager : MonoBehaviourPunCallbacks
@@ -313,6 +315,15 @@ public class ConnectionManager : MonoBehaviourPunCallbacks
             
 
         }
+    }
+
+    public override void OnLeftRoom()
+    {
+        base.OnLeftRoom();
+
+        SceneManager.LoadScene(0);
+
+        Y_HttpLogIn.GetInstance().ReturnLobby();
     }
 
 }

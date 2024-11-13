@@ -9,6 +9,7 @@ using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.Playables;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class P_ObjectManager_Studio : MonoBehaviourPun
 {
@@ -24,6 +25,9 @@ public class P_ObjectManager_Studio : MonoBehaviourPun
     public Image studioUI2_Img;
     public TMP_Text timeCount_Text;
     public Image film_Img;
+    public GameObject finishUI_Panel;
+    public Button btn_Finish;
+
 
     // 사진배경용
     public GameObject backgrond;
@@ -44,7 +48,14 @@ public class P_ObjectManager_Studio : MonoBehaviourPun
 
     // 오브젝트 애니메이션
     public GameObject Ani_Object;
-    
+
+
+    private void Start()
+    {
+        btn_Finish.onClick.AddListener(OnclickFinish);
+    }
+
+
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))
@@ -258,49 +269,57 @@ public class P_ObjectManager_Studio : MonoBehaviourPun
 
         yield return new WaitForSeconds(2f);
 
-        
-        // 페이드 아웃
-        while (black.a <= 1)
-        {
-            black.a += Time.deltaTime / 1.5f;
+        finishUI_Panel.SetActive(true);
 
-            blackScreen.color = black;
 
-            yield return null;
-        }
+        ////////////////////////////////////////////////////////////// 월드로 돌아가지 않고 포톤 방 나가기
+        //// 페이드 아웃
+        //while (black.a <= 1)
+        //{
+        //    black.a += Time.deltaTime / 1.5f;
 
-        film_Img.gameObject.SetActive(false);
+        //    blackScreen.color = black;
 
-        // 타임라인 재생
-        timeline.Play();
+        //    yield return null;
+        //}
 
-        // 플레이어 위치 이동
-        for (int i = 0; i < allPlayers.Count; i++)
-        {
-            allPlayers[i].transform.position = new Vector3(transform.position.x, allPlayers[i].transform.position.y, transform.position.z);
-        }
+        //film_Img.gameObject.SetActive(false);
 
-        virtualCamera1.gameObject.SetActive(false);
-        virtualCamera2.gameObject.SetActive(false);
-        virtualCamera3.gameObject.SetActive(false);
+        //// 타임라인 재생
+        //timeline.Play();
 
-        yield return new WaitForSeconds(2f);
+        //// 플레이어 위치 이동
+        //for (int i = 0; i < allPlayers.Count; i++)
+        //{
+        //    allPlayers[i].transform.position = new Vector3(transform.position.x, allPlayers[i].transform.position.y, transform.position.z);
+        //}
 
-        // 페이드 인
-        while (black.a >= 0)
-        {
-            black.a -= Time.deltaTime / 1.5f;
+        //virtualCamera1.gameObject.SetActive(false);
+        //virtualCamera2.gameObject.SetActive(false);
+        //virtualCamera3.gameObject.SetActive(false);
 
-            blackScreen.color = black;
+        //yield return new WaitForSeconds(2f);
 
-            yield return null;
-        }
+        //// 페이드 인
+        //while (black.a >= 0)
+        //{
+        //    black.a -= Time.deltaTime / 1.5f;
 
-        // 사진관 모든 UI 종료
-        studioUI_Panel.SetActive(false);
-        blackScreen.gameObject.SetActive(false);
+        //    blackScreen.color = black;
 
-        RPC_MoveControl(true);
+        //    yield return null;
+        //}
+
+        //// 사진관 모든 UI 종료
+        //studioUI_Panel.SetActive(false);
+        //blackScreen.gameObject.SetActive(false);
+
+        //RPC_MoveControl(true);
+    }
+
+    void OnclickFinish()
+    {
+        PhotonNetwork.LeaveRoom();
     }
 
 
