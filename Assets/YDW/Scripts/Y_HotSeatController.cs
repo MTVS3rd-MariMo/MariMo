@@ -382,6 +382,7 @@ public class Y_HotSeatController : MonoBehaviourPun
         {
             //int avatarIndex = bookController.allPlayers[playerNums[i]].GetComponent<Y_PlayerAvatarSetting>().avatarIndex;
             //Debug.LogError("avatarIndex 뭔데? : " + avatarIndex);
+            Debug.LogError("i 는 : " + i + ", playerNums[i] 는 : " + playerNums[i]);
             rawImages[i].material = new Material(rawImages[i].material);
             rawImages[i].material.mainTexture = rawImages[i].GetComponentInChildren<VideoPlayer>().targetTexture;
             rawImages[i].GetComponentInChildren<VideoPlayer>().url = Y_GameManager.instance.urls[playerNums[i]];
