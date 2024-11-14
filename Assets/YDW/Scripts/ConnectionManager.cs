@@ -51,7 +51,7 @@ public class ConnectionManager : MonoBehaviourPunCallbacks
                                                   // 마스터 서버: 유저들 간의 Match making 을 해주는 공간. 룸을 만들고 룸에 조인을 하고 룸의 플레이어끼리 플레이를 하는 식. 방장의 씬을 기준으로 설정하고 나의 씬에 동기화
             print("서버에 요청 중....");
 
-            LobbyController.lobbyUI.btn_login.interactable = false;
+            //LobbyController.lobbyUI.btn_login.interactable = false; // 도원 알파 시연용 수정
             //int playerColor = LobbyUIController.lobbyUI.drop_playerColor.value;
             //PhotonNetwork.LocalPlayer.CustomProperties.Add("CHARACTER_COLOR", playerColor);
         }
