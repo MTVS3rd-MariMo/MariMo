@@ -79,7 +79,7 @@ public class K_KeyManager : MonoBehaviour
 
             // 여기도 코루틴써야하나 (왕 열쇠 띄워주는 함수..?)
             Y_GameManager.instance.RPC_Unlock();
-
+            isBarrierOpened = true;
         }
     }
 

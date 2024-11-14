@@ -17,9 +17,11 @@ public class P_LogInfo : MonoBehaviour
 
     public void SetPlayers(string[] playersName)
     {
-        for (int i = 0; i < playersName.Length; i++)
+        if (playersName == null || playersName.Length == 0) { return; }
+
+        for (int i = 1; i < playersName.Length; i++)
         {
-            players[i].text = playersName[i];
+            players[i - 1].text = playersName[i];
         }
     }
 

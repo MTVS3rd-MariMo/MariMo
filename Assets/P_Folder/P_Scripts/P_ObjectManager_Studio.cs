@@ -278,6 +278,8 @@ public class P_ObjectManager_Studio : MonoBehaviourPun
 
         film_Img.gameObject.SetActive(false);
 
+        blackScreen.gameObject.SetActive(false);
+
         finishUI_Panel.SetActive(true);
 
 
