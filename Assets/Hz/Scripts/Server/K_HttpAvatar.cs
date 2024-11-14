@@ -202,7 +202,7 @@ public class K_HttpAvatar : MonoBehaviourPun
                 // [PhotonNetwork.LocalPlayer.ActorNumber - 1]
                 if(actorNum != 0)
                 {
-                    //characterNum = bookController.allPlayers[actorNum - 1].GetComponent<Y_PlayerAvatarSetting>().avatarIndex;
+                    characterNum = bookController.allPlayers[actorNum - 1].GetComponent<Y_PlayerAvatarSetting>().avatarIndex;
                     // 유저가 선택한 캐릭터 화면에 맞게 떠야함
                     bookController.buttons[characterNum].GetComponent<Image>().sprite = receivedSprite;
 
@@ -287,8 +287,8 @@ public class K_HttpAvatar : MonoBehaviourPun
                             avatarSettings.SetVideoPath(null, videoPathWithProtocol, actorNumber); // walk 경로 설정
                             Debug.LogError("URLS : " + videoPathWithProtocol);
                             int actorNum = PhotonNetwork.LocalPlayer.ActorNumber - 1;
-                            characterNum = bookController.allPlayers[actorNum - 1].GetComponent<Y_PlayerAvatarSetting>().avatarIndex;
-                            RPC_AddUrls(characterNum);
+                            int characterNumForHS = actorNum - 1 >= 0 ? bookController.allPlayers[actorNum - 1].GetComponent<Y_PlayerAvatarSetting>().avatarIndex : -1;
+                            RPC_AddUrls(characterNumForHS, videoPathWithProtocol);
                             Debug.LogError("CharacterNum : " + characterNum);
                         }
                     }
@@ -342,15 +342,15 @@ public class K_HttpAvatar : MonoBehaviourPun
         }
     }
 
-    void RPC_AddUrls(int characterNum)
+    void RPC_AddUrls(int characterNum, string videoPathWithProtocol)
     {
-        photonView.RPC(nameof(AddUrls), RpcTarget.All, characterNum);
+        photonView.RPC(nameof(AddUrls), RpcTarget.All, characterNum, videoPathWithProtocol);
     }
 
     [PunRPC]
-    void AddUrls(int characterNum)
+    void AddUrls(int characterNum, string videoPathWithProtocol)
     {
-        Y_GameManager.instance.urls[characterNum] = videoPathWithProtocol;
+        if(characterNum > -1) Y_GameManager.instance.urls[characterNum] = videoPathWithProtocol;
     }
 
     // 아바타 생성, 다른 유저 데이터 가져오기
