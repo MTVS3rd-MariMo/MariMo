@@ -179,7 +179,7 @@ public class P_ObjectManager_Question : MonoBehaviourPun
                 questionId = Y_HttpRoomSetUp.GetInstance().realClassMaterial.openQuestions[question_count].questionId,
                 answer = q_answer,
             };
-
+            
             // 데이터 백엔드에 전송
             SendAnswer(questionAnswer);
 
@@ -213,11 +213,10 @@ public class P_ObjectManager_Question : MonoBehaviourPun
     [PunRPC]
     public void NextStep(string answer)
     {
+        answer_count++;
+
         if (!PhotonNetwork.IsMasterClient)
         {
-            answer_count++;
-
-
             if (answer_count == 1)
             {
                 answer_Text1.text = answer;
