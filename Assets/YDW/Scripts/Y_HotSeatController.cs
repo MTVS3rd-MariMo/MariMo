@@ -113,6 +113,9 @@ public class Y_HotSeatController : MonoBehaviourPun
             yield return new WaitForSeconds(3f);
             K_KeyManager.instance.isDoneHotSeating = true;
             GameObject.Find("Object_HotSeat").GetComponent<Y_HotSeatManager>().MoveControl(true);
+            UnMuteAllPlayers(); ///////////// 원래는 RPC 였음!
+            Y_SoundManager.instance.PlayBgmSound(Y_SoundManager.EBgmType.BGM_MAIN);
+            virtualCamera.gameObject.SetActive(false);
             gameObject.SetActive(false);
         }
     }
@@ -382,8 +385,6 @@ public class Y_HotSeatController : MonoBehaviourPun
             rawImages[i].material = new Material(rawImages[i].material);
             rawImages[i].material.mainTexture = rawImages[i].GetComponentInChildren<VideoPlayer>().targetTexture;
             rawImages[i].GetComponentInChildren<VideoPlayer>().url = Y_GameManager.instance.urls[playerNums[i]];
-            Debug.LogError("playerNums[i] 는? : " + playerNums[i]);
-            Debug.LogError("URLS 뭔데? : " + Y_GameManager.instance.urls[playerNums[i]]);
             //rawImages[i].GetComponentInChildren<VideoPlayer>().clip = myAvatarSetting.videoClips[avatarIndex];
         }
     }
@@ -663,12 +664,10 @@ public class Y_HotSeatController : MonoBehaviourPun
     IEnumerator LastCoroutine()
     {
         yield return new WaitForSeconds(2.5f);
+
         Y_VoiceManager.Instance.recorder.TransmitEnabled = true;
         RPC_ActivateGuide(4);
-        UnMuteAllPlayers(); ///////////// 원래는 RPC 였음!
-        Y_SoundManager.instance.PlayBgmSound(Y_SoundManager.EBgmType.BGM_MAIN);
-
-        virtualCamera.gameObject.SetActive(false);
+        
     }
 
     void RPC_ActivateGuide(int index)
