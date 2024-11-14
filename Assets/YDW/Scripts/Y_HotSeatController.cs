@@ -385,8 +385,6 @@ public class Y_HotSeatController : MonoBehaviourPun
             rawImages[i].material = new Material(rawImages[i].material);
             rawImages[i].material.mainTexture = rawImages[i].GetComponentInChildren<VideoPlayer>().targetTexture;
             rawImages[i].GetComponentInChildren<VideoPlayer>().url = Y_GameManager.instance.urls[playerNums[i]];
-            Debug.LogError("playerNums[i] 는? : " + playerNums[i]);
-            Debug.LogError("URLS 뭔데? : " + Y_GameManager.instance.urls[playerNums[i]]);
             //rawImages[i].GetComponentInChildren<VideoPlayer>().clip = myAvatarSetting.videoClips[avatarIndex];
         }
     }
