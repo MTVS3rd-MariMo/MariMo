@@ -166,6 +166,7 @@ public class P_ObjectManager_Question : MonoBehaviourPun
 
     void Submit()
     {
+        Y_SoundManager.instance.PlayEftSound(Y_SoundManager.ESoundType.EFT_BUTTON);
         // 입력내용 저장
         q_answer = answer_InputField.text;
         answerUI_Canvas.SetActive(true);
