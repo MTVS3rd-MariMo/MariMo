@@ -134,6 +134,7 @@ public class K_QuizSpawnMgr : MonoBehaviourPun
     public void UpdateQuizText(K_QuizPos quizPos, Quiz quiz)
     {
         // 참조해
+        //K_QuizPos quizPos, Quiz quiz
         //int idx, string question, string choice1, string choice2, string choice3, string choice4, int answerIndex
         //K_QuizPos quizPos = quizzes[idx].GetComponent<K_QuizPos>();
 

@@ -33,10 +33,10 @@ Transform:
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 3591594313086826593}
-  - {fileID: 5437658047432777969}
+  - {fileID: 756416843507951847}
   - {fileID: 7520498378416801754}
   - {fileID: 7417624536933284390}
-  - {fileID: 756416843507951847}
+  - {fileID: 5437658047432777969}
   - {fileID: 1597166251902920685}
   - {fileID: 5166371173967502274}
   - {fileID: 2566874440968143708}
@@ -78,11 +78,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   text_Question: {fileID: 8915285550479438948}
   text_Choices:
-  - {fileID: 936104168974349594}
+  - {fileID: 3393719437131581072}
   - {fileID: 5294817502175894077}
   - {fileID: 512765934168949519}
-  - {fileID: 3393719437131581072}
-  text_Answer: {fileID: 3393719437131581072}
+  - {fileID: 936104168974349594}
+  text_Answer: {fileID: 936104168974349594}
   virtualCamera: {fileID: 3277166137135047400}
   correct: {fileID: 8582527140827197051}
   isQuizStarted: 0
@@ -495,7 +495,7 @@ GameObject:
   - component: {fileID: 8587150662023697063}
   - component: {fileID: 936104168974349594}
   m_Layer: 0
-  m_Name: NotAnswer_1
+  m_Name: NotAnswer_4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1404,7 +1404,7 @@ GameObject:
   - component: {fileID: 786039186886467929}
   - component: {fileID: 3741454426232336316}
   m_Layer: 0
-  m_Name: NotAnswer_4
+  m_Name: NotAnswer_1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
