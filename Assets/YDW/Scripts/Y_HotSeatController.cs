@@ -626,6 +626,8 @@ public class Y_HotSeatController : MonoBehaviourPun
                 StopRecordVoice(playerNums[index] + 2, index);
 
                 myTurnImgs[index].SetActive(false);
+
+                break; // 도원 알파 시연용
             }
 
             //if (i == players.Count)
