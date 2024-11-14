@@ -287,9 +287,9 @@ public class K_HttpAvatar : MonoBehaviourPun
                             avatarSettings.SetVideoPath(null, videoPathWithProtocol, actorNumber); // walk 경로 설정
                             Debug.LogError("URLS : " + videoPathWithProtocol);
                             int actorNum = PhotonNetwork.LocalPlayer.ActorNumber - 1;
-                            int characterNumForHS = actorNum - 1 >= 0 ? bookController.allPlayers[actorNum - 1].GetComponent<Y_PlayerAvatarSetting>().avatarIndex : -1;
-                            RPC_AddUrls(characterNumForHS, videoPathWithProtocol);
-                            Debug.LogError("CharacterNum : " + characterNum);
+                            //int characterNumForHS = actorNum - 1 >= 0 ? bookController.allPlayers[actorNum - 1].GetComponent<Y_PlayerAvatarSetting>().avatarIndex : -1;
+                            RPC_AddUrls(actorNum, videoPathWithProtocol);
+                            Debug.LogError("actorNum : " + actorNum);
                         }
                     }
 
@@ -342,15 +342,25 @@ public class K_HttpAvatar : MonoBehaviourPun
         }
     }
 
-    void RPC_AddUrls(int characterNum, string videoPathWithProtocol)
+    void RPC_AddUrls(int actorNum, string videoPathWithProtocol)
     {
-        photonView.RPC(nameof(AddUrls), RpcTarget.All, characterNum, videoPathWithProtocol);
+       photonView.RPC(nameof(AddUrls), RpcTarget.All, actorNum, videoPathWithProtocol);
     }
 
     [PunRPC]
-    void AddUrls(int characterNum, string videoPathWithProtocol)
+    void AddUrls(int actorNum, string videoPathWithProtocol)
     {
-        if(characterNum > -1) Y_GameManager.instance.urls[characterNum] = videoPathWithProtocol;
+        print(videoPathWithProtocol);
+        print(videoPathWithProtocol.ElementAt(videoPathWithProtocol.Length - 5).ToString());
+
+        int urlNum = (int.Parse(videoPathWithProtocol.ElementAt(videoPathWithProtocol.Length - 5).ToString()));
+
+        print(urlNum);
+
+        Y_GameManager.instance.urls[urlNum - 1] = videoPathWithProtocol;
+
+        Debug.LogError("되나???? : " + videoPathWithProtocol + " 이 때 액터넘버 : " + actorNum);
+
     }
 
     // 아바타 생성, 다른 유저 데이터 가져오기
