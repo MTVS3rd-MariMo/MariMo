@@ -234,7 +234,6 @@ public class P_ObjectManager_Question : MonoBehaviourPun
             {
                 answer_Test4.text = answer;
             }
-
         }
         // 4명 모두 답을 제출하면
         // 테스트용으로 1로 설정

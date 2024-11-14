@@ -113,6 +113,9 @@ public class Y_HotSeatController : MonoBehaviourPun
             yield return new WaitForSeconds(3f);
             K_KeyManager.instance.isDoneHotSeating = true;
             GameObject.Find("Object_HotSeat").GetComponent<Y_HotSeatManager>().MoveControl(true);
+            UnMuteAllPlayers(); ///////////// 원래는 RPC 였음!
+            Y_SoundManager.instance.PlayBgmSound(Y_SoundManager.EBgmType.BGM_MAIN);
+            virtualCamera.gameObject.SetActive(false);
             gameObject.SetActive(false);
         }
     }
@@ -663,12 +666,10 @@ public class Y_HotSeatController : MonoBehaviourPun
     IEnumerator LastCoroutine()
     {
         yield return new WaitForSeconds(2.5f);
+
         Y_VoiceManager.Instance.recorder.TransmitEnabled = true;
         RPC_ActivateGuide(4);
-        UnMuteAllPlayers(); ///////////// 원래는 RPC 였음!
-        Y_SoundManager.instance.PlayBgmSound(Y_SoundManager.EBgmType.BGM_MAIN);
-
-        virtualCamera.gameObject.SetActive(false);
+        
     }
 
     void RPC_ActivateGuide(int index)
