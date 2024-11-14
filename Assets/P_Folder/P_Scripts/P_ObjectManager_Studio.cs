@@ -75,6 +75,7 @@ public class P_ObjectManager_Studio : MonoBehaviourPun
 
                     RPC_Studio();
 
+                    Y_SoundManager.instance.PlayEftSound(Y_SoundManager.ESoundType.EFT_3D_OBJECT_05);
                     Ani_Object.SetActive(true);
                 }
             }
@@ -261,7 +262,7 @@ public class P_ObjectManager_Studio : MonoBehaviourPun
         yield return new WaitForSeconds(0.01f);
         whiteScreen.gameObject.SetActive(false);
 
-        
+        Y_SoundManager.instance.PlayEftSound(Y_SoundManager.ESoundType.EFT_CAMERA);
         TakePicture();
 
         // 사진 틀 이미지 띄우기
