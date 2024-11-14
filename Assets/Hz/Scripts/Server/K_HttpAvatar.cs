@@ -286,7 +286,7 @@ public class K_HttpAvatar : MonoBehaviourPun
                         {
                             avatarSettings.SetVideoPath(null, videoPathWithProtocol, actorNumber); // walk 경로 설정
                             Debug.LogError("URLS : " + videoPathWithProtocol);
-                            RPC_AddUrls(characterNum);
+                            if(actorNumber == characterNum) RPC_AddUrls(characterNum);
                             Debug.LogError("CharacterNum : " + characterNum);
                         }
                     }
