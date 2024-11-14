@@ -4,10 +4,6 @@ using UnityEngine;
 
 public class K_KeyManager : MonoBehaviour
 {
-    // 펜스
-    private Animation anim;
-    public GameObject Fence;
-    public GameObject particle_Destroy;
 
     // 열린 질문 활동 끝났는가
     public bool isDoneOpenQnA = false;
@@ -21,8 +17,7 @@ public class K_KeyManager : MonoBehaviour
     // 획득한 총 열쇠 개수
     public int totalKeys = 0;
 
-    // 벽 오브젝트
-    public GameObject barrier;
+    
     private bool isBarrierOpened = false;
 
     // Singleton
@@ -46,11 +41,7 @@ public class K_KeyManager : MonoBehaviour
         }
     }
 
-    private void Start()
-    {
-        anim = GetComponent<Animation>();
-        anim.enabled = false;
-    }
+    
 
     void Update()
     {
@@ -87,9 +78,7 @@ public class K_KeyManager : MonoBehaviour
             //OpenBarrier();
 
             // 여기도 코루틴써야하나 (왕 열쇠 띄워주는 함수..?)
-            StartCoroutine(UnlockBarrierAfterKeyUI());
-
-            
+            Y_GameManager.instance.RPC_Unlock();
 
         }
     }
@@ -180,38 +169,4 @@ public class K_KeyManager : MonoBehaviour
 
     }
 
-    // 왕 아이콘 1초 후 -> 투명벽 열렸다는 딜레이 함수
-    private IEnumerator UnlockBarrierAfterKeyUI()
-    {
-        K_KeyUiManager.instance.EndKeyUi();
-        // 사운드
-        Y_SoundManager.instance.PlayEftSound(Y_SoundManager.ESoundType.EFT_KEY);
-        yield return new WaitForSeconds(1f);
-
-        // 애니메이션 !!!!!!!!!!!!!!!!!!!!
-        anim.enabled = true;
-        anim.Play("Fence_Animation");
-        particle_Destroy.gameObject.SetActive(true);
-
-        yield return new WaitForSeconds(1.5f);
-
-        OpenBarrier();
-    }
-
-    void OpenBarrier()
-    {
-        print("문열림");
-        Destroy(barrier);
-
-        isBarrierOpened = true;
-
-        // 문 열렸다는 이미지 
-        K_KeyUiManager.instance.img_doorOpen.gameObject.SetActive(true);
-        // 문 열렸다는 이미지 2초뒤에 꺼줘
-        K_KeyUiManager.instance.StartCoroutine(K_KeyUiManager.instance.HideOpenDoor(2f));
-
-        // 왕 아이콘을 먼저 띄워줘야함..
-        // 문열렸다는 안내 이미지 함수 -> 코루틴까지 처리하고
-        
-    }
 }

@@ -34,6 +34,7 @@ public class P_Album : MonoBehaviour
 
     public StudentResultsWrapper results = new StudentResultsWrapper();
 
+    public ImageLoader imageLoader;
 
     void Start()
     {
@@ -118,6 +119,7 @@ public class P_Album : MonoBehaviour
     void Open_Album(string url)
     {
         // url을 Img에 적용
+        imageLoader.LoadImageFromUrl(url);
 
         panel_Photo.SetActive(true);
     }

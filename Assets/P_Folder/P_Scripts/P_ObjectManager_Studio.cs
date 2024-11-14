@@ -273,6 +273,8 @@ public class P_ObjectManager_Studio : MonoBehaviourPun
 
         yield return new WaitForSeconds(2f);
 
+        film_Img.gameObject.SetActive(false);
+
         finishUI_Panel.SetActive(true);
 
 
