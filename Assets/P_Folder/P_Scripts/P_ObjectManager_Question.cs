@@ -116,6 +116,7 @@ public class P_ObjectManager_Question : MonoBehaviourPun
 
                 StartCoroutine(Question_UI_Start());
 
+                Y_SoundManager.instance.PlayEftSound(Y_SoundManager.ESoundType.EFT_3D_OBJECT_02);
                 Ani_Object.SetActive(true);
             }
         }
