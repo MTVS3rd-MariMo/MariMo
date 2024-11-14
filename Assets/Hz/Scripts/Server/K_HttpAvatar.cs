@@ -73,10 +73,10 @@ public class K_HttpAvatar : MonoBehaviourPun
 
     private void Update()
     {
-        if(Input.GetKeyDown(KeyCode.Alpha0))
-        {
-            bookCanvas.SetActive(false);
-        }
+        //if(Input.GetKeyDown(KeyCode.Alpha0))
+        //{
+        //    bookCanvas.SetActive(false);
+        //}
     }
 
     // 그림 보내기 POST
@@ -202,7 +202,7 @@ public class K_HttpAvatar : MonoBehaviourPun
                 // [PhotonNetwork.LocalPlayer.ActorNumber - 1]
                 if(actorNum != 0)
                 {
-                    characterNum = bookController.allPlayers[actorNum - 1].GetComponent<Y_PlayerAvatarSetting>().avatarIndex;
+                    //characterNum = bookController.allPlayers[actorNum - 1].GetComponent<Y_PlayerAvatarSetting>().avatarIndex;
                     // 유저가 선택한 캐릭터 화면에 맞게 떠야함
                     bookController.buttons[characterNum].GetComponent<Image>().sprite = receivedSprite;
 
@@ -286,7 +286,9 @@ public class K_HttpAvatar : MonoBehaviourPun
                         {
                             avatarSettings.SetVideoPath(null, videoPathWithProtocol, actorNumber); // walk 경로 설정
                             Debug.LogError("URLS : " + videoPathWithProtocol);
-                            if(actorNumber == characterNum) RPC_AddUrls(characterNum);
+                            int actorNum = PhotonNetwork.LocalPlayer.ActorNumber - 1;
+                            characterNum = bookController.allPlayers[actorNum - 1].GetComponent<Y_PlayerAvatarSetting>().avatarIndex;
+                            RPC_AddUrls(characterNum);
                             Debug.LogError("CharacterNum : " + characterNum);
                         }
                     }
