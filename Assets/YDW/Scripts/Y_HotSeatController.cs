@@ -377,12 +377,13 @@ public class Y_HotSeatController : MonoBehaviourPun
         // playerNums 순서대로 캐릭터 MP4 순서대로 배치
         for (int i = 0; i < rawImages.Length; i++)
         {
-            int avatarIndex = bookController.allPlayers[playerNums[i]].GetComponent<Y_PlayerAvatarSetting>().avatarIndex;
-            Debug.LogError("avatarIndex : " + avatarIndex);
+            //int avatarIndex = bookController.allPlayers[playerNums[i]].GetComponent<Y_PlayerAvatarSetting>().avatarIndex;
+            //Debug.LogError("avatarIndex 뭔데? : " + avatarIndex);
             rawImages[i].material = new Material(rawImages[i].material);
             rawImages[i].material.mainTexture = rawImages[i].GetComponentInChildren<VideoPlayer>().targetTexture;
-            rawImages[i].GetComponentInChildren<VideoPlayer>().url = Y_GameManager.instance.urls[avatarIndex];
-            Debug.LogError("URLS : " + Y_GameManager.instance.urls[avatarIndex]);
+            rawImages[i].GetComponentInChildren<VideoPlayer>().url = Y_GameManager.instance.urls[playerNums[i]];
+            Debug.LogError("playerNums[i] 는? : " + playerNums[i]);
+            Debug.LogError("URLS 뭔데? : " + Y_GameManager.instance.urls[playerNums[i]]);
             //rawImages[i].GetComponentInChildren<VideoPlayer>().clip = myAvatarSetting.videoClips[avatarIndex];
         }
     }
