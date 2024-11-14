@@ -285,11 +285,9 @@ public class K_HttpAvatar : MonoBehaviourPun
                         if (avatarSettings != null )
                         {
                             avatarSettings.SetVideoPath(null, videoPathWithProtocol, actorNumber); // walk 경로 설정
-                            Debug.LogError("URLS : " + videoPathWithProtocol);
                             int actorNum = PhotonNetwork.LocalPlayer.ActorNumber - 1;
                             //int characterNumForHS = actorNum - 1 >= 0 ? bookController.allPlayers[actorNum - 1].GetComponent<Y_PlayerAvatarSetting>().avatarIndex : -1;
                             RPC_AddUrls(actorNum, videoPathWithProtocol);
-                            Debug.LogError("actorNum : " + actorNum);
                         }
                     }
 
@@ -358,8 +356,6 @@ public class K_HttpAvatar : MonoBehaviourPun
         print(urlNum);
 
         Y_GameManager.instance.urls[urlNum - 1] = videoPathWithProtocol;
-
-        Debug.LogError("되나???? : " + videoPathWithProtocol + " 이 때 액터넘버 : " + actorNum);
 
     }
 
