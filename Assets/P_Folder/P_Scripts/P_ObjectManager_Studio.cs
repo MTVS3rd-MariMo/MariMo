@@ -75,11 +75,9 @@ public class P_ObjectManager_Studio : MonoBehaviourPun
                 if (photonView.IsMine)
                 {
                     RPC_MoveControl(false);
-                    Ani_Object.SetActive(true);
-
+                    
                     RPC_Studio();
 
-                    Y_SoundManager.instance.PlayEftSound(Y_SoundManager.ESoundType.EFT_3D_OBJECT_05);
                 }
             }
         }
@@ -95,6 +93,8 @@ public class P_ObjectManager_Studio : MonoBehaviourPun
     public void Studio()
     {
         StartCoroutine(Studio_UI_Player());
+        Ani_Object.SetActive(true);
+        Y_SoundManager.instance.PlayEftSound(Y_SoundManager.ESoundType.EFT_3D_OBJECT_05);
     }
 
     private void OnTriggerExit(Collider other)
