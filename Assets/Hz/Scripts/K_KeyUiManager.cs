@@ -119,7 +119,7 @@ public class K_KeyUiManager : MonoBehaviour
     {
         if(Input.GetKeyDown(KeyCode.Alpha0))
         {
-            K_KeyManager.instance.isDoneQuiz_2 = true;
+            Y_GameManager.instance.RPC_Unlock();
         }
     }
 }
