@@ -244,7 +244,7 @@ public class K_HttpAvatar : MonoBehaviourPun
 
                 // 고유한 파일 이름을 생성하여 저장 경로 설정
                 string uniqueFileName = $"{fileName}_{actorNumber}.mp4";
-                string filePath = Application.persistentDataPath + "/" + PhotonNetwork.LocalPlayer.ActorNumber;// + "/" +  uniqueFileName;
+                string filePath = Application.persistentDataPath + "/" + actorNumber;// + "/" +  uniqueFileName;
                 if(Directory.Exists(filePath) == false)
                 {
                     Directory.CreateDirectory(filePath);
@@ -282,12 +282,12 @@ public class K_HttpAvatar : MonoBehaviourPun
                     else if (fileName.Equals("animation_1"))
                     {
                         print("animation_1 니? 웅");
-                        if (avatarSettings != null)
+                        if (avatarSettings != null )
                         {
                             avatarSettings.SetVideoPath(null, videoPathWithProtocol, actorNumber); // walk 경로 설정
                             Debug.LogError("URLS : " + videoPathWithProtocol);
-                            RPC_AddUrls(actorNumber);
-                            Debug.LogError("CharacterNum : " + actorNumber);
+                            RPC_AddUrls(characterNum);
+                            Debug.LogError("CharacterNum : " + characterNum);
                         }
                     }
 
