@@ -49,10 +49,13 @@ public class P_ObjectManager_Studio : MonoBehaviourPun
     // 오브젝트 애니메이션
     public GameObject Ani_Object;
 
+    public Y_BookController bookController;
 
     private void Start()
     {
         btn_Finish.onClick.AddListener(OnclickFinish);
+
+        bookController = GameObject.Find("BookCanvas").GetComponent<Y_BookController>();
     }
 
 
@@ -72,11 +75,11 @@ public class P_ObjectManager_Studio : MonoBehaviourPun
                 if (photonView.IsMine)
                 {
                     RPC_MoveControl(false);
+                    Ani_Object.SetActive(true);
 
                     RPC_Studio();
 
                     Y_SoundManager.instance.PlayEftSound(Y_SoundManager.ESoundType.EFT_3D_OBJECT_05);
-                    Ani_Object.SetActive(true);
                 }
             }
         }
@@ -161,7 +164,7 @@ public class P_ObjectManager_Studio : MonoBehaviourPun
         // 타임라인 일시정지
         timeline.Pause();
 
-        Dictionary<int, PhotonView> allPlayers = GameObject.Find("BookCanvas").GetComponent<Y_BookController>().allPlayers;
+        Dictionary<int, PhotonView> allPlayers = bookController.allPlayers;
 
         for (int i = 0; i < allPlayers.Count; i++)
         {
