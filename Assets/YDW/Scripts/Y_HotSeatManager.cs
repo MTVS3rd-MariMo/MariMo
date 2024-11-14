@@ -15,7 +15,7 @@ public class Y_HotSeatManager : MonoBehaviourPun
 
     // 애니메이션 오브젝트
     public GameObject Ani_Object;
-    public CinemachineVirtualCamera VirtualCamera;
+    public GameObject VirtualCamera;
 
     private void Awake()
     {
@@ -67,7 +67,7 @@ public class Y_HotSeatManager : MonoBehaviourPun
 
     IEnumerator AniDelay()
     {
-        VirtualCamera.gameObject.SetActive(true);
+        VirtualCamera.SetActive(true);
 
         Ani_Object.SetActive(true);
         Y_SoundManager.instance.PlayEftSound(Y_SoundManager.ESoundType.EFT_3D_OBJECT_03);

@@ -66,7 +66,7 @@ public class Y_HotSeatController : MonoBehaviourPun
 
     public Button[] characterImages;
 
-    public CinemachineVirtualCamera virtualCamera;
+    public GameObject VirtualCamera;
 
     void Start()
     {
@@ -108,14 +108,14 @@ public class Y_HotSeatController : MonoBehaviourPun
     {
         yield return new WaitForSeconds(2);
         gm.SetActive(false);
-        if(gm == guides[4]) // 마지막 "참 잘했어요!" UI 의 경우
+        if (gm == guides[4]) // 마지막 "참 잘했어요!" UI 의 경우
         {
             yield return new WaitForSeconds(3f);
+            VirtualCamera.SetActive(false);
             K_KeyManager.instance.isDoneHotSeating = true;
             GameObject.Find("Object_HotSeat").GetComponent<Y_HotSeatManager>().MoveControl(true);
             UnMuteAllPlayers(); ///////////// 원래는 RPC 였음!
             Y_SoundManager.instance.PlayBgmSound(Y_SoundManager.EBgmType.BGM_MAIN);
-            virtualCamera.gameObject.SetActive(false);
             gameObject.SetActive(false);
         }
     }
