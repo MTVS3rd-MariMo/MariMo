@@ -164,6 +164,9 @@ public class P_ObjectManager_Studio : MonoBehaviourPun
         // 타임라인 일시정지
         timeline.Pause();
 
+        // 오브젝트 회전 돌리기
+        this.transform.rotation = new Quaternion(0, 0, 0, 0);
+
         Dictionary<int, PhotonView> allPlayers = bookController.allPlayers;
 
         for (int i = 0; i < allPlayers.Count; i++)
