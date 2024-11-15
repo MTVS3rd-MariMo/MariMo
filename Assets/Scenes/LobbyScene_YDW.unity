@@ -4306,7 +4306,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   userId: 
-  mainServer: 172.20.10.2:9999
+  mainServer: localhost:9999
   RegisterUrl: api/user/signup
   logInUrl: api/user/login
   isTeacher: 0

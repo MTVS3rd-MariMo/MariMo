@@ -156,7 +156,7 @@ public class K_QuizSpawnMgr : MonoBehaviourPun
                 string correctAnswerText = quizPos.text_Choices[answerIndex -1].text;
                 answerNumber = answerIndex - 1; // 정답 번호 저장 (정답 인덱스)
 
-                Debug.Log($"정답은: {correctAnswerText} (인덱스: {answerIndex - 1})");
+                Debug.Log($"정답은: {correctAnswerText} (인덱스: {answerIndex})");
             }
             //int correctIndex = answer;
 

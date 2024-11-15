@@ -163,14 +163,14 @@ public class K_AvatarVpSettings : MonoBehaviourPun
         isWalking = walking;
         if(walking && currState == AnimState.Idle)
         {
-            vp.url = idleUrl;
+            vp.url = walkUrl;
             vp.Play();
             currState = isWalking ? AnimState.Walk : AnimState.Idle;
             print("걷기로 전환");
         }
         else if(!walking && currState == AnimState.Walk)
         {
-            vp.url = walkUrl;
+            vp.url = idleUrl;
             currState = isWalking ? AnimState.Walk : AnimState.Idle;
             vp.Play();
             print("대기로 전환");
