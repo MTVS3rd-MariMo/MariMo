@@ -109,8 +109,8 @@ public class K_QuizSpawnMgr : MonoBehaviourPun
                     {
                         print("널2??");
                         //UpdateQuizText(k_QuizPos, quizData);
-                        pv.RPC(nameof(UpdateQuizText), RpcTarget.AllBuffered, idx, quizData.question,
-                              quizData.choices1, quizData.choices2, quizData.choices3, quizData.choices4, quizData.answer);
+                        //pv.RPC(nameof(UpdateQuizText), RpcTarget.AllBuffered, idx, quizData.question,
+                        //      quizData.choices1, quizData.choices2, quizData.choices3, quizData.choices4, quizData.answer);
                     }
                     
                 }
