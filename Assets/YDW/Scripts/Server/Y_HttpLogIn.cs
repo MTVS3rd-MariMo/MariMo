@@ -57,7 +57,7 @@ public class Y_HttpLogIn : MonoBehaviour
 
         instance = this;
         DontDestroyOnLoad(gameObject);
-        mainServer = "http://211.250.74.75:8202/";
+        mainServer = "http://172.20.10.2:9999/";
     }
 
     // Start is called before the first frame update
