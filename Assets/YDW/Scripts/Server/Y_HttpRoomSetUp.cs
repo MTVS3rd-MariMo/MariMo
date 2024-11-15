@@ -168,7 +168,7 @@ public class Y_HttpRoomSetUp : MonoBehaviourPun
             onComplete = (DownloadHandler downloadHandler) =>
             {
                 Debug.Log("레슨 아이디 보내기 성공: " + downloadHandler.text);
-
+                Debug.Log("sendLessonId.lessonId.ToString() : " + sendLessonId.lessonId.ToString());
                 // 수업 데이터 받아오기
                 StartCoroutine(GetClassMaterial(id));
             }

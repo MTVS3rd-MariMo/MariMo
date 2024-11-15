@@ -83,7 +83,7 @@ public class P_RoomCreate : MonoBehaviour
 
     public void GetLessonId()
     {
-        Debug.Log(lessonMaterialNum);
+        Debug.Log("lessonMaterialNum : " + lessonMaterialNum);
 
         HttpInfo info = new HttpInfo();
         info.url = P_CreatorToolConnectMgr.Instance.url_Front + "/api/lesson/" + lessonMaterialNum;
@@ -95,7 +95,7 @@ public class P_RoomCreate : MonoBehaviour
         {
             // 받은 데이터 파싱할 함수 호출
             lessonId = Convert.ToInt32(downloadHandler.text);
-            Debug.Log(lessonId);
+            Debug.Log("LessonId : " + lessonId);
 
             // 포톤 방생성 요청
             roomMgr.CreateRoom(RoomName.text, lessonId, lessonMaterialNum);

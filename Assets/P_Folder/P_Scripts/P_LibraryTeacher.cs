@@ -158,7 +158,8 @@ public class P_LibraryTeacher : MonoBehaviour
                 btn_Album.GetComponent<P_LogInfo>().SetBook(teacherLibrary.teacherResults[i].bookTitle);
                 btn_Album.GetComponent<P_LogInfo>().SetPlayers(teacherLibrary.teacherResults[i].participantList);
                 btn_Album.GetComponent<P_LogInfo>().SetDate(teacherLibrary.teacherResults[i].createdAt);
-                btn_Album.GetComponent<Button>().onClick.AddListener(() => OnclickOpenButton(teacherLibrary.teacherResults[i].lessonId));
+                btn_Album.GetComponent<P_LogInfo>().SetLessonId(teacherLibrary.teacherResults[i].lessonId);
+                btn_Album.GetComponent<Button>().onClick.AddListener(() => OnclickOpenButton(btn_Album.GetComponent<P_LogInfo>().GetLessonId()));
 
             }
         }
