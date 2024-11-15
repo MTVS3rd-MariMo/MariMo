@@ -60,12 +60,22 @@ public class K_QuizManager : MonoBehaviourPun
             // 연출 시작
             StartCoroutine(Start_Production());
         }
+
+        if(Input.GetKeyDown(KeyCode.Alpha8))
+        {
+            StopCoroutine("RestartQuiz");
+            // 오류 ->> EndQuiz를 RPC로 해줘야하나?
+            EndQuiz();
+            // 정답 맞출 시 글씨 색상 변경
+            quizCorrect.text_Choices[quizSpawnMgr.answerNumber].color = Color.red;
+            StartCoroutine(CompleteQuiz(2f));
+        }
     }
 
     // Server
     public void UpdateQuizFromServer()
     {
-        // 
+        
     }
 
 
