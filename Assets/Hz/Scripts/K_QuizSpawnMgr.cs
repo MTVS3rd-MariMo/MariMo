@@ -108,9 +108,9 @@ public class K_QuizSpawnMgr : MonoBehaviourPun
                     if(quizPv != null)
                     {
                         print("널2??");
-                        UpdateQuizText(k_QuizPos, quizData);
-                        //quizPv.RPC(nameof(UpdateQuizText), RpcTarget.AllBuffered, idx, quizData.question,
-                        //      quizData.choices1, quizData.choices2, quizData.choices3, quizData.choices4, quizData.answer);
+                        //UpdateQuizText(k_QuizPos, quizData);
+                        pv.RPC(nameof(UpdateQuizText), RpcTarget.AllBuffered, idx, quizData.question,
+                              quizData.choices1, quizData.choices2, quizData.choices3, quizData.choices4, quizData.answer);
                     }
                     
                 }
@@ -131,25 +131,33 @@ public class K_QuizSpawnMgr : MonoBehaviourPun
     public int answerNumber = 0;
     [PunRPC]
     // 퀴즈1 텍스트 업뎃
-    public void UpdateQuizText(K_QuizPos quizPos, Quiz quiz)
+    public void UpdateQuizText(int idx, string question, string choice1, string choice2, string choice3, string choice4, int answerIndex)
     {
         // 참조해
         //K_QuizPos quizPos, Quiz quiz
         //int idx, string question, string choice1, string choice2, string choice3, string choice4, int answerIndex
-        //K_QuizPos quizPos = quizzes[idx].GetComponent<K_QuizPos>();
+        K_QuizPos quizPos = quizzes[idx].GetComponent<K_QuizPos>();
 
         if (quizPos != null)
         {
-            //// 퀴즈 Question 텍스트 설정
-            //quizPos.text_Question.text = question;
+            // 퀴즈 Question 텍스트 설정
+            quizPos.text_Question.text = question;
 
-            //// 문제
-            //quizPos.text_Choices[0].text = choice1;
-            //quizPos.text_Choices[1].text = choice2;
-            //quizPos.text_Choices[2].text = choice3;
-            //quizPos.text_Choices[3].text = choice4;
+            // 문제
+            quizPos.text_Choices[0].text = choice1;
+            quizPos.text_Choices[1].text = choice2;
+            quizPos.text_Choices[2].text = choice3;
+            quizPos.text_Choices[3].text = choice4;
 
-            //// 답 (서버에서 int로 줌)
+            // 답 (서버에서 int로 줌)
+            // 서버로부터 받은 정답 인덱스 기반으로 올바른 선택지의 텍스트를 가져와서 저장
+            if (answerIndex >= 0 && answerIndex < quizPos.text_Choices.Length)
+            {
+                string correctAnswerText = quizPos.text_Choices[answerIndex -1].text;
+                answerNumber = answerIndex - 1; // 정답 번호 저장 (정답 인덱스)
+
+                Debug.Log($"정답은: {correctAnswerText} (인덱스: {answerIndex - 1})");
+            }
             //int correctIndex = answer;
 
             //string correctAnswerText = quizPos.text_Choices[correctIndex].text;
@@ -157,19 +165,19 @@ public class K_QuizSpawnMgr : MonoBehaviourPun
 
 
             // 퀴즈 Question 텍스트 설정
-            quizPos.text_Question.text = quiz.question;
+            //quizPos.text_Question.text = quiz.question;
 
-            // 문제
-            quizPos.text_Choices[0].text = quiz.choices1;
-            quizPos.text_Choices[1].text = quiz.choices2;
-            quizPos.text_Choices[2].text = quiz.choices3;
-            quizPos.text_Choices[3].text = quiz.choices4;
+            //// 문제
+            //quizPos.text_Choices[0].text = quiz.choices1;
+            //quizPos.text_Choices[1].text = quiz.choices2;
+            //quizPos.text_Choices[2].text = quiz.choices3;
+            //quizPos.text_Choices[3].text = quiz.choices4;
 
-            // 답 (서버에서 int로 줌)
-            int correctIndex = quiz.answer;
+            //// 답 (서버에서 int로 줌)
+            //int correctIndex = quiz.answer;
 
-            string correctAnswerText = quizPos.text_Choices[correctIndex].text;
-            answerNumber = correctIndex;
+            //string correctAnswerText = quizPos.text_Choices[correctIndex].text;
+            //answerNumber = correctIndex;
 
             Debug.Log("퀴즈 잘 들어감");
         }
