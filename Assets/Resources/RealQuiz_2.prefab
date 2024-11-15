@@ -762,6 +762,7 @@ GameObject:
   - component: {fileID: 8185717980257798149}
   - component: {fileID: 425347926295307614}
   - component: {fileID: 5294817502175894077}
+  - component: {fileID: 5220055909009088850}
   m_Layer: 0
   m_Name: NotAnswer_2
   m_TagString: Untagged
@@ -945,6 +946,19 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_renderer: {fileID: 8185717980257798149}
   m_maskType: 0
+--- !u!114 &5220055909009088850
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5424068278633667198}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f068346ebfa3b564a938ff03f11eedb8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isCorrect: 0
 --- !u!1 &6215134059592261106
 GameObject:
   m_ObjectHideFlags: 0
@@ -1402,7 +1416,6 @@ GameObject:
   - component: {fileID: 2794491877360394650}
   - component: {fileID: 3393719437131581072}
   - component: {fileID: 786039186886467929}
-  - component: {fileID: 3741454426232336316}
   m_Layer: 0
   m_Name: NotAnswer_1
   m_TagString: Untagged
@@ -1585,16 +1598,3 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.915296, y: 0.35256946, z: 0.16861826}
   m_Center: {x: -0.016177272, y: -0.020190073, z: -0.08430933}
---- !u!114 &3741454426232336316
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8582527140827197051}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f068346ebfa3b564a938ff03f11eedb8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  isCorrect: 0
