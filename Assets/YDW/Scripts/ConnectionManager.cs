@@ -295,33 +295,30 @@ public class ConnectionManager : MonoBehaviourPunCallbacks
             }
         }
 
-        foreach (RoomInfo room in cachedRoomList)
+        // 버튼 UI 업데이트
+        for (int i = 0; i < buttons.Length; i++)
         {
-            for(int i = 0; i < 3; i++)
+            // 버튼 클릭 리스너 초기화
+            buttons[i].GetComponent<Button>().onClick.RemoveAllListeners();
+
+            // 룸이 있는 경우 버튼 설정
+            if (i < cachedRoomList.Count)
             {
-                buttons[i].GetComponent<Button>().onClick.RemoveAllListeners();
+                RoomInfo room = cachedRoomList[i];
+                buttons[i].SetActive(true);
+                buttons[i].GetComponentInChildren<TMP_Text>().text = room.Name;
 
-                if (cachedRoomList.Count > i)
+                // 클릭 리스너에 방 입장 기능 추가
+                buttons[i].GetComponent<Button>().onClick.AddListener(() =>
                 {
-                    buttons[i].SetActive(true);
-                    buttons[i].GetComponentInChildren<TMP_Text>().text = room.Name;
-
-                    // 버튼에 방 입장 기능 연결하기
-                    buttons[i].GetComponent<Button>().onClick.AddListener(() =>
-                    {
-                        PhotonNetwork.JoinRoom(room.Name);
-                    });
-                }
+                    PhotonNetwork.JoinRoom(room.Name);
+                });
             }
-
-
-            // cachedRoomList에 있는 모든 방을 만들어서 스크롤뷰에 추가한다.
-            //GameObject go = Instantiate(roomPrefab, scrollContent);
-            //RoomPanel roomPanel = go.GetComponent<RoomPanel>();
-            //roomPanel.SetRoomInfo(room);
-
-            
-
+            else
+            {
+                // 룸이 없으면 버튼 비활성화
+                buttons[i].SetActive(false);
+            }
         }
     }
 
