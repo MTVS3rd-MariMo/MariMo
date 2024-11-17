@@ -1,6 +1,8 @@
 ﻿using Photon.Pun;
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.Playables;
 using UnityEngine.UI;
@@ -22,7 +24,8 @@ public class K_QuizManager : MonoBehaviourPun
     public K_QuizPos quizCorrect;
     public K_QuizSpawnMgr quizSpawnMgr;
 
-    //public static K_QuizManager instance;
+    // 플레이어 선택한 선택지 저장 인덱스
+    private int selectedIndex = -1;
 
 
     // 연출용 요소들
@@ -30,19 +33,6 @@ public class K_QuizManager : MonoBehaviourPun
     //public PlayableDirector timeline;
 
 
-
-    //private void Awake()
-    //{
-    //    if (null == instance)
-    //    {
-    //        instance = this;
-    //        DontDestroyOnLoad(gameObject);
-    //    }
-    //    else
-    //    {
-    //        Destroy(this.gameObject);
-    //    }
-    //}
 
     public Y_BookController bookController;
 
@@ -60,22 +50,6 @@ public class K_QuizManager : MonoBehaviourPun
             // 연출 시작
             StartCoroutine(Start_Production());
         }
-
-        if(Input.GetKeyDown(KeyCode.Alpha8))
-        {
-            StopCoroutine("RestartQuiz");
-            // 오류 ->> EndQuiz를 RPC로 해줘야하나?
-            EndQuiz();
-            // 정답 맞출 시 글씨 색상 변경
-            quizCorrect.text_Choices[quizSpawnMgr.answerNumber].color = Color.red;
-            StartCoroutine(CompleteQuiz(2f));
-        }
-    }
-
-    // Server
-    public void UpdateQuizFromServer()
-    {
-        
     }
 
 
@@ -107,8 +81,13 @@ public class K_QuizManager : MonoBehaviourPun
 
                 if (photonView.IsMine)
                 {
-                    // 정답 판별 함수 호출
-                    RPC_CHeckAnswer();
+                    if(selectedIndex != -1)
+                    {
+                        print("정답 RPC 됨?");
+                        // 정답 판별 함수 호출
+                        RPC_CHeckAnswer(selectedIndex);
+                    }
+                    
                 }
                 
             }
@@ -120,26 +99,38 @@ public class K_QuizManager : MonoBehaviourPun
         }
 
     }
-
-    void RPC_CHeckAnswer()
+    
+    public void OnCorrectTrigger(K_QuizCorrect correct)
     {
-        photonView.RPC(nameof(CheckAnswer), RpcTarget.All);
+        if(correct.isCorrect)
+        {
+            selectedIndex = Array.IndexOf(quizCorrect.text_Choices, correct.gameObject.GetComponent<TMP_Text>());
+        }
+    }
+
+    void RPC_CHeckAnswer(int selectedIndex)
+    {
+        photonView.RPC(nameof(CheckAnswer), RpcTarget.All, selectedIndex);
     }
 
 
     [PunRPC]
-    public void CheckAnswer()
+    public void CheckAnswer(int selectedIndex)
     {
-        if (quizCorrect != null)
+        if (quizCorrect != null && selectedIndex >= 0 )
         {
-            bool isCorrect = quizCorrect.CheckAnswer();
+            print("췤 앤설?");
+            // 추가추가
+            GameObject playerChoice = quizCorrect.text_Choices[selectedIndex].gameObject;
+            bool isCorrect = quizCorrect.CheckAnswer(playerChoice);
 
             if(isCorrect)
             {
                 // 오류 ->> EndQuiz를 RPC로 해줘야하나?
                 EndQuiz();
                 // 정답 맞출 시 글씨 색상 변경
-                quizCorrect.text_Choices[quizSpawnMgr.answerNumber].color = Color.red;
+                //quizCorrect.text_Choices[quizSpawnMgr.answerNumber].color = Color.red;
+                quizCorrect.text_Choices[selectedIndex].color = Color.red;
                 StartCoroutine(CompleteQuiz(2f));
             }
             else

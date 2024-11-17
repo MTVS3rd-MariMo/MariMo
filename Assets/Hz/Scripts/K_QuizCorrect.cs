@@ -10,6 +10,14 @@ public class K_QuizCorrect : MonoBehaviour
     // 정답인지
     public bool isCorrect = false;
 
+    // 퀴즈 매니저
+    private K_QuizManager k_QuizManager;
+
+    private void Start()
+    {
+        k_QuizManager = FindObjectOfType<K_QuizManager>();
+    }
+
     private void OnTriggerEnter(Collider other)
     {
         
@@ -24,6 +32,8 @@ public class K_QuizCorrect : MonoBehaviour
                 // 정답 true
                 isCorrect = true;
                 print("정답구역");
+                // 퀴즈 매니저에게 전달
+                k_QuizManager.OnCorrectTrigger(this);
 
             }
         }
@@ -45,6 +55,8 @@ public class K_QuizCorrect : MonoBehaviour
             if(playerCount < 4)
             isCorrect = false;
             print("정답구역 벗어남");
+            // 퀴즈 매니저에게 전달
+            k_QuizManager.OnCorrectTrigger(this);
         }
     }
 }

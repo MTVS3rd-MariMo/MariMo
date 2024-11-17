@@ -206,7 +206,6 @@ GameObject:
   - component: {fileID: 2493776569545617221}
   - component: {fileID: 7419860395733467609}
   - component: {fileID: 4408481064471416204}
-  - component: {fileID: 6730685902675166007}
   m_Layer: 0
   m_Name: NotAnswer_2
   m_TagString: Untagged
@@ -295,7 +294,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "2. \uB291\uB300!!"
+  m_text: "2. \uB291\uB300"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: cf2dd09a4e4ebbd46baca901f0ce3ed5, type: 2}
   m_sharedMaterial: {fileID: 3876969374938734890, guid: cf2dd09a4e4ebbd46baca901f0ce3ed5,
@@ -389,19 +388,6 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.97883224, y: 0.38564593, z: 0.08506418}
   m_Center: {x: 0.0054825544, y: -0.057403352, z: -0.042532183}
---- !u!114 &6730685902675166007
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2857497517678312270}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f068346ebfa3b564a938ff03f11eedb8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  isCorrect: 0
 --- !u!1 &3125958065840626030
 GameObject:
   m_ObjectHideFlags: 0
