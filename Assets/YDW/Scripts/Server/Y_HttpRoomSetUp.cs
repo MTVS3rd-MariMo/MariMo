@@ -256,29 +256,29 @@ public class Y_HttpRoomSetUp : MonoBehaviourPun
 
                 // JSON 데이터 파싱
                 ClassMaterial classMaterial = JsonUtility.FromJson<ClassMaterial>(webRequest.downloadHandler.text);
-                print("bookTitle : " + classMaterial.bookTitle);
-                print("bookTContent : " + classMaterial.bookContents);
+                //print("bookTitle : " + classMaterial.bookTitle);
+                //print("bookTContent : " + classMaterial.bookContents);
 
-                foreach(Quiz quiz in classMaterial.quizzes)
-                {
-                    print("퀴즈 질문 : " + quiz.question);
-                    print("퀴즈 답 : " + quiz.answer);
-                    print("퀴즈 선지1 : " + quiz.choices1);
-                    print("퀴즈 선지2 : " + quiz.choices2);
-                    print("퀴즈 선지3 : " + quiz.choices3);
-                    print("퀴즈 선지4 : " + quiz.choices4);
-                }
+                //foreach(Quiz quiz in classMaterial.quizzes)
+                //{
+                //    print("퀴즈 질문 : " + quiz.question);
+                //    print("퀴즈 답 : " + quiz.answer);
+                //    print("퀴즈 선지1 : " + quiz.choices1);
+                //    print("퀴즈 선지2 : " + quiz.choices2);
+                //    print("퀴즈 선지3 : " + quiz.choices3);
+                //    print("퀴즈 선지4 : " + quiz.choices4);
+                //}
 
-                foreach(OpenQuestion openQuestion in classMaterial.openQuestions)
-                {
-                    print("열린 질문 아이디 : " + openQuestion.questionId);
-                    print("열린 질문 : " + openQuestion.questionTitle);
-                }
+                //foreach(OpenQuestion openQuestion in classMaterial.openQuestions)
+                //{
+                //    print("열린 질문 아이디 : " + openQuestion.questionId);
+                //    print("열린 질문 : " + openQuestion.questionTitle);
+                //}
 
-                foreach(string lessonRole in classMaterial.lessonRoles)
-                {
-                    print("레슨 롤 : " + lessonRole);
-                }
+                //foreach(string lessonRole in classMaterial.lessonRoles)
+                //{
+                //    print("레슨 롤 : " + lessonRole);
+                //}
 
                 realClassMaterial = classMaterial;
 
