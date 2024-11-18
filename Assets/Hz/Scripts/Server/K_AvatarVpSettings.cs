@@ -36,6 +36,9 @@ public class K_AvatarVpSettings : MonoBehaviourPun
     // 걷냐
     private bool isWalking = false;
 
+    Y_PlayerMove y_PlayerMove;
+    int layerMaskGround;
+
     void Start()
     {
         pv = GetComponent<PhotonView>();
@@ -44,16 +47,35 @@ public class K_AvatarVpSettings : MonoBehaviourPun
         index = pv.Owner.ActorNumber - 1;
         name = pv.Owner.NickName;
         //print(PhotonNetwork.LocalPlayer.ActorNumber);
+        layerMaskGround = LayerMask.GetMask("Ground");
 
     }
 
     private void Update()
     {
-        // W, A, S, D 중 하나라도 눌려 있으면 walk 상태로 설정
-        if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.D))
+        //// W, A, S, D 중 하나라도 눌려 있으면 walk 상태로 설정
+        //if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.D))
+        //{
+        //    // Walk 상태
+        //    SetWalkingState(true);
+        //}
+        if (Application.platform == RuntimePlatform.Android)
         {
-            // Walk 상태
-            SetWalkingState(true);
+            if (Input.touchCount > 0)
+            {
+                Touch touch = Input.GetTouch(0);
+
+                if ((touch.phase == TouchPhase.Began) || (touch.phase == TouchPhase.Moved))
+                {
+                    Ray ray = Camera.main.ScreenPointToRay(touch.position);
+                    RaycastHit hit;
+
+                    if (Physics.Raycast(ray, out hit, 9999f, layerMaskGround))
+                    {
+                        y_PlayerMove.agent.SetDestination(hit.point);
+                    }
+                }
+            }
         }
         else
         {
