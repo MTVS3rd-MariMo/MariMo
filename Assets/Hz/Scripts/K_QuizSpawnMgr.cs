@@ -28,30 +28,14 @@ public class K_QuizSpawnMgr : MonoBehaviourPun
 
     void Start()
     {
-        print("이게말이되니1");
+        print("Start 전");
         pv = GetComponent<PhotonView>();
 
         if(PhotonNetwork.IsMasterClient)
         {
             StartCoroutine(DelayStart(10f));
         }       
-        print("이게말이되니2");
-
-        //// classMaterial 받아오기
-        //classMaterial = Y_HttpRoomSetUp.GetInstance().realClassMaterial;
-
-        //if (PhotonNetwork.IsMasterClient)
-        //{
-        //    quiz_correct = new GameObject[quizCount];
-
-        //    for (int i = 0; i < quizCount; i++)
-        //    {
-        //        //SpawnObj(quizzes[i], i);
-
-        //        StartCoroutine(SpawnObj(quizzes_Names[i], i));
-
-        //    }
-        //}
+        print("Start 후");
     }
 
     IEnumerator DelayStart(float delay)
@@ -70,12 +54,13 @@ public class K_QuizSpawnMgr : MonoBehaviourPun
                 //SpawnObj(quizzes[i], i);
 
                 StartCoroutine(SpawnObj(quizzes_Names[i], i));
-
             }
         }
         else
         {
+            print("Not MasterClient1");
             yield return new WaitUntil(() => quiz_correct != null);
+            print("Not MasterClient2");
         }
     }
 
@@ -87,12 +72,10 @@ public class K_QuizSpawnMgr : MonoBehaviourPun
         Vector3 size = quiz_spawnSize[idx];
         Vector3 randomPos = GetRandomPosInArea(center, size);
 
-
         // Resources 폴더에서 quizName으로 프리팹을 로드하고 PhotonNetwork.Instantiate로 생성
         GameObject quizPrefab = Resources.Load<GameObject>(obj);
 
-        
-
+        // 퀴즈 프리팹 있다면
         if (quizPrefab != null)
         {
             GameObject quizInstance = PhotonNetwork.Instantiate(obj, randomPos, Quaternion.identity);
@@ -100,7 +83,7 @@ public class K_QuizSpawnMgr : MonoBehaviourPun
             yield return new WaitUntil(() => quizInstance != null);
             print("퀴즈 인스턴스 생성");
 
-            // 생성된 quizInstance에서 자식 오브젝트인 quiz_correct를 찾음
+            // 생성된 quizInstance에서 QuizPos 스크립트를 찾음
             K_QuizPos k_QuizPos = quizInstance.GetComponent<K_QuizPos>();
             yield return new WaitUntil(() => k_QuizPos != null);
             print("퀴즈 포즈 받아옴");
@@ -113,14 +96,12 @@ public class K_QuizSpawnMgr : MonoBehaviourPun
             {
                 print("퀴즈 받았니?");
                 Quiz quizData = classMaterial.quizzes[idx];
-                // Pv
                 PhotonView quizPv = quizInstance.GetComponent<PhotonView>();
 
                 print("널?");
                 if (quizPv != null)
                 {
                     print("널2??");
-                    //UpdateQuizText(k_QuizPos, quizData);
                     quizPv.RPC(nameof(k_QuizPos.InitializeQuiz), RpcTarget.AllBuffered, idx, quizData.question,
                           quizData.choices1, quizData.choices2, quizData.choices3, quizData.choices4, quizData.answer);
 
@@ -132,47 +113,6 @@ public class K_QuizSpawnMgr : MonoBehaviourPun
                 {
                     print("널이다");
                 }
-
-            }
-
-
-            //if (k_QuizPos != null)
-            //{
-            //    //quiz_correct[idx] = k_QuizPos.correct;
-
-            //    print("퀴즈 받을거임");
-                
-
-            //    /////////////////// 퀴즈데이터
-            //    if (idx < classMaterial.quizzes.Count)
-            //    {
-            //        print("퀴즈 받았니?");
-            //        Quiz quizData = classMaterial.quizzes[idx];
-            //        // Pv
-            //        PhotonView quizPv = quizInstance.GetComponent<PhotonView>();
-
-            //        print("널?");
-            //        if (quizPv != null)
-            //        {
-            //            print("널2??");
-            //            //UpdateQuizText(k_QuizPos, quizData);
-            //            quizPv.RPC(nameof(k_QuizPos.InitializeQuiz), RpcTarget.AllBuffered, idx, quizData.question,
-            //                  quizData.choices1, quizData.choices2, quizData.choices3, quizData.choices4, quizData.answer);
-
-            //            //quiz_correct[idx] = k_QuizPos.correct;
-            //            Debug.Log("정답 선택시 설정함");
-                   
-            //        }
-            //        else
-            //        {
-            //            print("널이다");
-            //        }
-                    
-            //    }
-            //}
-            else
-            {
-                print("프리팹 있음");
             }
         }
         else

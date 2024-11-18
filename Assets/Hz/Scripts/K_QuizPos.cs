@@ -18,19 +18,17 @@ public class K_QuizPos : MonoBehaviourPun
 
     // 정답 구역의 오브젝트
     public GameObject correct;
-    // 정답 텍스트
-    //public TextMeshPro text_Correct;
 
     // 퀴즈가 시작되었는지 
     public bool isQuizStarted = false;
     // 플레이어가 정답 구역에 있는지 아닌지
     public bool isInCorrectZone = false;
-
+    // 플레이어 수 카운트
     private int playerCount = 0;
 
+    // 퀴즈 매니저
     private K_QuizManager quizManager;
-    private K_MapQuizSetUp k_MapQuizSetUp;
-
+    // 북 컨트롤러
     public Y_BookController bookController;
 
     private void Start()
@@ -58,7 +56,7 @@ public class K_QuizPos : MonoBehaviourPun
 
         // 답 (서버에서 int로 줌)
         // 서버로부터 받은 정답 인덱스 기반으로 올바른 선택지의 텍스트를 가져와서 저장
-        if (answerIndex >= 0 && answerIndex < text_Choices.Length)
+        if (answerIndex > 0 && answerIndex <= text_Choices.Length)
         {
             // 정답 선택지에 해당하는 오브젝트를 correct로 설정한다!
             correct = text_Choices[answerIndex - 1].gameObject;
@@ -109,18 +107,19 @@ public class K_QuizPos : MonoBehaviourPun
     [PunRPC]
     void StartQuiz()
     {
+        // 퀴즈매니저 찾기
         if (quizManager != null)
         {
+            // 퀴즈 스타트 true
             isQuizStarted = true;
-            print("플레이어다 문제풀자");
-
+            // isPlaying은 true
             quizManager.isPlaying = true;
-            //  K_QuizManager.instance.CountDown();
+            // ??????
             quizManager.quizCorrect = this;
 
             // 연출 테스트
             virtualCamera.gameObject.SetActive(true);
-
+            // 플레이어 리스트 받아오기
             Dictionary<int, PhotonView> allPlayers = bookController.allPlayers;
 
             for (int i = 0; i < allPlayers.Count; i++)
@@ -140,16 +139,18 @@ public class K_QuizPos : MonoBehaviourPun
             playerCount--;
     }
 
-    public bool CheckAnswer(GameObject playerChoice)
+    public bool CheckAnswer()
     {
-        // 다시
+        // 정답 판별 스크립트 가져오기
         K_QuizCorrect correctScript = correct.GetComponent<K_QuizCorrect>();
-        // correct1 트리거에 플레이어가 있는지 확인
+        // correct 스크립트가 존재하고 isCorrect가 true, correct랑 플레이어 선택이 같다면
         if (correctScript != null && correctScript.isCorrect)
         {
             // 정답 처리
             print("정답!");
+            // 정답 UI 띄워주기
             K_QuizUiManager.instance.img_correctA.gameObject.SetActive(true);
+            // 정답 UI 2초 뒤에 숨겨주기
             StartCoroutine(HideCorrectA(2f));
 
             // 연출 테스트

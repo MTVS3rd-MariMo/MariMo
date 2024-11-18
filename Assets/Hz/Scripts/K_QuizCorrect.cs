@@ -19,9 +19,7 @@ public class K_QuizCorrect : MonoBehaviour
     }
 
     private void OnTriggerEnter(Collider other)
-    {
-        
-
+    {       
         // 플레이어가 트리거 했는지, isCorrect인지
         if (other.CompareTag("Player") && !isCorrect)
         {

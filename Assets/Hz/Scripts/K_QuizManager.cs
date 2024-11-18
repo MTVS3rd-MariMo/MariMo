@@ -75,21 +75,19 @@ public class K_QuizManager : MonoBehaviourPun
             }
             else if (second == 0)
             {
-                
+
                 // 시간초과(텍스트) 보여주자.
                 K_QuizUiManager.instance.text_countDown.text = "시간 종료!";
 
                 if (photonView.IsMine)
                 {
-                    if(selectedIndex != -1)
-                    {
-                        print("정답 RPC 됨?");
-                        // 정답 판별 함수 호출
-                        RPC_CHeckAnswer(selectedIndex);
-                    }
-                    
+                    print("정답 RPC 됨?");
+                    //정답 제출 RPC로 실행
+
+                    // 정답 판별 함수 호출
+                    RPC_CHeckAnswer();
                 }
-                
+
             }
             // 그렇지 않으면
             else
@@ -99,34 +97,53 @@ public class K_QuizManager : MonoBehaviourPun
         }
 
     }
-    
+
     public void OnCorrectTrigger(K_QuizCorrect correct)
     {
-        if(correct.isCorrect)
+        if (correct.isCorrect)
         {
             selectedIndex = Array.IndexOf(quizCorrect.text_Choices, correct.gameObject.GetComponent<TMP_Text>());
         }
+        else
+        {
+
+        }
     }
 
-    void RPC_CHeckAnswer(int selectedIndex)
+    void RPC_CHeckAnswer()
     {
-        photonView.RPC(nameof(CheckAnswer), RpcTarget.All, selectedIndex);
+        photonView.RPC(nameof(CheckAnswer), RpcTarget.All);
     }
 
+    //정답 리스트
+    public List<int> answerList;
 
+    //정답이 4개 올때까지 기다리는 함수
+    public IEnumerator WaitFourAnswer()
+    {
+        yield return new WaitUntil(() => answerList.Count == 4);
+    }
+
+    //정답이 4개 들어오면 정답 체크
     [PunRPC]
-    public void CheckAnswer(int selectedIndex)
+    public void CheckAnswer()
     {
-        if (quizCorrect != null && selectedIndex >= 0 )
+        //코루틴
+
+        if (quizCorrect != null )
         {
             print("췤 앤설?");
-            // 추가추가
-            GameObject playerChoice = quizCorrect.text_Choices[selectedIndex].gameObject;
-            bool isCorrect = quizCorrect.CheckAnswer(playerChoice);
+            // 플레이어가 고른 정답에 따라 정답 판별 함수로 가기
+            
+            //정답 리스트를 for 돌려서 모두가 정답인지 확인
+            
+
+            bool isCorrect = quizCorrect.CheckAnswer();
 
             if(isCorrect)
             {
-                // 오류 ->> EndQuiz를 RPC로 해줘야하나?
+                print("isCorrect");
+                // 정답이면 퀴즈 종료
                 EndQuiz();
                 // 정답 맞출 시 글씨 색상 변경
                 //quizCorrect.text_Choices[quizSpawnMgr.answerNumber].color = Color.red;
@@ -134,8 +151,9 @@ public class K_QuizManager : MonoBehaviourPun
                 StartCoroutine(CompleteQuiz(2f));
             }
             else
-            {
+            {             
                 StartCoroutine(RestartQuiz(5f));
+                print("Restart??? YES");
             }    
         }
     }
@@ -167,15 +185,16 @@ public class K_QuizManager : MonoBehaviourPun
         }
 
 
-        // 현재 활성화 상태 activeSelf - bool 값
-        if (K_QuizUiManager.instance.img_wrongA.gameObject.activeSelf)
-        {
-            StartCoroutine(RestartQuiz(5f));
-        }
-        else if (K_QuizUiManager.instance.img_correctA.gameObject.activeSelf)
-        {
-            // 마무리 연출 시작
-        }
+        //// 현재 활성화 상태 activeSelf - bool 값
+        //if (K_QuizUiManager.instance.img_wrongA.gameObject.activeSelf)
+        //{
+        //    print("Restart??? NO");
+        //    StartCoroutine(RestartQuiz(5f));
+        //}
+        //else if (K_QuizUiManager.instance.img_correctA.gameObject.activeSelf)
+        //{
+        //    // 마무리 연출 시작
+        //}
     }
 
     private IEnumerator CompleteQuiz(float delay)
@@ -186,6 +205,8 @@ public class K_QuizManager : MonoBehaviourPun
 
     IEnumerator RestartQuiz(float delay)
     {
+        print("Restart 외안댐");
+
         yield return new WaitForSeconds(delay);
 
         isPlaying = true;

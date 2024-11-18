@@ -166,14 +166,14 @@ public class K_AvatarVpSettings : MonoBehaviourPun
             vp.url = walkUrl;
             vp.Play();
             currState = isWalking ? AnimState.Walk : AnimState.Idle;
-            print("걷기로 전환");
+            //print("걷기로 전환");
         }
         else if(!walking && currState == AnimState.Walk)
         {
             vp.url = idleUrl;
             currState = isWalking ? AnimState.Walk : AnimState.Idle;
             vp.Play();
-            print("대기로 전환");
+            //print("대기로 전환");
 
         }
 
@@ -195,7 +195,7 @@ public class K_AvatarVpSettings : MonoBehaviourPun
     private void OnVideoPrepared(VideoPlayer source)
     {
         vp.Play();
-        Debug.Log("비디오가 성공적으로 재생되었습니다: " + vp.url);
+        //Debug.Log("비디오가 성공적으로 재생되었습니다: " + vp.url);
     }
 
     public void SetAvatarImage(Texture2D texture)
