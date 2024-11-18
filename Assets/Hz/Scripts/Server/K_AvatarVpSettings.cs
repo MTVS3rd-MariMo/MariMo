@@ -36,7 +36,7 @@ public class K_AvatarVpSettings : MonoBehaviourPun
     // 걷냐
     private bool isWalking = false;
 
-    Y_PlayerMove y_PlayerMove;
+    private Y_PlayerMove y_PlayerMove;
     int layerMaskGround;
 
     void Start()
@@ -47,6 +47,7 @@ public class K_AvatarVpSettings : MonoBehaviourPun
         index = pv.Owner.ActorNumber - 1;
         name = pv.Owner.NickName;
         //print(PhotonNetwork.LocalPlayer.ActorNumber);
+        y_PlayerMove = GetComponent<Y_PlayerMove>();
         layerMaskGround = LayerMask.GetMask("Ground");
 
     }
