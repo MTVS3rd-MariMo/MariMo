@@ -13,13 +13,6 @@ using UnityEngine.Video;
 public class K_HttpAvatar : MonoBehaviourPun
 {
 
-    //// 비디오
-    //public VideoPlayer vp;
-    ////public VideoPlayer vp_Walk;
-    //public VideoClip[] videoClips;
-    //public RawImage img_VideoPlayer;
-    //public RenderTexture[] renderChromaKey;
-
     // 아바타 보내기
     public RawImage rawImage;   
     public Button btn_CreateAvatar;
@@ -37,11 +30,6 @@ public class K_HttpAvatar : MonoBehaviourPun
     //public Image avatarImage;
     public GameObject btn_ToMap;
 
-    // 이미지 띄우는 화면
-    //public GameObject[] buttons;
-    // 버튼 어떤 게 눌렸나 받아오기
-    //public int characterNum = 0;
-    //public int avatarIndex;
 
     // URL
     public string uploadUrl = "http://211.250.74.75:8202/api/avatar/upload-img";
@@ -71,13 +59,6 @@ public class K_HttpAvatar : MonoBehaviourPun
         bookController = GameObject.Find("BookCanvas").GetComponent<Y_BookController>();
     }
 
-    private void Update()
-    {
-        //if(Input.GetKeyDown(KeyCode.Alpha0))
-        //{
-        //    bookCanvas.SetActive(false);
-        //}
-    }
 
     // 그림 보내기 POST
     public string[] testUrl;

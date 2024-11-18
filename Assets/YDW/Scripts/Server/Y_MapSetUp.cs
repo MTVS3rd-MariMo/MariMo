@@ -15,26 +15,21 @@ public class Y_MapSetUp : MonoBehaviour
     public TMP_Text role4;
     public TMP_Text paintTitle;
 
-
     public static Y_MapSetUp mapSetUp;
     public Y_BookController bookController;
+    public GameObject img_loading;
 
     private void Awake()
     {
-
         print("awake 시작");
 
         bookController = GameObject.Find("BookCanvas").GetComponent<Y_BookController>();
-
-        
-        
-
     }
 
     // Start is called before the first frame update
     void Start()
     {
-
+        img_loading = GameObject.Find("Img_Loading");
     }
 
     // Update is called once per frame
@@ -45,7 +40,6 @@ public class Y_MapSetUp : MonoBehaviour
 
     public void ApplyClassMaterial()
     {
-
         classMaterial = Y_HttpRoomSetUp.GetInstance().realClassMaterial;
 
         bookController.text = classMaterial.bookContents;
@@ -57,5 +51,7 @@ public class Y_MapSetUp : MonoBehaviour
         role2.text = classMaterial.lessonRoles[1];
         role3.text = classMaterial.lessonRoles[2];
         role4.text = classMaterial.lessonRoles[3];
+
+        img_loading.SetActive(false);
     }
 }

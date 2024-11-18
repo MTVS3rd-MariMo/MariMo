@@ -43,32 +43,39 @@ public class K_QuizPos : MonoBehaviourPun
             print("퀴즈매니저업슴");
         }
 
-        // 퀴즈 셋업하는거 찾음 댐
-        k_MapQuizSetUp = FindObjectOfType<K_MapQuizSetUp>();
 
         bookController = GameObject.Find("BookCanvas").GetComponent<Y_BookController>();
-
-        //if(k_MapQuizSetUp != null)
-        //{
-        //    k_MapQuizSetUp.UpdateQuiz1Text(Question, choices[].ToString());
-        //    k_MapQuizSetUp.UpdateQuiz2Text(Question, choices[].ToString());
-        //}
-
     }
 
     [PunRPC]
-    public void InitializeQuiz(string question, string choice1, string choice2, string choice3, string choice4, int answer)
+    public void InitializeQuiz(int idx, string question, string choice1, string choice2, string choice3, string choice4, int answerIndex)
     {
-
         text_Question.text = question;
-
         text_Choices[0].text = choice1;
         text_Choices[1].text = choice2;
         text_Choices[2].text = choice3;
         text_Choices[3].text = choice4;
 
-        text_Answer.text = answer.ToString();
+        // 답 (서버에서 int로 줌)
+        // 서버로부터 받은 정답 인덱스 기반으로 올바른 선택지의 텍스트를 가져와서 저장
+        if (answerIndex >= 0 && answerIndex < text_Choices.Length)
+        {
+            // 정답 선택지에 해당하는 오브젝트를 correct로 설정한다!
+            correct = text_Choices[answerIndex - 1].gameObject;
 
+            // QuizCorrect 동적으로 추가
+            if(correct != null)
+            {
+                if(correct.GetComponent<K_QuizCorrect>() == null)
+                {
+                    correct.AddComponent<K_QuizCorrect>();
+                }
+            }
+            //string correctAnswerText = text_Choices[answerIndex - 1].text;
+            //text_Answer.text = text_Choices[answerIndex].text; // 정답 번호 저장 (정답 인덱스)
+
+            Debug.Log("정답 오브젝트 설정 완료");
+        }
     }
 
     private void OnTriggerEnter(Collider other)
@@ -125,23 +132,6 @@ public class K_QuizPos : MonoBehaviourPun
         {
             Debug.LogError("quiManager 못찾음!");
         }
-
-        //isQuizStarted = true;
-        //print("플레이어다 문제풀자");
-
-        //K_QuizManager.instance.isPlaying = true;
-        ////  K_QuizManager.instance.CountDown();
-        //K_QuizManager.instance.quizCorrect = GetComponentInParent<K_QuizPos>();
-
-        //// 연출 테스트
-        //virtualCamera.gameObject.SetActive(true);
-
-        //Dictionary<int, PhotonView> allPlayers = Y_BookController.Instance.allPlayers;
-
-        //for (int i = 0; i < allPlayers.Count; i++)
-        //{
-        //    allPlayers[i].gameObject.transform.localScale = allPlayers[i].gameObject.GetComponent<Y_PlayerAvatarSetting>().quizScale;
-        //}
     }
 
     private void OnTriggerExit(Collider other)
@@ -150,9 +140,8 @@ public class K_QuizPos : MonoBehaviourPun
             playerCount--;
     }
 
-    public bool CheckAnswer()
+    public bool CheckAnswer(GameObject playerChoice)
     {
-
         // 다시
         K_QuizCorrect correctScript = correct.GetComponent<K_QuizCorrect>();
         // correct1 트리거에 플레이어가 있는지 확인
@@ -181,38 +170,6 @@ public class K_QuizPos : MonoBehaviourPun
             return false;
         }
         ResetQuiz();
-
-
-
-
-        //// 다시
-        //K_QuizCorrect correctScript = correct.GetComponent<K_QuizCorrect>();
-        //// correct1 트리거에 플레이어가 있는지 확인
-        //if (correctScript != null && correctScript.isCorrect)
-        //{
-        //    // 정답 처리
-        //    print("정답!");
-        //    K_QuizUiManager.instance.img_correctA.gameObject.SetActive(true);
-        //    StartCoroutine(HideCorrectA(2f));
-
-        //    // 연출 테스트
-        //    virtualCamera.gameObject.SetActive(false);
-
-        //    // 키 박스 다시 켜주기
-        //    K_LobbyUiManager.instance.img_KeyEmptyBox.gameObject.SetActive(true);
-
-        //    return true;
-
-        //}
-        //else
-        //{
-        //    // 오답 처리
-        //    print("정답이 아님, 오답 처리");
-        //    K_QuizUiManager.instance.img_wrongA.gameObject.SetActive(true);
-        //    StartCoroutine(HideWrongAnswer(2f));
-        //    return false;
-        //}
-        //ResetQuiz();
     }
 
 

@@ -28,9 +28,15 @@ public class K_QuizSpawnMgr : MonoBehaviourPun
 
     void Start()
     {
+        print("이게말이되니1");
         pv = GetComponent<PhotonView>();
 
-        StartCoroutine(DelayStart(2f));
+        if(PhotonNetwork.IsMasterClient)
+        {
+            StartCoroutine(DelayStart(10f));
+        }       
+        print("이게말이되니2");
+
         //// classMaterial 받아오기
         //classMaterial = Y_HttpRoomSetUp.GetInstance().realClassMaterial;
 
@@ -67,11 +73,16 @@ public class K_QuizSpawnMgr : MonoBehaviourPun
 
             }
         }
+        else
+        {
+            yield return new WaitUntil(() => quiz_correct != null);
+        }
     }
 
 
     IEnumerator SpawnObj(string obj, int idx)
     {
+        print("스폰옵젝 호출됨");
         Vector3 center = quiz_spawnCenter[idx];
         Vector3 size = quiz_spawnSize[idx];
         Vector3 randomPos = GetRandomPosInArea(center, size);
@@ -85,36 +96,80 @@ public class K_QuizSpawnMgr : MonoBehaviourPun
         if (quizPrefab != null)
         {
             GameObject quizInstance = PhotonNetwork.Instantiate(obj, randomPos, Quaternion.identity);
-
+            //yield return new WaitForSeconds(2f);
             yield return new WaitUntil(() => quizInstance != null);
-           
+            print("퀴즈 인스턴스 생성");
 
             // 생성된 quizInstance에서 자식 오브젝트인 quiz_correct를 찾음
             K_QuizPos k_QuizPos = quizInstance.GetComponent<K_QuizPos>();
-            if (k_QuizPos != null)
+            yield return new WaitUntil(() => k_QuizPos != null);
+            print("퀴즈 포즈 받아옴");
+
+            // 수업자료 받는거 기다리기
+            //yield return new WaitUntil(() => classMaterial != null && idx < classMaterial.quizzes.Count);
+
+            /////////////////// 퀴즈데이터
+            if (idx < classMaterial.quizzes.Count)
             {
-                quiz_correct[idx] = k_QuizPos.correct;
+                print("퀴즈 받았니?");
+                Quiz quizData = classMaterial.quizzes[idx];
+                // Pv
+                PhotonView quizPv = quizInstance.GetComponent<PhotonView>();
 
-                print("퀴즈 받을거임");
-                /////////////////// 퀴즈데이터
-                if(idx < classMaterial.quizzes.Count)
+                print("널?");
+                if (quizPv != null)
                 {
-                    print("퀴즈 받았니?");
-                    Quiz quizData = classMaterial.quizzes[idx];
-                    // Pv
-                    PhotonView quizPv = quizInstance.GetComponent<PhotonView>();
+                    print("널2??");
+                    //UpdateQuizText(k_QuizPos, quizData);
+                    quizPv.RPC(nameof(k_QuizPos.InitializeQuiz), RpcTarget.AllBuffered, idx, quizData.question,
+                          quizData.choices1, quizData.choices2, quizData.choices3, quizData.choices4, quizData.answer);
 
-                    print("널?");
-                    if(quizPv != null)
-                    {
-                        print("널2??");
-                        //UpdateQuizText(k_QuizPos, quizData);
-                        //pv.RPC(nameof(UpdateQuizText), RpcTarget.AllBuffered, idx, quizData.question,
-                        //      quizData.choices1, quizData.choices2, quizData.choices3, quizData.choices4, quizData.answer);
-                    }
-                    
+                    //quiz_correct[idx] = k_QuizPos.correct;
+                    Debug.Log("정답 선택시 설정함");
+
                 }
+                else
+                {
+                    print("널이다");
+                }
+
             }
+
+
+            //if (k_QuizPos != null)
+            //{
+            //    //quiz_correct[idx] = k_QuizPos.correct;
+
+            //    print("퀴즈 받을거임");
+                
+
+            //    /////////////////// 퀴즈데이터
+            //    if (idx < classMaterial.quizzes.Count)
+            //    {
+            //        print("퀴즈 받았니?");
+            //        Quiz quizData = classMaterial.quizzes[idx];
+            //        // Pv
+            //        PhotonView quizPv = quizInstance.GetComponent<PhotonView>();
+
+            //        print("널?");
+            //        if (quizPv != null)
+            //        {
+            //            print("널2??");
+            //            //UpdateQuizText(k_QuizPos, quizData);
+            //            quizPv.RPC(nameof(k_QuizPos.InitializeQuiz), RpcTarget.AllBuffered, idx, quizData.question,
+            //                  quizData.choices1, quizData.choices2, quizData.choices3, quizData.choices4, quizData.answer);
+
+            //            //quiz_correct[idx] = k_QuizPos.correct;
+            //            Debug.Log("정답 선택시 설정함");
+                   
+            //        }
+            //        else
+            //        {
+            //            print("널이다");
+            //        }
+                    
+            //    }
+            //}
             else
             {
                 print("프리팹 있음");
@@ -158,26 +213,6 @@ public class K_QuizSpawnMgr : MonoBehaviourPun
 
                 Debug.Log($"정답은: {correctAnswerText} (인덱스: {answerIndex})");
             }
-            //int correctIndex = answer;
-
-            //string correctAnswerText = quizPos.text_Choices[correctIndex].text;
-            //answerNumber = correctIndex;
-
-
-            // 퀴즈 Question 텍스트 설정
-            //quizPos.text_Question.text = quiz.question;
-
-            //// 문제
-            //quizPos.text_Choices[0].text = quiz.choices1;
-            //quizPos.text_Choices[1].text = quiz.choices2;
-            //quizPos.text_Choices[2].text = quiz.choices3;
-            //quizPos.text_Choices[3].text = quiz.choices4;
-
-            //// 답 (서버에서 int로 줌)
-            //int correctIndex = quiz.answer;
-
-            //string correctAnswerText = quizPos.text_Choices[correctIndex].text;
-            //answerNumber = correctIndex;
 
             Debug.Log("퀴즈 잘 들어감");
         }

@@ -41,7 +41,10 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/Scenes/Alpha_Real.unity
     guid: a97dd468eb7e7f549a1fd659a3e24806
+  - enabled: 0
+    path: Assets/P_Folder/P_Scenes/P_CreatorTool.unity
+    guid: 09cfb030dcac7a246b324ce697016f5d
   - enabled: 1
-    path: Assets/P_Folder/P_Scenes/P_Beta.unity
-    guid: eb3ec41e9e93b9246945de41388db86d
+    path: Assets/Hz/Scenes/K_Beta.unity
+    guid: a627c2e46fa8fdf4b8e0d9b7b3dbd22a
   m_configObjects: {}
