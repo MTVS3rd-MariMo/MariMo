@@ -31,10 +31,8 @@ public class AllData
 {
     public string bookTitle;
     public string createdAt;
-    public string[] participants;
     public OpenQuestions[] openQuestions;
     public HotSittings[] hotSittings;
-    public string photoUrl;
     public Roles[] roles;
 }
 
@@ -216,21 +214,7 @@ public class P_LibraryTeacher : MonoBehaviour
         // 기본 정보
         Debug.Log("책 제목: " + allData.bookTitle);
         Debug.Log("생성 날짜: " + allData.createdAt);
-        Debug.Log("사진 URL: " + allData.photoUrl);
 
-        // 참가자 정보
-        if (allData.participants != null && allData.participants.Length > 0)
-        {
-            Debug.Log("참가자 목록:");
-            foreach (string participant in allData.participants)
-            {
-                Debug.Log("- " + participant);
-            }
-        }
-        else
-        {
-            Debug.Log("참가자 정보가 없습니다.");
-        }
 
         // OpenQuestions 정보
         if (allData.openQuestions != null && allData.openQuestions.Length > 0)
@@ -312,22 +296,8 @@ public class P_LibraryTeacher : MonoBehaviour
 
         // 기본 정보
         text_Log.text = ("책 제목: " + allData.bookTitle);
-        text_Log.text += "\n\n" + ("생성 날짜: " + allData.createdAt);
-        text_Log.text += "\n\n" + ("사진 URL: " + allData.photoUrl);
+        text_Log.text += "\n" + ("생성 날짜: " + allData.createdAt);
 
-        // 참가자 정보
-        if (allData.participants != null && allData.participants.Length > 0)
-        {
-            text_Log.text += "\n\n" + ("참가자 목록:");
-            foreach (string participant in allData.participants)
-            {
-                text_Log.text += "\n\n" + ("- " + participant);
-            }
-        }
-        else
-        {
-            text_Log.text += "\n\n" + ("참가자 정보가 없습니다.");
-        }
 
         // Roles 정보
         if (allData.roles != null && allData.roles.Length > 0)
@@ -336,8 +306,7 @@ public class P_LibraryTeacher : MonoBehaviour
             foreach (var role in allData.roles)
             {
                 text_Log.text += "\n\n" + ("사용자 이름: " + role.userName);
-                text_Log.text += "\n\n" + ("캐릭터: " + role.character);
-                text_Log.text += "\n\n" + ("아바타 URL: " + role.avatarUrl);
+                text_Log.text += "\n" + ("캐릭터: " + role.character);
             }
         }
         else
@@ -356,7 +325,7 @@ public class P_LibraryTeacher : MonoBehaviour
                 {
                     foreach (var answer in question.resultAnswers)
                     {
-                        text_Log.text += "\n\n" + (" - 사용자: " + answer.userName + ", 답변: " + answer.answer);
+                        text_Log.text += "\n\n" + (" - 작성자: " + answer.userName + ", 답변: " + answer.answer);
                     }
                 }
                 else

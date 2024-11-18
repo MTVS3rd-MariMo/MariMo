@@ -73,7 +73,7 @@ public class P_ObjectManager_Question : MonoBehaviourPun
 
     private void Update()
     {
-        if(answer_InputField.text.Length >= 50 || PhotonNetwork.IsMasterClient)
+        if(answer_InputField.text.Length >= 50 || PhotonNetwork.IsMasterClient && answer_InputField.text.Length <= 80)
         {
             BtnState(true);
         }
@@ -114,7 +114,7 @@ public class P_ObjectManager_Question : MonoBehaviourPun
 
                 RPC_MoveControl(false);
 
-                StartCoroutine(Question_UI_Start());
+                RPC_StartQuestion();
 
                 Y_SoundManager.instance.PlayEftSound(Y_SoundManager.ESoundType.EFT_3D_OBJECT_02);
                 Ani_Object.SetActive(true);
