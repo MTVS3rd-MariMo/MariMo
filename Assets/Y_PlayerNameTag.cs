@@ -15,11 +15,9 @@ public class Y_PlayerNameTag : MonoBehaviourPun
     void Start()
     {
         pv = GetComponentInParent<PhotonView>();
-        nameUI.GetComponentInChildren<TMP_Text>().text = PhotonNetwork.NickName;
+        nameUI.GetComponentInChildren<TMP_Text>().text = GetComponentInParent<PhotonView>().Owner.NickName;
         if(pv.IsMine)
         {
-            print("nameUI.GetComponent<Image>().sprite : " + (nameUI.GetComponent<Image>().sprite == null));
-            print("myNameTage : " + (myNameTag == null));
             nameUI.GetComponent<Image>().sprite = myNameTag;
         }
     }
