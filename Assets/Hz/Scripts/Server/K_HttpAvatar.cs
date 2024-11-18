@@ -457,6 +457,10 @@ public class K_HttpAvatar : MonoBehaviourPun
         // UI 변경 -> 버튼 OFF로
         btn_CreateAvatar.gameObject.SetActive(false);
 
+        // 생성중 UI 처리
+        K_PaintController paintController = PaintUI.GetComponent<K_PaintController>();
+        StartCoroutine(paintController.AvatarLoading());
+
         // 내 아바타 보내고, 다른 유저의 데이터도 가져올꺼임
         StartCoroutine(CreateAndFetchOtherAvatars(Convert.ToInt32(Y_HttpLogIn.GetInstance().userId), Y_HttpRoomSetUp.GetInstance().userlessonId));
 

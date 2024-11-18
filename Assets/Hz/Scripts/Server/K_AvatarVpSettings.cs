@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 using UnityEngine.UI;
 using UnityEngine.Video;
 
@@ -37,6 +38,7 @@ public class K_AvatarVpSettings : MonoBehaviourPun
     private bool isWalking = false;
 
     private Y_PlayerMove y_PlayerMove;
+    public NavMeshAgent agent;
     int layerMaskGround;
 
     void Start()
@@ -74,6 +76,9 @@ public class K_AvatarVpSettings : MonoBehaviourPun
                     if (Physics.Raycast(ray, out hit, 9999f, layerMaskGround))
                     {
                         y_PlayerMove.agent.SetDestination(hit.point);
+
+                        // Walk 상태
+                        SetWalkingState(true);
                     }
                 }
             }

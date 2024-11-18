@@ -82,7 +82,7 @@ public class K_QuizManager : MonoBehaviourPun
                 if (photonView.IsMine)
                 {
                     print("정답 RPC 됨?");
-                    //정답 제출 RPC로 실행
+                    // 정답 제출 RPC로 실행
 
                     // 정답 판별 함수 호출
                     RPC_CHeckAnswer();
@@ -128,16 +128,20 @@ public class K_QuizManager : MonoBehaviourPun
     [PunRPC]
     public void CheckAnswer()
     {
-        //코루틴
+        //코루틴 여긴 필요업슴
 
-        if (quizCorrect != null )
+        if (quizCorrect != null)
         {
             print("췤 앤설?");
             // 플레이어가 고른 정답에 따라 정답 판별 함수로 가기
             
-            //정답 리스트를 for 돌려서 모두가 정답인지 확인
-            
+            //정답 리스트를 for 문을 돌려서 모두가 정답인지 확인
+            for(int i = 0; i < answerList.Count; i++)
+            {
+                answerList.Add(i);
+            }
 
+            // isCorrect가 true인지를 CheckAnswer 함수를 통해 받아오기
             bool isCorrect = quizCorrect.CheckAnswer();
 
             if(isCorrect)
@@ -146,7 +150,6 @@ public class K_QuizManager : MonoBehaviourPun
                 // 정답이면 퀴즈 종료
                 EndQuiz();
                 // 정답 맞출 시 글씨 색상 변경
-                //quizCorrect.text_Choices[quizSpawnMgr.answerNumber].color = Color.red;
                 quizCorrect.text_Choices[selectedIndex].color = Color.red;
                 StartCoroutine(CompleteQuiz(2f));
             }
