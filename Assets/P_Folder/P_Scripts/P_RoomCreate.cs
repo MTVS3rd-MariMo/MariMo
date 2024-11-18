@@ -55,8 +55,8 @@ public class P_RoomCreate : MonoBehaviour
         for (int i = 0; i < P_CreatorToolConnectMgr.Instance.lessons.lessonMaterials.Count; i++)
         {
             books[i] = P_CreatorToolConnectMgr.Instance.lessons.lessonMaterials[i].bookTitle;
+            Debug.Log(books);
         }
-        Debug.Log(books);
 
         foreach (string str in books)
         {

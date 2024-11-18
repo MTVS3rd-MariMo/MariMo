@@ -100,7 +100,8 @@ public class P_Album : MonoBehaviour
                 if (i < results.studentResults.Length)
                 {
                     btn_Album.GetComponent<P_AlbumInfo>().SetBookTitle(results.studentResults[i].bookTitle);
-                    btn_Album.GetComponent<Button>().onClick.AddListener(() => Open_Album(results.studentResults[i].photo));
+                    btn_Album.GetComponent<P_AlbumInfo>().SetPhotoUrl(results.studentResults[i].photo);
+                    btn_Album.GetComponent<Button>().onClick.AddListener(() => Open_Album(btn_Album.GetComponent<P_AlbumInfo>().photoUrl));
                 }
             }
         }
@@ -111,7 +112,8 @@ public class P_Album : MonoBehaviour
                 GameObject btn_Album = Instantiate(Prefab_Album, contents);
 
                 btn_Album.GetComponent<P_AlbumInfo>().SetBookTitle(results.studentResults[i].bookTitle);
-                btn_Album.GetComponent<Button>().onClick.AddListener(() => Open_Album(results.studentResults[i].photo));
+                btn_Album.GetComponent<P_AlbumInfo>().SetPhotoUrl(results.studentResults[i].photo);
+                btn_Album.GetComponent<Button>().onClick.AddListener(() => Open_Album(btn_Album.GetComponent<P_AlbumInfo>().photoUrl));
             }
         }
     }
