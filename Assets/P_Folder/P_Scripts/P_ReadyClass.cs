@@ -34,7 +34,7 @@ public class P_ReadyClass : MonoBehaviour
             try
             {
                 // quizmanager의 parsequizdata 메서드 호출하여 데이터 파싱
-                lessons = P_CreatorToolConnectMgr.Instance.ParseLessons(downloadHandler.text);
+                //lessons = P_CreatorToolConnectMgr.Instance.ParseLessons(downloadHandler.text);
 
                 // 데이터 로드 완료 후 처리할 작업이 있다면 여기에 추가
                 StoryButtonSet();

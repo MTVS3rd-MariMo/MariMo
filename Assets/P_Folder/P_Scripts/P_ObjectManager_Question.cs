@@ -110,14 +110,17 @@ public class P_ObjectManager_Question : MonoBehaviourPun
 
             if (triggerNum >= testNum && !act)
             {
-                act = true;
+                if (photonView.IsMine)
+                {
+                    act = true;
 
-                RPC_MoveControl(false);
+                    RPC_MoveControl(false);
 
-                RPC_StartQuestion();
+                    RPC_StartQuestion();
 
-                Y_SoundManager.instance.PlayEftSound(Y_SoundManager.ESoundType.EFT_3D_OBJECT_02);
-                Ani_Object.SetActive(true);
+                    Y_SoundManager.instance.PlayEftSound(Y_SoundManager.ESoundType.EFT_3D_OBJECT_02);
+                    Ani_Object.SetActive(true);
+                }
             }
         }
     }

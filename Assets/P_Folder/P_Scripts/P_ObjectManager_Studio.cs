@@ -70,10 +70,12 @@ public class P_ObjectManager_Studio : MonoBehaviourPun
 
             if (triggerNum >= testNum && !act)
             {
-                act = true;
+                
 
                 if (photonView.IsMine)
                 {
+                    act = true;
+
                     RPC_MoveControl(false);
                     
                     RPC_Studio();

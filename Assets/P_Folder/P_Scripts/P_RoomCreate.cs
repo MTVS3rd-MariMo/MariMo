@@ -100,9 +100,6 @@ public class P_RoomCreate : MonoBehaviour
             // 포톤 방생성 요청
             roomMgr.CreateRoom(RoomName.text, lessonId, lessonMaterialNum);
 
-
-            // 그림그리기 요청
-
         };
 
         StartCoroutine(HttpManager.GetInstance().PostRoom(info));
