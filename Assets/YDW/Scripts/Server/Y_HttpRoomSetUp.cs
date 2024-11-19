@@ -191,7 +191,6 @@ public class Y_HttpRoomSetUp : MonoBehaviourPun
         StartCoroutine(GetUserIdList());
     }
 
-    
     public IEnumerator GetUserIdList()
     {
         SendLessonId sendLessonId = new SendLessonId
@@ -228,7 +227,6 @@ public class Y_HttpRoomSetUp : MonoBehaviourPun
                 Debug.LogError("유저 아이디 리스트 받아오기 실패: " + webRequest.error);
             }
         }
-
     }
 
     public IEnumerator GetClassMaterial(int Id)
