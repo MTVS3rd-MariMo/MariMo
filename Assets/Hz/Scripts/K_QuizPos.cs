@@ -53,6 +53,8 @@ public class K_QuizPos : MonoBehaviourPun
         text_Choices[1].text = choice2;
         text_Choices[2].text = choice3;
         text_Choices[3].text = choice4;
+        // 답도 마찬가지로 설정해줘야함
+        //text_Answer.text = answerIndex.ToString();
 
         // 답 (서버에서 int로 줌)
         // 서버로부터 받은 정답 인덱스 기반으로 올바른 선택지의 텍스트를 가져와서 저장
@@ -60,6 +62,8 @@ public class K_QuizPos : MonoBehaviourPun
         {
             // 정답 선택지에 해당하는 오브젝트를 correct로 설정한다!
             correct = text_Choices[answerIndex - 1].gameObject;
+            // 답도 마찬가지로 설정해줘야함
+            text_Answer = text_Choices[answerIndex - 1];
 
             // QuizCorrect 동적으로 추가
             if(correct != null)
@@ -85,7 +89,7 @@ public class K_QuizPos : MonoBehaviourPun
         if (other.CompareTag("Player") && !isQuizStarted)
         {
             playerCount++;
-            if (playerCount >= 4 && photonView.IsMine)
+            if (playerCount >= 4 && PhotonNetwork.IsMasterClient)
             {
                 RPC_StartQuiz();
             }
@@ -114,7 +118,11 @@ public class K_QuizPos : MonoBehaviourPun
             isQuizStarted = true;
             // isPlaying은 true
             quizManager.isPlaying = true;
-            // ??????
+            // 카운트다운 시작
+            quizManager.CountDownStart();
+            // 시작 연출 코루틴 함수 실행
+            quizManager.StartCoroutine("Start_Production");
+            // 퀴즈매니저 quizCorrect는 나
             quizManager.quizCorrect = this;
 
             // 연출 테스트
@@ -191,6 +199,7 @@ public class K_QuizPos : MonoBehaviourPun
         //K_QuizManager.instance.isCounting = false;
     }
 
+    // 오답입니다 UI 코루틴 함수
     public IEnumerator HideWrongAnswer(float delay)
     {
         yield return new WaitForSeconds(delay);
@@ -198,6 +207,7 @@ public class K_QuizPos : MonoBehaviourPun
 
     }
 
+    // 정답입니다 UI 코루틴 함수
     public IEnumerator HideCorrectA(float delay)
     {
         yield return new WaitForSeconds(delay);

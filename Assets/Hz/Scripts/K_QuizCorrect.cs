@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using Photon.Pun;
+using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -7,7 +8,10 @@ public class K_QuizCorrect : MonoBehaviour
 {
     int playerCount = 0;
 
-    // 정답인지
+    // 각각의 플레이어가 정답인지 (단일 체크)
+    public bool isMinePlayerCorrect = false;
+
+    // 정답인지 (멀티 동시 체크)
     public bool isCorrect = false;
 
     // 퀴즈 매니저
@@ -19,7 +23,14 @@ public class K_QuizCorrect : MonoBehaviour
     }
 
     private void OnTriggerEnter(Collider other)
-    {       
+    {   
+        
+        if(other.CompareTag("Player") && other.gameObject.GetComponent<PhotonView>().IsMine)
+        {
+            isMinePlayerCorrect = true;
+        }
+
+
         // 플레이어가 트리거 했는지, isCorrect인지
         if (other.CompareTag("Player") && !isCorrect)
         {
@@ -30,8 +41,6 @@ public class K_QuizCorrect : MonoBehaviour
                 // 정답 true
                 isCorrect = true;
                 print("정답구역");
-                // 퀴즈 매니저에게 전달
-                k_QuizManager.OnCorrectTrigger(this);
 
             }
         }
@@ -47,14 +56,17 @@ public class K_QuizCorrect : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
+        if (other.CompareTag("Player") && other.gameObject.GetComponent<PhotonView>().IsMine)
+        {
+            isMinePlayerCorrect = false;
+        }
+
         if (other.CompareTag("Player"))
         {
             playerCount--;
             if(playerCount < 4)
             isCorrect = false;
             print("정답구역 벗어남");
-            // 퀴즈 매니저에게 전달
-            k_QuizManager.OnCorrectTrigger(this);
         }
     }
 }

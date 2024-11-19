@@ -168,6 +168,7 @@ MonoBehaviour:
   pv: {fileID: 0}
   movable: 0
   isFive: 0
+  moveDistance: 0
 --- !u!114 &2044002936649389299
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -30,6 +30,9 @@ public class Y_PlayerMove : MonoBehaviour, IPunObservable
 
     public bool isFive;
 
+    public float moveDistance;
+
+
     private void Awake()
     {
         pv = GetComponent<PhotonView>();
@@ -106,6 +109,9 @@ public class Y_PlayerMove : MonoBehaviour, IPunObservable
                 Vector3 dirV = transform.forward * v;
                 // 최종적으로 이동해야 하는 방향
                 Vector3 finalDir = dirH + dirV;
+
+                moveDistance = finalDir.sqrMagnitude;
+
                 // finalDir 을 정규화 하자 (벡터의 크기를 1로 만든다)
                 finalDir.Normalize();
 
@@ -155,6 +161,7 @@ public class Y_PlayerMove : MonoBehaviour, IPunObservable
             // iterable 데이터를 보낸다 
             stream.SendNext(transform.position);
             stream.SendNext(voiceView.IsRecording);
+            stream.SendNext(moveDistance);
         }
 
         // 그렇지 않고 만일 데이터를 서버로부터 읽어오는 상태라면
@@ -162,6 +169,7 @@ public class Y_PlayerMove : MonoBehaviour, IPunObservable
         {
             myPos = (Vector3)stream.ReceiveNext();
             playerVoice.isTalking = (bool)stream.ReceiveNext();
+            moveDistance = (float)stream.ReceiveNext();
         }
     }
 }

@@ -56,37 +56,39 @@ public class K_AvatarVpSettings : MonoBehaviourPun
 
     private void Update()
     {
+        bool isMove = y_PlayerMove.moveDistance > 0.1f;
+
         //// W, A, S, D 중 하나라도 눌려 있으면 walk 상태로 설정
-        //if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.D))
-        //{
-        //    // Walk 상태
-        //    SetWalkingState(true);
-        //}
-        if (Application.platform == RuntimePlatform.Android)
+        if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.D))
         {
-            if (Input.touchCount > 0)
-            {
-                Touch touch = Input.GetTouch(0);
-
-                if ((touch.phase == TouchPhase.Began) || (touch.phase == TouchPhase.Moved))
-                {
-                    Ray ray = Camera.main.ScreenPointToRay(touch.position);
-                    RaycastHit hit;
-
-                    if (Physics.Raycast(ray, out hit, 9999f, layerMaskGround))
-                    {
-                        y_PlayerMove.agent.SetDestination(hit.point);
-
-                        // Walk 상태
-                        SetWalkingState(true);
-                    }
-                }
-            }
+            // Walk 상태
+            SetWalkingState(isMove);
         }
+        //if (Application.platform == RuntimePlatform.Android)
+        //{
+        //    if (Input.touchCount > 0)
+        //    {
+        //        Touch touch = Input.GetTouch(0);
+
+        //        if ((touch.phase == TouchPhase.Began) || (touch.phase == TouchPhase.Moved))
+        //        {
+        //            Ray ray = Camera.main.ScreenPointToRay(touch.position);
+        //            RaycastHit hit;
+
+        //            if (Physics.Raycast(ray, out hit, 9999f, layerMaskGround))
+        //            {
+        //                y_PlayerMove.agent.SetDestination(hit.point);
+
+        //                // Walk 상태
+        //                SetWalkingState(true);
+        //            }
+        //        }
+        //    }
+        //}
         else
         {
             // Idle 상태
-            SetWalkingState(false);
+            SetWalkingState(isMove);
         }
     }
 
