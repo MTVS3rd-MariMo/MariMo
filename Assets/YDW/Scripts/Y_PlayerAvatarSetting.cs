@@ -17,7 +17,7 @@ public class Y_PlayerAvatarSetting : MonoBehaviour
 
     Y_BookController bookController;
 
-    public int avatarIndex;
+    public int avatarIndex = -2;
     public string mySelfIntroduce;
 
     public VideoPlayer vp;

@@ -298,11 +298,31 @@ public class Y_BookController : MonoBehaviourPun
     /////////////////////////////////////////////
 
     int clickSelectCnt = 0;
+    int clickPaintCnt = 0;
 
     public void Select(int num)
     {
         // 선생님이면 아무 일도 일어나지 않는다
         if (currentPlayerNum == -1) return;
+
+        // 이미 선택된 아바타 번호라면 아무 일도 하지 않음
+        if (IsCharacterSelected(num)) return;
+
+        // 자신이 이미 선택한 번호를 다시 클릭했을 경우 선택 해제
+        if (characterNum == num)
+        {
+            RPC_DeactivateAllNameUI(characterNum);
+            RPC_DecreaseCnt();
+            characterNum = 0; // 초기화 (아바타 선택 해제)
+            allPlayers[currentPlayerNum].GetComponent<Y_PlayerAvatarSetting>().RPC_SelectChar(characterNum);
+            Y_SoundManager.instance.PlayEftSound(Y_SoundManager.ESoundType.EFT_BUTTON);
+
+            RPC_InteractableFalse();
+
+            return;
+        }
+
+        if(characterNum == 0) RPC_IncreaseCnt();
 
         RPC_DeactivateAllNameUI(characterNum);
         characterNum = num;
@@ -311,13 +331,69 @@ public class Y_BookController : MonoBehaviourPun
         // 아바타 인덱스를 설정한다. 
         allPlayers[currentPlayerNum].GetComponent<Y_PlayerAvatarSetting>().RPC_SelectChar(characterNum);
 
-        RPC_IncreaseClickSelectCount();
-        btn_toMap.GetComponent<Button>().interactable = true;
         Y_SoundManager.instance.PlayEftSound(Y_SoundManager.ESoundType.EFT_BUTTON);
-
     }
 
-    void RPC_IncreaseClickSelectCount()
+    // 다른 플레이어가 이미 선택한 캐릭터 번호인지 확인
+    private bool IsCharacterSelected(int num)
+    {
+        foreach (var player in allPlayers)
+        {
+            int actorNumber = player.Key;
+            // 현재 플레이어는 제외
+            if (actorNumber == PhotonNetwork.LocalPlayer.ActorNumber - 2) continue;
+
+            var avatarSetting = player.Value.GetComponent<Y_PlayerAvatarSetting>();
+            if (avatarSetting != null && (avatarSetting.avatarIndex + 1) == num)
+            {
+                return true; // 다른 플레이어가 이미 선택한 번호임
+            }
+        }
+        return false;
+    }
+
+    void RPC_InteractableFalse()
+    {
+        photonView.RPC(nameof(InteractableFalse), RpcTarget.All);
+    }
+
+    [PunRPC]
+    void InteractableFalse()
+    {
+        // 만약 캐릭터 선택하기가 활성화되어 있으면 다시 비활성화
+        btn_chooseChar.GetComponent<Image>().sprite = buttonSprites[7];
+        btn_chooseChar.GetComponent<Button>().interactable = false;
+    }
+
+    public void RPC_DecreaseCnt()
+    {
+        photonView.RPC(nameof(DecreaseCnt), RpcTarget.All);
+    }
+
+    [PunRPC]
+    void DecreaseCnt()
+    {
+        clickSelectCnt--;
+    }
+
+    public void RPC_IncreaseCnt()
+    {
+        photonView.RPC(nameof(IncreaseCnt), RpcTarget.All);
+    }
+
+    [PunRPC]
+    void IncreaseCnt()
+    {
+        clickSelectCnt++;
+
+        if(clickSelectCnt >= 4)
+        {
+            btn_chooseChar.GetComponent<Image>().sprite = buttonSprites[6];
+            btn_chooseChar.GetComponent<Button>().interactable = true;
+        }
+    }
+
+    public void RPC_IncreaseClickSelectCount()
     {
         photonView.RPC(nameof(IncreaseClickSelectCount), RpcTarget.All);
     }
@@ -325,9 +401,16 @@ public class Y_BookController : MonoBehaviourPun
     [PunRPC]
     void IncreaseClickSelectCount()
     {
-        clickSelectCnt++;
+        if (PhotonNetwork.IsMasterClient) return;
 
-        if(clickSelectCnt >= 4) btn_toMap.GetComponent<Button>().interactable = true;
+        clickPaintCnt++;
+        Debug.LogError(clickPaintCnt);
+
+        if(clickPaintCnt >= 4)
+        {
+            btn_toMap.GetComponent<Image>().sprite = buttonSprites[5];
+            btn_toMap.GetComponent<Button>().interactable = true;
+        }    
     }
    
      public void RPC_ActivateNameUI(int characterIndex, int playerIndex)
@@ -458,21 +541,45 @@ public class Y_BookController : MonoBehaviourPun
         Y_SoundManager.instance.PlayEftSound(Y_SoundManager.ESoundType.EFT_BUTTON);
         Y_SoundManager.instance.PlayBgmSound(Y_SoundManager.EBgmType.BGM_MAIN);
 
-        //btn_chooseChar.SetActive(false);
-        //btn_toMap.SetActive(true);
+        btn_chooseChar.SetActive(false);
+        btn_toMap.SetActive(true);
     }
 
     public void ToMap()
     {
         // 이 때 캐릭터 받아와서 내 플레이어에 동기화 시켜야 됨
         ////////////////////////
+        if(!PhotonNetwork.IsMasterClient)
+        {
+            RPC_IncreaseMapCount(characterNum);
+        }
+        btn_toMap.GetComponent<Image>().sprite = buttonSprites[4];
+        btn_toMap.GetComponent<Button>().interactable = false;
+    }
 
-        // 맵 소개 UI 실행
-        K_LobbyUiManager.instance.isAllArrived = true; 
-        gameObject.SetActive(false);
-        Y_SoundManager.instance.PlayEftSound(Y_SoundManager.ESoundType.EFT_BUTTON);
-        Ani_Object.SetActive(true);
-        Y_SoundManager.instance.PlayEftSound(Y_SoundManager.ESoundType.EFT_3D_OBJECT_01);
+    int mapCnt = 0;
+    public GameObject[] isReadyImgs;
+
+    public void RPC_IncreaseMapCount(int characterNum)
+    {
+        photonView.RPC(nameof(IncreaseMapCount), RpcTarget.All, characterNum);
+    }
+
+    [PunRPC]
+    void IncreaseMapCount(int characterNum)
+    {
+        mapCnt++;
+        isReadyImgs[characterNum - 1].SetActive(true);
+
+        if (mapCnt >= 4)
+        {
+            // 맵 소개 UI 실행
+            K_LobbyUiManager.instance.isAllArrived = true;
+            Y_SoundManager.instance.PlayEftSound(Y_SoundManager.ESoundType.EFT_BUTTON);
+            Ani_Object.SetActive(true);
+            Y_SoundManager.instance.PlayEftSound(Y_SoundManager.ESoundType.EFT_3D_OBJECT_01);
+            gameObject.SetActive(false);
+        }
     }
 
     #endregion
