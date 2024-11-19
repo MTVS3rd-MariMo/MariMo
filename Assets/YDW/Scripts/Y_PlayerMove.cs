@@ -51,23 +51,30 @@ public class Y_PlayerMove : MonoBehaviour, IPunObservable
 
     void Update()
     {
-        if (movable)
-        {
-            Move();
-        }
-        else
-        {
-            if (agent.hasPath)
-            {
-                agent.ResetPath(); // 목적지를 초기화하여 슬라이딩 문제 해결
-            }
-        }
-
-        if (pv.Owner.IsMasterClient && isFive)
+        if (pv.Owner.IsMasterClient && isFive) // pv.Owner.IsMasterClient
         {
             //Debug.LogError("playerAverage 널이니??? : " + (GetComponent<Y_SetCamera>().playerAverage == null)); -> False
             gameObject.transform.position = GetComponent<Y_SetCamera>().playerAverage.position;
         }
+
+        if (pv.IsMine)
+        {
+            // 로컬 플레이어만 이동 처리
+            if (movable)
+            {
+                Move();
+            }
+            else if (agent.hasPath)
+            {
+                agent.ResetPath();
+            }
+        }
+        else
+        {
+            // 네트워크 위치 데이터 기반으로만 갱신
+            transform.position = Vector3.Lerp(transform.position, myPos, Time.deltaTime * trackingSpeed);
+        }
+
     }
 
     // 당겨지는 강도 
@@ -173,6 +180,7 @@ public class Y_PlayerMove : MonoBehaviour, IPunObservable
         else if (stream.IsReading)
         {
             myPos = (Vector3)stream.ReceiveNext();
+            Debug.Log($"Received position for {pv.Owner.NickName}: {myPos}");
             playerVoice.isTalking = (bool)stream.ReceiveNext();
             moveDistance = (float)stream.ReceiveNext();
         }

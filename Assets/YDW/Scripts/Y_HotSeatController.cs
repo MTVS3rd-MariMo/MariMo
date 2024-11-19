@@ -346,9 +346,8 @@ public class Y_HotSeatController : MonoBehaviourPun
 
             //Debug.LogError("selfIntCount : " + selfIntCount);
 
-            Y_HttpHotSeat.GetInstance().StartSendIntCoroutine(selfIntCount); ////////////////// 도원
+            Y_HttpHotSeat.GetInstance().StartSendIntCoroutine(selfIntCount);
 
-            //Y_VoiceManager.Instance.recorder.TransmitEnabled = false; // 인터뷰 시작하기 전에 일단은 모두 보이스 끈다 // 도원
             StartSpeech(0);
         }
     }
