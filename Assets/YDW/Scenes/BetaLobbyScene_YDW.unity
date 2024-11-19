@@ -123,7 +123,7 @@ NavMeshSettings:
     preserveTilesOutsideBounds: 0
     debug:
       m_Flags: 0
-  m_NavMeshData: {fileID: 23800000, guid: 5ea6f5a65b714f042a0f41438302e101, type: 2}
+  m_NavMeshData: {fileID: 0}
 --- !u!1 &6129839
 GameObject:
   m_ObjectHideFlags: 0
@@ -5336,6 +5336,8 @@ MonoBehaviour:
   realClassMaterial:
     bookTitle: 
     bookContents: 
+    author: 
+    backgroundUrl: 
     quizzes: []
     openQuestions: []
     lessonRoles: []

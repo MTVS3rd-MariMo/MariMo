@@ -161,7 +161,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2f451633bfc3660418e707c185f3575a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  trackingSpeed: 30
+  trackingSpeed: 10
   speed: 0
   agent: {fileID: 2403669846499813768}
   test: {fileID: 0}
@@ -218,7 +218,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pv: {fileID: 0}
-  avatarIndex: 0
+  avatarIndex: -2
   mySelfIntroduce: 
   vp: {fileID: 2780493785564132161}
   rawImage: {fileID: 2238457611774462121}
@@ -331,7 +331,7 @@ NavMeshAgent:
   m_Enabled: 1
   m_AgentTypeID: 0
   m_Radius: 0.5
-  m_Speed: 2
+  m_Speed: 20
   m_Acceleration: 8
   avoidancePriority: 50
   m_AngularSpeed: 120

@@ -144,18 +144,18 @@ public class Y_GameManager : MonoBehaviourPun
         yield return null;
     }
 
-    public List<GameObject> students = new List<GameObject>();
+    public List<GameObject> students = new List<GameObject>(5);
     PhotonView myPhotonView = null;
 
     public void SetPlayerObject(PhotonView go)
     {
-        students.Add(go.gameObject);
+        students[go.Owner.ActorNumber - 1] = go.gameObject;
         if(go.IsMine)
         {
             myPhotonView = go;
         }
 
-        if(students.Count >= 5)
+        if(students.Count >= 5 && students.All(student => student != null))
         {
             myPhotonView.GetComponent<Y_SetCamera>().isFive = true;
             for (int i = 0; i < students.Count; i++)

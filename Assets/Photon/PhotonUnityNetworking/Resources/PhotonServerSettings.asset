@@ -90,8 +90,11 @@ MonoBehaviour:
   - StartQuestion
   - UpdateQuizText
   - Unlock
-  - SetAnswer
-  - GetAnswer
+  - AfterSelectChar
+  - IncreaseMapCount
+  - DecreaseCnt
+  - IncreaseCnt
+  - InteractableFalse
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 0

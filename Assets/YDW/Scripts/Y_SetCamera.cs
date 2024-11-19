@@ -109,7 +109,7 @@ public class Y_SetCamera : MonoBehaviour
         {
             averagePosition += pos;
         }
-        averagePosition /= playerPositions.Length;
+        averagePosition /= (float)playerPositions.Length;
 
         // playerAverage의 위치 업데이트
         playerAverage.position = averagePosition;
