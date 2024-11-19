@@ -413,7 +413,6 @@ public class Y_BookController : MonoBehaviourPun
         if (PhotonNetwork.IsMasterClient) return;
 
         clickPaintCnt++;
-        Debug.LogError(clickPaintCnt);
 
         if(clickPaintCnt >= 4)
         {
