@@ -111,8 +111,10 @@ public class ConnectionManager : MonoBehaviourPunCallbacks
         base.OnJoinedLobby();
 
         // 서버 로비에 들어갔음을 알려준다.
-        //print(MethodInfo.GetCurrentMethod().Name + " is Call!");
+        print(MethodInfo.GetCurrentMethod().Name + " is Call!");
         //LobbyController.lobbyUI.ShowRoomPanel();
+
+        PhotonNetwork.LoadLevel(1);
     }
 
     //public void CreateRoom(string roomname)
@@ -216,8 +218,9 @@ public class ConnectionManager : MonoBehaviourPunCallbacks
         //LobbyController.lobbyUI.PrintLog("방에 입장 성공!");
 
 
-
-        PhotonNetwork.LoadLevel(1);
+        // 잠만지워
+        //PhotonNetwork.LoadLevel(1);
+        PhotonNetwork.LoadLevel(2);
 
         //StartCoroutine(Test());
     }
@@ -326,7 +329,9 @@ public class ConnectionManager : MonoBehaviourPunCallbacks
     {
         base.OnLeftRoom();
 
-        SceneManager.LoadScene(0);
+        // 잠만
+        //SceneManager.LoadScene(0);
+        SceneManager.LoadScene(1);
 
         Y_HttpLogIn.GetInstance().ReturnLobby();
     }
