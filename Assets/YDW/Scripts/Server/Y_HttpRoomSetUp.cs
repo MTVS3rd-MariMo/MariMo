@@ -33,6 +33,8 @@ public class ClassMaterial
 {
     public string bookTitle;
     public string bookContents;
+    public string author;
+    public string backgroundUrl;
     public List<Quiz> quizzes;
     public List<OpenQuestion> openQuestions;
     public List<string> lessonRoles;
@@ -252,14 +254,14 @@ public class Y_HttpRoomSetUp : MonoBehaviourPun
             {
                 Debug.Log("수업자료 받아오기 성공: " + webRequest.downloadHandler.text);
 
-
-
                 // JSON 데이터 파싱
                 ClassMaterial classMaterial = JsonUtility.FromJson<ClassMaterial>(webRequest.downloadHandler.text);
                 //print("bookTitle : " + classMaterial.bookTitle);
-                //print("bookTContent : " + classMaterial.bookContents);
+                //print("bookContent : " + classMaterial.bookContents);
+                //print("Author : " + classMaterial.author);
+                //print("backgroudUrl : " + classMaterial.backgroundUrl);
 
-                //foreach(Quiz quiz in classMaterial.quizzes)
+                //foreach (Quiz quiz in classMaterial.quizzes)
                 //{
                 //    print("퀴즈 질문 : " + quiz.question);
                 //    print("퀴즈 답 : " + quiz.answer);
@@ -269,13 +271,13 @@ public class Y_HttpRoomSetUp : MonoBehaviourPun
                 //    print("퀴즈 선지4 : " + quiz.choices4);
                 //}
 
-                //foreach(OpenQuestion openQuestion in classMaterial.openQuestions)
+                //foreach (OpenQuestion openQuestion in classMaterial.openQuestions)
                 //{
                 //    print("열린 질문 아이디 : " + openQuestion.questionId);
                 //    print("열린 질문 : " + openQuestion.questionTitle);
                 //}
 
-                //foreach(string lessonRole in classMaterial.lessonRoles)
+                //foreach (string lessonRole in classMaterial.lessonRoles)
                 //{
                 //    print("레슨 롤 : " + lessonRole);
                 //}
