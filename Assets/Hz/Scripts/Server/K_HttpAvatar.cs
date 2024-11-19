@@ -32,7 +32,7 @@ public class K_HttpAvatar : MonoBehaviourPun
 
 
     // URL
-    public string uploadUrl = "http://211.250.74.75:8202/api/avatar/upload-img";
+    public string uploadUrl = "http://211.250.74.75:8202/api/avatar/aws/upload-img";
     private string avatarImgUrl;
     private List<string> animationUrls;
 

@@ -95,6 +95,8 @@ MonoBehaviour:
   - DecreaseCnt
   - IncreaseCnt
   - InteractableFalse
+  - GetAnswer
+  - SetAnswer
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 0
