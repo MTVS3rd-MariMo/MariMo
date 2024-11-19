@@ -100,7 +100,6 @@ public class K_HttpAvatar : MonoBehaviourPun
                 // 업로드 완료되면 UI 활성화 관리
                 PaintUI.SetActive(false);
                 ChooseCharacterUI.SetActive(true);
-                //btn_CreateAvatar.gameObject.SetActive(false);
                 btn_ToMap.SetActive(true);
 
                 // 수정
@@ -457,10 +456,14 @@ public class K_HttpAvatar : MonoBehaviourPun
         // UI 변경 -> 버튼 OFF로
         btn_CreateAvatar.gameObject.SetActive(false);
 
+        bookController.RPC_IncreaseClickSelectCount();
+
         // 내 아바타 보내고, 다른 유저의 데이터도 가져올꺼임
         StartCoroutine(CreateAndFetchOtherAvatars(Convert.ToInt32(Y_HttpLogIn.GetInstance().userId), Y_HttpRoomSetUp.GetInstance().userlessonId));
 
     }
+
+    
 
     [System.Serializable]
     private class AvatarDataListWrapper

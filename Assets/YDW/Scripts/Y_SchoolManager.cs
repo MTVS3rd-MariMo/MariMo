@@ -11,14 +11,25 @@ public class Y_SchoolManager : MonoBehaviour
 
     void Start()
     {
-        btn_enter.onClick.AddListener(MoveControl);
+        btn_enter.onClick.AddListener(startMovableCoroutine);
     }
 
-    void MoveControl()
+    void startMovableCoroutine()
+    {
+        StartCoroutine(movableCoroutine());
+    }
+
+    IEnumerator movableCoroutine()
+    {
+        yield return new WaitForSeconds(6f);
+        MoveControl(true);
+    }
+
+    void MoveControl(bool movable)
     {
         foreach (GameObject obj in players)
         {
-            obj.GetComponent<Y_PlayerMove>().movable = true;
+            obj.GetComponent<Y_PlayerMove>().movable = movable;
         }
     }
 
@@ -30,8 +41,4 @@ public class Y_SchoolManager : MonoBehaviour
         }
     }
 
-    void Update()
-    {
-        
-    }
 }

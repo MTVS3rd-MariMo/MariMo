@@ -54,7 +54,10 @@ public class Y_PlayerMove : MonoBehaviour, IPunObservable
         }
         else
         {
-            // 친구들을 기다리고 있어요! UI
+            if (agent.hasPath)
+            {
+                agent.ResetPath(); // 목적지를 초기화하여 슬라이딩 문제 해결
+            }
         }
 
         if (pv.Owner.IsMasterClient && isFive)
@@ -73,11 +76,12 @@ public class Y_PlayerMove : MonoBehaviour, IPunObservable
         // 만일 내가 소유권을 가진 캐릭터라면 
         if(pv.IsMine)
         {
-            if(Application.platform == RuntimePlatform.Android)
+            if(Application.platform == RuntimePlatform.Android && !pv.Owner.IsMasterClient)
             {
                 if (Input.touchCount > 0)
                 {
                     Touch touch = Input.GetTouch(0);
+                    Debug.LogWarning("터치됐다~!");
 
                     if ((touch.phase == TouchPhase.Began) || (touch.phase == TouchPhase.Moved))
                     {
@@ -86,6 +90,7 @@ public class Y_PlayerMove : MonoBehaviour, IPunObservable
 
                         if (Physics.Raycast(ray, out hit, 9999f, layerMaskGround))
                         {
+                            Debug.LogWarning("에이전트가 찾아간다");
                             agent.SetDestination(hit.point);
                         }
                     }
