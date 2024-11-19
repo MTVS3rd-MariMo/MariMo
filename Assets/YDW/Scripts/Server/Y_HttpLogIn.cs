@@ -196,11 +196,13 @@ public class Y_HttpLogIn : MonoBehaviour
                 if (isTeacher)
                 {
                     Y_SignUp.signUp.creatorUI.SetActive(true);
+                    GameObject.Find("Canvas_CreatorTool").GetComponent<P_CreatorToolController>().titleNickname.text = registerData.name;
                     img_background.SetActive(false);
                 }
                 else
                 {
                     Y_SignUp.signUp.titleUI.SetActive(true);
+                    Y_SignUp.signUp.titleNickname.text = registerData.name;
                 }
                 //SceneManager.
                 //(1);

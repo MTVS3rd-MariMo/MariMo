@@ -36,6 +36,8 @@ public class P_CreatorToolController : MonoBehaviour
 
     public Button btn_Option;
 
+    public TMP_Text titleNickname;
+
     bool isSend = false;
 
     void Start()

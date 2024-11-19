@@ -19,6 +19,8 @@ public class Y_SignUp : MonoBehaviour
     public GameObject titleUI;
     public GameObject creatorUI;
 
+    public TMP_Text titleNickname;
+
     #region Button Sprite
 
     public GameObject[] teacherOrStudent;

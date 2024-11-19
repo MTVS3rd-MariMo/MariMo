@@ -198,7 +198,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 1
+  m_text: 0
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -776,9 +776,9 @@ MonoBehaviour:
   rightTextBox: {fileID: 6399033709308410362}
   img_loading: {fileID: 0}
   img_loadingbar: {fileID: 0}
-  titleText: {fileID: 0}
-  authorText: {fileID: 0}
-  titleImg: {fileID: 0}
+  titleText: {fileID: 8865538729082191405}
+  authorText: {fileID: 6153789195422565651}
+  titleImg: {fileID: 1958135085124992886}
   img_charName1: {fileID: 2444179012450184109}
   img_charName2: {fileID: 4932866426968563674}
   img_charName3: {fileID: 5679362041341631660}
