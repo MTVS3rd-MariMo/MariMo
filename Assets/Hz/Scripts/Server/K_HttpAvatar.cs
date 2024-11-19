@@ -30,7 +30,6 @@ public class K_HttpAvatar : MonoBehaviourPun
     //public Image avatarImage;
     public GameObject btn_ToMap;
 
-
     // URL
     public string uploadUrl = "http://211.250.74.75:8202/api/avatar/upload-img";
     private string avatarImgUrl;
@@ -461,7 +460,7 @@ public class K_HttpAvatar : MonoBehaviourPun
         K_PaintController paintController = PaintUI.GetComponent<K_PaintController>();
         StartCoroutine(paintController.AvatarLoading());
 
-        bookController.RPC_IncreaseClickSelectCount();
+        if(!PhotonNetwork.IsMasterClient) bookController.RPC_IncreaseClickSelectCount();
 
         // 내 아바타 보내고, 다른 유저의 데이터도 가져올꺼임
         StartCoroutine(CreateAndFetchOtherAvatars(Convert.ToInt32(Y_HttpLogIn.GetInstance().userId), Y_HttpRoomSetUp.GetInstance().userlessonId));

@@ -73,6 +73,10 @@ public class Y_BookController : MonoBehaviourPun
     public GameObject img_loading;
     public GameObject img_loadingbar;
 
+    public GameObject titleText;
+    public GameObject authorText;
+    public GameObject titleImg;
+
     #endregion
 
     #region ChooseCharacter
@@ -118,7 +122,6 @@ public class Y_BookController : MonoBehaviourPun
 
         //StartCoroutine(SplitTextIntoPages());
         //StartCoroutine(DisplayPage(pageNo));
-
     }
 
     IEnumerator loadingCoroutine()
@@ -141,7 +144,6 @@ public class Y_BookController : MonoBehaviourPun
         {
             SyncAllPlayerNames();
             List<int> keys = new List<int>(allPlayers.Keys);
-
         }
 
         if (isSync) SyncAllPlayers();
@@ -176,7 +178,6 @@ public class Y_BookController : MonoBehaviourPun
             if (PhotonNetwork.LocalPlayer.ActorNumber >= 2)
             {
                 SyncAllPlayerNames();
-                
             }
             else if (PhotonNetwork.IsMasterClient) ///// 액터 넘버 2일 경우에? 그리고 마스터 클라이언트일 경우에는 그냥 리턴해야
             {
@@ -244,7 +245,8 @@ public class Y_BookController : MonoBehaviourPun
             texts.Add(currentText);
         }
 
-        DisplayPage(pageNo);
+        leftTxt.text = "";
+        DisplayPage(0);
     }
 
     // 페이지에 띄우기
@@ -254,21 +256,28 @@ public class Y_BookController : MonoBehaviourPun
 
         pageNoTxt.text = pageIndex.ToString();
 
-        leftTxt.text = texts[pageNo * 2 - 2];
-        if (pageNo * 2 - 1 < texts.Count)
+        if(pageIndex > 0)
         {
-            rightTxt.text = texts[pageNo * 2 - 1];
-        }
-        else if (pageNo * 2 > texts.Count)
-        {
-            rightTxt.text = "";
+            titleText.SetActive(false);
+            authorText.SetActive(false);
+            titleImg.SetActive(true);
+
+            leftTxt.text = texts[pageNo * 2 - 2];
+            if (pageNo * 2 - 1 < texts.Count)
+            {
+                rightTxt.text = texts[pageNo * 2 - 1];
+            }
+            else if (pageNo * 2 > texts.Count)
+            {
+                rightTxt.text = "";
+            }
         }
     }
 
     // 페이지 왼쪽 넘김
     public void left()
     {
-        pageNo = Mathf.Max(1, --pageNo);
+        pageNo = Mathf.Max(0, --pageNo);
         Y_SoundManager.instance.PlayEftSound(Y_SoundManager.ESoundType.EFT_BUTTON);
         DisplayPage(pageNo);
     }

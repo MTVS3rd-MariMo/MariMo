@@ -8,6 +8,8 @@ public class Y_MapSetUp : MonoBehaviour
     ClassMaterial classMaterial;
     public TMP_Text bookTitle;
     public TMP_Text bookTitle2;
+    public TMP_Text bookTitleFirst;
+    public TMP_Text bookAuthor;
     string bookContent;
     public TMP_Text role1;
     public TMP_Text role2;
@@ -30,6 +32,8 @@ public class Y_MapSetUp : MonoBehaviour
     void Start()
     {
         img_loading = GameObject.Find("Img_Loading");
+        bookTitleFirst = GameObject.Find("Txt_Title").GetComponent<TMP_Text>();
+        bookAuthor = GameObject.Find("Txt_Author").GetComponent<TMP_Text>();
     }
 
     // Update is called once per frame
@@ -45,6 +49,8 @@ public class Y_MapSetUp : MonoBehaviour
         bookController.text = classMaterial.bookContents;
         bookTitle.text = classMaterial.bookTitle;
         bookTitle2.text = classMaterial.bookTitle;
+        bookTitleFirst.text = classMaterial.bookTitle;
+        bookAuthor.text = classMaterial.author;
         paintTitle.text = classMaterial.bookTitle;
         print(classMaterial.bookContents);
         role1.text = classMaterial.lessonRoles[0];
