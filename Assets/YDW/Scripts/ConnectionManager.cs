@@ -226,7 +226,8 @@ public class ConnectionManager : MonoBehaviourPunCallbacks
 
         Debug.Log("LoadScene1 이동 호출");
 
-        SceneManager.LoadScene(1);
+        //SceneManager.LoadScene(1);
+        PhotonNetwork.LoadLevel(1);
 
         //StartCoroutine(Test());
     }
