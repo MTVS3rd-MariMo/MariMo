@@ -37,7 +37,9 @@ public class P_RoomMgr : MonoBehaviourPunCallbacks
             roomOpt.CustomRoomPropertiesForLobby = new string[] { "MASTER_NAME", "lessonId", "lessonMaterialId" };
             roomOpt.CustomRoomProperties = roomTable;
 
-            PhotonNetwork.CreateRoom(roomName, roomOpt, TypedLobby.Default);
+            bool roomCreated = PhotonNetwork.CreateRoom(roomName, roomOpt, TypedLobby.Default);
+
+            Debug.Log($"PhotonNetwork.CreateRoom called. Success? {roomCreated}");
         }
     }
 }
