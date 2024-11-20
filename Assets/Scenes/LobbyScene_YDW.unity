@@ -5336,6 +5336,8 @@ MonoBehaviour:
   realClassMaterial:
     bookTitle: 
     bookContents: 
+    author: 
+    backgroundUrl: 
     quizzes: []
     openQuestions: []
     lessonRoles: []
@@ -8850,6 +8852,7 @@ MonoBehaviour:
   logInUI: {fileID: 56896046}
   titleUI: {fileID: 139799188}
   creatorUI: {fileID: 4735153246902854370}
+  titleNickname: {fileID: 0}
   teacherOrStudent:
   - {fileID: 189321679}
   - {fileID: 731317229}
@@ -12908,6 +12911,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 276693838659707123, guid: 96e3ccfb92e8dec4abba84d5e3f2afe4,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 792798435896518869, guid: 96e3ccfb92e8dec4abba84d5e3f2afe4,
         type: 3}
       propertyPath: m_Pivot.x
@@ -13008,6 +13016,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1134287072764461321, guid: 96e3ccfb92e8dec4abba84d5e3f2afe4,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2409008813568369950, guid: 96e3ccfb92e8dec4abba84d5e3f2afe4,
         type: 3}
       propertyPath: roomMgr
@@ -13017,6 +13030,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Padding.m_Left
       value: 50
+      objectReference: {fileID: 0}
+    - target: {fileID: 7896814359245343056, guid: 96e3ccfb92e8dec4abba84d5e3f2afe4,
+        type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8016699668354855360, guid: 96e3ccfb92e8dec4abba84d5e3f2afe4,
         type: 3}
@@ -13032,6 +13050,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Canvas_CreatorTool
+      objectReference: {fileID: 0}
+    - target: {fileID: 9090752375864076622, guid: 96e3ccfb92e8dec4abba84d5e3f2afe4,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects:
