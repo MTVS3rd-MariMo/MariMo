@@ -90,6 +90,7 @@ MonoBehaviour:
   - StartQuestion
   - UpdateQuizText
   - Unlock
+
   - AfterSelectChar
   - IncreaseMapCount
   - DecreaseCnt
@@ -97,6 +98,10 @@ MonoBehaviour:
   - InteractableFalse
   - GetAnswer
   - SetAnswer
+
+  - AniDelay
+  - AniDelayStart
+
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 0

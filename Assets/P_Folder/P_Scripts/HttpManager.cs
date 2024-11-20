@@ -159,6 +159,19 @@ public class HttpManager : MonoBehaviour
         }
     }
 
+    public IEnumerator PostBackGround(HttpInfo info)
+    {
+        using (UnityWebRequest webRequest = UnityWebRequest.Post(info.url, info.body, info.contentType))
+        {
+            // 서버에 요청 보내기
+            yield return webRequest.SendWebRequest();
+
+
+            // 서버에게 응답이 왔다.
+            DoneRequest(webRequest, info);
+        }
+    }
+
     public IEnumerator PostRoom(HttpInfo info)
     {
         using (UnityWebRequest webRequest = UnityWebRequest.Post(info.url, info.body, info.contentType))
@@ -266,7 +279,7 @@ public class HttpManager : MonoBehaviour
         }
     }
 
-    public IEnumerator UploadFileByFormDataPDF(HttpInfo info)
+    public IEnumerator UploadFileByFormDataPDF(HttpInfo info, string bookTitle, string author)
     {
         // info.data 에는 파일의 위치
         // info.data 에 있는 파일을 byte 배열로 읽어오자
@@ -277,7 +290,8 @@ public class HttpManager : MonoBehaviour
         // data 를 MultipartForm 으로 셋팅
         List<IMultipartFormSection> formData = new List<IMultipartFormSection>();
         formData.Add(new MultipartFormFileSection("pdf", data, fileName, "application/pdf"));
-
+        formData.Add(new MultipartFormDataSection("bookTitle", bookTitle));
+        formData.Add(new MultipartFormDataSection("author", author));
 
         using (UnityWebRequest webRequest = UnityWebRequest.Post(info.url, formData))
         {
@@ -450,5 +464,17 @@ public class HttpManager : MonoBehaviour
         }
     }
 
+    public IEnumerator Delete(HttpInfo info)
+    {
+        using (UnityWebRequest webRequest = UnityWebRequest.Delete(info.url))
+        {
+            webRequest.SetRequestHeader("userId", Y_HttpLogIn.GetInstance().userId.ToString());
+            // 서버에 요청 보내기
+            yield return webRequest.SendWebRequest();
 
+
+            // 서버에게 응답이 왔다.
+            DoneRequest(webRequest, info);
+        }
+    }
 }

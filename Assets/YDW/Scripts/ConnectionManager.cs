@@ -202,9 +202,17 @@ public class ConnectionManager : MonoBehaviourPunCallbacks
     {
         base.OnCreatedRoom();
 
+        Debug.Log("방 생성 완료!");
+
         // 성공적으로 방이 개설되었음을 알려준다.
         print(MethodInfo.GetCurrentMethod().Name + " is Call!");
         LobbyController.lobbyUI.PrintLog("방 만들어짐!");
+    }
+
+    public override void OnCreateRoomFailed(short returnCode, string message)
+    {
+        base.OnCreateRoomFailed(returnCode, message);
+        Debug.LogError($"Room creation failed: {message} (Code : {returnCode})");
     }
 
     public override void OnJoinedRoom()
@@ -216,8 +224,9 @@ public class ConnectionManager : MonoBehaviourPunCallbacks
         //LobbyController.lobbyUI.PrintLog("방에 입장 성공!");
 
 
+        Debug.Log("LoadScene1 이동 호출");
 
-        PhotonNetwork.LoadLevel(1);
+        SceneManager.LoadScene(1);
 
         //StartCoroutine(Test());
     }
@@ -322,13 +331,44 @@ public class ConnectionManager : MonoBehaviourPunCallbacks
         }
     }
 
-    public override void OnLeftRoom()
-    {
-        base.OnLeftRoom();
 
-        SceneManager.LoadScene(0);
+    ////// 버그생김.. //////////////////////////// 0번 씬 로드할 떄 로그인 여부 체크해서 로그인창과 로비를 구별해 보내는 코드
+    //void OnEnable()
+    //{
+    //    SceneManager.sceneLoaded += OnSceneLoaded;
+    //    PhotonNetwork.AddCallbackTarget(this);
+    //}
 
-        Y_HttpLogIn.GetInstance().ReturnLobby();
-    }
+    //void OnDisable()
+    //{
+    //    SceneManager.sceneLoaded -= OnSceneLoaded;
+    //    PhotonNetwork.RemoveCallbackTarget(this);
+    //}
 
+    //void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    //{
+    //    if (scene.buildIndex == 0)
+    //    {
+    //        ReturnLobby();
+    //    }
+    //}
+
+    //public void ReturnLobby()
+    //{
+    //    if (Y_HttpLogIn.GetInstance().isLoggedIn)
+    //    {
+    //        // 씬 초기화 후 UI 상태를 다시 세팅
+    //        if (Y_HttpLogIn.GetInstance().isTeacher)
+    //        {
+    //            Y_SignUp.signUp.creatorUI.SetActive(true);
+    //            Y_SignUp.signUp.logInUI.SetActive(false);
+    //            Y_HttpLogIn.GetInstance().img_background.SetActive(false);
+    //        }
+    //        else
+    //        {
+    //            Y_SignUp.signUp.titleUI.SetActive(true);
+    //            Y_SignUp.signUp.logInUI.SetActive(false);
+    //        }
+    //    }
+    //}
 }
