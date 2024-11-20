@@ -4442,6 +4442,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   userId: 
   mainServer: 211.250.74.75:8202
+  isLoggedIn: 0
   RegisterUrl: api/user/signup
   logInUrl: api/user/login
   isTeacher: 0
@@ -13232,11 +13233,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Canvas_CreatorTool
-      objectReference: {fileID: 0}
-    - target: {fileID: 9090752375864076622, guid: 96e3ccfb92e8dec4abba84d5e3f2afe4,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
