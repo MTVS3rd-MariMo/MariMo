@@ -55,8 +55,8 @@ public class P_RoomCreate : MonoBehaviour
         for (int i = 0; i < P_CreatorToolConnectMgr.Instance.lessons.lessonMaterials.Count; i++)
         {
             books[i] = P_CreatorToolConnectMgr.Instance.lessons.lessonMaterials[i].bookTitle;
+            Debug.Log(books);
         }
-        Debug.Log(books);
 
         foreach (string str in books)
         {
@@ -99,9 +99,6 @@ public class P_RoomCreate : MonoBehaviour
 
             // 포톤 방생성 요청
             roomMgr.CreateRoom(RoomName.text, lessonId, lessonMaterialNum);
-
-
-            // 그림그리기 요청
 
         };
 

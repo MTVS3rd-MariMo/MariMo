@@ -42,12 +42,17 @@ public class Y_HotSeatManager : MonoBehaviourPun
 
             if (triggerNum >= 4 && !act)
             {
-                act = true;
+                
                 //hotSeatCanvas.SetActive(true);
 
-                MoveControl(false);
+                if(photonView.IsMine)
+                {
+                    act = true;
 
-                StartCoroutine(AniDelay());
+                    RPC_MoveControl(false);
+
+                    RPC_AniDelayStart();
+                }
             }
         }
     }
@@ -65,7 +70,19 @@ public class Y_HotSeatManager : MonoBehaviourPun
         hotSeatCanvas.SetActive(true);
     }
 
-    IEnumerator AniDelay()
+
+    void RPC_AniDelayStart()
+    {
+        photonView.RPC(nameof (AniDelayStart), RpcTarget.All);
+    }
+
+    [PunRPC]
+    public void AniDelayStart()
+    {
+        StartCoroutine(AniDelay());
+    }
+
+    public IEnumerator AniDelay()
     {
         VirtualCamera.SetActive(true);
 
@@ -87,6 +104,12 @@ public class Y_HotSeatManager : MonoBehaviourPun
         }
     }
 
+    void RPC_MoveControl(bool canmove)
+    {
+        photonView.RPC(nameof(MoveControl), RpcTarget.All, canmove);
+    }
+
+    [PunRPC]
     public void MoveControl(bool canmove)
     {
         foreach (GameObject obj in players)

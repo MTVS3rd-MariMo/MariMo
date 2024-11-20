@@ -36,6 +36,8 @@ public class Y_HttpLogIn : MonoBehaviour
     public string userId;
     public string mainServer;
 
+    public bool isLoggedIn = false;
+
     public static Y_HttpLogIn GetInstance()
     {
         if (instance == null)
@@ -181,6 +183,7 @@ public class Y_HttpLogIn : MonoBehaviour
             // 서버 응답 처리
             if (webRequest.result == UnityWebRequest.Result.Success)
             {
+                isLoggedIn = true;
                 //Debug.Log("로그인 성공: " + webRequest.downloadHandler.text);
                 ResponseData responseData = JsonUtility.FromJson<ResponseData>(webRequest.downloadHandler.text);
                 userId = responseData.userId;
