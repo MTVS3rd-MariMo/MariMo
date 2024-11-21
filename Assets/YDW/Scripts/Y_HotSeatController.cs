@@ -48,7 +48,6 @@ public class Y_HotSeatController : MonoBehaviourPun
     public TMP_Text[] characterNames;
     public GameObject stageImg;
     public GameObject speechGuide;
-    Color originalColor;
     public int testNum = 0;
     public Vector2 playerPos;
     public Transform stagePos;
@@ -77,7 +76,6 @@ public class Y_HotSeatController : MonoBehaviourPun
         originalPosition = inputFieldRect.gameObject.transform.localPosition;
 
         // stage 부분 사전 준비/저장
-        originalColor = images[0].color;
         playerPos = players[0].transform.position;
 
         //bookController = GameObject.Find("BookCanvas").GetComponent<Y_BookController>();
@@ -88,7 +86,6 @@ public class Y_HotSeatController : MonoBehaviourPun
         if(bookController.characterNum - 1 >= 0)
         {
             Txt_TitleText.text = characterNames[bookController.characterNum - 1].text;
-            //Debug.LogError("찍어봐 : " + (myAvatarSetting.avatarIndex - 1));
             myAvatarImage.sprite = characterImages[bookController.characterNum - 1].GetComponent<Image>().sprite;
         }
         else
@@ -96,7 +93,6 @@ public class Y_HotSeatController : MonoBehaviourPun
             Txt_TitleText.text = "선생님";
         }
         
-
         // 안내 가이드 띄워주기
         guide.SetActive(true);
         Y_SoundManager.instance.PlayEftSound(Y_SoundManager.ESoundType.EFT_INFO);
@@ -106,8 +102,6 @@ public class Y_HotSeatController : MonoBehaviourPun
     // 오브젝트 2초뒤 꺼주기
     public IEnumerator Deactivate(GameObject gm)
     {
-        yield return new WaitForSeconds(2);
-        gm.SetActive(false);
         if (gm == guides[4]) // 마지막 "참 잘했어요!" UI 의 경우
         {
             yield return new WaitForSeconds(3f);
@@ -117,6 +111,11 @@ public class Y_HotSeatController : MonoBehaviourPun
             UnMuteAllPlayers(); ///////////// 원래는 RPC 였음!
             Y_SoundManager.instance.PlayBgmSound(Y_SoundManager.EBgmType.BGM_MAIN);
             gameObject.SetActive(false);
+        }
+        else
+        {
+            yield return new WaitForSeconds(2);
+            gm.SetActive(false);
         }
     }
 
@@ -307,12 +306,17 @@ public class Y_HotSeatController : MonoBehaviourPun
 
     void RPC_AllReady()
     {
-        photonView.RPC(nameof(AllReady), RpcTarget.All);
+        photonView.RPC(nameof(startAllReadyCrt), RpcTarget.All);
+    }
+
+    [PunRPC]
+    public void startAllReadyCrt()
+    {
+        StartCoroutine(AllReady());
     }
 
     // 4명 전부 들어오면 실행
-    [PunRPC]
-    public void AllReady()
+    public IEnumerator AllReady()
     {
         // 보이스 일단 4명 다 꺼줌
         //Y_VoiceManager.Instance.recorder.TransmitEnabled = false;
@@ -327,6 +331,8 @@ public class Y_HotSeatController : MonoBehaviourPun
             MatchNameTags();
             MatchPlayerPos();
             MatchSelfIntroduce();
+
+            yield return new WaitForSeconds(1f);
 
             // 순서 다 정렬하고 셋액티브
             panel_waiting.SetActive(false);
@@ -348,7 +354,7 @@ public class Y_HotSeatController : MonoBehaviourPun
 
             Y_HttpHotSeat.GetInstance().StartSendIntCoroutine(selfIntCount);
 
-            StartSpeech(0);
+            RPC_StartSpeech(0);
         }
     }
 
@@ -402,6 +408,12 @@ public class Y_HotSeatController : MonoBehaviourPun
     public GameObject[] timerImgs;
     public int selfIntNum = 0;
 
+    void RPC_StartSpeech(int index)
+    {
+        photonView.RPC(nameof(StartSpeech), RpcTarget.All, index);
+    }
+
+    [PunRPC]
     // 순서대로 자기소개 - 질문
     public void StartSpeech(int index)
     {
@@ -664,8 +676,8 @@ public class Y_HotSeatController : MonoBehaviourPun
     // 최종 단계
     IEnumerator LastCoroutine()
     {
-        yield return new WaitForSeconds(2.5f);
-
+        //yield return new WaitForSeconds(2.5f);
+        yield return null;
         Y_VoiceManager.Instance.recorder.TransmitEnabled = true;
         RPC_ActivateGuide(4);
         

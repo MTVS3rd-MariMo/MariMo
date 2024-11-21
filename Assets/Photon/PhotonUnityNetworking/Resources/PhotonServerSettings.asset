@@ -99,6 +99,8 @@ MonoBehaviour:
   - SetAnswer
   - AniDelay
   - AniDelayStart
+  - startAllReadyCrt
+  - StartSpeech
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1
