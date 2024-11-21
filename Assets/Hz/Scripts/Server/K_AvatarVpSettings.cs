@@ -85,14 +85,14 @@ public class K_AvatarVpSettings : MonoBehaviourPun
 
                     if (Physics.Raycast(ray, out hit, 9999f, layerMaskGround))
                     {
-                        print("디버그?");
+                        //print("디버그?");
 
-                        y_PlayerMove.agent.SetDestination(hit.point);
+                        //y_PlayerMove.agent.SetDestination(hit.point);
 
                         // Walk 상태
                         SetWalkingState(isMove);
 
-                        Debug.LogError(ray);
+                        //Debug.LogError(ray);
                     }
                 }
             }
@@ -222,7 +222,7 @@ public class K_AvatarVpSettings : MonoBehaviourPun
     private void OnVideoPrepared(VideoPlayer source)
     {
         vp.Play();
-        Debug.Log("비디오가 성공적으로 재생되었습니다: " + vp.url);
+        //Debug.Log("비디오가 성공적으로 재생되었습니다: " + vp.url);
     }
 
     public void SetAvatarImage(Texture2D texture)

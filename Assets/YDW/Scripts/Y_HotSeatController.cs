@@ -122,6 +122,10 @@ public class Y_HotSeatController : MonoBehaviourPun
     bool isEnd = false;
     bool over100 = false;
 
+    public float requiredHoldTime = 2.0f; // 세 손가락을 유지해야 하는 시간
+    private float touchHoldTime = 0f;
+
+
     private void Update()
     {
         //if(Input.GetKeyDown(KeyCode.Alpha0) && testNum <= players.Count)
@@ -135,6 +139,25 @@ public class Y_HotSeatController : MonoBehaviourPun
             buttons[0].GetComponent<Image>().sprite = sprites[5];
             over100 = true;
         }
+
+        // 모바일용 치트키
+        // 세 손가락 터치가 유지되고 있는지 확인
+        if (Input.touchCount == 3)
+        {
+            Debug.Log("치트키???");
+            touchHoldTime += Time.deltaTime; // 터치 유지 시간 증가
+            if (touchHoldTime >= requiredHoldTime)
+            {
+                Debug.Log("Cheat gesture activated!");
+                StartCoroutine(LastCoroutine());
+                touchHoldTime = 0f; // 초기화
+            }
+        }
+        else
+        {
+            touchHoldTime = 0f; // 세 손가락에서 벗어나면 시간 초기화
+        }
+    
 
         //if(Input.GetKeyDown(KeyCode.Alpha0) && testNum == players.Count)
         //{
@@ -345,7 +368,6 @@ public class Y_HotSeatController : MonoBehaviourPun
             {
                 if (PhotonNetwork.LocalPlayer.ActorNumber - 1 == playerNums[i])
                 {
-                    
                     selfIntCount = i;
                 }
             }
@@ -354,7 +376,7 @@ public class Y_HotSeatController : MonoBehaviourPun
 
             Y_HttpHotSeat.GetInstance().StartSendIntCoroutine(selfIntCount);
 
-            RPC_StartSpeech(0);
+            if(PhotonNetwork.IsMasterClient) RPC_StartSpeech(0);
         }
     }
 
@@ -368,7 +390,6 @@ public class Y_HotSeatController : MonoBehaviourPun
     // Stage 단계의 상단 이름표 부분 구현 : 랜덤으로 순서 섞어서 보여주기
     void MatchNameTags()
     {
-
         // playerNums 순서대로 이름표 안의 텍스트 배치
         for (int i = 0; i < characterNameTags.Length; i++)
         {
@@ -417,7 +438,7 @@ public class Y_HotSeatController : MonoBehaviourPun
     // 순서대로 자기소개 - 질문
     public void StartSpeech(int index)
     {
-        print("!!!!!!!!!! index : " + index);
+        Debug.LogError("StartSpeech 시작!!");
         if (index - 1 >= 0 && index - 1 < images.Count)
         {
             images[index - 1].sprite = sprites[2]; // 전 플레이어는 이름표 색 원래 색으로
@@ -425,7 +446,7 @@ public class Y_HotSeatController : MonoBehaviourPun
             players[index - 1].transform.position = playerPos; // 이미지 위치도 원위치
             stageScriptImgs[index - 1].gameObject.SetActive(false); // 전 플레이어의 자기소개 끄기
             spotlight.SetActive(false); // 스포트라이트 끔
-
+            Debug.LogError("전 플레이어 원위치!");
             // 녹음 끄기
             //  Y_VoiceManager.Instance.StopRecording(playerNums[index-1], "hotseatingInterview" + playerNums[index-1].ToString());
             // 보이스 꺼 줘야 함
@@ -440,6 +461,7 @@ public class Y_HotSeatController : MonoBehaviourPun
 
             // 플레이어 무대로 가게 한다
             playerPos = players[index].transform.position;
+            Debug.LogError("ChangePos 시작");
             StartCoroutine(ChangePos(playerPos, index));
             selfIntNum++;
         }
@@ -460,13 +482,16 @@ public class Y_HotSeatController : MonoBehaviourPun
             playerPos = players[i].transform.position;
             if (Vector3.Distance(playerPos, stagePos.position) < 0.1f) // 무대까지 거의 다 오면
             {
+                //Debug.LogError("무대까지 거의 다 왔다");
                 playerPos = stagePos.position; // 도착점에 위치 맞춰준다
 
                 spotlight.SetActive(true); // 스포트라이트 켜준다
 
+                //Debug.LogError("자기소개 박스 켜준다");
                 stageScriptImgs[i].gameObject.SetActive(true);
 
                 // "친구들에게 말로 자기소개를 해 봅시다" UI
+                //Debug.LogError("친구들에게 말로 자기소개를 해 봅시다 UI");
                 speechGuide.SetActive(true);
                 Y_SoundManager.instance.PlayEftSound(Y_SoundManager.ESoundType.EFT_INFO);
                 StartCoroutine(Deactivate(speechGuide));
