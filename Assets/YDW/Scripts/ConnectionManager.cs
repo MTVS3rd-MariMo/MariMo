@@ -111,8 +111,26 @@ public class ConnectionManager : MonoBehaviourPunCallbacks
         base.OnJoinedLobby();
 
         // 서버 로비에 들어갔음을 알려준다.
-        //print(MethodInfo.GetCurrentMethod().Name + " is Call!");
+        print(MethodInfo.GetCurrentMethod().Name + " is Call!");
         //LobbyController.lobbyUI.ShowRoomPanel();
+
+        // HZ
+        // 선생님이라면 CreatorTool UI - true
+        if(Y_HttpLogIn.GetInstance().isTeacher == true)
+        {
+            Y_SignUp.signUp.creatorUI.SetActive(true);
+            // 닉네임 표시
+            //GameObject.Find("Canvas_CreatorTool").GetComponent<P_CreatorToolController>().titleNickname.text = registerData.name;
+        }
+        // 학생이라면 Panel_Title UI - true
+        else
+        {
+            Y_SignUp.signUp.titleUI.SetActive(true);
+            // 닉네임 표시
+            //Y_SignUp.signUp.titleNickname.text = registerData.name;
+        }
+        PhotonNetwork.LoadLevel(1);
+        print("1번씬으로 전환완료");
     }
 
     //public void CreateRoom(string roomname)
@@ -227,7 +245,10 @@ public class ConnectionManager : MonoBehaviourPunCallbacks
         Debug.Log("LoadScene1 이동 호출");
 
         //SceneManager.LoadScene(1);
-        PhotonNetwork.LoadLevel(1);
+        //PhotonNetwork.LoadLevel(1);
+
+        /////// HZ
+        PhotonNetwork.LoadLevel(2);
 
         //StartCoroutine(Test());
     }

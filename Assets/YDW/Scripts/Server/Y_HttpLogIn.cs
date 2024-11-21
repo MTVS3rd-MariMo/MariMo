@@ -194,22 +194,25 @@ public class Y_HttpLogIn : MonoBehaviour
                 isTeacher = userRole == Role.TEACHER;
                 print(isTeacher);
 
-                // 로그인 UI 꺼주기
-                Y_SignUp.signUp.logInUI.SetActive(false);
+                /////////// HZ
+                //// 로그인 UI 꺼주기
+                //Y_SignUp.signUp.logInUI.SetActive(false);
 
-                // 선생님이라면
-                if (isTeacher)
-                {
-                    Y_SignUp.signUp.creatorUI.SetActive(true);
-                    GameObject.Find("Canvas_CreatorTool").GetComponent<P_CreatorToolController>().titleNickname.text = registerData.name;
-                    img_background.SetActive(false);
-                }
-                // 학생이라면
-                else
-                {
-                    Y_SignUp.signUp.titleUI.SetActive(true);
-                    Y_SignUp.signUp.titleNickname.text = registerData.name;
-                }
+                
+               
+                //// 선생님이라면
+                //if (isTeacher)
+                //{
+                //    Y_SignUp.signUp.creatorUI.SetActive(true);
+                //    GameObject.Find("Canvas_CreatorTool").GetComponent<P_CreatorToolController>().titleNickname.text = registerData.name;
+                //    img_background.SetActive(false);
+                //}
+                //// 학생이라면
+                //else
+                //{
+                //    Y_SignUp.signUp.titleUI.SetActive(true);
+                //    Y_SignUp.signUp.titleNickname.text = registerData.name;
+                //}
                 //SceneManager.
                 //(1);
             }
