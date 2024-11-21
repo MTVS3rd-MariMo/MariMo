@@ -1,6 +1,7 @@
 ﻿using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.UI;
@@ -179,24 +180,9 @@ public class K_AvatarVpSettings : MonoBehaviourPun
             rawImage.material.mainTexture = vp.targetTexture;
             vp.prepareCompleted += OnVideoPrepared;
             print("준비됐나요? ");
+            SetWalkingState(false);
             //PlayCurrAnim();
         }
-
-
-
-        //// ?????????????????
-        ////int actorNumber = PhotonNetwork.LocalPlayer.ActorNumber - 1;
-
-        //int adjustActorNumber = actorNumber - 1;
-        ////print("알려줘" + adjustActorNumber);
-
-        //if (vp != null && adjustActorNumber >= 0 && adjustActorNumber <= 3)
-        //{
-        //    // 연산자 사용해보기
-        //    //print(videoPath);
-        //    rawImage.texture = vp.targetTexture = renderTextures[adjustActorNumber];
-        //    vp.Play();
-        //}
     }
 
     public void SetWalkingState(bool walking)
