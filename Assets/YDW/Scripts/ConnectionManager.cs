@@ -111,14 +111,26 @@ public class ConnectionManager : MonoBehaviourPunCallbacks
         base.OnJoinedLobby();
 
         // 서버 로비에 들어갔음을 알려준다.
-        print(MethodInfo.GetCurrentMethod().Name + " is Call!");
+        //print(MethodInfo.GetCurrentMethod().Name + " is Call!");
         //LobbyController.lobbyUI.ShowRoomPanel();
 
+
+        /// HZ
+
+        SetUpLobbyUI();
+        PhotonNetwork.LoadLevel(1);
+        print("1번씬으로 전환완료");
+    }
+
+    // 로비 셋팅
+    void SetUpLobbyUI()
+    {
         // HZ
         // 선생님이라면 CreatorTool UI - true
         if(Y_HttpLogIn.GetInstance().isTeacher == true)
         {
             Y_SignUp.signUp.creatorUI.SetActive(true);
+            Y_SignUp.signUp.titleUI.SetActive(false);
             // 닉네임 표시
             //GameObject.Find("Canvas_CreatorTool").GetComponent<P_CreatorToolController>().titleNickname.text = registerData.name;
         }
@@ -126,11 +138,28 @@ public class ConnectionManager : MonoBehaviourPunCallbacks
         else
         {
             Y_SignUp.signUp.titleUI.SetActive(true);
+            Y_SignUp.signUp.creatorUI.SetActive(false);
             // 닉네임 표시
             //Y_SignUp.signUp.titleNickname.text = registerData.name;
         }
-        PhotonNetwork.LoadLevel(1);
-        print("1번씬으로 전환완료");
+    }
+
+    void OnEnable()
+    {
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+
+    void OnDisable()
+    {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
+
+    void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        if(scene.buildIndex == 1)
+        {
+            SetUpLobbyUI();
+        }
     }
 
     //public void CreateRoom(string roomname)
