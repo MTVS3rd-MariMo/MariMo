@@ -180,7 +180,6 @@ public class Y_PlayerMove : MonoBehaviour, IPunObservable
         else if (stream.IsReading)
         {
             myPos = (Vector3)stream.ReceiveNext();
-            Debug.Log($"Received position for {pv.Owner.NickName}: {myPos}");
             playerVoice.isTalking = (bool)stream.ReceiveNext();
             moveDistance = (float)stream.ReceiveNext();
         }

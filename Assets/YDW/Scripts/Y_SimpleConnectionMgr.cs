@@ -60,21 +60,5 @@ public class Y_SimpleConnectionMgr : MonoBehaviourPunCallbacks
         PhotonNetwork.JoinOrCreateRoom("Marimo", roomOption, TypedLobby.Default);
     }
 
-    // 방 생성 성공 했을 때 호출되는 함수
-    public override void OnCreatedRoom()
-    {
-        base.OnCreatedRoom();
-        print("방 생성 완료");
-    }
-
-    // 방 입장 성공 했을 때 호출되는 함수
-    public override void OnJoinedRoom()
-    {
-        base.OnJoinedRoom();
-        print("방 입장 완료");
-
-        // 멀티플레이 컨텐츠 즐길 수 있는 상태
-        // GameScene으로 이동!
-        PhotonNetwork.LoadLevel(1);
-    }
+  
 }

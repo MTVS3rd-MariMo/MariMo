@@ -36,6 +36,8 @@ public class Y_HttpLogIn : MonoBehaviour
     public string userId;
     public string mainServer;
 
+    public bool isLoggedIn = false;
+
     public static Y_HttpLogIn GetInstance()
     {
         if (instance == null)
@@ -181,6 +183,7 @@ public class Y_HttpLogIn : MonoBehaviour
             // 서버 응답 처리
             if (webRequest.result == UnityWebRequest.Result.Success)
             {
+                isLoggedIn = true;
                 //Debug.Log("로그인 성공: " + webRequest.downloadHandler.text);
                 ResponseData responseData = JsonUtility.FromJson<ResponseData>(webRequest.downloadHandler.text);
                 userId = responseData.userId;
@@ -198,12 +201,14 @@ public class Y_HttpLogIn : MonoBehaviour
                 if (isTeacher)
                 {
                     Y_SignUp.signUp.creatorUI.SetActive(true);
+                    GameObject.Find("Canvas_CreatorTool").GetComponent<P_CreatorToolController>().titleNickname.text = registerData.name;
                     img_background.SetActive(false);
                 }
                 // 학생이라면
                 else
                 {
                     Y_SignUp.signUp.titleUI.SetActive(true);
+                    Y_SignUp.signUp.titleNickname.text = registerData.name;
                 }
                 //SceneManager.
                 //(1);

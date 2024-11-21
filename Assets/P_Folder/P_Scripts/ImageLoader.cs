@@ -34,14 +34,14 @@ public class ImageLoader : MonoBehaviour
             if (rawImage != null)
             {
                 rawImage.texture = texture;
-                rawImage.SetNativeSize(); // 이미지 크기 자동 조정
+                //rawImage.SetNativeSize(); // 이미지 크기 자동 조정
             }
 
             // Image 컴포넌트에 적용
             if (uiImage != null)
             {
                 uiImage.sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(0.5f, 0.5f));
-                uiImage.SetNativeSize(); // 이미지 크기 자동 조정
+                //uiImage.SetNativeSize(); // 이미지 크기 자동 조정
             }
         }
     }

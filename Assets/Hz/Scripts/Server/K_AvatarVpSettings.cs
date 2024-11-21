@@ -1,6 +1,7 @@
 ﻿using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.UI;
@@ -63,33 +64,44 @@ public class K_AvatarVpSettings : MonoBehaviourPun
         {
             // Walk 상태
             SetWalkingState(isMove);
-        }
-        //if (Application.platform == RuntimePlatform.Android)
-        //{
-        //    if (Input.touchCount > 0)
-        //    {
-        //        Touch touch = Input.GetTouch(0);
-
-        //        if ((touch.phase == TouchPhase.Began) || (touch.phase == TouchPhase.Moved))
-        //        {
-        //            Ray ray = Camera.main.ScreenPointToRay(touch.position);
-        //            RaycastHit hit;
-
-        //            if (Physics.Raycast(ray, out hit, 9999f, layerMaskGround))
-        //            {
-        //                y_PlayerMove.agent.SetDestination(hit.point);
-
-        //                // Walk 상태
-        //                SetWalkingState(true);
-        //            }
-        //        }
-        //    }
-        //}
+        }       
         else
         {
             // Idle 상태
             SetWalkingState(isMove);
         }
+
+        // 모바일 빌드용
+        if (Application.platform == RuntimePlatform.Android)
+        {
+            if (Input.touchCount > 0)
+            {
+                Touch touch = Input.GetTouch(0);
+
+                if ((touch.phase == TouchPhase.Began) || (touch.phase == TouchPhase.Moved))
+                {
+                    Ray ray = Camera.main.ScreenPointToRay(touch.position);
+                    RaycastHit hit;
+
+                    if (Physics.Raycast(ray, out hit, 9999f, layerMaskGround))
+                    {
+                        print("디버그?");
+
+                        y_PlayerMove.agent.SetDestination(hit.point);
+
+                        // Walk 상태
+                        SetWalkingState(isMove);
+
+                        Debug.LogError(ray);
+                    }
+                }
+            }
+            else
+            {
+                SetWalkingState(isMove);
+            }
+        }
+
     }
 
     public void RPC_SelectCharNum(int characterIndex)
@@ -168,24 +180,9 @@ public class K_AvatarVpSettings : MonoBehaviourPun
             rawImage.material.mainTexture = vp.targetTexture;
             vp.prepareCompleted += OnVideoPrepared;
             print("준비됐나요? ");
+            SetWalkingState(false);
             //PlayCurrAnim();
         }
-
-
-
-        //// ?????????????????
-        ////int actorNumber = PhotonNetwork.LocalPlayer.ActorNumber - 1;
-
-        //int adjustActorNumber = actorNumber - 1;
-        ////print("알려줘" + adjustActorNumber);
-
-        //if (vp != null && adjustActorNumber >= 0 && adjustActorNumber <= 3)
-        //{
-        //    // 연산자 사용해보기
-        //    //print(videoPath);
-        //    rawImage.texture = vp.targetTexture = renderTextures[adjustActorNumber];
-        //    vp.Play();
-        //}
     }
 
     public void SetWalkingState(bool walking)
@@ -225,7 +222,7 @@ public class K_AvatarVpSettings : MonoBehaviourPun
     private void OnVideoPrepared(VideoPlayer source)
     {
         vp.Play();
-        //Debug.Log("비디오가 성공적으로 재생되었습니다: " + vp.url);
+        Debug.Log("비디오가 성공적으로 재생되었습니다: " + vp.url);
     }
 
     public void SetAvatarImage(Texture2D texture)
