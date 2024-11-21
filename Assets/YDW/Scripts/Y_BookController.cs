@@ -303,14 +303,14 @@ public class Y_BookController : MonoBehaviourPun
 
     #region ChooseCharacterUI
 
-    // 다른 사람이 버튼 이미 눌렀으면 못 선택하게 나중에 처리할 것
-    /////////////////////////////////////////////
-
     int clickSelectCnt = 0;
     int clickPaintCnt = 0;
 
     public void Select(int num)
     {
+        // 방에 들어온 사람이 5명 미만이면 아무 일도 일어나지 않는다
+        if (PhotonNetwork.CurrentRoom.PlayerCount < 5) return;
+
         // 선생님이면 아무 일도 일어나지 않는다
         if (currentPlayerNum == -1) return;
 

@@ -144,6 +144,7 @@ public class Y_HotSeatController : MonoBehaviourPun
         // 세 손가락 터치가 유지되고 있는지 확인
         if (Input.touchCount == 3)
         {
+            Debug.Log("치트키???");
             touchHoldTime += Time.deltaTime; // 터치 유지 시간 증가
             if (touchHoldTime >= requiredHoldTime)
             {
@@ -375,7 +376,6 @@ public class Y_HotSeatController : MonoBehaviourPun
 
             Y_HttpHotSeat.GetInstance().StartSendIntCoroutine(selfIntCount);
 
-            Debug.LogError("RPC_StartSpeech 시작할까요? 넹");
             if(PhotonNetwork.IsMasterClient) RPC_StartSpeech(0);
         }
     }
@@ -482,16 +482,16 @@ public class Y_HotSeatController : MonoBehaviourPun
             playerPos = players[i].transform.position;
             if (Vector3.Distance(playerPos, stagePos.position) < 0.1f) // 무대까지 거의 다 오면
             {
-                Debug.LogError("무대까지 거의 다 왔다");
+                //Debug.LogError("무대까지 거의 다 왔다");
                 playerPos = stagePos.position; // 도착점에 위치 맞춰준다
 
                 spotlight.SetActive(true); // 스포트라이트 켜준다
 
-                Debug.LogError("자기소개 박스 켜준다");
+                //Debug.LogError("자기소개 박스 켜준다");
                 stageScriptImgs[i].gameObject.SetActive(true);
 
                 // "친구들에게 말로 자기소개를 해 봅시다" UI
-                Debug.LogError("친구들에게 말로 자기소개를 해 봅시다 UI");
+                //Debug.LogError("친구들에게 말로 자기소개를 해 봅시다 UI");
                 speechGuide.SetActive(true);
                 Y_SoundManager.instance.PlayEftSound(Y_SoundManager.ESoundType.EFT_INFO);
                 StartCoroutine(Deactivate(speechGuide));
