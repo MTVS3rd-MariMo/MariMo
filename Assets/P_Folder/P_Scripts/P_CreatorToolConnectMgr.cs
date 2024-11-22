@@ -158,7 +158,7 @@ public class P_CreatorToolConnectMgr : MonoBehaviour
     }
 
 
-    void InitializeConnectMgr()
+    public void InitializeConnectMgr()
     {
         // 초기 데이터 로드 등 초기화 작업
         quizData = new QuizData

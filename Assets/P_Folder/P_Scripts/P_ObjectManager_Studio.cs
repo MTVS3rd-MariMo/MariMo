@@ -46,6 +46,8 @@ public class P_ObjectManager_Studio : MonoBehaviourPun
     public Image blackScreen;
     public Image whiteScreen;
 
+    // 바닥 그림
+    public GameObject draw_Photo;
     // 오브젝트 애니메이션
     public GameObject Ani_Object;
 
@@ -95,6 +97,7 @@ public class P_ObjectManager_Studio : MonoBehaviourPun
     public void Studio()
     {
         StartCoroutine(Studio_UI_Player());
+        draw_Photo.SetActive(false);
         Ani_Object.SetActive(true);
         Y_SoundManager.instance.PlayEftSound(Y_SoundManager.ESoundType.EFT_3D_OBJECT_05);
     }
