@@ -334,10 +334,7 @@ public class P_ObjectManager_Studio : MonoBehaviourPun
 
     void OnclickFinish()
     {
-        PhotonNetwork.AutomaticallySyncScene = false;
-        PhotonNetwork.LeaveRoom();
-        Y_HttpLogIn.GetInstance().GetComponent<ConnectionManager>().ReturnLobby();
-        PhotonNetwork.LoadLevel(0);
+        Y_HttpLogIn.GetInstance().GetComponent<ConnectionManager>().FinishLesson();
     }
 
 
