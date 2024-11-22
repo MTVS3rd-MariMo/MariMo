@@ -226,8 +226,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   inputFieldRect: {fileID: 2509845612181509621}
-  expandedSize: {x: 1200, y: 200}
-  expandedPos: {x: -345, y: 180}
+  expandedSize: {x: 1200, y: 300}
+  expandedPos: {x: -345, y: 200}
   btn_Prev: {fileID: 7667690609929402407}
   btn_Next: {fileID: 5101393879749404058}
   btn_OK: {fileID: 5162335830806286904}
@@ -462,7 +462,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Content: {fileID: 4588269581070271008}
-  m_Horizontal: 1
+  m_Horizontal: 0
   m_Vertical: 1
   m_MovementType: 1
   m_Elasticity: 0.1
@@ -6049,8 +6049,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4b28bdc7ed0cd3b4a93118484e597e27, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  expandedSize: {x: 1200, y: 200}
-  expandedPos: {x: -345, y: 180}
+  expandedSize: {x: 1200, y: 250}
+  expandedPos: {x: -345, y: 250}
   panel_MakingAsk: {fileID: 243016113058912972}
   btn_Prev: {fileID: 6809978023715378497}
   btn_Next: {fileID: 8735238554882184922}
