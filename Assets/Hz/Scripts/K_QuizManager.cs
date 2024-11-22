@@ -298,6 +298,9 @@ public class K_QuizManager : MonoBehaviourPun
         // 디렉팅 false
         isDirecting = false;
 
+        // 플레이어 정답 리스트 초기화
+        answerList.Clear();
+
         Dictionary<int, PhotonView> allPlayers = bookController.allPlayers;
 
         for (int i = 0; i < allPlayers.Count; i++)
