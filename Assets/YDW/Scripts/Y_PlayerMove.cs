@@ -3,6 +3,7 @@ using Photon.Pun;
 using Photon.Voice.PUN;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using Unity.VisualScripting;
 using UnityEditor.Rendering;
 using UnityEngine;
@@ -31,7 +32,8 @@ public class Y_PlayerMove : MonoBehaviour, IPunObservable
     public bool isFive;
 
     public float moveDistance;
-
+    Vector3 targetPosition;
+    bool isMoving;
 
     private void Awake()
     {
@@ -64,10 +66,10 @@ public class Y_PlayerMove : MonoBehaviour, IPunObservable
             {
                 Move();
             }
-            else if (agent.hasPath)
-            {
-                agent.ResetPath();
-            }
+            //else if (agent.hasPath)
+            //{
+            //    agent.ResetPath();
+            //}
         }
         else
         {
@@ -91,7 +93,7 @@ public class Y_PlayerMove : MonoBehaviour, IPunObservable
                 if (Input.touchCount > 0)
                 {
                     Touch touch = Input.GetTouch(0);
-                    Debug.LogWarning("터치됐다~!");
+                    //Debug.LogWarning("터치됐다~!");
 
                     if ((touch.phase == TouchPhase.Began) || (touch.phase == TouchPhase.Moved))
                     {
@@ -100,10 +102,24 @@ public class Y_PlayerMove : MonoBehaviour, IPunObservable
 
                         if (Physics.Raycast(ray, out hit, 9999f, layerMaskGround))
                         {
-                            Debug.LogWarning("에이전트가 찾아간다");
-                            agent.SetDestination(hit.point);
+                            //Debug.LogWarning("에이전트가 찾아간다");
+                            //agent.SetDestination(hit.point);
+                           
+                            // 목표 위치 설정
+                            targetPosition = hit.point;
+                            targetPosition.y = 3f;
+                            isMoving = true;
+
+                            // 화면 밖으로 고정은 어차피 화면 밖은 터치할 수 없으니 생략
+                            // 근데 플레이어 끌고 오기는 해야 할 듯.....
+
+
                         }
                     }
+                }
+                if (isMoving)
+                {
+                    MoveTowardsTarget();
                 }
             }
             else
@@ -132,37 +148,63 @@ public class Y_PlayerMove : MonoBehaviour, IPunObservable
                 //transform.Translate(finalDir * speed * Time.deltaTime);
                 // P = P0 + vt (이동공식)
                 transform.position += finalDir * speed * Time.deltaTime;
+            }
 
-                // 화면 밖으로 나가지 못하게 고정
-                Vector3 viewPortPoint = Camera.main.WorldToViewportPoint(transform.position);
+            // 화면 밖으로 나가지 못하게 고정
+            Vector3 viewPortPoint = Camera.main.WorldToViewportPoint(transform.position);
 
-                if (viewPortPoint.x < 0.1f)
-                {
-                    transform.position += Vector3.right * (0.1f - viewPortPoint.x) * pulling * Time.deltaTime;
-                }
+            if (viewPortPoint.x < 0.1f)
+            {
+                transform.position += Vector3.right * (0.1f - viewPortPoint.x) * pulling * Time.deltaTime;
+            }
 
-                if (viewPortPoint.x > 0.9f)
-                {
-                    transform.position += Vector3.right * (0.9f - viewPortPoint.x) * pulling * Time.deltaTime;
-                }
+            if (viewPortPoint.x > 0.9f)
+            {
+                transform.position += Vector3.right * (0.9f - viewPortPoint.x) * pulling * Time.deltaTime;
+            }
 
-                if (viewPortPoint.y < 0.1f)
-                {
-                    pulling = 50;
-                    transform.position += Vector3.forward * (0.1f - viewPortPoint.y) * pulling * Time.deltaTime;
-                }
+            if (viewPortPoint.y < 0.1f)
+            {
+                pulling = 50;
+                transform.position += Vector3.forward * (0.1f - viewPortPoint.y) * pulling * Time.deltaTime;
+            }
 
-                if (viewPortPoint.y > 0.7f)
-                {
-                    pulling = 200;
-                    transform.position += Vector3.forward * (0.7f - viewPortPoint.y) * pulling * Time.deltaTime;
-                }
+            if (viewPortPoint.y > 0.7f)
+            {
+                pulling = 200;
+                transform.position += Vector3.forward * (0.7f - viewPortPoint.y) * pulling * Time.deltaTime;
             }
         }
         else
         {
             transform.position = Vector3.Lerp(transform.position, myPos, Time.deltaTime * trackingSpeed);
         }
+    }
+
+    // 목표 지점으로 이동
+    void MoveTowardsTarget()
+    {
+        // 목표 지점까지의 거리 계산
+        float distanceToTarget = Vector3.Distance(transform.position, targetPosition);
+
+        // 방향 벡터 계산 및 이동
+        Vector3 direction = (targetPosition - transform.position).normalized;
+        transform.position += direction * speed * Time.deltaTime;
+
+        moveDistance = direction.magnitude;
+
+        // 이동 후 거리 계산
+        float newDistanceToTarget = Vector3.Distance(transform.position, targetPosition);
+
+        // 목표 지점에 도달했거나 초과했는지 확인
+        if (newDistanceToTarget <= 0.1f || newDistanceToTarget > distanceToTarget) // 임계값 조정 가능
+        {
+            transform.position = targetPosition; // 목표 지점에 고정
+            isMoving = false;                    // 이동 중단
+            moveDistance = 0;
+            return;
+        }
+
     }
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)

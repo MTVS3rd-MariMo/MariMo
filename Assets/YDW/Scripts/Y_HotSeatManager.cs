@@ -36,7 +36,7 @@ public class Y_HotSeatManager : MonoBehaviourPun
         if (other.CompareTag("Player") && !act)
         {
             triggerNum++;
-            print("+++++++++ : " + triggerNum);
+            Debug.LogError("+++++++++ : " + triggerNum);
 
             players.Add(other.gameObject);
 
@@ -98,7 +98,7 @@ public class Y_HotSeatManager : MonoBehaviourPun
         if (other.CompareTag("Player") && !act)
         {
             triggerNum--;
-            print("-------- : " + triggerNum);
+            Debug.LogError("-------- : " + triggerNum);
 
             players.Remove(other.gameObject);
         }
