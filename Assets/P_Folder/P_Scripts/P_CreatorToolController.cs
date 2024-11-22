@@ -196,7 +196,7 @@ public class P_CreatorToolController : MonoBehaviour
 
         //panel_Making.SetActive(true);
         /////////
-        isSend = true;
+        //isSend = true;
 
         print(P_CreatorToolConnectMgr.Instance.pdfPath);
 
@@ -216,7 +216,8 @@ public class P_CreatorToolController : MonoBehaviour
                 Debug.Log($"로드된 퀴즈 개수: {P_CreatorToolConnectMgr.Instance.GetQuizCount()}");
                 Debug.Log($"로드된 주관식 문제 개수: {P_CreatorToolConnectMgr.Instance.GetOpenQuestionCount()}");
 
-
+                text_bookName.text = "";
+                text_bookWriter.text = "";
             }
             catch (Exception e)
             {

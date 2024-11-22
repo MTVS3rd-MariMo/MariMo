@@ -36,7 +36,11 @@ public class P_MakingAsk : MonoBehaviour
         btn_Next.onClick.AddListener(OnclickNext);
         btn_OK.onClick.AddListener(OnclickOK);
 
-        // 예시
+    }
+
+    public void Open_MakingAsk()
+    {
+        count = 0;
         if (P_CreatorToolConnectMgr.Instance.GetOpenQuestion(0) != null)
             askText.text = P_CreatorToolConnectMgr.Instance.GetOpenQuestion(0).questionTitle;
     }

@@ -17,6 +17,7 @@ public class P_QuizSelect : MonoBehaviour
     void Start()
     {
         P_CreatorToolConnectMgr.Instance.OnDataParsed += QuizSetting;
+        
     }
 
     void Update()
@@ -33,9 +34,11 @@ public class P_QuizSelect : MonoBehaviour
         }
     }
 
+
     public void QuizSetting()
     {
         RemoveAllChildren();
+        selectCount = 0;
 
         for (int i = 0; i < P_CreatorToolConnectMgr.Instance.GetQuizCount(); i++)
         {
