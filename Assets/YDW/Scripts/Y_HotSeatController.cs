@@ -452,7 +452,7 @@ public class Y_HotSeatController : MonoBehaviourPun
     // 순서대로 자기소개 - 질문
     public void StartSpeech(int index)
     {
-        Debug.LogError("StartSpeech 시작!!");
+        //Debug.LogError("StartSpeech 시작!!");
         if (index - 1 >= 0 && index - 1 < images.Count)
         {
             images[index - 1].sprite = sprites[2]; // 전 플레이어는 이름표 색 원래 색으로
@@ -475,7 +475,7 @@ public class Y_HotSeatController : MonoBehaviourPun
 
             // 플레이어 무대로 가게 한다
             playerPos = players[index].transform.position;
-            Debug.LogError("ChangePos 시작");
+            //Debug.LogError("ChangePos 시작");
             StartCoroutine(ChangePos(playerPos, index));
             selfIntNum++;
         }
