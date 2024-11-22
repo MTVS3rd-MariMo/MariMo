@@ -488,7 +488,17 @@ public class Y_BookController : MonoBehaviourPun
         //virtualCam.gameObject.SetActive(false);
         //paintCam.gameObject.SetActive(true);
         
-        PaintUI.SetActive(true);
+        //// HZ 선생님 그림그리기 예외처리
+        if(!PhotonNetwork.IsMasterClient)
+        {
+            PaintUI.SetActive(true);
+        }
+        else
+        {
+            // 방장은 직접 호출 
+            PaintToComplete();
+        }
+        
 
         /////////22222222
         // currentPlayerNum 에 따라 RenderTexture, characterNum에 따라 MP4 파일을 설정
