@@ -198,7 +198,8 @@ public class Y_HttpLogIn : MonoBehaviour
                 //// 로그인 UI 꺼주기
                 //Y_SignUp.signUp.logInUI.SetActive(false);
 
-                
+                ///// HZ
+                //ReturnLobby();
                
                 //// 선생님이라면
                 //if (isTeacher)

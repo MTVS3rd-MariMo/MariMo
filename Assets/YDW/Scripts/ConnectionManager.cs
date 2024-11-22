@@ -135,16 +135,34 @@ public class ConnectionManager : MonoBehaviourPunCallbacks
 
         // HZ
         // 선생님이라면 CreatorTool UI - true
-        if(Y_HttpLogIn.GetInstance().isTeacher == true)
+        if (Y_HttpLogIn.GetInstance().isTeacher == true)
         {
-            Y_SignUp.signUp.creatorUI.SetActive(true);
+            print("선생님!");
+            Y_SignUp.signUp.logInUI.SetActive(false);
+            //Y_SignUp.signUp.creatorUI.SetActive(true);
             Y_SignUp.signUp.titleUI.SetActive(false);
+            // CreatorTool 찾기
+            GameObject creatorToolCanvas = GameObject.Find("Canvas_CreatorTool");
+            if (creatorToolCanvas != null)
+            {
+                print("크리에이터툴 찾았나?");
+                creatorToolCanvas = Y_SignUp.signUp.creatorUI;
+                creatorToolCanvas.SetActive(true);
+            }
+            else
+            {
+                print("크리에이터툴 못찾음");
+            }
             // 닉네임 표시
             //GameObject.Find("Canvas_CreatorTool").GetComponent<P_CreatorToolController>().titleNickname.text = registerData.name;
         }
         // 학생이라면 Panel_Title UI - true
         else
         {
+            // 로그인 Panel 꺼주고
+            LobbyController.lobbyUI.panel_login.gameObject.SetActive(false);
+            // 크리에이터 툴도 꺼주고
+            
             Y_SignUp.signUp.titleUI.SetActive(true);
             print("학생 타이틀 UI 켜짐");
             Y_SignUp.signUp.creatorUI.SetActive(false);
@@ -154,23 +172,23 @@ public class ConnectionManager : MonoBehaviourPunCallbacks
         }
     }
 
-    //void OnEnable()
-    //{
-    //    SceneManager.sceneLoaded += OnSceneLoaded;
-    //}
+    void OnEnable()
+    {
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
 
-    //void OnDisable()
-    //{
-    //    SceneManager.sceneLoaded -= OnSceneLoaded;
-    //}
+    void OnDisable()
+    {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
 
-    //void OnSceneLoaded(Scene scene, LoadSceneMode mode)
-    //{
-    //    if(scene.buildIndex == 1)
-    //    {
-    //        SetUpLobbyUI();
-    //    }
-    //}
+    void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        if (scene.buildIndex == 1)
+        {
+            SetUpLobbyUI();
+        }
+    }
 
     //public void CreateRoom(string roomname)
     //{

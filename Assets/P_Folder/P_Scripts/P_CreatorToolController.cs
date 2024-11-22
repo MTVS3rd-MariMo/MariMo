@@ -51,6 +51,7 @@ public class P_CreatorToolController : MonoBehaviour
 
     bool isSend = false;
 
+
     void Start()
     {
         P_CreatorToolConnectMgr.Instance.OnDataParsed += SendFinish;

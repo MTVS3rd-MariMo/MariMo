@@ -30,6 +30,9 @@ public class LobbyController : MonoBehaviour
         {
             Destroy(gameObject);
         }
+
+        ///HZ
+        DontDestroyOnLoad(this.gameObject);
     }
 
 
