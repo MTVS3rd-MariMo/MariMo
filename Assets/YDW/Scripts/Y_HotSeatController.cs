@@ -29,6 +29,7 @@ public class Y_HotSeatController : MonoBehaviourPun
     Y_PlayerAvatarSetting myAvatarSetting;
 
     // selfIntroduce;
+    public GameObject panel_selfIntroduce;
     public TMP_InputField selfIntroduceInput;
     public TMP_Text Txt_TitleText;
     public Image myAvatarImage;
@@ -363,6 +364,10 @@ public class Y_HotSeatController : MonoBehaviourPun
 
             // 순서 다 정렬하고 셋액티브
             panel_waiting.SetActive(false);
+            if(PhotonNetwork.IsMasterClient)
+            {
+                panel_selfIntroduce.SetActive(false);
+            }
             stage.SetActive(true);
 
             // 자기소개 보낸다
