@@ -123,6 +123,8 @@ public class P_Album : MonoBehaviour
         // url을 Img에 적용
         imageLoader.LoadImageFromUrl(url);
 
+        Debug.Log(url);
+
         panel_Photo.SetActive(true);
     }
 

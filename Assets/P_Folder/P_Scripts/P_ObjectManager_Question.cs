@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.Networking;
 using UnityEngine.Playables;
 using UnityEngine.UI;
@@ -19,6 +20,13 @@ public class P_ObjectManager_Question : MonoBehaviourPun
         public int questionId;
         public string answer;
     }
+
+    // 인풋필드 사이즈 조정
+    public RectTransform inputFieldRect;
+    public Vector2 expandedSize = new Vector2(1200, 200); // 확장된 크기
+    public Vector2 expandedPos = new Vector2(-345, 180); // 확장됐을 때 위치
+    private Vector2 originalSize;
+    private Vector2 originalPosition;
 
 
     public float testNum = 4;
@@ -65,6 +73,9 @@ public class P_ObjectManager_Question : MonoBehaviourPun
 
     void Start()
     {
+        originalSize = inputFieldRect.sizeDelta;
+        originalPosition = inputFieldRect.gameObject.transform.localPosition;
+
         btn_Submit.onClick.AddListener(Submit);
 
         black = blackScreen.color;
@@ -398,6 +409,23 @@ public class P_ObjectManager_Question : MonoBehaviourPun
         K_LobbyUiManager.instance.img_KeyEmptyBox.gameObject.SetActive(true);
 
         K_KeyManager.instance.isDoneOpenQnA = true;
+    }
+
+
+    // InputField가 선택되었을 때 호출
+    public void OnSelect(BaseEventData eventData)
+    {
+        inputFieldRect.sizeDelta = expandedSize;
+        inputFieldRect.gameObject.transform.localPosition = expandedPos;
+
+    }
+
+    // InputField가 선택 해제되었을 때 호출
+    public void OnDeselect(BaseEventData eventData)
+    {
+        inputFieldRect.sizeDelta = originalSize;
+        inputFieldRect.gameObject.transform.localPosition = originalPosition;
+
     }
 
 }

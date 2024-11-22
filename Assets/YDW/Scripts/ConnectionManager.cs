@@ -344,42 +344,22 @@ public class ConnectionManager : MonoBehaviourPunCallbacks
 
 
     ////// 버그생김.. //////////////////////////// 0번 씬 로드할 떄 로그인 여부 체크해서 로그인창과 로비를 구별해 보내는 코드
-    //void OnEnable()
-    //{
-    //    SceneManager.sceneLoaded += OnSceneLoaded;
-    //    PhotonNetwork.AddCallbackTarget(this);
-    //}
-
-    //void OnDisable()
-    //{
-    //    SceneManager.sceneLoaded -= OnSceneLoaded;
-    //    PhotonNetwork.RemoveCallbackTarget(this);
-    //}
-
-    //void OnSceneLoaded(Scene scene, LoadSceneMode mode)
-    //{
-    //    if (scene.buildIndex == 0)
-    //    {
-    //        ReturnLobby();
-    //    }
-    //}
-
-    //public void ReturnLobby()
-    //{
-    //    if (Y_HttpLogIn.GetInstance().isLoggedIn)
-    //    {
-    //        // 씬 초기화 후 UI 상태를 다시 세팅
-    //        if (Y_HttpLogIn.GetInstance().isTeacher)
-    //        {
-    //            Y_SignUp.signUp.creatorUI.SetActive(true);
-    //            Y_SignUp.signUp.logInUI.SetActive(false);
-    //            Y_HttpLogIn.GetInstance().img_background.SetActive(false);
-    //        }
-    //        else
-    //        {
-    //            Y_SignUp.signUp.titleUI.SetActive(true);
-    //            Y_SignUp.signUp.logInUI.SetActive(false);
-    //        }
-    //    }
-    //}
+    public void ReturnLobby()
+    {
+        if (Y_HttpLogIn.GetInstance().isLoggedIn)
+        {
+            // 씬 초기화 후 UI 상태를 다시 세팅
+            if (Y_HttpLogIn.GetInstance().isTeacher)
+            {
+                Y_SignUp.signUp.creatorUI.SetActive(true);
+                Y_SignUp.signUp.logInUI.SetActive(false);
+                Y_HttpLogIn.GetInstance().img_background.SetActive(false);
+            }
+            else
+            {
+                Y_SignUp.signUp.titleUI.SetActive(true);
+                Y_SignUp.signUp.logInUI.SetActive(false);
+            }
+        }
+    }
 }

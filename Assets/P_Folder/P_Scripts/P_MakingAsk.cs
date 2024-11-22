@@ -2,10 +2,18 @@
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class P_MakingAsk : MonoBehaviour
 {
+    // 인풋필드 사이즈 조정
+    public RectTransform inputFieldRect;
+    public Vector2 expandedSize = new Vector2(1200, 300); // 확장된 크기
+    public Vector2 expandedPos = new Vector2(-345, 200); // 확장됐을 때 위치
+    private Vector2 originalSize;
+    private Vector2 originalPosition;
+
     private P_CreatorToolController _creatorToolController;
 
     public Button btn_Prev;
@@ -20,6 +28,9 @@ public class P_MakingAsk : MonoBehaviour
 
     void Start()
     {
+        originalSize = inputFieldRect.sizeDelta;
+        originalPosition = inputFieldRect.gameObject.transform.localPosition;
+
         _creatorToolController = GetComponentInParent<P_CreatorToolController>();
         btn_Prev.onClick.AddListener(OnclickPrev);
         btn_Next.onClick.AddListener(OnclickNext);
@@ -103,5 +114,21 @@ public class P_MakingAsk : MonoBehaviour
 
         // 초기 화면으로
         _creatorToolController.OnclickSelectStory();
+    }
+
+    // InputField가 선택되었을 때 호출
+    public void OnSelect(BaseEventData eventData)
+    {
+        inputFieldRect.sizeDelta = expandedSize;
+        inputFieldRect.gameObject.transform.localPosition = expandedPos;
+
+    }
+
+    // InputField가 선택 해제되었을 때 호출
+    public void OnDeselect(BaseEventData eventData)
+    {
+        inputFieldRect.sizeDelta = originalSize;
+        inputFieldRect.gameObject.transform.localPosition = originalPosition;
+
     }
 }
