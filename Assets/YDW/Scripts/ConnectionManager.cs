@@ -23,6 +23,12 @@ public class ConnectionManager : MonoBehaviourPunCallbacks
 
     List<RoomInfo> cachedRoomList = new List<RoomInfo>();
 
+    // HZ
+    private void Awake()
+    {
+        DontDestroyOnLoad(this.gameObject);
+    }
+
     void Start()
     {
         Screen.SetResolution(640, 480, FullScreenMode.Windowed);
@@ -116,15 +122,17 @@ public class ConnectionManager : MonoBehaviourPunCallbacks
 
 
         /// HZ
-
-        SetUpLobbyUI();
         PhotonNetwork.LoadLevel(1);
+        SetUpLobbyUI();
+        
         print("1번씬으로 전환완료");
     }
 
     // 로비 셋팅
     void SetUpLobbyUI()
     {
+        print("셋업로비");
+
         // HZ
         // 선생님이라면 CreatorTool UI - true
         if(Y_HttpLogIn.GetInstance().isTeacher == true)
@@ -138,29 +146,31 @@ public class ConnectionManager : MonoBehaviourPunCallbacks
         else
         {
             Y_SignUp.signUp.titleUI.SetActive(true);
+            print("학생 타이틀 UI 켜짐");
             Y_SignUp.signUp.creatorUI.SetActive(false);
+            print("크리에이터툴 UI 꺼짐");
             // 닉네임 표시
             //Y_SignUp.signUp.titleNickname.text = registerData.name;
         }
     }
 
-    void OnEnable()
-    {
-        SceneManager.sceneLoaded += OnSceneLoaded;
-    }
+    //void OnEnable()
+    //{
+    //    SceneManager.sceneLoaded += OnSceneLoaded;
+    //}
 
-    void OnDisable()
-    {
-        SceneManager.sceneLoaded -= OnSceneLoaded;
-    }
+    //void OnDisable()
+    //{
+    //    SceneManager.sceneLoaded -= OnSceneLoaded;
+    //}
 
-    void OnSceneLoaded(Scene scene, LoadSceneMode mode)
-    {
-        if(scene.buildIndex == 1)
-        {
-            SetUpLobbyUI();
-        }
-    }
+    //void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    //{
+    //    if(scene.buildIndex == 1)
+    //    {
+    //        SetUpLobbyUI();
+    //    }
+    //}
 
     //public void CreateRoom(string roomname)
     //{
