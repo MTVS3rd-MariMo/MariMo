@@ -26,7 +26,7 @@ public class Y_GameManager : MonoBehaviourPun
     private bool isBarrierOpened = false;
     private Animation anim;
     public GameObject Fence;
-    public GameObject particle_Destroy;
+    public ParticleSystem particle_Destroy;
     public GameObject VC_Fence;
 
     // 각 플레이어에 할당할 VideoRenderTexture 파일 경로 배열
