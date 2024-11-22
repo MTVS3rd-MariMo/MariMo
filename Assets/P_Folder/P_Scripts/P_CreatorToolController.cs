@@ -3,6 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
+using UnityEngine.InputSystem;
 using UnityEngine.Networking;
 using UnityEngine.UI;
 
@@ -47,9 +49,13 @@ public class P_CreatorToolController : MonoBehaviour
     public TMP_InputField text_bookName;
     public TMP_InputField text_bookWriter;
 
-
-
     bool isSend = false;
+
+    // 인풋필드 사이즈 조정
+    public Vector2 expandedSize = new Vector2(1200, 200); // 확장된 크기
+    public Vector2 expandedPos = new Vector2(-345, 180); // 확장됐을 때 위치
+    private Vector2 originalSize;
+    private Vector2 originalPosition;
 
     void Start()
     {
@@ -70,6 +76,10 @@ public class P_CreatorToolController : MonoBehaviour
 
 
         btn_SelectStory.image.sprite = sp_SelectStory[1];
+
+        // InputField 이벤트 연결
+        AddInputFieldEventTriggers(text_bookName);
+        AddInputFieldEventTriggers(text_bookWriter);
 
         LessonUpdate();
     }
@@ -186,7 +196,7 @@ public class P_CreatorToolController : MonoBehaviour
 
         //panel_Making.SetActive(true);
         /////////
-
+        isSend = true;
 
         print(P_CreatorToolConnectMgr.Instance.pdfPath);
 
@@ -305,6 +315,8 @@ public class P_CreatorToolController : MonoBehaviour
     {
         for (int i = 0; i < text_Storys.Length; i++)
         {
+            btn_Story[i].onClick.RemoveAllListeners();
+
             text_Storys[i].text = "+";
             btn_Story[i].onClick.AddListener(OnclickStory);
             btn_DeleteStory[i].onClick.RemoveAllListeners();
@@ -312,7 +324,6 @@ public class P_CreatorToolController : MonoBehaviour
             if (i < P_CreatorToolConnectMgr.Instance.lessons.lessonMaterials.Count)
             {
                 text_Storys[i].text = P_CreatorToolConnectMgr.Instance.lessons.lessonMaterials[i].bookTitle;
-                
 
                 switch (i)
                 {
@@ -379,5 +390,45 @@ public class P_CreatorToolController : MonoBehaviour
 
 
         StartCoroutine(HttpManager.GetInstance().Get(info));
+    }
+
+    // 이벤트 트리거 추가 함수 ( 공부 필요 )
+    void AddInputFieldEventTriggers(TMP_InputField inputField)
+    {
+        EventTrigger trigger = inputField.gameObject.AddComponent<EventTrigger>();
+
+        // OnSelect 이벤트 추가
+        EventTrigger.Entry selectEntry = new EventTrigger.Entry { eventID = EventTriggerType.Select };
+        selectEntry.callback.AddListener((eventData) =>
+            OnSelectInputField(inputField.GetComponent<RectTransform>())
+        );
+        trigger.triggers.Add(selectEntry);
+
+        // OnDeselect 이벤트 추가
+        EventTrigger.Entry deselectEntry = new EventTrigger.Entry { eventID = EventTriggerType.Deselect };
+        deselectEntry.callback.AddListener((eventData) =>
+            OnDeselectInputField(inputField.GetComponent<RectTransform>())
+        );
+        trigger.triggers.Add(deselectEntry);
+    }
+
+    // InputField가 선택되었을 때 호출
+    public void OnSelectInputField(RectTransform inputFieldRect)
+    {
+        // 선택된 InputField의 원래 크기와 위치를 저장
+        originalSize = inputFieldRect.sizeDelta;
+        originalPosition = inputFieldRect.gameObject.transform.localPosition;
+
+        // 크기와 위치를 확장
+        inputFieldRect.sizeDelta = expandedSize;
+        inputFieldRect.gameObject.transform.localPosition = expandedPos;
+    }
+
+    // InputField가 선택 해제되었을 때 호출
+    public void OnDeselectInputField(RectTransform inputFieldRect)
+    {
+        // 원래 크기와 위치로 복원
+        inputFieldRect.sizeDelta = originalSize;
+        inputFieldRect.gameObject.transform.localPosition = originalPosition;
     }
 }
