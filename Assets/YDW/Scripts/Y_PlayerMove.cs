@@ -112,6 +112,8 @@ public class Y_PlayerMove : MonoBehaviour, IPunObservable
 
                             // 화면 밖으로 고정은 어차피 화면 밖은 터치할 수 없으니 생략
                             // 근데 플레이어 끌고 오기는 해야 할 듯.....
+
+
                         }
                     }
                 }
@@ -146,31 +148,31 @@ public class Y_PlayerMove : MonoBehaviour, IPunObservable
                 //transform.Translate(finalDir * speed * Time.deltaTime);
                 // P = P0 + vt (이동공식)
                 transform.position += finalDir * speed * Time.deltaTime;
+            }
 
-                // 화면 밖으로 나가지 못하게 고정
-                Vector3 viewPortPoint = Camera.main.WorldToViewportPoint(transform.position);
+            // 화면 밖으로 나가지 못하게 고정
+            Vector3 viewPortPoint = Camera.main.WorldToViewportPoint(transform.position);
 
-                if (viewPortPoint.x < 0.1f)
-                {
-                    transform.position += Vector3.right * (0.1f - viewPortPoint.x) * pulling * Time.deltaTime;
-                }
+            if (viewPortPoint.x < 0.1f)
+            {
+                transform.position += Vector3.right * (0.1f - viewPortPoint.x) * pulling * Time.deltaTime;
+            }
 
-                if (viewPortPoint.x > 0.9f)
-                {
-                    transform.position += Vector3.right * (0.9f - viewPortPoint.x) * pulling * Time.deltaTime;
-                }
+            if (viewPortPoint.x > 0.9f)
+            {
+                transform.position += Vector3.right * (0.9f - viewPortPoint.x) * pulling * Time.deltaTime;
+            }
 
-                if (viewPortPoint.y < 0.1f)
-                {
-                    pulling = 50;
-                    transform.position += Vector3.forward * (0.1f - viewPortPoint.y) * pulling * Time.deltaTime;
-                }
+            if (viewPortPoint.y < 0.1f)
+            {
+                pulling = 50;
+                transform.position += Vector3.forward * (0.1f - viewPortPoint.y) * pulling * Time.deltaTime;
+            }
 
-                if (viewPortPoint.y > 0.7f)
-                {
-                    pulling = 200;
-                    transform.position += Vector3.forward * (0.7f - viewPortPoint.y) * pulling * Time.deltaTime;
-                }
+            if (viewPortPoint.y > 0.7f)
+            {
+                pulling = 200;
+                transform.position += Vector3.forward * (0.7f - viewPortPoint.y) * pulling * Time.deltaTime;
             }
         }
         else
