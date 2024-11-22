@@ -71,6 +71,12 @@ public class Y_HotSeatController : MonoBehaviourPun
     {
         Y_SoundManager.instance.StopBgmSound();
 
+        if(PhotonNetwork.IsMasterClient)
+        {
+            panel_waiting.SetActive(true);
+            RPC_AllReady();
+        }
+
         // 자기소개 인풋필드 터치 키보드 올라오면 위치/크기 변경할 준비
         originalSize = inputFieldRect.sizeDelta;
         originalPosition = inputFieldRect.gameObject.transform.localPosition;
@@ -88,10 +94,10 @@ public class Y_HotSeatController : MonoBehaviourPun
             Txt_TitleText.text = characterNames[bookController.characterNum - 1].text;
             myAvatarImage.sprite = characterImages[bookController.characterNum - 1].GetComponent<Image>().sprite;
         }
-        else
-        {
-            Txt_TitleText.text = "선생님";
-        }
+        //else
+        //{
+        //    Txt_TitleText.text = "선생님";
+        //}
         
         // 안내 가이드 띄워주기
         guide.SetActive(true);
@@ -120,7 +126,7 @@ public class Y_HotSeatController : MonoBehaviourPun
     }
 
     bool isEnd = false;
-    bool over100 = false;
+    bool over80 = false;
 
     public float requiredHoldTime = 2.0f; // 세 손가락을 유지해야 하는 시간
     private float touchHoldTime = 0f;
@@ -133,11 +139,11 @@ public class Y_HotSeatController : MonoBehaviourPun
         //    RPC_ProtoTest();
         //} 
         
-        if(selfIntroduceInput.text.Length >= 100 && !over100)
+        if(selfIntroduceInput.text.Length >= 80 && !over80)
         {
             buttons[0].GetComponent<Button>().interactable = true;
             buttons[0].GetComponent<Image>().sprite = sprites[5];
-            over100 = true;
+            over80 = true;
         }
 
         // 모바일용 치트키
@@ -148,7 +154,7 @@ public class Y_HotSeatController : MonoBehaviourPun
             touchHoldTime += Time.deltaTime; // 터치 유지 시간 증가
             if (touchHoldTime >= requiredHoldTime)
             {
-                Debug.Log("Cheat gesture activated!");
+                Debug.Log("치트키 발동!");
                 StartCoroutine(LastCoroutine());
                 touchHoldTime = 0f; // 초기화
             }
@@ -341,8 +347,6 @@ public class Y_HotSeatController : MonoBehaviourPun
     // 4명 전부 들어오면 실행
     public IEnumerator AllReady()
     {
-        // 보이스 일단 4명 다 꺼줌
-        //Y_VoiceManager.Instance.recorder.TransmitEnabled = false;
 
         // 서브밋 누른 플레이어 수 늘림
         selfInt_count++;
@@ -412,6 +416,7 @@ public class Y_HotSeatController : MonoBehaviourPun
             //Debug.LogError("avatarIndex 뭔데? : " + avatarIndex);
             //rawImages[i].material = new Material(rawImages[i].material);
             rawImages[i].texture = renderTextures[playerNums[i]];
+            //rawImages[i].GetComponentInChildren<VideoPlayer>().targetTexture = renderTextures[playerNums[i]];
             Debug.LogWarning("되나요 : " + playerNums[i]);
             //rawImages[i].material.mainTexture = rawImages[i].GetComponentInChildren<VideoPlayer>().targetTexture;
             //rawImages[i].GetComponentInChildren<VideoPlayer>().url = Y_GameManager.instance.urls[playerNums[i]]; 
