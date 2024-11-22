@@ -495,6 +495,7 @@ public class Y_BookController : MonoBehaviourPun
         }
         else
         {
+            ChooseCharacterUI.SetActive(true);
             // 방장은 직접 호출 
             PaintToComplete();
         }
