@@ -76,9 +76,9 @@ public class K_KeyUiManager : MonoBehaviour
     // 마지막 왕 열쇠 아이콘 ui
     public void EndKeyUi()
     {
-        // 왕열쇠 이미지 띄워주고
+        // 왕열쇠 이미지 띄워주고 (이거 KEY_UI 프리팹으로 교체해야함)
         img_endKeyDir.gameObject.SetActive(true);
-        // 1초뒤에 숨겨주고
+        // 1초뒤에 숨겨주고 -> 이것도 애니메이션 초에 맞게 UI false
         StartCoroutine(HideLastKey(1f));
         // 마지막 열쇠 아이콘 켜주기
         keyImages[3].SetActive(true);
