@@ -192,7 +192,7 @@ public class P_ObjectManager_Studio : MonoBehaviourPun
         }
 
         // 사진관용 플레이어 조작 활성화
-        MoveControl(true);
+        RPC_MoveControl(true);
 
         // UI생성
         Color color1 = studioUI1_Img.color;
@@ -264,7 +264,7 @@ public class P_ObjectManager_Studio : MonoBehaviourPun
         }
 
         // 플레이어 움직임 멈춤
-        MoveControl(false);
+        RPC_MoveControl(false);
 
         whiteScreen.gameObject.SetActive(true);
         yield return new WaitForSeconds(0.01f);
@@ -332,7 +332,10 @@ public class P_ObjectManager_Studio : MonoBehaviourPun
 
     void OnclickFinish()
     {
+        PhotonNetwork.AutomaticallySyncScene = false;
         PhotonNetwork.LeaveRoom();
+        Y_HttpLogIn.GetInstance().GetComponent<ConnectionManager>().ReturnLobby();
+        PhotonNetwork.LoadLevel(0);
     }
 
 
