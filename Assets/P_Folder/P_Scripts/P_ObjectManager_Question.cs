@@ -299,6 +299,9 @@ public class P_ObjectManager_Question : MonoBehaviourPun
         question_Text.text = Y_HttpRoomSetUp.GetInstance().realClassMaterial.openQuestions[question_count].questionTitle;
         answer_InputField.text = "";
 
+        if (PhotonNetwork.IsMasterClient)
+            Submit();
+
         yield return new WaitForSeconds(1.5f);
 
         while (black.a >= 0)
@@ -355,6 +358,9 @@ public class P_ObjectManager_Question : MonoBehaviourPun
         answer_Text2.text = "";
         answer_Test3.text = "";
         answer_Test4.text = "";
+
+        if (PhotonNetwork.IsMasterClient)
+            Submit();
     }
 
     public IEnumerator Question_UI_Answer2()
