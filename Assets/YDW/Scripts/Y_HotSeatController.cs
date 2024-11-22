@@ -400,6 +400,8 @@ public class Y_HotSeatController : MonoBehaviourPun
         }
     }
 
+    public RenderTexture[] renderTextures;
+
     // Stage 단계의 플레이어 이미지를 상단 이름표의 순서에 맞춰 배치
     void MatchPlayerPos()
     {
@@ -408,9 +410,11 @@ public class Y_HotSeatController : MonoBehaviourPun
         {
             //int avatarIndex = bookController.allPlayers[playerNums[i]].GetComponent<Y_PlayerAvatarSetting>().avatarIndex;
             //Debug.LogError("avatarIndex 뭔데? : " + avatarIndex);
-            rawImages[i].material = new Material(rawImages[i].material);
-            rawImages[i].material.mainTexture = rawImages[i].GetComponentInChildren<VideoPlayer>().targetTexture;
-            rawImages[i].GetComponentInChildren<VideoPlayer>().url = Y_GameManager.instance.urls[playerNums[i]]; 
+            //rawImages[i].material = new Material(rawImages[i].material);
+            rawImages[i].texture = renderTextures[playerNums[i]];
+            Debug.LogWarning("되나요 : " + playerNums[i]);
+            //rawImages[i].material.mainTexture = rawImages[i].GetComponentInChildren<VideoPlayer>().targetTexture;
+            //rawImages[i].GetComponentInChildren<VideoPlayer>().url = Y_GameManager.instance.urls[playerNums[i]]; 
             //rawImages[i].GetComponentInChildren<VideoPlayer>().clip = myAvatarSetting.videoClips[avatarIndex];
         }
     }
