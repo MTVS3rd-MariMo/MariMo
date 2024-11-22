@@ -249,6 +249,7 @@ public class P_CreatorToolController : MonoBehaviour
             // 완료시 실행
             LessonUpdate();
 
+            P_CreatorToolConnectMgr.Instance.InitializeConnectMgr();
 
             // 그림그리기 요청
             MakingBackGround(quizData);

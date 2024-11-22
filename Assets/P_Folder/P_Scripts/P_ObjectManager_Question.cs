@@ -68,6 +68,8 @@ public class P_ObjectManager_Question : MonoBehaviourPun
     // 답변 인원 카운트
     int answer_count = 0;
 
+    // 바닥 그림
+    public GameObject draw_Question;
     // 애니메이션 오브젝트
     public GameObject Ani_Object;
 
@@ -130,7 +132,6 @@ public class P_ObjectManager_Question : MonoBehaviourPun
                     RPC_StartQuestion();
 
                     Y_SoundManager.instance.PlayEftSound(Y_SoundManager.ESoundType.EFT_3D_OBJECT_02);
-                    Ani_Object.SetActive(true);
                 }
             }
         }
@@ -163,6 +164,7 @@ public class P_ObjectManager_Question : MonoBehaviourPun
     {
         StartCoroutine(Question_UI_Start());
 
+        draw_Question.SetActive(false);
         Ani_Object.SetActive(true);
     }
 

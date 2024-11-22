@@ -5,8 +5,6 @@ using UnityEngine.UI;
 
 public class P_QuizSelect : MonoBehaviour
 {
-    public P_CreatorToolController p_CreatorToolController;
-
     public Button btn_SelectComplete;
     public Sprite[] sp_SelectComplete;
 
@@ -19,7 +17,6 @@ public class P_QuizSelect : MonoBehaviour
     void Start()
     {
         P_CreatorToolConnectMgr.Instance.OnDataParsed += QuizSetting;
-
     }
 
     void Update()
@@ -38,10 +35,7 @@ public class P_QuizSelect : MonoBehaviour
 
     public void QuizSetting()
     {
-        //foreach (Transform child in contentpanel)
-        //{
-        //    Destroy(child.gameObject);
-        //}
+        RemoveAllChildren();
 
         for (int i = 0; i < P_CreatorToolConnectMgr.Instance.GetQuizCount(); i++)
         {
@@ -50,4 +44,12 @@ public class P_QuizSelect : MonoBehaviour
         }
     }
 
+    public void RemoveAllChildren()
+    {
+        // 자식 오브젝트들을 역순으로 순회하며 삭제
+        for (int i = contentpanel.childCount - 1; i >= 0; i--)
+        {
+            Destroy(contentpanel.GetChild(i).gameObject);
+        }
+    }
 }
