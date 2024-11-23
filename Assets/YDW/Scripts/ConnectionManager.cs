@@ -27,9 +27,6 @@ public class ConnectionManager : MonoBehaviourPunCallbacks
 
     void Start()
     {
-
-
-        Screen.SetResolution(640, 480, FullScreenMode.Windowed);
         Y_SoundManager.instance.PlayBgmSound(Y_SoundManager.EBgmType.BGM_LOGIN);
     }
 
