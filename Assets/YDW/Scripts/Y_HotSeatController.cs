@@ -420,7 +420,7 @@ public class Y_HotSeatController : MonoBehaviourPun
             //int avatarIndex = bookController.allPlayers[playerNums[i]].GetComponent<Y_PlayerAvatarSetting>().avatarIndex;
             //Debug.LogError("avatarIndex 뭔데? : " + avatarIndex);
             //rawImages[i].material = new Material(rawImages[i].material);
-            rawImages[i].texture = renderTextures[playerNums[i]];
+            //rawImages[i].texture = renderTextures[playerNums[i]];
             //rawImages[i].GetComponentInChildren<VideoPlayer>().targetTexture = renderTextures[playerNums[i]];
             Debug.LogWarning("되나요 : " + playerNums[i]);
             //rawImages[i].material.mainTexture = rawImages[i].GetComponentInChildren<VideoPlayer>().targetTexture;
@@ -452,7 +452,7 @@ public class Y_HotSeatController : MonoBehaviourPun
     // 순서대로 자기소개 - 질문
     public void StartSpeech(int index)
     {
-        Debug.LogError("StartSpeech 시작!!");
+        //Debug.LogError("StartSpeech 시작!!");
         if (index - 1 >= 0 && index - 1 < images.Count)
         {
             images[index - 1].sprite = sprites[2]; // 전 플레이어는 이름표 색 원래 색으로
@@ -474,7 +474,7 @@ public class Y_HotSeatController : MonoBehaviourPun
             buttons[5 + index].GetComponent<Image>().sprite = sprites[1];
 
             // 플레이어 무대로 가게 한다
-            playerPos = players[index].transform.position;
+            playerPos = players[index].GetComponent<RectTransform>().anchoredPosition;
             Debug.LogError("ChangePos 시작");
             StartCoroutine(ChangePos(playerPos, index));
             selfIntNum++;
@@ -489,15 +489,17 @@ public class Y_HotSeatController : MonoBehaviourPun
 
     public IEnumerator ChangePos(Vector2 playerPos, int i)
     {
-        while(true)
+        RectTransform rtStage = stagePos.GetComponent<RectTransform>();
+        RectTransform rtPlayer = players[i].GetComponent<RectTransform>();
+        while (true)
         {
             // 플레이어가 무대로 가게 한다
-            players[i].transform.position = Vector3.Lerp(playerPos, stagePos.position, 0.05f);
-            playerPos = players[i].transform.position;
+            rtPlayer.anchoredPosition = Vector2.Lerp(playerPos, rtStage.anchoredPosition, 0.05f);
+            playerPos = rtPlayer.anchoredPosition;
             if (Vector3.Distance(playerPos, stagePos.position) < 0.1f) // 무대까지 거의 다 오면
             {
                 //Debug.LogError("무대까지 거의 다 왔다");
-                playerPos = stagePos.position; // 도착점에 위치 맞춰준다
+                playerPos = rtStage.anchoredPosition; // 도착점에 위치 맞춰준다
 
                 spotlight.SetActive(true); // 스포트라이트 켜준다
 

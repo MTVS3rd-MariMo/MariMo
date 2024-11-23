@@ -6,7 +6,7 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 0
-    path: Assets/Scenes/SampleScene.unity
+    path: Assets/lokimve7/Lokimve7Scene.unity
     guid: 99c9720ab356a0642a771bea13969a05
   - enabled: 0
     path: Assets/Scenes/LobbyScene.unity
@@ -56,6 +56,12 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Beta_Real.unity
     guid: 9b7c14ba6a73dc543ba119aa8ceab1e9
+  - enabled: 0
+    path: Assets/YDW/Scenes/TestScene.unity
+    guid: de5c0cbd5f1254b4eacfd694cf0ea580
+  - enabled: 0
+    path: Assets/lokimve7/Lokimve7Scene.unity
+    guid: 99c9720ab356a0642a771bea13969a05
   m_configObjects:
     com.unity.input.settings: {fileID: 11400000, guid: 9e7be553448fa2546aea5752021cbcf7,
       type: 2}
