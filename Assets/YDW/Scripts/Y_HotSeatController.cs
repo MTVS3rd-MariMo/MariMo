@@ -420,7 +420,7 @@ public class Y_HotSeatController : MonoBehaviourPun
             //int avatarIndex = bookController.allPlayers[playerNums[i]].GetComponent<Y_PlayerAvatarSetting>().avatarIndex;
             //Debug.LogError("avatarIndex 뭔데? : " + avatarIndex);
             //rawImages[i].material = new Material(rawImages[i].material);
-            rawImages[i].texture = renderTextures[playerNums[i]];
+            //rawImages[i].texture = renderTextures[playerNums[i]];
             //rawImages[i].GetComponentInChildren<VideoPlayer>().targetTexture = renderTextures[playerNums[i]];
             Debug.LogWarning("되나요 : " + playerNums[i]);
             //rawImages[i].material.mainTexture = rawImages[i].GetComponentInChildren<VideoPlayer>().targetTexture;
