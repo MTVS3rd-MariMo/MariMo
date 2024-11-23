@@ -38,6 +38,8 @@ public class Y_HttpLogIn : MonoBehaviour
 
     public bool isLoggedIn = false;
 
+    public string userNickName;
+
     public static Y_HttpLogIn GetInstance()
     {
         if (instance == null)
@@ -189,6 +191,8 @@ public class Y_HttpLogIn : MonoBehaviour
                 userId = responseData.userId;
                 print(userId);
 
+                userNickName = registerData.name;
+
                 Role userRole;
                 Enum.TryParse(responseData.role, true, out userRole);
                 isTeacher = userRole == Role.TEACHER;
@@ -199,13 +203,13 @@ public class Y_HttpLogIn : MonoBehaviour
                 if (isTeacher)
                 {
                     Y_SignUp.signUp.creatorUI.SetActive(true);
-                    GameObject.Find("Canvas_CreatorTool").GetComponent<P_CreatorToolController>().titleNickname.text = registerData.name;
+                    GameObject.Find("Canvas_CreatorTool").GetComponent<P_CreatorToolController>().titleNickname.text = userNickName;
                     img_background.SetActive(false);
                 }
                 else
                 {
                     Y_SignUp.signUp.titleUI.SetActive(true);
-                    Y_SignUp.signUp.titleNickname.text = registerData.name;
+                    Y_SignUp.signUp.titleNickname.text = userNickName;
                 }
                 //SceneManager.
                 //(1);
@@ -219,18 +223,4 @@ public class Y_HttpLogIn : MonoBehaviour
     }
 
 
-    public void ReturnLobby()
-    {
-        Y_SignUp.signUp.logInUI.SetActive(false);
-
-        if (isTeacher)
-        {
-            Y_SignUp.signUp.creatorUI.SetActive(true);
-            img_background.SetActive(false);
-        }
-        else
-        {
-            Y_SignUp.signUp.titleUI.SetActive(true);
-        }
-    }
 }

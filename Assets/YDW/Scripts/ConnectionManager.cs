@@ -21,10 +21,14 @@ public class ConnectionManager : MonoBehaviourPunCallbacks
     public Transform scrollContent;
     int lessonMaterialId = 0;
 
+    public GameObject[] buttons;
+
     List<RoomInfo> cachedRoomList = new List<RoomInfo>();
 
     void Start()
     {
+
+
         Screen.SetResolution(640, 480, FullScreenMode.Windowed);
         Y_SoundManager.instance.PlayBgmSound(Y_SoundManager.EBgmType.BGM_LOGIN);
     }
@@ -274,7 +278,7 @@ public class ConnectionManager : MonoBehaviourPunCallbacks
     }
 
 
-    public GameObject[] buttons;
+    
 
     // 현재 로비에서 룸의 변경사항을 알려주는 콜백 함수
     public override void OnRoomListUpdate(List<RoomInfo> roomList)
@@ -283,7 +287,20 @@ public class ConnectionManager : MonoBehaviourPunCallbacks
 
         base.OnRoomListUpdate(roomList);
 
-        foreach(RoomInfo room in roomList)
+        buttons = GameObject.FindGameObjectsWithTag("StudentButtons");
+
+        if (buttons.Length > 0)
+        {
+            // 배열을 정렬하고 리스트에 추가
+            // 예: 이름순으로 정렬
+            System.Array.Sort(buttons, (a, b) => a.name.CompareTo(b.name));
+        }
+        else
+        {
+            Debug.Log("태그가 'Button'인 오브젝트를 찾을 수 없습니다.");
+        }
+
+        foreach (RoomInfo room in roomList)
         {
             // 만일, 갱신된 룸 정보가 제거 리스트에 있다면...
             if (room.RemovedFromList)
@@ -315,7 +332,6 @@ public class ConnectionManager : MonoBehaviourPunCallbacks
             if (i < cachedRoomList.Count)
             {
                 RoomInfo room = cachedRoomList[i];
-                buttons[i].SetActive(true);
                 buttons[i].GetComponentInChildren<TMP_Text>().text = room.Name;
 
                 // 클릭 리스너에 방 입장 기능 추가
@@ -338,6 +354,13 @@ public class ConnectionManager : MonoBehaviourPunCallbacks
         PhotonNetwork.AutomaticallySyncScene = false;
         PhotonNetwork.LeaveRoom();
         PhotonNetwork.LoadLevel(0);
+        
+    }
+
+    public override void OnLeftRoom()
+    {
+        base.OnLeftRoom();
+
         ReturnLobby();
     }
 
@@ -346,17 +369,22 @@ public class ConnectionManager : MonoBehaviourPunCallbacks
     {
         if (Y_HttpLogIn.GetInstance().isLoggedIn)
         {
+            Y_SignUp y_SignUp = FindAnyObjectByType<Y_SignUp>();
+
+            Debug.Log(y_SignUp != null);
+
             // 씬 초기화 후 UI 상태를 다시 세팅
             if (Y_HttpLogIn.GetInstance().isTeacher)
             {
-                Y_SignUp.signUp.creatorUI.SetActive(true);
-                Y_SignUp.signUp.logInUI.SetActive(false);
-                Y_HttpLogIn.GetInstance().img_background.SetActive(false);
+                y_SignUp.creatorUI.SetActive(true);
+                y_SignUp.logInUI.SetActive(false);
+                GameObject.Find("Canvas_CreatorTool").GetComponent<P_CreatorToolController>().titleNickname.text = Y_HttpLogIn.GetInstance().userNickName;
             }
             else
             {
-                Y_SignUp.signUp.titleUI.SetActive(true);
-                Y_SignUp.signUp.logInUI.SetActive(false);
+                y_SignUp.titleUI.SetActive(true);
+                y_SignUp.logInUI.SetActive(false);
+                y_SignUp.titleNickname.text = Y_HttpLogIn.GetInstance().userNickName;
             }
         }
     }
