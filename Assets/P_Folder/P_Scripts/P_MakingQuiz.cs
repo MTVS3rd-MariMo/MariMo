@@ -96,6 +96,8 @@ public class P_MakingQuiz : MonoBehaviour
 
     public void OnclickOK()
     {
+        count = 0;
+        panel_MakingAsk.GetComponent<P_MakingAsk>().Open_MakingAsk();
         panel_MakingAsk.gameObject.SetActive(true);
     }
 

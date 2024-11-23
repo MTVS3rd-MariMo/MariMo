@@ -53,6 +53,19 @@ public class K_AvatarVpSettings : MonoBehaviourPun
         y_PlayerMove = GetComponent<Y_PlayerMove>();
         layerMaskGround = LayerMask.GetMask("Ground");
 
+        // 초기화: idleUrl 기본 재생
+        if (!string.IsNullOrEmpty(idleUrl) && vp != null)
+        {
+            vp.targetTexture = renderTextures[0];
+            vp.url = idleUrl;
+            vp.Prepare();
+            vp.prepareCompleted += (VideoPlayer source) =>
+            {
+                source.Play();
+                print("?ㅜㅜ");
+            };
+        }
+
     }
 
     private void Update()
@@ -178,9 +191,10 @@ public class K_AvatarVpSettings : MonoBehaviourPun
             vp.targetTexture = renderTextures[adjustActorNumber];
             rawImage.material = new Material(rawImage.material);
             rawImage.material.mainTexture = vp.targetTexture;
+            SetWalkingState(false);
             vp.prepareCompleted += OnVideoPrepared;
             print("준비됐나요? ");
-            SetWalkingState(false);
+            
             //PlayCurrAnim();
         }
     }
