@@ -333,6 +333,14 @@ public class ConnectionManager : MonoBehaviourPunCallbacks
     }
 
 
+    public void FinishLesson()
+    {
+        PhotonNetwork.AutomaticallySyncScene = false;
+        PhotonNetwork.LeaveRoom();
+        PhotonNetwork.LoadLevel(0);
+        ReturnLobby();
+    }
+
     ////// 버그생김.. //////////////////////////// 0번 씬 로드할 떄 로그인 여부 체크해서 로그인창과 로비를 구별해 보내는 코드
     public void ReturnLobby()
     {
