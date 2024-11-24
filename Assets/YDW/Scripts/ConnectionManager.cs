@@ -21,7 +21,7 @@ public class ConnectionManager : MonoBehaviourPunCallbacks
     public Transform scrollContent;
     int lessonMaterialId = 0;
 
-    public GameObject[] buttons;
+    public GameObject[] buttons = new GameObject[3];
 
     List<RoomInfo> cachedRoomList = new List<RoomInfo>();
 
