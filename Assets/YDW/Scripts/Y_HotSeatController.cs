@@ -410,6 +410,7 @@ public class Y_HotSeatController : MonoBehaviourPun
     }
 
     public RenderTexture[] renderTextures;
+    public Material[] materials;
 
     // Stage 단계의 플레이어 이미지를 상단 이름표의 순서에 맞춰 배치
     void MatchPlayerPos()
@@ -422,6 +423,7 @@ public class Y_HotSeatController : MonoBehaviourPun
             //rawImages[i].material = new Material(rawImages[i].material);
             //rawImages[i].texture = renderTextures[playerNums[i]];
             //rawImages[i].GetComponentInChildren<VideoPlayer>().targetTexture = renderTextures[playerNums[i]];
+            rawImages[i].material = materials[playerNums[i]];
             Debug.LogWarning("되나요 : " + playerNums[i]);
             //rawImages[i].material.mainTexture = rawImages[i].GetComponentInChildren<VideoPlayer>().targetTexture;
             //rawImages[i].GetComponentInChildren<VideoPlayer>().url = Y_GameManager.instance.urls[playerNums[i]]; 
@@ -496,7 +498,8 @@ public class Y_HotSeatController : MonoBehaviourPun
             // 플레이어가 무대로 가게 한다
             rtPlayer.anchoredPosition = Vector2.Lerp(playerPos, rtStage.anchoredPosition, 0.05f);
             playerPos = rtPlayer.anchoredPosition;
-            if (Vector3.Distance(playerPos, stagePos.position) < 0.1f) // 무대까지 거의 다 오면
+            Debug.LogWarning(Vector3.Distance(playerPos, stagePos.position));
+            if (Vector3.Distance(playerPos, stagePos.position) < 100f) // 무대까지 거의 다 오면
             {
                 //Debug.LogError("무대까지 거의 다 왔다");
                 playerPos = rtStage.anchoredPosition; // 도착점에 위치 맞춰준다
