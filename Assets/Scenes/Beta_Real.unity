@@ -442,10 +442,10 @@ MonoBehaviour:
   - RealQuiz_2
   quiz_spawnSize:
   - {x: -58, y: 0.1, z: -70}
-  - {x: 121, y: 0.1, z: -100}
+  - {x: 140, y: 0.1, z: -100}
   quiz_spawnCenter:
-  - {x: -23, y: 0.1, z: -78}
-  - {x: 115, y: 0.1, z: -90}
+  - {x: -23, y: 0.1, z: -70}
+  - {x: 115, y: 0.1, z: -83}
   quiz_correct: []
   quiz_correctASize: {x: 0.5, y: 0.5, z: 0}
   answerNumber: 0
@@ -3980,6 +3980,46 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b54991b47765c9243bbfeef1b7d56c9a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!21 &951385253
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: UI/RoundedCorners/RoundedCorners
+  m_Shader: {fileID: 4800000, guid: 0bd2ec5d73751e34a814274a454bec41, type: 3}
+  m_Parent: {fileID: 0}
+  m_ModifiedSerializedProperties: 0
+  m_ValidKeywords: []
+  m_InvalidKeywords: []
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_LockedProperties: 
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _MainTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Ints: []
+    m_Floats:
+    - _ColorMask: 15
+    - _Stencil: 0
+    - _StencilComp: 8
+    - _StencilOp: 0
+    - _StencilReadMask: 255
+    - _StencilWriteMask: 255
+    - _UseUIAlphaClip: 0
+    m_Colors:
+    - _OuterUV: {r: 0, g: 0, b: 1, a: 1}
+    - _WidthHeightRadius: {r: 900, g: 560, b: 80, a: 0}
+  m_BuildTextureStacks: []
 --- !u!1 &951449658
 GameObject:
   m_ObjectHideFlags: 3
@@ -4928,12 +4968,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6f28785d0c15c6743827801e8c863d21, type: 3}
---- !u!1 &1177776208 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1345165847189095219, guid: ddb8c6e61f875a54db4606f3a745b042,
-    type: 3}
-  m_PrefabInstance: {fileID: 6859157525588981772}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1214238728
 GameObject:
   m_ObjectHideFlags: 0
@@ -6303,6 +6337,12 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1373898434}
   m_CullTransparentMesh: 1
+--- !u!198 &1392667965 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 7748354390014431515, guid: ddb8c6e61f875a54db4606f3a745b042,
+    type: 3}
+  m_PrefabInstance: {fileID: 6859157525588981772}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1410520391
 GameObject:
   m_ObjectHideFlags: 0
@@ -6885,7 +6925,7 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1445250207}
   m_CullTransparentMesh: 1
---- !u!21 &1458637475
+--- !u!21 &1469659454
 Material:
   serializedVersion: 8
   m_ObjectHideFlags: 0
@@ -8220,8 +8260,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 2.4403574, y: 0.040712386, z: 0.064273074}
-  m_Center: {x: -1.169146, y: 0.00900979, z: 0.021781106}
+  m_Size: {x: 14.11251, y: 0.27633548, z: 0.11579195}
+  m_Center: {x: -0.7870208, y: 0.028222682, z: 0.0475405}
 --- !u!1001 &1834637575
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -8450,6 +8490,46 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ac0b09e7857660247b1477e93731de29, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!21 &1908612938
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: UI/RoundedCorners/RoundedCorners
+  m_Shader: {fileID: 4800000, guid: 0bd2ec5d73751e34a814274a454bec41, type: 3}
+  m_Parent: {fileID: 0}
+  m_ModifiedSerializedProperties: 0
+  m_ValidKeywords: []
+  m_InvalidKeywords: []
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_LockedProperties: 
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _MainTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Ints: []
+    m_Floats:
+    - _ColorMask: 15
+    - _Stencil: 0
+    - _StencilComp: 8
+    - _StencilOp: 0
+    - _StencilReadMask: 255
+    - _StencilWriteMask: 255
+    - _UseUIAlphaClip: 0
+    m_Colors:
+    - _OuterUV: {r: 0, g: 0, b: 1, a: 1}
+    - _WidthHeightRadius: {r: 500, g: 500, b: 80, a: 0}
+  m_BuildTextureStacks: []
 --- !u!1 &1929272189
 GameObject:
   m_ObjectHideFlags: 0
@@ -9577,7 +9657,8 @@ MonoBehaviour:
   - 
   barrier: {fileID: 1954822837}
   Fence: {fileID: 1954822837}
-  particle_Destroy: {fileID: 1177776208}
+  coli_Fence: {fileID: 1830702014}
+  particle_Destroy: {fileID: 1392667965}
   VC_Fence: {fileID: 2044375799}
   videoRendererPaths:
   - C:\Users\Admin\MariMo\Assets\YDW\VideoPlayer\ChromaKey1.renderTexture
