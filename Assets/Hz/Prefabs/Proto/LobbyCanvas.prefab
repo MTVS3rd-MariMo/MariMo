@@ -589,7 +589,7 @@ Canvas:
   m_GameObject: {fileID: 9202981823273353399}
   m_Enabled: 1
   serializedVersion: 3
-  m_RenderMode: 0
+  m_RenderMode: 1
   m_Camera: {fileID: 0}
   m_PlaneDistance: 1
   m_PixelPerfect: 0
@@ -678,7 +678,7 @@ MonoBehaviour:
   - {fileID: 5770117256814460267}
   img_getKeyDir: {fileID: 4482315409158010915}
   img_FinalKeyDir: {fileID: 1596646608642034301}
-  anim_FinalBookMark: {fileID: 7544901630405309102}
+  anim_FinalBookMark: {fileID: 2174880630345389177}
   img_endKeyDir: {fileID: 8983514785672050246}
   img_doorOpen: {fileID: 9047225367775142145}
   img_QuestionBookmark: {fileID: 6094137764113033250}
@@ -1931,10 +1931,15 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 193
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 1455128724868863025, guid: cb0855ec97f7df043a1cd91f2954bfa7, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 7686846811967106274, guid: cb0855ec97f7df043a1cd91f2954bfa7,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2174880630345389177}
   m_SourcePrefab: {fileID: 100100000, guid: cb0855ec97f7df043a1cd91f2954bfa7, type: 3}
 --- !u!1 &1596646608642034301 stripped
 GameObject:
@@ -1942,15 +1947,30 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 8972656806146107039}
   m_PrefabAsset: {fileID: 0}
+--- !u!95 &2174880630345389177
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1596646608642034301}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: bd0738e480e69394a9fe093fb8447180, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!224 &2372113592440995340 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 6660321844404836499, guid: cb0855ec97f7df043a1cd91f2954bfa7,
-    type: 3}
-  m_PrefabInstance: {fileID: 8972656806146107039}
-  m_PrefabAsset: {fileID: 0}
---- !u!95 &7544901630405309102 stripped
-Animator:
-  m_CorrespondingSourceObject: {fileID: 1455128724868863025, guid: cb0855ec97f7df043a1cd91f2954bfa7,
     type: 3}
   m_PrefabInstance: {fileID: 8972656806146107039}
   m_PrefabAsset: {fileID: 0}

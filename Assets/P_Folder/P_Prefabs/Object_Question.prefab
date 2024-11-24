@@ -289,6 +289,7 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 7bc17762c37b3cc4196f7dff4ae00778, type: 3}
   - {fileID: 21300000, guid: 74cd0c921829ad9408ddc3e0f772d702, type: 3}
   blackScreen: {fileID: 0}
+  draw_Question: {fileID: 0}
   Ani_Object: {fileID: 0}
 --- !u!114 &9100237399714006355
 MonoBehaviour:

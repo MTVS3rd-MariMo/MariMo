@@ -293,7 +293,7 @@ Transform:
   m_GameObject: {fileID: 4804026901731689363}
   serializedVersion: 2
   m_LocalRotation: {x: 0.38268343, y: 0, z: 0, w: 0.92387956}
-  m_LocalPosition: {x: 0, y: 5.57, z: -3.447}
+  m_LocalPosition: {x: 2.34, y: 6.29, z: -5.31}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -509,6 +509,8 @@ MonoBehaviour:
   studioUI2_Img: {fileID: 0}
   timeCount_Text: {fileID: 0}
   film_Img: {fileID: 0}
+  finishUI_Panel: {fileID: 0}
+  btn_Finish: {fileID: 0}
   backgrond: {fileID: 9172573327197128395}
   backgrondMaterial: {fileID: 2100000, guid: a86a2b07157c60242be2e3e5696efbf5, type: 2}
   timeline: {fileID: 0}
@@ -517,6 +519,9 @@ MonoBehaviour:
   virtualCamera3: {fileID: 8234833818540622802}
   blackScreen: {fileID: 0}
   whiteScreen: {fileID: 0}
+  draw_Photo: {fileID: 0}
+  Ani_Object: {fileID: 0}
+  bookController: {fileID: 0}
 --- !u!114 &2561543301129904141
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -566,13 +571,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9172573327197128395}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.7071068, y: -0, z: -0, w: 0.7071068}
+  m_LocalRotation: {x: 0, y: 0.7071068, z: -0.7071068, w: 0}
   m_LocalPosition: {x: 0, y: 0, z: 15}
   m_LocalScale: {x: 2.17, y: 1, z: 1.61}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 742548102852703080}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 90, y: 180, z: 0}
 --- !u!33 &919095151735091174
 MeshFilter:
   m_ObjectHideFlags: 0
