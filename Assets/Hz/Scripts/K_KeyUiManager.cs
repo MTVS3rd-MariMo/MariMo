@@ -48,7 +48,8 @@ public class K_KeyUiManager : MonoBehaviour
         // 책갈피로 변경해줌 (애니메이션 적용)
         img_FinalKeyDir.gameObject.SetActive(false);
         // Key_UI 애니메이션 찾아주기
-        anim_FinalBookMark = GetComponentInChildren<Animation>(); 
+        anim_FinalBookMark = GetComponentInChildren<Animation>();
+        anim_FinalBookMark.enabled = false;
         // ..
         img_doorOpen.gameObject.SetActive(false);
 
@@ -85,15 +86,20 @@ public class K_KeyUiManager : MonoBehaviour
     // 마지막 왕 열쇠 아이콘 ui
     public void EndKeyUi()
     {
-        // 왕열쇠 이미지 띄워주고 (이거 KEY_UI 프리팹으로 교체해야함)
-        //img_endKeyDir.gameObject.SetActive(true);
-        img_FinalKeyDir.SetActive(true);
-        anim_FinalBookMark.Play("Key Animation");
-        // 1초뒤에 숨겨주고 -> 이것도 애니메이션 초에 맞게 UI false
-        StartCoroutine(HideLastKey(3f));
-        //StartCoroutine(HideLastKey(1f));
         // 마지막 열쇠 아이콘 켜주기
         keyImages[3].SetActive(true);
+
+        StartCoroutine(HideLastKey());
+
+
+        // 왕열쇠 이미지 띄워주고 (이거 KEY_UI 프리팹으로 교체해야함)
+        //img_endKeyDir.gameObject.SetActive(true);
+        //img_FinalKeyDir.SetActive(true);
+        //anim_FinalBookMark.Play("Key Animation");
+        // 1초뒤에 숨겨주고 -> 이것도 애니메이션 초에 맞게 UI false
+        //StartCoroutine(HideLastKey(3f));
+        //StartCoroutine(HideLastKey(1f));
+        
     }
 
 
@@ -109,12 +115,19 @@ public class K_KeyUiManager : MonoBehaviour
         print("안내 창 없어지니?");
     }
 
-    // 마지막 큰 열쇠 이미지 1초뒤에 사라짐
-    public IEnumerator HideLastKey(float delay)
+    // 마지막 큰 열쇠 이미지 3초뒤에 사라짐
+    public IEnumerator HideLastKey()
     {
-        yield return new WaitForSeconds(delay);
-        //img_endKeyDir.gameObject.SetActive(false);
+        //yield return new WaitForSeconds();
+
+        // 애니메이션 이미지 켜주고
         img_FinalKeyDir.SetActive(true);
+        anim_FinalBookMark.Play("Key Animation");
+        // 3초 후
+        yield return new WaitForSeconds(3f);
+        //img_endKeyDir.gameObject.SetActive(false);
+        // 이미지 꺼주기
+        img_FinalKeyDir.SetActive(false);
 
     }
     // 문 열어보세요 안내문 2초뒤에 사라짐
