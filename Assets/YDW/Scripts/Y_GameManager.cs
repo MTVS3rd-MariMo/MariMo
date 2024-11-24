@@ -26,6 +26,7 @@ public class Y_GameManager : MonoBehaviourPun
     private bool isBarrierOpened = false;
     private Animation anim;
     public GameObject Fence;
+    public GameObject coli_Fence;
     public ParticleSystem particle_Destroy;
     public GameObject VC_Fence;
 
@@ -194,7 +195,8 @@ public class Y_GameManager : MonoBehaviourPun
     public IEnumerator UnlockBarrierAfterKeyUI()
     {
         VC_Fence.SetActive(true);
-        //K_KeyUiManager.instance.EndKeyUi();
+        // 마지막 키 활성화
+        K_KeyUiManager.instance.EndKeyUi();
         // 사운드
         Y_SoundManager.instance.PlayEftSound(Y_SoundManager.ESoundType.EFT_KEY);
         yield return new WaitForSeconds(2f);
@@ -203,6 +205,7 @@ public class Y_GameManager : MonoBehaviourPun
         anim.enabled = true;
         anim.Play("Fence_Animation");
         particle_Destroy.gameObject.SetActive(true);
+        coli_Fence.GetComponent<BoxCollider>().enabled = false;
 
         yield return new WaitForSeconds(1.5f);
         VC_Fence.SetActive(false);

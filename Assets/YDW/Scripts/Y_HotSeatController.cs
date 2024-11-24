@@ -95,11 +95,11 @@ public class Y_HotSeatController : MonoBehaviourPun
             Txt_TitleText.text = characterNames[bookController.characterNum - 1].text;
             myAvatarImage.sprite = characterImages[bookController.characterNum - 1].GetComponent<Image>().sprite;
         }
-        //else
-        //{
-        //    Txt_TitleText.text = "선생님";
-        //}
-        
+        else
+        {
+            Txt_TitleText.text = "선생님";
+        }
+
         // 안내 가이드 띄워주기
         guide.SetActive(true);
         Y_SoundManager.instance.PlayEftSound(Y_SoundManager.ESoundType.EFT_INFO);
@@ -423,7 +423,9 @@ public class Y_HotSeatController : MonoBehaviourPun
             //rawImages[i].material = new Material(rawImages[i].material);
             //rawImages[i].texture = renderTextures[playerNums[i]];
             //rawImages[i].GetComponentInChildren<VideoPlayer>().targetTexture = renderTextures[playerNums[i]];
+            materials[playerNums[i]].mainTexture = renderTextures[playerNums[i]];
             rawImages[i].material = materials[playerNums[i]];
+            
             Debug.LogWarning("되나요 : " + playerNums[i]);
             //rawImages[i].material.mainTexture = rawImages[i].GetComponentInChildren<VideoPlayer>().targetTexture;
             //rawImages[i].GetComponentInChildren<VideoPlayer>().url = Y_GameManager.instance.urls[playerNums[i]]; 
@@ -499,7 +501,7 @@ public class Y_HotSeatController : MonoBehaviourPun
             rtPlayer.anchoredPosition = Vector2.Lerp(playerPos, rtStage.anchoredPosition, 0.05f);
             playerPos = rtPlayer.anchoredPosition;
             Debug.LogWarning(Vector3.Distance(playerPos, stagePos.position));
-            if (Vector3.Distance(playerPos, stagePos.position) < 100f) // 무대까지 거의 다 오면
+            if (Vector3.Distance(playerPos, stagePos.position) < 160f) // 무대까지 거의 다 오면
             {
                 //Debug.LogError("무대까지 거의 다 왔다");
                 playerPos = rtStage.anchoredPosition; // 도착점에 위치 맞춰준다

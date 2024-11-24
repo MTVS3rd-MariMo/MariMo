@@ -571,6 +571,7 @@ public class Y_BookController : MonoBehaviourPun
         if(!PhotonNetwork.IsMasterClient)
         {
             RPC_IncreaseMapCount(characterNum);
+            Debug.LogError("characterNum : " + characterNum);
         }
         btn_toMap.GetComponent<Image>().sprite = buttonSprites[4];
         btn_toMap.GetComponent<Button>().interactable = false;
