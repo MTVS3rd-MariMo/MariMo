@@ -14850,6 +14850,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 276693838659707123, guid: 96e3ccfb92e8dec4abba84d5e3f2afe4,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 332521686787839152, guid: 96e3ccfb92e8dec4abba84d5e3f2afe4,
         type: 3}
       propertyPath: m_ScreenMatchMode
@@ -14965,10 +14970,20 @@ PrefabInstance:
       propertyPath: roomMgr
       value: 
       objectReference: {fileID: 1052957129}
+    - target: {fileID: 7896814359245343056, guid: 96e3ccfb92e8dec4abba84d5e3f2afe4,
+        type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 9090752375864076622, guid: 96e3ccfb92e8dec4abba84d5e3f2afe4,
         type: 3}
       propertyPath: m_Name
       value: Canvas_CreatorTool
+      objectReference: {fileID: 0}
+    - target: {fileID: 9090752375864076622, guid: 96e3ccfb92e8dec4abba84d5e3f2afe4,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
