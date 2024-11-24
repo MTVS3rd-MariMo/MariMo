@@ -257,7 +257,7 @@ public class Y_HttpRoomSetUp : MonoBehaviourPun
                 //print("bookTitle : " + classMaterial.bookTitle);
                 //print("bookContent : " + classMaterial.bookContents);
                 //print("Author : " + classMaterial.author);
-                //print("backgroudUrl : " + classMaterial.backgroundUrl);
+                print("backgroudUrl : " + classMaterial.backgroundUrl);
 
                 //foreach (Quiz quiz in classMaterial.quizzes)
                 //{

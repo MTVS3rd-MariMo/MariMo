@@ -58,6 +58,8 @@ public class P_ObjectManager_Studio : MonoBehaviourPun
         btn_Finish.onClick.AddListener(OnclickFinish);
 
         bookController = GameObject.Find("BookCanvas").GetComponent<Y_BookController>();
+
+
     }
 
 
@@ -99,6 +101,8 @@ public class P_ObjectManager_Studio : MonoBehaviourPun
         //draw_Photo.SetActive(false);
         Ani_Object.SetActive(true);
         Y_SoundManager.instance.PlayEftSound(Y_SoundManager.ESoundType.EFT_3D_OBJECT_05);
+
+        //SetBackgroundFromURL(Y_HttpRoomSetUp.GetInstance().realClassMaterial.backgroundUrl);
     }
 
     private void OnTriggerExit(Collider other)
@@ -402,6 +406,32 @@ public class P_ObjectManager_Studio : MonoBehaviourPun
         StartCoroutine(HttpManager.GetInstance().PutPicture(info));
     }
 
+    // 배경 이미지 다운로드
+    public void SetBackgroundFromURL(string url)
+    {
+        StartCoroutine(DownloadImage(url));
+    }
+
+    private IEnumerator DownloadImage(string url)
+    {
+        using (UnityWebRequest uwr = UnityWebRequestTexture.GetTexture(url))
+        {
+            yield return uwr.SendWebRequest();
+
+            if (uwr.result != UnityWebRequest.Result.Success)
+            {
+                Debug.LogError($"Failed to download image: {uwr.error}");
+            }
+            else
+            {
+                // Texture2D 생성
+                Texture2D texture = DownloadHandlerTexture.GetContent(uwr);
+
+                // StudioSet 메서드 호출하여 머터리얼에 적용
+                StudioSet(texture);
+            }
+        }
+    }
 
     public void StudioSet(Texture2D texture)
     {

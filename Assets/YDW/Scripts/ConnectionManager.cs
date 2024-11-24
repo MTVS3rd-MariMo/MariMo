@@ -338,11 +338,6 @@ public class ConnectionManager : MonoBehaviourPunCallbacks
                     PhotonNetwork.JoinRoom(room.Name);
                 });
             }
-            else
-            {
-                // 룸이 없으면 버튼 비활성화
-                buttons[i].SetActive(false);
-            }
         }
     }
 
