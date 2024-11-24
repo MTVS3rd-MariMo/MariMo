@@ -391,7 +391,7 @@ public class P_ObjectManager_Studio : MonoBehaviourPun
     public void SendCapture(string filePath)
     {
         HttpInfo info = new HttpInfo();
-        info.url = Y_HttpLogIn.GetInstance().mainServer + "api/photo/background/" + Y_HttpRoomSetUp.GetInstance().userlessonId;
+        info.url = Y_HttpLogIn.GetInstance().mainServer + "api/photo/" + Y_HttpRoomSetUp.GetInstance().userlessonId;
         info.body = filePath;
         info.contentType = "multipart/form-data";
         info.onComplete = (DownloadHandler downloadHandler) =>

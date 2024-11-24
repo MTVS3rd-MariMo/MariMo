@@ -212,6 +212,8 @@ public class Y_GameManager : MonoBehaviourPun
 
         yield return new WaitForSeconds(1.5f);
         VC_Fence.SetActive(false);
+        // Fence 사운드
+        Y_SoundManager.instance.PlayEftSound(Y_SoundManager.ESoundType.EFT_FENCE_ON);
         OpenBarrier();
     }
 
