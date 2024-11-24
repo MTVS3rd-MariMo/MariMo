@@ -45,11 +45,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c66fcd345e2ff478b905592356233b6c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  quizDuration: 15
+  quizDuration: 10
   isPlaying: 0
   isDirecting: 0
   isCounting: 0
   quizCorrect: {fileID: 0}
+  quizSpawnMgr: {fileID: 0}
+  bookController: {fileID: 0}
+  answerList: 
 --- !u!114 &5378373159071358351
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -53,9 +53,9 @@ Canvas:
   m_GameObject: {fileID: 998910408763578452}
   m_Enabled: 1
   serializedVersion: 3
-  m_RenderMode: 0
+  m_RenderMode: 1
   m_Camera: {fileID: 0}
-  m_PlaneDistance: 100
+  m_PlaneDistance: 1
   m_PixelPerfect: 0
   m_ReceivesEvents: 1
   m_OverrideSorting: 0
@@ -342,8 +342,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: '00 : 15'
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: cf2dd09a4e4ebbd46baca901f0ce3ed5, type: 2}
-  m_sharedMaterial: {fileID: 3876969374938734890, guid: cf2dd09a4e4ebbd46baca901f0ce3ed5,
+  m_fontAsset: {fileID: 11400000, guid: b98171e1f8e8c7a44b8dcdf6daedf465, type: 2}
+  m_sharedMaterial: {fileID: -6295014080919430967, guid: b98171e1f8e8c7a44b8dcdf6daedf465,
     type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
@@ -568,6 +568,17 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 8584478288659116616}
     m_Modifications:
+    - target: {fileID: 3832078229836766809, guid: 56244f1026657df40bbe941f4d619ac3,
+        type: 3}
+      propertyPath: m_fontAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: b98171e1f8e8c7a44b8dcdf6daedf465,
+        type: 2}
+    - target: {fileID: 3832078229836766809, guid: 56244f1026657df40bbe941f4d619ac3,
+        type: 3}
+      propertyPath: m_hasFontAssetChanged
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4525034233630830664, guid: 56244f1026657df40bbe941f4d619ac3,
         type: 3}
       propertyPath: m_Name

@@ -51,8 +51,18 @@ MonoBehaviour:
   PaintUI: {fileID: 0}
   ChooseCharacterUI: {fileID: 0}
   btn_ToMap: {fileID: 0}
-  uploadUrl: http://125.132.216.28:8203/api/avatar/upload-img
+  uploadUrl: http://211.250.74.75:8202/api/avatar/upload-img
   bookCanvas: {fileID: 0}
+  testUrl:
+  - file:///C:/Users/Admin/AppData/LocalLow/DefaultCompany/MariMo/2/animation_0_1.mp4
+  - file:///C:/Users/Admin/AppData/LocalLow/DefaultCompany/MariMo/2/animation_1_1.mp4
+  - file:///C:/Users/Admin/AppData/LocalLow/DefaultCompany/MariMo/2/animation_0_2.mp4
+  - file:///C:/Users/Admin/AppData/LocalLow/DefaultCompany/MariMo/2/animation_1_2.mp4
+  - file:///C:/Users/Admin/AppData/LocalLow/DefaultCompany/MariMo/2/animation_0_3.mp4
+  - file:///C:/Users/Admin/AppData/LocalLow/DefaultCompany/MariMo/2/animation_1_3.mp4
+  - file:///C:/Users/Admin/AppData/LocalLow/DefaultCompany/MariMo/2/animation_0_4.mp4
+  - file:///C:/Users/Admin/AppData/LocalLow/DefaultCompany/MariMo/2/animation_1_4.mp4
+  videoPathWithProtocol: 
 --- !u!114 &2378500862709461605
 MonoBehaviour:
   m_ObjectHideFlags: 0
