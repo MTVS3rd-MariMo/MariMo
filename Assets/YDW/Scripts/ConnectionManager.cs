@@ -284,18 +284,18 @@ public class ConnectionManager : MonoBehaviourPunCallbacks
 
         base.OnRoomListUpdate(roomList);
 
-        //buttons = GameObject.FindGameObjectsWithTag("StudentButtons"); 효근
+        buttons = GameObject.FindGameObjectsWithTag("StudentButtons");
 
-        //if (buttons.Length > 0)
-        //{
-        //    // 배열을 정렬하고 리스트에 추가
-        //    // 예: 이름순으로 정렬
-        //    System.Array.Sort(buttons, (a, b) => a.name.CompareTo(b.name));
-        //}
-        //else
-        //{
-        //    Debug.Log("태그가 'Button'인 오브젝트를 찾을 수 없습니다.");
-        //}
+        if (buttons.Length > 0)
+        {
+            // 배열을 정렬하고 리스트에 추가
+            // 예: 이름순으로 정렬
+            System.Array.Sort(buttons, (a, b) => a.name.CompareTo(b.name));
+        }
+        else
+        {
+            Debug.Log("태그가 'Button'인 오브젝트를 찾을 수 없습니다.");
+        }
 
         foreach (RoomInfo room in roomList)
         {
