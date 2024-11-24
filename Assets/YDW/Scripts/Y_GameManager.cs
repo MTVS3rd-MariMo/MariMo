@@ -194,6 +194,9 @@ public class Y_GameManager : MonoBehaviourPun
     // 왕 아이콘 1초 후 -> 투명벽 열렸다는 딜레이 함수
     public IEnumerator UnlockBarrierAfterKeyUI()
     {
+        // 딜레이줘야함 (마지막 활동 끝나고)
+        yield return new WaitForSeconds(4f);
+
         VC_Fence.SetActive(true);
         // 마지막 키 활성화
         K_KeyUiManager.instance.EndKeyUi();

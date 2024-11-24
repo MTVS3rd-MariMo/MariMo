@@ -113,6 +113,9 @@ public class Y_HotSeatController : MonoBehaviourPun
         {
             yield return new WaitForSeconds(3f);
             VirtualCamera.SetActive(false);
+            // 1초 딜레이
+            yield return new WaitForSeconds(1f);
+            K_LobbyUiManager.instance.img_KeyEmptyBox.gameObject.SetActive(true);
             K_KeyManager.instance.isDoneHotSeating = true;
             GameObject.Find("Object_HotSeat").GetComponent<Y_HotSeatManager>().MoveControl(true);
             UnMuteAllPlayers(); ///////////// 원래는 RPC 였음!
