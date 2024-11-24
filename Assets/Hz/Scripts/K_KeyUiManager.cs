@@ -46,9 +46,9 @@ public class K_KeyUiManager : MonoBehaviour
         img_getKeyDir.gameObject.SetActive(false);
         img_endKeyDir.gameObject.SetActive(false);
         // 책갈피로 변경해줌 (애니메이션 적용)
-        img_FinalKeyDir.gameObject.SetActive(false);
+        // img_FinalKeyDir.gameObject.SetActive(false); 혜지
         // Key_UI 애니메이션 찾아주기
-        anim_FinalBookMark = GetComponentInChildren<Animation>();
+        // anim_FinalBookMark = GetComponentInChildren<Animation>(); 혜지
         // ..
         img_doorOpen.gameObject.SetActive(false);
 
