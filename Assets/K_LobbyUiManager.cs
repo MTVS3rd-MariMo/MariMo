@@ -24,7 +24,7 @@ public class K_LobbyUiManager : MonoBehaviour
         if (null == instance)
         {
             instance = this;
-            DontDestroyOnLoad(gameObject);
+            //DontDestroyOnLoad(gameObject);
         }
         else
         {

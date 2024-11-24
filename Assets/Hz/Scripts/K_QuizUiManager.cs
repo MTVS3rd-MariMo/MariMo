@@ -35,7 +35,7 @@ public class K_QuizUiManager : MonoBehaviour
         if (null == instance)
         {
             instance = this;
-            DontDestroyOnLoad(gameObject);
+            //DontDestroyOnLoad(gameObject);
         }
         else
         {
