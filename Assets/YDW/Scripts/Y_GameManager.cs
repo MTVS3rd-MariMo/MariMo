@@ -205,7 +205,7 @@ public class Y_GameManager : MonoBehaviourPun
         anim.enabled = true;
         anim.Play("Fence_Animation");
         particle_Destroy.gameObject.SetActive(true);
-        coli_Fence.GetComponent<BoxCollider>().enabled = false;
+        
 
         yield return new WaitForSeconds(1.5f);
         VC_Fence.SetActive(false);
@@ -217,6 +217,7 @@ public class Y_GameManager : MonoBehaviourPun
         print("문열림");
         Destroy(barrier);
 
+        coli_Fence.GetComponent<BoxCollider>().enabled = false;
         isBarrierOpened = true;
 
         // 문 열렸다는 이미지 
