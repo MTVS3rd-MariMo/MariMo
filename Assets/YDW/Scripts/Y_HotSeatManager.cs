@@ -17,7 +17,7 @@ public class Y_HotSeatManager : MonoBehaviourPun
     // 애니메이션 오브젝트
     public GameObject Ani_Object;
     public GameObject VirtualCamera;
-    public Image hotSeatUI;
+    //public Image hotSeatUI;
 
     private void Awake()
     {
