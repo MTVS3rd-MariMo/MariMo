@@ -141,6 +141,15 @@ public class P_ObjectManager_Studio : MonoBehaviourPun
 
         virtualCamera2.gameObject.SetActive(true);
 
+        //// 책갈피 UI 꺼주기
+        //int i = 0;
+        //K_KeyUiManager.instance.keyImages[i].gameObject.SetActive(false);
+        //foreach (GameObject keyImage in keyImages)
+        //{
+        //    keyImage.SetActive(false);
+        //}
+
+
 
         // 페이드 아웃
         blackScreen.gameObject.SetActive(true);

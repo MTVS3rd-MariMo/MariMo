@@ -86,26 +86,25 @@ public class K_KeyUiManager : MonoBehaviour
     // 마지막 왕 열쇠 아이콘 ui
     public void EndKeyUi()
     {
+        
+
+        
+
         // 마지막 열쇠 아이콘 켜주기
-        keyImages[3].SetActive(true);
-
-        StartCoroutine(HideLastKey());
-
+        //keyImages[3].SetActive(true);
 
         // 왕열쇠 이미지 띄워주고 (이거 KEY_UI 프리팹으로 교체해야함)
         //img_endKeyDir.gameObject.SetActive(true);
-        //img_FinalKeyDir.SetActive(true);
+        img_FinalKeyDir.SetActive(true);
+        StartCoroutine(HideLastKey());
         //anim_FinalBookMark.Play("Key Animation");
         // 1초뒤에 숨겨주고 -> 이것도 애니메이션 초에 맞게 UI false
         //StartCoroutine(HideLastKey(3f));
         //StartCoroutine(HideLastKey(1f));
-        
+
     }
 
-
     // 코루틴 ~
-
-
     // 열쇠 얻은 안내 ui 2초 뒤에 사라짐
     public IEnumerator HideGetKeyDir(float delay)
     {
@@ -121,7 +120,7 @@ public class K_KeyUiManager : MonoBehaviour
         //yield return new WaitForSeconds();
 
         // 애니메이션 이미지 켜주고
-        img_FinalKeyDir.SetActive(true);
+        //img_FinalKeyDir.SetActive(true);
         anim_FinalBookMark.Play("Key Animation");
         // 3초 후
         yield return new WaitForSeconds(3f);
