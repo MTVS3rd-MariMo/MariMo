@@ -479,7 +479,6 @@ public class Y_HotSeatController : MonoBehaviourPun
 
             // 플레이어 무대로 가게 한다
             playerPos = players[index].GetComponent<RectTransform>().anchoredPosition;
-            Debug.LogError("ChangePos 시작");
             StartCoroutine(ChangePos(playerPos, index));
             selfIntNum++;
         }
@@ -491,58 +490,67 @@ public class Y_HotSeatController : MonoBehaviourPun
 
     }
 
+    RectTransform rtStage;
+
     public IEnumerator ChangePos(Vector2 playerPos, int i)
     {
-        RectTransform rtStage = stagePos.GetComponent<RectTransform>();
+        rtStage = stagePos.GetComponent<RectTransform>();
         RectTransform rtPlayer = players[i].GetComponent<RectTransform>();
-        while (true)
+        while (Vector3.Distance(playerPos, stagePos.position) > 160f)
         {
             // 플레이어가 무대로 가게 한다
             rtPlayer.anchoredPosition = Vector2.Lerp(playerPos, rtStage.anchoredPosition, 0.05f);
             playerPos = rtPlayer.anchoredPosition;
-            Debug.LogWarning(Vector3.Distance(playerPos, stagePos.position));
-            if (Vector3.Distance(playerPos, stagePos.position) < 160f) // 무대까지 거의 다 오면
-            {
-                //Debug.LogError("무대까지 거의 다 왔다");
-                playerPos = rtStage.anchoredPosition; // 도착점에 위치 맞춰준다
-
-                spotlight.SetActive(true); // 스포트라이트 켜준다
-
-                //Debug.LogError("자기소개 박스 켜준다");
-                stageScriptImgs[i].gameObject.SetActive(true);
-
-                // "친구들에게 말로 자기소개를 해 봅시다" UI
-                //Debug.LogError("친구들에게 말로 자기소개를 해 봅시다 UI");
-                speechGuide.SetActive(true);
-                Y_SoundManager.instance.PlayEftSound(Y_SoundManager.ESoundType.EFT_INFO);
-                StartCoroutine(Deactivate(speechGuide));
-
-                //int recordTime;
-
-                // 처음 순서면 15초, 아니면 5초 타이머 시작
-                if (i == 0 && PhotonNetwork.IsMasterClient) // 테스트용으로 5초, 시연 땐 15초 정도 할까 /////////////////////////
-                {
-                    RPC_StartTimer(i, 10); // 도원 수정 : 알피씨 안에 알피씨...?
-                    //recordTime = 15;
-                    
-                }
-                else if(PhotonNetwork.IsMasterClient)
-                {
-                    RPC_StartTimer(i, 5);
-                    //recordTime = 5;
-                }
-
-                // 소리 나머지 뮤트
-                MuteOtherPlayers(playerNums[i] + 1);
-                print((playerNums[i] + 1) + " 빼고 뮤트됨! - 자기소개");
-
-                // 자기소개 켜 줌
-                stageScriptImgs[i].gameObject.SetActive(true);
-
-                break;
-            }
             yield return null;
         }
+
+        if(PhotonNetwork.IsMasterClient) RPC_OnStage(i);
+
+    }
+
+    void RPC_OnStage(int i)
+    {
+        photonView.RPC(nameof(OnStage), RpcTarget.All, i);
+    }
+
+    [PunRPC]
+    void OnStage(int i)
+    {
+        //Debug.LogError("무대까지 거의 다 왔다");
+        playerPos = rtStage.anchoredPosition; // 도착점에 위치 맞춰준다
+
+        spotlight.SetActive(true); // 스포트라이트 켜준다
+
+        //Debug.LogError("자기소개 박스 켜준다");
+        stageScriptImgs[i].gameObject.SetActive(true);
+
+        // "친구들에게 말로 자기소개를 해 봅시다" UI
+        //Debug.LogError("친구들에게 말로 자기소개를 해 봅시다 UI");
+        speechGuide.SetActive(true);
+        Y_SoundManager.instance.PlayEftSound(Y_SoundManager.ESoundType.EFT_INFO);
+        StartCoroutine(Deactivate(speechGuide));
+
+        //int recordTime;
+
+        // 처음 순서면 15초, 아니면 5초 타이머 시작
+        if (i == 0 && PhotonNetwork.IsMasterClient) // 테스트용으로 5초, 시연 땐 15초 정도 할까 /////////////////////////
+        {
+            if (PhotonNetwork.IsMasterClient) RPC_StartTimer(i, 10); 
+                                    //recordTime = 15;
+
+        }
+        else if (PhotonNetwork.IsMasterClient)
+        {
+            if (PhotonNetwork.IsMasterClient) RPC_StartTimer(i, 5);
+            //recordTime = 5;
+        }
+
+        // 소리 나머지 뮤트
+        MuteOtherPlayers(playerNums[i] + 1);
+        print((playerNums[i] + 1) + " 빼고 뮤트됨! - 자기소개");
+
+        // 자기소개 켜 줌
+        stageScriptImgs[i].gameObject.SetActive(true);
     }
 
     PhotonVoiceView[] allVoiceViews;
