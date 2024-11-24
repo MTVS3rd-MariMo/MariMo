@@ -39,20 +39,23 @@ public class K_KeyUiManager : MonoBehaviour
         {
             Destroy(this.gameObject);
         }
+
+        // Key_UI 애니메이션 찾아주기
+        anim_FinalBookMark = GetComponentInChildren<Animator>();
+        anim_FinalBookMark.enabled = false;
     }
 
     void Start()
     {
         img_getKeyDir.gameObject.SetActive(false);
         img_endKeyDir.gameObject.SetActive(false);
+
+        
+
         // 책갈피로 변경해줌 (애니메이션 적용)
         img_FinalKeyDir.gameObject.SetActive(false);
-        // Key_UI 애니메이션 찾아주기
-        anim_FinalBookMark = GetComponentInChildren<Animator>();
-        anim_FinalBookMark.enabled = false;
-        // ..
-        img_doorOpen.gameObject.SetActive(false);
 
+        img_doorOpen.gameObject.SetActive(false);
         img_QuestionBookmark.gameObject.SetActive(false);
         img_HotSeatBookmark.gameObject.SetActive(false);
         img_Quiz1Bookmark.gameObject.SetActive(false);
