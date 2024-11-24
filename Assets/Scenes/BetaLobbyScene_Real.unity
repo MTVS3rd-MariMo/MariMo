@@ -1618,7 +1618,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &139799189
 RectTransform:
   m_ObjectHideFlags: 0
@@ -6453,9 +6453,9 @@ MonoBehaviour:
     callback:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 817961904}
-          m_TargetAssemblyTypeName: Y_InputFieldManager, Assembly-CSharp
-          m_MethodName: OnSelect
+        - m_Target: {fileID: 1252551207}
+          m_TargetAssemblyTypeName: LobbyController, Assembly-CSharp
+          m_MethodName: OnSelectNickname
           m_Mode: 0
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
@@ -6469,9 +6469,9 @@ MonoBehaviour:
     callback:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 817961904}
-          m_TargetAssemblyTypeName: Y_InputFieldManager, Assembly-CSharp
-          m_MethodName: OnDeselect
+        - m_Target: {fileID: 1252551207}
+          m_TargetAssemblyTypeName: LobbyController, Assembly-CSharp
+          m_MethodName: OnDeselectNickname
           m_Mode: 0
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
@@ -6687,9 +6687,9 @@ MonoBehaviour:
     callback:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 853531005}
-          m_TargetAssemblyTypeName: Y_InputFieldManager, Assembly-CSharp
-          m_MethodName: OnSelect
+        - m_Target: {fileID: 1252551207}
+          m_TargetAssemblyTypeName: LobbyController, Assembly-CSharp
+          m_MethodName: OnSelectPw
           m_Mode: 0
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
@@ -6703,9 +6703,9 @@ MonoBehaviour:
     callback:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 853531005}
-          m_TargetAssemblyTypeName: Y_InputFieldManager, Assembly-CSharp
-          m_MethodName: OnDeselect
+        - m_Target: {fileID: 1252551207}
+          m_TargetAssemblyTypeName: LobbyController, Assembly-CSharp
+          m_MethodName: OnDeselectPw
           m_Mode: 0
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
@@ -9632,6 +9632,10 @@ MonoBehaviour:
   - {fileID: 21300000, guid: fa130658c84686e468f4c40e246b3dda, type: 3}
   - {fileID: 21300000, guid: 8b75a275658fda94ca215ddb8df4f1c7, type: 3}
   - {fileID: 21300000, guid: 1fb7ad3a7a5670c419356e974d6cc619, type: 3}
+  inputFieldRectPw: {fileID: 853531000}
+  inputFieldRectNickname: {fileID: 817961899}
+  expandedSize: {x: 1200, y: 100}
+  expandedPos: {x: 0, y: 637}
 --- !u!114 &1252551208
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15633,7 +15637,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!222 &7488120576799159906
 CanvasRenderer:
   m_ObjectHideFlags: 0
