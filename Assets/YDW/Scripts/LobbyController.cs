@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
+using UnityEngine.InputSystem;
 
 public class LobbyController : MonoBehaviour
 {
@@ -31,13 +33,6 @@ public class LobbyController : MonoBehaviour
             Destroy(gameObject);
         }
     }
-
-
-    void Start()
-    {
-        
-    }
-
 
     public void ShowRoomPanel()
     {
@@ -70,5 +65,37 @@ public class LobbyController : MonoBehaviour
         enterRoom.SetActive(true);
     }
 
+    public RectTransform inputFieldRect;
+    private Vector2 originalSize;
+    private Vector2 originalPosition;
+    public Vector2 expandedSize = new Vector2(1200, 100); // 확장된 크기
+    public Vector2 expandedPos = new Vector2(0, 637); // 확장됐을 때 위치
 
+    private void Start()
+    {
+        originalSize = inputFieldRect.sizeDelta;
+        originalPosition = inputFieldRect.gameObject.transform.localPosition;
+    }
+
+    public void OnSelect(BaseEventData eventData)
+    {
+        inputFieldRect.sizeDelta = expandedSize;
+        inputFieldRect.gameObject.transform.localPosition = expandedPos;
+
+        //// 터치 키보드 호출 (모바일에서만 동작)
+        //keyboard = TouchScreenKeyboard.Open("", TouchScreenKeyboardType.Default);
+    }
+
+    // InputField가 선택 해제되었을 때 호출
+    public void OnDeselect(BaseEventData eventData)
+    {
+        inputFieldRect.sizeDelta = originalSize;
+        inputFieldRect.gameObject.transform.localPosition = originalPosition;
+
+        //// 터치 키보드 닫기
+        //if (keyboard != null && keyboard.active)
+        //{
+        //    keyboard.active = false;
+        //}
+    }
 }
