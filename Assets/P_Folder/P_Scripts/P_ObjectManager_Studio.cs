@@ -102,7 +102,7 @@ public class P_ObjectManager_Studio : MonoBehaviourPun
         Ani_Object.SetActive(true);
         Y_SoundManager.instance.PlayEftSound(Y_SoundManager.ESoundType.EFT_3D_OBJECT_05);
 
-        //SetBackgroundFromURL(Y_HttpRoomSetUp.GetInstance().realClassMaterial.backgroundUrl);
+        SetBackgroundFromURL(Y_HttpRoomSetUp.GetInstance().realClassMaterial.backgroundUrl);
     }
 
     private void OnTriggerExit(Collider other)
@@ -375,7 +375,7 @@ public class P_ObjectManager_Studio : MonoBehaviourPun
         // 경로 미지정시 프로젝트 파일에 저장
         ScreenCapture.CaptureScreenshot(path);
 
-        //SendCapture(path); 효근 알파
+        SendCapture(path);
     }
 
     private void CaptureScreenForMobile(string fileName)
@@ -385,7 +385,7 @@ public class P_ObjectManager_Studio : MonoBehaviourPun
         // 모바일로 사용시 추가 경로지정 필요
         ScreenCapture.CaptureScreenshot(path);
 
-        //SendCapture(path); 효근 알파
+        SendCapture(path);
     }
 
     public void SendCapture(string filePath)
