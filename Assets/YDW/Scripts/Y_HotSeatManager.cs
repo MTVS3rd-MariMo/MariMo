@@ -3,6 +3,7 @@ using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Y_HotSeatManager : MonoBehaviourPun
 {
@@ -16,6 +17,7 @@ public class Y_HotSeatManager : MonoBehaviourPun
     // 애니메이션 오브젝트
     public GameObject Ani_Object;
     public GameObject VirtualCamera;
+    //public Image hotSeatUI;
 
     private void Awake()
     {
@@ -59,15 +61,40 @@ public class Y_HotSeatManager : MonoBehaviourPun
 
     void RPC_ActivateHotSeat()
     {
-        
         photonView.RPC(nameof(ActivateHotSeat), RpcTarget.All);
     }
 
     [PunRPC]
     void ActivateHotSeat()
     {
+        CanvasRenderer[] canvasRenderers = hotSeatCanvas.GetComponentsInChildren<CanvasRenderer>();
         Y_SoundManager.instance.PlayEftSound(Y_SoundManager.ESoundType.EFT_3D_OBJECT_03);
         hotSeatCanvas.SetActive(true);
+        StartCoroutine(IncreaseAlpha(canvasRenderers));
+    }
+
+    float canvasAlphaTime = 0;
+
+    public IEnumerator IncreaseAlpha(CanvasRenderer[] canvasRenderers)
+    {
+        while (true)
+        {
+            canvasAlphaTime += Time.deltaTime;
+            if (canvasAlphaTime > 1)
+            {
+                canvasAlphaTime = 0;
+                break;
+            }
+
+            foreach (CanvasRenderer canvasRenderer in canvasRenderers)
+            {
+                Color originalColor = canvasRenderer.GetColor();
+                originalColor.a = canvasAlphaTime;
+                canvasRenderer.SetColor(originalColor);
+            }
+
+            yield return null;
+        }
     }
 
 
