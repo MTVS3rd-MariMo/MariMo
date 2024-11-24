@@ -194,7 +194,7 @@ public class Y_GameManager : MonoBehaviourPun
     public IEnumerator UnlockBarrierAfterKeyUI()
     {
         VC_Fence.SetActive(true);
-        K_KeyUiManager.instance.EndKeyUi();
+        //K_KeyUiManager.instance.EndKeyUi();
         // 사운드
         Y_SoundManager.instance.PlayEftSound(Y_SoundManager.ESoundType.EFT_KEY);
         yield return new WaitForSeconds(2f);

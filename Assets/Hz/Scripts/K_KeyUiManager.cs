@@ -46,9 +46,9 @@ public class K_KeyUiManager : MonoBehaviour
         img_getKeyDir.gameObject.SetActive(false);
         img_endKeyDir.gameObject.SetActive(false);
         // 책갈피로 변경해줌 (애니메이션 적용)
-        // img_FinalKeyDir.gameObject.SetActive(false); 혜지
+        img_FinalKeyDir.gameObject.SetActive(false);
         // Key_UI 애니메이션 찾아주기
-        // anim_FinalBookMark = GetComponentInChildren<Animation>(); 혜지
+        anim_FinalBookMark = GetComponentInChildren<Animation>(); 
         // ..
         img_doorOpen.gameObject.SetActive(false);
 
@@ -79,14 +79,16 @@ public class K_KeyUiManager : MonoBehaviour
         // 열쇠 조각 획득했다는 안내 ui 띄워주기
         img_getKeyDir.gameObject.SetActive(true);
         // 안내 ui 숨겨주기
-        //StartCoroutine(HideGetKeyDir(2f));
+        StartCoroutine(HideGetKeyDir(2f));
     }
 
     // 마지막 왕 열쇠 아이콘 ui
     public void EndKeyUi()
     {
         // 왕열쇠 이미지 띄워주고 (이거 KEY_UI 프리팹으로 교체해야함)
-        img_endKeyDir.gameObject.SetActive(true);
+        //img_endKeyDir.gameObject.SetActive(true);
+        img_FinalKeyDir.SetActive(true);
+        anim_FinalBookMark.Play("Key Animation");
         // 1초뒤에 숨겨주고 -> 이것도 애니메이션 초에 맞게 UI false
         StartCoroutine(HideLastKey(3f));
         //StartCoroutine(HideLastKey(1f));
@@ -111,7 +113,8 @@ public class K_KeyUiManager : MonoBehaviour
     public IEnumerator HideLastKey(float delay)
     {
         yield return new WaitForSeconds(delay);
-        img_endKeyDir.gameObject.SetActive(false);
+        //img_endKeyDir.gameObject.SetActive(false);
+        img_FinalKeyDir.SetActive(true);
 
     }
     // 문 열어보세요 안내문 2초뒤에 사라짐
