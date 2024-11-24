@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
+using UnityEngine.InputSystem;
 
 public class LobbyController : MonoBehaviour
 {
@@ -31,13 +33,6 @@ public class LobbyController : MonoBehaviour
             Destroy(gameObject);
         }
     }
-
-
-    void Start()
-    {
-        
-    }
-
 
     public void ShowRoomPanel()
     {
@@ -70,5 +65,62 @@ public class LobbyController : MonoBehaviour
         enterRoom.SetActive(true);
     }
 
+    public RectTransform inputFieldRectPw;
+    public RectTransform inputFieldRectNickname;
+    private Vector2 originalSize;
+    private Vector2 originalPositionPw;
+    private Vector2 originalPositionNickname;
+    public Vector2 expandedSize = new Vector2(1200, 100); // 확장된 크기
+    public Vector2 expandedPos = new Vector2(0, 637); // 확장됐을 때 위치
 
+    private void Start()
+    {
+        originalSize = inputFieldRectPw.sizeDelta;
+        originalPositionPw = inputFieldRectPw.gameObject.transform.localPosition;
+        originalPositionNickname = inputFieldRectNickname.gameObject.transform.localPosition;
+    }
+
+    public void OnSelectNickname(BaseEventData eventData)
+    {
+        inputFieldRectNickname.sizeDelta = expandedSize;
+        inputFieldRectNickname.gameObject.transform.localPosition = expandedPos;
+
+        //// 터치 키보드 호출 (모바일에서만 동작)
+        //keyboard = TouchScreenKeyboard.Open("", TouchScreenKeyboardType.Default);
+    }
+
+    // InputField가 선택 해제되었을 때 호출
+    public void OnDeselectNickname(BaseEventData eventData)
+    {
+        inputFieldRectNickname.sizeDelta = originalSize;
+        inputFieldRectNickname.gameObject.transform.localPosition = originalPositionNickname;
+
+        //// 터치 키보드 닫기
+        //if (keyboard != null && keyboard.active)
+        //{
+        //    keyboard.active = false;
+        //}
+    }
+
+    public void OnSelectPw(BaseEventData eventData)
+    {
+        inputFieldRectPw.sizeDelta = expandedSize;
+        inputFieldRectPw.gameObject.transform.localPosition = expandedPos;
+
+        //// 터치 키보드 호출 (모바일에서만 동작)
+        //keyboard = TouchScreenKeyboard.Open("", TouchScreenKeyboardType.Default);
+    }
+
+    // InputField가 선택 해제되었을 때 호출
+    public void OnDeselectPw(BaseEventData eventData)
+    {
+        inputFieldRectPw.sizeDelta = originalSize;
+        inputFieldRectPw.gameObject.transform.localPosition = originalPositionPw;
+
+        //// 터치 키보드 닫기
+        //if (keyboard != null && keyboard.active)
+        //{
+        //    keyboard.active = false;
+        //}
+    }
 }
