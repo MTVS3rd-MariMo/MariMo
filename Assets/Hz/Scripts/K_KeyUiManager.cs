@@ -12,7 +12,7 @@ public class K_KeyUiManager : MonoBehaviour
     // 애니메이션 적용된 마지막 책갈피 UI
     public GameObject img_FinalKeyDir;
     // 책갈피 애니메이션
-    public Animation anim_FinalBookMark;
+    public Animator anim_FinalBookMark;
     public Image img_endKeyDir;
     public Image img_doorOpen;
 
@@ -48,7 +48,7 @@ public class K_KeyUiManager : MonoBehaviour
         // 책갈피로 변경해줌 (애니메이션 적용)
         img_FinalKeyDir.gameObject.SetActive(false);
         // Key_UI 애니메이션 찾아주기
-        anim_FinalBookMark = GetComponentInChildren<Animation>();
+        anim_FinalBookMark = GetComponentInChildren<Animator>();
         anim_FinalBookMark.enabled = false;
         // ..
         img_doorOpen.gameObject.SetActive(false);
@@ -121,7 +121,8 @@ public class K_KeyUiManager : MonoBehaviour
 
         // 애니메이션 이미지 켜주고
         //img_FinalKeyDir.SetActive(true);
-        anim_FinalBookMark.Play("Key Animation");
+        anim_FinalBookMark.enabled = true;
+        //anim_FinalBookMark.Play("Key Animation");
         // 3초 후
         yield return new WaitForSeconds(3f);
         //img_endKeyDir.gameObject.SetActive(false);
