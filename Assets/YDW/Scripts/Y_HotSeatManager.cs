@@ -80,17 +80,18 @@ public class Y_HotSeatManager : MonoBehaviourPun
         while (true)
         {
             canvasAlphaTime += Time.deltaTime;
-            if (canvasAlphaTime > 1)
-            {
-                canvasAlphaTime = 0;
-                break;
-            }
 
             foreach (CanvasRenderer canvasRenderer in canvasRenderers)
             {
                 Color originalColor = canvasRenderer.GetColor();
                 originalColor.a = canvasAlphaTime;
                 canvasRenderer.SetColor(originalColor);
+            }
+
+            if (canvasAlphaTime > 1)
+            {
+                canvasAlphaTime = 0;
+                break;
             }
 
             yield return null;

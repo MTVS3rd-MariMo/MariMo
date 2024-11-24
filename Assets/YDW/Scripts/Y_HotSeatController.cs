@@ -106,9 +106,33 @@ public class Y_HotSeatController : MonoBehaviourPun
         StartCoroutine(Deactivate(guide));
     }
 
+    float canvasAlphaTime = 0;
+
     // 오브젝트 2초뒤 꺼주기
     public IEnumerator Deactivate(GameObject gm)
     {
+        CanvasRenderer[] canvasRenderers = gm.GetComponentsInChildren<CanvasRenderer>();
+
+        while (true)
+        {
+            canvasAlphaTime += Time.deltaTime;
+
+            foreach (CanvasRenderer canvasRenderer in canvasRenderers)
+            {
+                Color originalColor = canvasRenderer.GetColor();
+                originalColor.a = canvasAlphaTime;
+                canvasRenderer.SetColor(originalColor);
+            }
+
+            if (canvasAlphaTime > 1)
+            {
+                canvasAlphaTime = 0;
+                break;
+            }
+
+            yield return null;
+        }
+
         if (gm == guides[4]) // 마지막 "참 잘했어요!" UI 의 경우
         {
             yield return new WaitForSeconds(3f);
