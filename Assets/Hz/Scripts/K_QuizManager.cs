@@ -319,12 +319,12 @@ public class K_QuizManager : MonoBehaviourPun
 
     private IEnumerator CompleteQuiz(float delay)
     {
-        // HZ TEST!!!!!!!!!!!!!!
-        K_LobbyUiManager.instance.gameObject.SetActive(true);
-        yield return new WaitForSeconds(1f);
         // 키 박스 다시 켜주자
         K_LobbyUiManager.instance.img_KeyEmptyBox.gameObject.SetActive(true);
-        yield return new WaitForSeconds(delay);
+        yield return new WaitForSeconds(1f);
+        // HZ TEST!!!!!!!!!!!!!!
+        K_LobbyUiManager.instance.gameObject.SetActive(true);        
+        yield return new WaitForSeconds(1f);
         K_KeyManager.instance.isDoneQuiz_1 = true;
     }
 
