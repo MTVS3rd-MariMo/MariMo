@@ -5,11 +5,13 @@ using UnityEngine;
 public class TestPlayerMove : MonoBehaviour
 {
     public float speed;
+    public CharacterController cc;
 
     // Start is called before the first frame update
     void Start()
     {
-        speed = 30;
+        //speed = 30;
+        cc = GetComponent<CharacterController>();
     }
 
     // Update is called once per frame
@@ -31,10 +33,12 @@ public class TestPlayerMove : MonoBehaviour
         // finalDir 을 정규화 하자 (벡터의 크기를 1로 만든다)
         finalDir.Normalize();
 
-        // 구해진 방향으로 계속 이동하고 싶다.
-        // 오른쪽으로 이동하고 싶다.
-        //transform.Translate(finalDir * speed * Time.deltaTime);
-        // P = P0 + vt (이동공식)
-        transform.position += finalDir * speed * Time.deltaTime;
+        //// 구해진 방향으로 계속 이동하고 싶다.
+        //// 오른쪽으로 이동하고 싶다.
+        ////transform.Translate(finalDir * speed * Time.deltaTime);
+        //// P = P0 + vt (이동공식)
+        //transform.position += finalDir * speed * Time.deltaTime;
+
+        cc.Move(finalDir);
     }
 }
