@@ -19,6 +19,9 @@ public class P_MakingQuiz : MonoBehaviour
     public Button btn_Prev;
     public Button btn_Next;
     public Button btn_OK;
+    public Button btn_info;
+
+    public Image Img_info;
 
     public TMP_InputField quizText;
     public TMP_InputField quizOption1;
@@ -35,6 +38,8 @@ public class P_MakingQuiz : MonoBehaviour
     public Image[] img_Dot;
     public Sprite[] dot_sprites;
 
+    bool onInfo = false;
+
     void Start()
     {
         btn_Prev.onClick.AddListener(OnclickPrev);
@@ -50,6 +55,15 @@ public class P_MakingQuiz : MonoBehaviour
 
     void Update()
     {
+        if (onInfo)
+        {
+            Img_info.gameObject.SetActive(true);
+        }
+        else
+        {
+            Img_info.gameObject.SetActive(false);
+        }
+
         if (count == 0)
         {
             btn_Prev.interactable = false;
@@ -178,5 +192,15 @@ public class P_MakingQuiz : MonoBehaviour
         // 원래 크기와 위치로 복원
         inputFieldRect.sizeDelta = originalSize;
         inputFieldRect.gameObject.transform.localPosition = originalPosition;
+    }
+
+    public void PointerDown()
+    {
+        onInfo = true;
+    }
+
+    public void PointerUp()
+    {
+        onInfo = false;
     }
 }

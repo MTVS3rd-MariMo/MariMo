@@ -308,6 +308,8 @@ MonoBehaviour:
   btn_Prev: {fileID: 7667690609929402407}
   btn_Next: {fileID: 5101393879749404058}
   btn_OK: {fileID: 5162335830806286904}
+  btn_info: {fileID: 6640392330731872639}
+  Img_info: {fileID: 347025550445564989}
   askText: {fileID: 4144849223440982651}
   count: 0
   sprites:
@@ -6440,6 +6442,8 @@ MonoBehaviour:
   btn_Prev: {fileID: 6809978023715378497}
   btn_Next: {fileID: 8735238554882184922}
   btn_OK: {fileID: 5676550274933664951}
+  btn_info: {fileID: 666499190810839317}
+  Img_info: {fileID: 1359322744272486234}
   quizText: {fileID: 3652915325245335066}
   quizOption1: {fileID: 1378073512214918504}
   quizOption2: {fileID: 4670285657796256139}
@@ -9468,6 +9472,7 @@ GameObject:
   - component: {fileID: 540408630354344525}
   - component: {fileID: 3062663640197297729}
   - component: {fileID: 6640392330731872639}
+  - component: {fileID: 2212696307108083719}
   m_Layer: 5
   m_Name: btn_Info
   m_TagString: Untagged
@@ -9577,6 +9582,51 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &2212696307108083719
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5754652255682920189}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0b148fe25e99eb48b9724523833bab1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Delegates:
+  - eventID: 2
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 8017497222000908568}
+          m_TargetAssemblyTypeName: P_MakingAsk, Assembly-CSharp
+          m_MethodName: PointerDown
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+  - eventID: 3
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 8017497222000908568}
+          m_TargetAssemblyTypeName: P_MakingAsk, Assembly-CSharp
+          m_MethodName: PointerUp
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
 --- !u!1 &5781082070624053832
 GameObject:
   m_ObjectHideFlags: 0
@@ -14577,6 +14627,7 @@ GameObject:
   - component: {fileID: 6771786376285676876}
   - component: {fileID: 2836115399848178310}
   - component: {fileID: 666499190810839317}
+  - component: {fileID: 1462418871945713308}
   m_Layer: 5
   m_Name: btn_Info
   m_TagString: Untagged
@@ -14686,6 +14737,51 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &1462418871945713308
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8517886044655654178}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0b148fe25e99eb48b9724523833bab1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Delegates:
+  - eventID: 2
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 1060827322829952473}
+          m_TargetAssemblyTypeName: P_MakingQuiz, Assembly-CSharp
+          m_MethodName: PointerDown
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+  - eventID: 3
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 1060827322829952473}
+          m_TargetAssemblyTypeName: P_MakingQuiz, Assembly-CSharp
+          m_MethodName: PointerUp
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
 --- !u!1 &8593738226418574190
 GameObject:
   m_ObjectHideFlags: 0
