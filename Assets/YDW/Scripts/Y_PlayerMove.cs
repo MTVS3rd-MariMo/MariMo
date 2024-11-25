@@ -14,9 +14,8 @@ public class Y_PlayerMove : MonoBehaviour, IPunObservable
 {
     public float trackingSpeed = 10;
     public float speed;
-    //CharacterController conn;
+    CharacterController cc;
 
-    public NavMeshAgent agent;
     int layerMaskGround;
 
     public GameObject test;
@@ -52,13 +51,17 @@ public class Y_PlayerMove : MonoBehaviour, IPunObservable
     void Start()
     {
         speed = 10;
+        if (Application.platform == RuntimePlatform.Android) speed = 0.001f;
         lastFootstepPosition = transform.position; // 초기 위치
-        //conn = GetComponent<CharacterController>();
         layerMaskGround = LayerMask.GetMask("Ground");
-        agent.updateRotation = false;
+
+        cc = GetComponent<CharacterController>();
+
+        QualitySettings.vSyncCount = 0;
+        Application.targetFrameRate = 60;
     }
 
-    void Update()
+    void FixedUpdate()
     {
         if (pv.Owner.IsMasterClient && isFive) // pv.Owner.IsMasterClient
         {
@@ -73,10 +76,6 @@ public class Y_PlayerMove : MonoBehaviour, IPunObservable
             {
                 Move();
             }
-            //else if (agent.hasPath)
-            //{
-            //    agent.ResetPath();
-            //}
         }
         else
         {
@@ -154,7 +153,8 @@ public class Y_PlayerMove : MonoBehaviour, IPunObservable
                 // 오른쪽으로 이동하고 싶다.
                 //transform.Translate(finalDir * speed * Time.deltaTime);
                 // P = P0 + vt (이동공식)
-                transform.position += finalDir * speed * Time.deltaTime;
+                //transform.position += finalDir * speed * Time.deltaTime;
+                cc.Move(finalDir * speed * Time.fixedDeltaTime);
             }
 
             // 화면 밖으로 나가지 못하게 고정
@@ -195,8 +195,11 @@ public class Y_PlayerMove : MonoBehaviour, IPunObservable
         float distanceToTarget = Vector3.Distance(transform.position, targetPosition);
 
         // 방향 벡터 계산 및 이동
+        //Vector3 direction = (targetPosition - transform.position).normalized;
+        //transform.position += direction * speed * Time.deltaTime;
         Vector3 direction = (targetPosition - transform.position).normalized;
-        transform.position += direction * speed * Time.deltaTime;
+        direction.y = 0;
+        cc.Move(direction * speed * Time.fixedDeltaTime);
 
         moveDistance = direction.magnitude;
 
@@ -204,7 +207,7 @@ public class Y_PlayerMove : MonoBehaviour, IPunObservable
         float newDistanceToTarget = Vector3.Distance(transform.position, targetPosition);
 
         // 목표 지점에 도달했거나 초과했는지 확인
-        if (newDistanceToTarget <= 0.1f || newDistanceToTarget > distanceToTarget) // 임계값 조정 가능
+        if (newDistanceToTarget > distanceToTarget) // 임계값 조정 가능 // newDistanceToTarget <= 0.1f ||
         {
             transform.position = targetPosition; // 목표 지점에 고정
             isMoving = false;                    // 이동 중단
