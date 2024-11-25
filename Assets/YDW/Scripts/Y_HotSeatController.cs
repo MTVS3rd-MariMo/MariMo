@@ -141,8 +141,9 @@ public class Y_HotSeatController : MonoBehaviourPun
             // 1초 딜레이
             yield return new WaitForSeconds(2f);
             // 핫시팅 완료
-            K_LobbyUiManager.instance.img_KeyEmptyBox.gameObject.SetActive(true);
             K_KeyManager.instance.isDoneOpenQnA = true;
+            K_LobbyUiManager.instance.img_KeyEmptyBox.gameObject.SetActive(true);
+            
             GameObject.Find("Object_HotSeat").GetComponent<Y_HotSeatManager>().MoveControl(true);
             UnMuteAllPlayers(); ///////////// 원래는 RPC 였음!
             Y_SoundManager.instance.PlayBgmSound(Y_SoundManager.EBgmType.BGM_MAIN);
@@ -719,14 +720,14 @@ public class Y_HotSeatController : MonoBehaviourPun
 
                 myTurnImgs[index].SetActive(false);
 
-                break; // 도원 알파 시연용
+                //break; // 도원 알파 시연용
             }
 
-            //if (i == players.Count)
-            //{
-            //    if(PhotonNetwork.IsMasterClient) RPC_ProtoTest();
-            //    print("다음 사람 자기소개로 넘어갑니다");
-            //} // 도원 시연용으로 삭제
+            if (i == players.Count)
+            {
+                if (PhotonNetwork.IsMasterClient) RPC_ProtoTest();
+                print("다음 사람 자기소개로 넘어갑니다");
+            } // 도원 시연용으로 삭제
         }
     }
 
