@@ -5,6 +5,8 @@ using UnityEngine.UI;
 
 public class P_QuizSelect : MonoBehaviour
 {
+    public Button btn_Back_QuizSelect;
+
     public Button btn_SelectComplete;
     public Sprite[] sp_SelectComplete;
 
@@ -18,6 +20,7 @@ public class P_QuizSelect : MonoBehaviour
     {
         P_CreatorToolConnectMgr.Instance.OnDataParsed += QuizSetting;
         
+        btn_Back_QuizSelect.onClick.AddListener(OnclickBack);
     }
 
     void Update()
@@ -54,5 +57,10 @@ public class P_QuizSelect : MonoBehaviour
         {
             Destroy(contentpanel.GetChild(i).gameObject);
         }
+    }
+
+    public void OnclickBack()
+    {
+        this.gameObject.SetActive(false);
     }
 }

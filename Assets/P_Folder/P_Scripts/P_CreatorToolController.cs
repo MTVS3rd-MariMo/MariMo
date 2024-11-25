@@ -31,9 +31,10 @@ public class P_CreatorToolController : MonoBehaviour
     public Button btn_NamingDone;
     public Button btn_Back_SelectPDF;
     public Button btn_SerchPDF;
+    public Button btn_SendPDF;
+    public Button btn_Back_isMaking;
     public Button btn_Checking;
     public Button btn_Back_SerchPDF;
-    public Button btn_SendPDF;
     public Button btn_SelectQuiz;
     public Button btn_Option;
 
@@ -69,6 +70,7 @@ public class P_CreatorToolController : MonoBehaviour
         btn_Back_SelectPDF.onClick.AddListener(OnclickBack_SelectPDF);
         btn_SerchPDF.onClick.AddListener(OnclickSerchPDF);
         btn_SendPDF.onClick.AddListener(OnclickSend);
+        btn_Back_isMaking.onClick.AddListener (OnclickBack_isMaking);
         btn_CreateRoom.onClick.AddListener(OnclickCreateRoom);
         btn_Checking.onClick.AddListener(OnclickChecking);
         btn_SelectQuiz.onClick.AddListener(OnclickSelectComplete);
@@ -234,10 +236,14 @@ public class P_CreatorToolController : MonoBehaviour
     // 데이터 로드 완료시 실행
     private void SendFinish()
     {
-        
         panel_Making.SetActive(true);
     }
      
+    private void OnclickBack_isMaking()
+    {
+        panel_Making.SetActive(false);
+    }
+
 
     public void OnFinishMaking(QuizData quizData)
     {
