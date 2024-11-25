@@ -191,11 +191,7 @@ public class Y_GameManager : MonoBehaviourPun
     [PunRPC]
     public void Unlock()
     {
-        // 선생님만 실행하도록
-        if(PhotonNetwork.IsMasterClient)
-        {
-            StartCoroutine(UnlockBarrierAfterKeyUI());
-        }
+        StartCoroutine(UnlockBarrierAfterKeyUI());
     }
 
 
