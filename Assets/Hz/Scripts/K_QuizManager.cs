@@ -74,8 +74,10 @@ public class K_QuizManager : MonoBehaviourPun
         // 카운트다운 이미지 활성화
         K_QuizUiManager.instance.img_countDown.gameObject.SetActive(true);
 
+        
         // second 셋팅
         int second = (int)(quizDuration - currTime);
+        
 
         // second가 0보다 크면
         while (second > 0)
@@ -83,8 +85,14 @@ public class K_QuizManager : MonoBehaviourPun
             // int로 부여한다
             second = (int)(quizDuration - currTime);
 
+            // minute 도 해줘야하나?
+            int minutes = second / 60;
+            int seconds = second % 60;
+
             // 퀴즈 카운트_초 텍스트 
-            K_QuizUiManager.instance.text_countDown.text = second.ToString();
+            //K_QuizUiManager.instance.text_countDown.text = second.ToString();
+            // 00 : 15로 변경하기
+            K_QuizUiManager.instance.text_countDown.text = string.Format("{0:D2}:{1:D2}", minutes, seconds);
 
             currTime += Time.deltaTime;
 
