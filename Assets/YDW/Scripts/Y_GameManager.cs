@@ -185,7 +185,11 @@ public class Y_GameManager : MonoBehaviourPun
 
     public void RPC_Unlock()
     {
-        photonView.RPC("Unlock", RpcTarget.All);
+        if(PhotonNetwork.IsMasterClient)
+        {
+            photonView.RPC("Unlock", RpcTarget.All);
+
+        }
     }
 
     [PunRPC]

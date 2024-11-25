@@ -136,11 +136,15 @@ public class Y_HotSeatController : MonoBehaviourPun
         if (gm == guides[4]) // 마지막 "참 잘했어요!" UI 의 경우
         {
             yield return new WaitForSeconds(3f);
+            // 연출 끝남
             VirtualCamera.SetActive(false);
             // 1초 딜레이
             yield return new WaitForSeconds(1f);
-            K_LobbyUiManager.instance.img_KeyEmptyBox.gameObject.SetActive(true);
+            // 핫시팅 완료
+            K_LobbyUiManager.instance.img_KeyEmptyBox.gameObject.SetActive(true);   
             K_KeyManager.instance.isDoneHotSeating = true;
+            yield return new WaitForSeconds(1f);
+                   
             GameObject.Find("Object_HotSeat").GetComponent<Y_HotSeatManager>().MoveControl(true);
             UnMuteAllPlayers(); ///////////// 원래는 RPC 였음!
             Y_SoundManager.instance.PlayBgmSound(Y_SoundManager.EBgmType.BGM_MAIN);
