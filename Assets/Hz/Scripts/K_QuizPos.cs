@@ -118,6 +118,8 @@ public class K_QuizPos : MonoBehaviourPun
             isQuizStarted = true;
             // isPlaying은 true
             quizManager.isPlaying = true;
+            // HZ 여기서 LobbyCanvas 싹다 꺼주기..? Test!!!!!!!!!
+            K_KeyUiManager.instance.gameObject.SetActive(false);
             // 카운트다운 시작
             quizManager.CountDownStart();
             // 시작 연출 코루틴 함수 실행
