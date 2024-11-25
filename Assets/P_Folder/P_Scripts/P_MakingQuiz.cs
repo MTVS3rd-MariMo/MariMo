@@ -32,6 +32,9 @@ public class P_MakingQuiz : MonoBehaviour
 
     public Sprite[] sprites;
 
+    public Image[] img_Dot;
+    public Sprite[] dot_sprites;
+
     void Start()
     {
         btn_Prev.onClick.AddListener(OnclickPrev);
@@ -48,14 +51,23 @@ public class P_MakingQuiz : MonoBehaviour
     void Update()
     {
         if (count == 0)
+        {
             btn_Prev.interactable = false;
+            img_Dot[0].sprite = dot_sprites[1];
+            img_Dot[1].sprite = dot_sprites[0];
+        }
         else
+        {
             btn_Prev.interactable = true;
+            img_Dot[0].sprite = dot_sprites[0];
+            img_Dot[1].sprite = dot_sprites[1];
+        }
 
         if (count == 1)
         {
             btn_OK.image.sprite = sprites[1];
             btn_OK.interactable = true;
+
         }
         else
         {

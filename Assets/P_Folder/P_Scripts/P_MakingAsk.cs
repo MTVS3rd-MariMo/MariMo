@@ -26,6 +26,9 @@ public class P_MakingAsk : MonoBehaviour
 
     public Sprite[] sprites;
 
+    public Image[] img_Dot;
+    public Sprite[] dot_sprites;
+
     void Start()
     {
         originalSize = inputFieldRect.sizeDelta;
@@ -48,9 +51,17 @@ public class P_MakingAsk : MonoBehaviour
     void Update()
     {
         if (count == 0)
+        {
             btn_Prev.interactable = false;
+            img_Dot[0].sprite = dot_sprites[1];
+            img_Dot[1].sprite = dot_sprites[0];
+        }
         else
+        {
             btn_Prev.interactable = true;
+            img_Dot[0].sprite = dot_sprites[0];
+            img_Dot[1].sprite = dot_sprites[1];
+        }
 
         if (count == 1)
         {
