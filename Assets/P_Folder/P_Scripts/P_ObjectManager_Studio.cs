@@ -375,7 +375,8 @@ public class P_ObjectManager_Studio : MonoBehaviourPun
         // 경로 미지정시 프로젝트 파일에 저장
         ScreenCapture.CaptureScreenshot(path);
 
-        SendCapture(path);
+        if (PhotonNetwork.IsMasterClient)
+            SendCapture(path);
     }
 
     private void CaptureScreenForMobile(string fileName)
@@ -385,7 +386,8 @@ public class P_ObjectManager_Studio : MonoBehaviourPun
         // 모바일로 사용시 추가 경로지정 필요
         ScreenCapture.CaptureScreenshot(path);
 
-        SendCapture(path);
+        if (PhotonNetwork.IsMasterClient)
+            SendCapture(path);
     }
 
     public void SendCapture(string filePath)
