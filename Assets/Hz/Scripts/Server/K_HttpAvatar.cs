@@ -31,12 +31,12 @@ public class K_HttpAvatar : MonoBehaviourPun
     public GameObject btn_ToMap;
 
     // URL
-    public string uploadUrl = "http://3.36.39.119:80/api/avatar/aws/upload-img";
+    public string uploadUrl = "http://211.250.74.75:8202/api/avatar/upload-img";
     private string avatarImgUrl;
     private List<string> animationUrls;
 
     // 다른 유저 조회 URL
-    private string otherUserUrl = "http://3.36.39.119:80/api/avatar/participant";
+    private string otherUserUrl = "http://211.250.74.75:8202/api/avatar/participant";
 
     public GameObject bookCanvas;
 
