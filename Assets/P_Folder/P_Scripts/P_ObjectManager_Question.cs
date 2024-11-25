@@ -29,7 +29,7 @@ public class P_ObjectManager_Question : MonoBehaviourPun
     private Vector2 originalPosition;
 
 
-    public float testNum = 4;
+    float testNum = 5;
 
     float triggerNum = 0;
 
@@ -198,13 +198,13 @@ public class P_ObjectManager_Question : MonoBehaviourPun
                 questionId = Y_HttpRoomSetUp.GetInstance().realClassMaterial.openQuestions[question_count].questionId,
                 answer = q_answer,
             };
-            
+
             // 데이터 백엔드에 전송
             SendAnswer(questionAnswer);
 
-            // 포톤으로 실행
-            RPC_NextStep(q_answer);
         }
+        // 포톤으로 실행
+        RPC_NextStep(q_answer);
 
         // 인풋필드 비우기
         answer_InputField.text = "";
@@ -232,27 +232,25 @@ public class P_ObjectManager_Question : MonoBehaviourPun
     [PunRPC]
     public void NextStep(string answer)
     {
+        if (answer_count == 1)
+        {
+            answer_Text1.text = answer;
+        }
+        else if (answer_count == 2)
+        {
+            answer_Text2.text = answer;
+        }
+        else if (answer_count == 3)
+        {
+            answer_Test3.text = answer;
+        }
+        else if (answer_count == 4)
+        {
+            answer_Test4.text = answer;
+        }
+
         answer_count++;
 
-        if (!PhotonNetwork.IsMasterClient)
-        {
-            if (answer_count == 1)
-            {
-                answer_Text1.text = answer;
-            }
-            else if (answer_count == 2)
-            {
-                answer_Text2.text = answer;
-            }
-            else if (answer_count == 3)
-            {
-                answer_Test3.text = answer;
-            }
-            else if (answer_count == 4)
-            {
-                answer_Test4.text = answer;
-            }
-        }
         // 4명 모두 답을 제출하면
         // 테스트용으로 1로 설정
         if (answer_count >= testNum)
