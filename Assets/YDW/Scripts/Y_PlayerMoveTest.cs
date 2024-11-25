@@ -10,7 +10,7 @@ using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.InputSystem.Utilities;
 
-public class Y_PlayerMoveTest : MonoBehaviour, IPunObservable
+public class Y_PlayerMoveTest : MonoBehaviour
 {
     public float trackingSpeed = 10;
     public float speed;
@@ -57,9 +57,12 @@ public class Y_PlayerMoveTest : MonoBehaviour, IPunObservable
         layerMaskGround = LayerMask.GetMask("Ground");
         //agent.updateRotation = false;
         cc = GetComponent<CharacterController>();
+
+        QualitySettings.vSyncCount = 0;
+        Application.targetFrameRate = 60;
     }
 
-    void Update()
+    void FixedUpdate()
     {
 
 
@@ -97,7 +100,7 @@ public class Y_PlayerMoveTest : MonoBehaviour, IPunObservable
                            
                             // 목표 위치 설정
                             targetPosition = hit.point;
-                            targetPosition.y = 3f;
+                            targetPosition.y = 5f;
                             isMoving = true;
 
                             // 화면 밖으로 고정은 어차피 화면 밖은 터치할 수 없으니 생략
@@ -135,7 +138,7 @@ public class Y_PlayerMoveTest : MonoBehaviour, IPunObservable
             // 오른쪽으로 이동하고 싶다.
             //transform.Translate(finalDir * speed * Time.deltaTime);
             // P = P0 + vt (이동공식)
-            cc.Move(finalDir * speed * Time.deltaTime);
+            cc.Move(finalDir * speed * Time.fixedDeltaTime);
             }
 
 
@@ -145,25 +148,26 @@ public class Y_PlayerMoveTest : MonoBehaviour, IPunObservable
     void MoveTowardsTarget()
     {
         // 목표 지점까지의 거리 계산
-        //float distanceToTarget = Vector3.Distance(transform.position, targetPosition);
+        float distanceToTarget = Vector3.Distance(transform.position, targetPosition);
 
         // 방향 벡터 계산 및 이동
         Vector3 direction = (targetPosition - transform.position).normalized;
-        cc.Move(direction * speed * Time.deltaTime);
+        direction.y = 0;
+        cc.Move(direction * speed * Time.fixedDeltaTime);
 
-        //moveDistance = direction.magnitude;
+        moveDistance = direction.magnitude;
 
-        //// 이동 후 거리 계산
-        //float newDistanceToTarget = Vector3.Distance(transform.position, targetPosition);
+        // 이동 후 거리 계산
+        float newDistanceToTarget = Vector3.Distance(transform.position, targetPosition);
 
-        //// 목표 지점에 도달했거나 초과했는지 확인
-        //if (newDistanceToTarget <= 0.1f || newDistanceToTarget > distanceToTarget) // 임계값 조정 가능
-        //{
-        //    transform.position = targetPosition; // 목표 지점에 고정
-        //    isMoving = false;                    // 이동 중단
-        //    moveDistance = 0;
-        //    return;
-        //}
+        // 목표 지점에 도달했거나 초과했는지 확인
+        if (newDistanceToTarget <= 0.1f || newDistanceToTarget > distanceToTarget) // 임계값 조정 가능
+        {
+            transform.position = targetPosition; // 목표 지점에 고정
+            isMoving = false;                    // 이동 중단
+            moveDistance = 0;
+            return;
+        }
 
     }
 
