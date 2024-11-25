@@ -29,7 +29,7 @@ public class P_ObjectManager_Question : MonoBehaviourPun
     private Vector2 originalPosition;
 
 
-    float testNum = 5;
+    float testNum = 4;
 
     float triggerNum = 0;
 
@@ -253,7 +253,7 @@ public class P_ObjectManager_Question : MonoBehaviourPun
 
         // 4명 모두 답을 제출하면
         // 테스트용으로 1로 설정
-        if (answer_count >= testNum)
+        if (answer_count >= testNum + 1)
         {
             if (question_count == 0)
             {
