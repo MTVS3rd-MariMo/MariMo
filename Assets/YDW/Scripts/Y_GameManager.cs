@@ -24,8 +24,8 @@ public class Y_GameManager : MonoBehaviourPun
 
     public GameObject barrier;
     private bool isBarrierOpened = false;
-    private Animation anim;
-    public GameObject Fence;
+    public Animator anim;
+    //public GameObject Fence;
     public GameObject coli_Fence;
     public ParticleSystem particle_Destroy;
     public GameObject VC_Fence;
@@ -59,8 +59,9 @@ public class Y_GameManager : MonoBehaviourPun
         //
         //StartCoroutine(AA());
 
-        anim = GetComponent<Animation>();
+        anim = GetComponent<Animator>();
         anim.enabled = false;
+        particle_Destroy = GetComponent<ParticleSystem>();
     }
 
     void StartHttp()
@@ -206,8 +207,8 @@ public class Y_GameManager : MonoBehaviourPun
 
         // 애니메이션 !!!!!!!!!!!!!!!!!!!!
         anim.enabled = true;
-        anim.Play("Fence_Animation");
-        particle_Destroy.gameObject.SetActive(true);
+        //anim.Play("Fence_Animation");
+        particle_Destroy.Play();
         
 
         yield return new WaitForSeconds(1.5f);
