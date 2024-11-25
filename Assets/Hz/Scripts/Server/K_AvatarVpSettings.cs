@@ -16,7 +16,7 @@ public class K_AvatarVpSettings : MonoBehaviourPun
         Walk
     }
     // 기본 셋팅 Idle 상태
-    private AnimState currState = AnimState.Idle;
+    private AnimState currState = AnimState.Walk;
 
     private string idleUrl;
     private string walkUrl;
@@ -53,18 +53,7 @@ public class K_AvatarVpSettings : MonoBehaviourPun
         y_PlayerMove = GetComponent<Y_PlayerMove>();
         layerMaskGround = LayerMask.GetMask("Ground");
 
-        // 초기화: idleUrl 기본 재생
-        if (!string.IsNullOrEmpty(idleUrl) && vp != null)
-        {
-            vp.targetTexture = renderTextures[0];
-            vp.url = idleUrl;
-            vp.Prepare();
-            vp.prepareCompleted += (VideoPlayer source) =>
-            {
-                source.Play();
-                print("?ㅜㅜ");
-            };
-        }
+        
 
     }
 
@@ -174,10 +163,19 @@ public class K_AvatarVpSettings : MonoBehaviourPun
 
         if (vp != null && adjustActorNumber >= 0 && adjustActorNumber <= 3)
         {
+            
+
+            // 연산자 사용해보기
+            //print(videoPath);
+            vp.targetTexture = renderTextures[adjustActorNumber];
+            rawImage.material = new Material(rawImage.material);
+            rawImage.material.mainTexture = vp.targetTexture;
+            
             if (idlePath != null)
             {
                 idleUrl = idlePath;
                 print("idleUrl 은 머야 " + idleUrl);
+                PlayCurrAnim();
             }
 
             if(walkPath != null)
@@ -186,13 +184,8 @@ public class K_AvatarVpSettings : MonoBehaviourPun
                 print("walkUrl 은 머야 " + walkUrl);
             }
 
-            // 연산자 사용해보기
-            //print(videoPath);
-            vp.targetTexture = renderTextures[adjustActorNumber];
-            rawImage.material = new Material(rawImage.material);
-            rawImage.material.mainTexture = vp.targetTexture;
-            SetWalkingState(false);
-            vp.prepareCompleted += OnVideoPrepared;
+
+            //vp.prepareCompleted += OnVideoPrepared;
             print("준비됐나요? ");
             
             //PlayCurrAnim();
@@ -225,10 +218,11 @@ public class K_AvatarVpSettings : MonoBehaviourPun
 
     public void PlayCurrAnim()
     {
-        vp.url = currState == AnimState.Idle ? idleUrl : walkUrl;
+        vp.url = idleUrl;
         //vp.Prepare();
+        vp.Play();
 
-        //print("PlayAnim?");
+        print("PlayAnim?!!!!!!!!!!!!!!!!!!!!!!!!!!");
     }
 
 

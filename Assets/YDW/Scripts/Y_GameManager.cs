@@ -64,7 +64,7 @@ public class Y_GameManager : MonoBehaviourPun
         //StartCoroutine(AA());
 
         
-        particle_Destroy = GetComponent<ParticleSystem>();
+        //particle_Destroy = GetComponent<ParticleSystem>();
     }
 
     void StartHttp()
