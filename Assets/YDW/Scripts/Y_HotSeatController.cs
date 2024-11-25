@@ -141,8 +141,9 @@ public class Y_HotSeatController : MonoBehaviourPun
             // 1초 딜레이
             yield return new WaitForSeconds(2f);
             // 핫시팅 완료
-            K_LobbyUiManager.instance.img_KeyEmptyBox.gameObject.SetActive(true);
             K_KeyManager.instance.isDoneOpenQnA = true;
+            K_LobbyUiManager.instance.img_KeyEmptyBox.gameObject.SetActive(true);
+            
             GameObject.Find("Object_HotSeat").GetComponent<Y_HotSeatManager>().MoveControl(true);
             UnMuteAllPlayers(); ///////////// 원래는 RPC 였음!
             Y_SoundManager.instance.PlayBgmSound(Y_SoundManager.EBgmType.BGM_MAIN);
