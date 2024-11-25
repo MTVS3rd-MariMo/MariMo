@@ -199,11 +199,14 @@ public class Y_GameManager : MonoBehaviourPun
     public IEnumerator UnlockBarrierAfterKeyUI()
     {
         // 딜레이줘야함 (마지막 활동 끝나고)
-        yield return new WaitForSeconds(4f);
+        yield return new WaitForSeconds(2f);
 
-        VC_Fence.SetActive(true);
+        //VC_Fence.SetActive(true); HZ
         // 마지막 키 활성화
         K_KeyUiManager.instance.EndKeyUi();
+        // HZ 키 애니메이션 다 보여주고 cameraON
+        yield return new WaitForSeconds(4f);
+        VC_Fence.SetActive(true);
         // 사운드
         Y_SoundManager.instance.PlayEftSound(Y_SoundManager.ESoundType.EFT_KEY);
         yield return new WaitForSeconds(2f);
@@ -214,8 +217,8 @@ public class Y_GameManager : MonoBehaviourPun
         //anim.Play("Fence_Animation");
         particle_Destroy.Play();
         
-
-        yield return new WaitForSeconds(1.5f);
+        // 파티클 시간만큼 3초로 딜레이
+        yield return new WaitForSeconds(3f);
         VC_Fence.SetActive(false);
         // Fence 사운드
         Y_SoundManager.instance.PlayEftSound(Y_SoundManager.ESoundType.EFT_FENCE_ON);
