@@ -267,6 +267,7 @@ public class K_HttpAvatar : MonoBehaviourPun
                         System.IO.File.WriteAllBytes(filePath, videoData);
                     }
 
+
                     Debug.Log($"MP4 파일 다운로드 및 저장 성공: {filePath}");
 
                     string videoPathWithProtocol = "file:///" + filePath.Replace("\\", "/"); // 로컬 파일을 위한 파일 프로토콜 추가
@@ -302,6 +303,10 @@ public class K_HttpAvatar : MonoBehaviourPun
 
                 catch (IOException e)
                 {
+
+                    StartCoroutine(Co_WaitFile(filePath, actorNumber, fileName));
+                    
+
                     Debug.LogError("파일 저장 중 오류 발생" + e.Message);
                 }
 
@@ -345,6 +350,64 @@ public class K_HttpAvatar : MonoBehaviourPun
                 Debug.LogError("MP4 다운로드 실패: " + webRequest.error);
             }
         }
+    }
+
+    IEnumerator Co_WaitFile(string filePath, int actorNumber, string fileName)
+    {
+        yield return new WaitUntil(() => FileOpenCheck(filePath));
+
+        string videoPathWithProtocol = "file:///" + filePath.Replace("\\", "/"); // 로컬 파일을 위한 파일 프로토콜 추가
+        Debug.Log("videoPath : 들어왔니? " + videoPathWithProtocol);
+        // K_AvatarVpSettings에서 상태별 비디오 경로 설정
+        //Debug.LogError("Null 인가? 아닌가? : " + (bookController.allPlayers[actorNumber - 1] == null) + " ActorNum : " + bookController.allPlayers[actorNumber - 1].Owner.ActorNumber);
+        K_AvatarVpSettings avatarSettings = null;
+        if (actorNumber > 0)
+        {
+            avatarSettings = bookController.allPlayers[actorNumber - 1].GetComponent<K_AvatarVpSettings>();
+        }
+        print("avatarSettings 들어왔니? : " + avatarSettings);
+
+        // 파일 이름이 "animation_0"일 경우 idle 경로 설정, "animation_1"일 경우 walk 경로 설정
+        if (fileName.Equals("animation_0"))
+        {
+            print("animation_0 니? 웅");
+            if (avatarSettings != null) avatarSettings.SetVideoPath(videoPathWithProtocol, null, actorNumber); // idle 경로 설정
+        }
+        else if (fileName.Equals("animation_1"))
+        {
+            print("animation_1 니? 웅");
+            if (avatarSettings != null)
+            {
+                avatarSettings.SetVideoPath(null, videoPathWithProtocol, actorNumber); // walk 경로 설정
+                int actorNum = PhotonNetwork.LocalPlayer.ActorNumber - 1;
+                //int characterNumForHS = actorNum - 1 >= 0 ? bookController.allPlayers[actorNum - 1].GetComponent<Y_PlayerAvatarSetting>().avatarIndex : -1;
+                //RPC_AddUrls(actorNum, videoPathWithProtocol);
+            }
+        }
+    }
+
+    public bool FileOpenCheck(string path)
+    {
+        FileStream stream = null;
+
+        try
+        {
+            stream = File.Open(path, FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.None);
+        }
+        catch (IOException e)
+        {
+            return false;
+        }
+        finally
+        {
+            if (stream != null)
+            {
+                stream.Close();
+
+            }
+        }
+
+        return true;
     }
 
     void RPC_AddUrls(int actorNum, string videoPathWithProtocol)
