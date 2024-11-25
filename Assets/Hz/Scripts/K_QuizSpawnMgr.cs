@@ -64,13 +64,17 @@ public class K_QuizSpawnMgr : MonoBehaviourPun
         }
     }
 
+    public Transform[] spawnPoints;
 
     IEnumerator SpawnObj(string obj, int idx)
     {
         print("스폰옵젝 호출됨");
-        Vector3 center = quiz_spawnCenter[idx];
-        Vector3 size = quiz_spawnSize[idx];
-        Vector3 randomPos = GetRandomPosInArea(center, size);
+        //Vector3 center = quiz_spawnCenter[idx];
+        //Vector3 size = quiz_spawnSize[idx];
+        //Vector3 randomPos = GetRandomPosInArea(center, size);
+
+        ////// 시연 때 고정으로 퀴즈 스폰할 것
+        Vector3 spawnPosition = spawnPoints[idx].position;
 
         // Resources 폴더에서 quizName으로 프리팹을 로드하고 PhotonNetwork.Instantiate로 생성
         GameObject quizPrefab = Resources.Load<GameObject>(obj);
@@ -78,7 +82,7 @@ public class K_QuizSpawnMgr : MonoBehaviourPun
         // 퀴즈 프리팹 있다면
         if (quizPrefab != null)
         {
-            GameObject quizInstance = PhotonNetwork.Instantiate(obj, randomPos, Quaternion.identity);
+            GameObject quizInstance = PhotonNetwork.Instantiate(obj, spawnPosition, Quaternion.identity);
             //yield return new WaitForSeconds(2f);
             yield return new WaitUntil(() => quizInstance != null);
             print("퀴즈 인스턴스 생성");
