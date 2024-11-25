@@ -43,7 +43,8 @@ public class Y_GameManager : MonoBehaviourPun
     {
         instance = this;
 
-        anim = GetComponent<Animator>();
+        GameObject fenceObj = GameObject.Find("Fence");
+        anim = fenceObj.GetComponent<Animator>();
         anim.enabled = false;
     }
 
@@ -209,6 +210,7 @@ public class Y_GameManager : MonoBehaviourPun
 
         // 애니메이션 !!!!!!!!!!!!!!!!!!!!
         anim.enabled = true;
+        anim.SetTrigger("Unlock");
         //anim.Play("Fence_Animation");
         particle_Destroy.Play();
         
