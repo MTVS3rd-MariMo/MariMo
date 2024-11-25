@@ -19,7 +19,9 @@ public class P_MakingAsk : MonoBehaviour
     public Button btn_Prev;
     public Button btn_Next;
     public Button btn_OK;
+    public Button btn_info;
 
+    public Image Img_info;
     public TMP_InputField askText;
 
     public int count = 0;
@@ -28,6 +30,8 @@ public class P_MakingAsk : MonoBehaviour
 
     public Image[] img_Dot;
     public Sprite[] dot_sprites;
+
+    bool onInfo = false;
 
     void Start()
     {
@@ -50,6 +54,15 @@ public class P_MakingAsk : MonoBehaviour
 
     void Update()
     {
+        if (onInfo)
+        {
+            Img_info.gameObject.SetActive(true);
+        }
+        else
+        {
+            Img_info.gameObject.SetActive(false);
+        }
+
         if (count == 0)
         {
             btn_Prev.interactable = false;
@@ -145,5 +158,15 @@ public class P_MakingAsk : MonoBehaviour
         inputFieldRect.sizeDelta = originalSize;
         inputFieldRect.gameObject.transform.localPosition = originalPosition;
 
+    }
+
+    public void PointerDown()
+    {
+        onInfo = true;
+    }
+
+    public void PointerUp()
+    {
+        onInfo = false;
     }
 }
