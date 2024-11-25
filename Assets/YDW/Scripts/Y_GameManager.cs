@@ -42,6 +42,9 @@ public class Y_GameManager : MonoBehaviourPun
     private void Awake()
     {
         instance = this;
+
+        anim = GetComponent<Animator>();
+        anim.enabled = false;
     }
 
     void Start()
@@ -59,8 +62,7 @@ public class Y_GameManager : MonoBehaviourPun
         //
         //StartCoroutine(AA());
 
-        anim = GetComponent<Animator>();
-        anim.enabled = false;
+        
         particle_Destroy = GetComponent<ParticleSystem>();
     }
 
