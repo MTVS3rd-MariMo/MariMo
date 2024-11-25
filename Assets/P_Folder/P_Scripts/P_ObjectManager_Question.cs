@@ -38,6 +38,7 @@ public class P_ObjectManager_Question : MonoBehaviourPun
     // UI들
     public Image question_PopUp_Img;
     public GameObject questionUI_Panel;
+    public Image Img_Question;
     public TMP_Text question_Text;
     public Button btn_speaker;
     public TMP_InputField answer_InputField;
@@ -301,20 +302,35 @@ public class P_ObjectManager_Question : MonoBehaviourPun
         question_Text.text = Y_HttpRoomSetUp.GetInstance().realClassMaterial.openQuestions[question_count].questionTitle;
         answer_InputField.text = "";
 
-        if (PhotonNetwork.IsMasterClient)
-            Submit();
+        Color color = questionUI_Panel.GetComponent<Image>().color;
 
-        yield return new WaitForSeconds(1.5f);
-
-        while (black.a >= 0)
+        while (color.a < 1)
         {
-            black.a -= Time.deltaTime / 1.5f;
+            color.a += Time.deltaTime / 1.5f;
 
-            blackScreen.color = black;
+            questionUI_Panel.GetComponent<Image>().color = color;
+            Img_Question.color = color;
+            question_Text.color = color;
+            answer_InputField.GetComponent<Image>().color = color;
+            btn_Submit.GetComponent<Image>().color = color;
 
             yield return null;
         }
-        blackScreen.gameObject.SetActive(false);
+
+        if (PhotonNetwork.IsMasterClient)
+            Submit();
+
+        //yield return new WaitForSeconds(1.5f);
+
+        //while (black.a >= 0)
+        //{
+        //    black.a -= Time.deltaTime / 1.5f;
+
+        //    blackScreen.color = black;
+
+        //    yield return null;
+        //}
+        //blackScreen.gameObject.SetActive(false);
     }
 
     public IEnumerator Question_UI_Answer1()
