@@ -4487,7 +4487,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   userId: 
-  mainServer: 3.36.39.119:80
+  mainServer: http://3.36.39.119:80/
   isLoggedIn: 0
   userNickName: 
   RegisterUrl: api/user/signup
