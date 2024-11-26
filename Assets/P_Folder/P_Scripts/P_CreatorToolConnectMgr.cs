@@ -73,7 +73,7 @@ public class P_CreatorToolConnectMgr : MonoBehaviour
         }
     }
 
-    public string url_Front = "http://3.36.39.119:80";
+    public string url_Front = "http://211.250.74.75:8202";
 
     public QuizData quizData;
     public QuizData dummydata;
