@@ -19,12 +19,6 @@ public class K_HttpAvatar : MonoBehaviourPun
     public Button btn_DoneCreateAvatar;
     public GameObject PaintUI;
 
-    //// 생성 중 UI
-    //public GameObject img_MakingRect;
-    //public GameObject img_MakingText;
-    //public GameObject img_MakingBox;
-    //public GameObject img_MakingBar;
-
     // 아바타 이미지 받기
     public GameObject ChooseCharacterUI;
     //public Image avatarImage;
@@ -63,10 +57,6 @@ public class K_HttpAvatar : MonoBehaviourPun
     public string[] testUrl;
     public IEnumerator UploadTextureAsPng(int userId, int lessonId)
     {
-        //photonView.RPC(nameof(SyncAvatarData), RpcTarget.All, 0, 0, avatarImgUrl, testUrl, PhotonNetwork.LocalPlayer.ActorNumber - 1);
-        //yield break;
-
-
         Texture2D textureToUpload = rawImage.texture as Texture2D;
 
         if (textureToUpload == null)
@@ -88,13 +78,10 @@ public class K_HttpAvatar : MonoBehaviourPun
 
                 // 서버에서 받은 JSON 응답 파싱하며 Url 설정
                 UserAvatarData avatarData = JsonUtility.FromJson<UserAvatarData>(downloadHandler.text);
+                // 이미지
                 avatarImgUrl = avatarData.avatarImg;
-                // animations 필드에서 URL 추출
-                //animationUrls = new List<string>();
+                // 동영상
                 animationUrls = avatarData.animations.Select(anim => anim.animation).ToList();
-
-                // 버튼 체인지 -> 생성하는 버튼 삭제되면 off 로 갈아끼워짐
-                //btn_CreateAvatar.gameObject.SetActive(false);
 
                 // 업로드 완료되면 UI 활성화 관리
                 PaintUI.SetActive(false);
@@ -117,12 +104,6 @@ public class K_HttpAvatar : MonoBehaviourPun
     [PunRPC]
     void SyncAvatarData(int userId, int lessonId, string avatarImgUrl, string[] animationUrls, int actorNumber)
     {
-        // 잠만
-        //StartCoroutine(OnDownloadImage(userId, avatarImgUrl));
-
-        //photonView.RPC(nameof(OnDownloadImage), RpcTarget.All, userId, avatarImgUrl, actorNumber);
-
-
         // 이미지 다운로드 받아오기
         StartCoroutine(OnDownloadImage(userId, avatarImgUrl, actorNumber));
 
@@ -163,8 +144,6 @@ public class K_HttpAvatar : MonoBehaviourPun
 
         using (UnityWebRequest webRequest = UnityWebRequestTexture.GetTexture(imageUrl))
         {
-
-
             yield return webRequest.SendWebRequest();
 
             if (webRequest.result == UnityWebRequest.Result.Success)
@@ -200,21 +179,15 @@ public class K_HttpAvatar : MonoBehaviourPun
         }
     }
 
-    //public string videoPathWithProtocol;
-
     // 애니메이션 다운로드 및 로컬 저장
     private IEnumerator DownloadVideo(int userId, string videoUrl, string fileName, int actorNumber)
     {
-        //if (PhotonNetwork.LocalPlayer.ActorNumber == 1)
-        //{
-        //    Debug.Log("연동 제외");
-        //    yield break;
-        //}
-
         //if (fileName.Equals("animation_1"))
         //{
         //    yield return new WaitForSeconds(3f);
         //}
+
+        //string otherUserUrl = "http://211.250.74.75:8202/api/avatar/participant";
 
         using (UnityWebRequest webRequest = UnityWebRequest.Get(videoUrl))
         {
@@ -270,7 +243,8 @@ public class K_HttpAvatar : MonoBehaviourPun
 
                     Debug.Log($"MP4 파일 다운로드 및 저장 성공: {filePath}");
 
-                    string videoPathWithProtocol = "file:///" + filePath.Replace("\\", "/"); // 로컬 파일을 위한 파일 프로토콜 추가
+                    // 로컬 파일을 위한 파일 프로토콜 추가
+                    string videoPathWithProtocol = "file:///" + filePath.Replace("\\", "/"); 
                     Debug.Log("videoPath : 들어왔니? " + videoPathWithProtocol);
                     // K_AvatarVpSettings에서 상태별 비디오 경로 설정
                     //Debug.LogError("Null 인가? 아닌가? : " + (bookController.allPlayers[actorNumber - 1] == null) + " ActorNum : " + bookController.allPlayers[actorNumber - 1].Owner.ActorNumber);
@@ -285,17 +259,15 @@ public class K_HttpAvatar : MonoBehaviourPun
                     if (fileName.Equals("animation_0"))
                     {
                         print("animation_0 니? 웅");
-                        if (avatarSettings != null) avatarSettings.SetVideoPath(videoPathWithProtocol, null, actorNumber); // idle 경로 설정
+                        if (avatarSettings != null) avatarSettings.SetVideoPath(videoPathWithProtocol, null, actorNumber); 
                     }
                     else if (fileName.Equals("animation_1"))
                     {
                         print("animation_1 니? 웅");
                         if (avatarSettings != null)
                         {
-                            avatarSettings.SetVideoPath(null, videoPathWithProtocol, actorNumber); // walk 경로 설정
+                            avatarSettings.SetVideoPath(null, videoPathWithProtocol, actorNumber);
                             int actorNum = PhotonNetwork.LocalPlayer.ActorNumber - 1;
-                            //int characterNumForHS = actorNum - 1 >= 0 ? bookController.allPlayers[actorNum - 1].GetComponent<Y_PlayerAvatarSetting>().avatarIndex : -1;
-                            //RPC_AddUrls(actorNum, videoPathWithProtocol);
                         }
                     }
 
@@ -436,96 +408,84 @@ public class K_HttpAvatar : MonoBehaviourPun
         // 내 아바타랑 이미지 -> 서버에 업로드
         yield return StartCoroutine(UploadTextureAsPng(userId, lessonId));
 
-        print("서버에 업로드 됨");
-
         // 서버 응답에서 받은 url 통해서 ui에 띄울거임
         //yield return StartCoroutine(OnDownloadImage(userId, avatarImgUrl, PhotonNetwork.LocalPlayer.ActorNumber));
 
-        print("이미지 띄움!");
+        print("다른 유저 데이터 가져오기");
 
-        // 업로드 완료 시, 다른 유저들의 아바타 데이터를 가져옴
-        //List<int> otherUserIds = GetOtherUserIds();
-        //// 디버그
-        //Debug.Log("다른 유저 ID 리스트: " + string.Join(", ", otherUserIds));
+        //업로드 완료 시, 다른 유저들의 아바타 데이터를 가져옴
+        List<int> otherUserIds = GetOtherUserIds();
+        // 디버그
+        Debug.Log("다른 유저 ID 리스트: " + string.Join(", ", otherUserIds));
 
-        //if (otherUserIds.Count > 0)
-        //{
-        //    yield return StartCoroutine(GetAvatarData(lessonId, otherUserIds));
-        //}
-        //else
-        //{
-        //    Debug.Log("다른 유저 없음: 아바타 데이터를 가져올 유저가 없습니다.");
-        //}
-
-        //yield return StartCoroutine(GetAvatarData(lessonId, otherUserIds));
+        if (otherUserIds.Count > 0)
+        {
+            yield return StartCoroutine(GetAvatarData(lessonId, otherUserIds));
+        }
+        else
+        {
+            Debug.Log("다른 유저 없음: 아바타 데이터를 가져올 유저가 없습니다.");
+        }
     }
 
-    //// 아바타 정보 요청 (GET)
-    //public IEnumerator GetAvatarData(int lessonId, List<int> userIds)
-    //{
-    //    foreach(var userId  in userIds)
-    //    {
-    //        // 동적으로 URL 생성
-    //        //string specificUserUrl = $"http://211.250.74.75:8202/api/avatar/participant/{lessonId}/{userId}";
+    // 아바타 정보 요청 (GET)
+    public IEnumerator GetAvatarData(int lessonId, List<int> userIds)
+    {
+        foreach (var userId in userIds)
+        {
+            // 동적으로 URL 생성
+            string specificUserUrl = $"http://211.250.74.75:8202/api/avatar/participant/{Y_HttpRoomSetUp.GetInstance().userlessonId}/{Convert.ToInt32(Y_HttpLogIn.GetInstance().userId)}";
 
-    //        using (UnityWebRequest webRequest = UnityWebRequest.Get(otherUserUrl))
-    //        {
-    //            print("서버에게 GET 요청 갔는지" + otherUserUrl);
+            using (UnityWebRequest webRequest = UnityWebRequest.Get(specificUserUrl))
+            {
+                print("서버에게 GET 요청 갔는지" + specificUserUrl);
 
-    //            yield return webRequest.SendWebRequest();
+                yield return webRequest.SendWebRequest();
 
-    //            if (webRequest.result == UnityWebRequest.Result.Success)
-    //            {
-    //                // JSON 데이터 파싱
-    //                UserAvatarData avatarData = JsonUtility.FromJson<UserAvatarData>(webRequest.downloadHandler.text);
+                if (webRequest.result == UnityWebRequest.Result.Success)
+                {
+                    Debug.Log($"GET 응답 받음: {webRequest.downloadHandler.text}");
+                    
+                    ////////////////// HZ
+                    //// JSON 데이터 파싱
+                    //UserAvatarData avatarData = JsonUtility.FromJson<UserAvatarData>(webRequest.downloadHandler.text);
 
-    //                // 이미지, 애니메이션 다운로드
-    //                StartCoroutine(OnDownloadImage(avatarData.userId, avatarData.avatarImg, PhotonNetwork.LocalPlayer.ActorNumber));
+                    //// 이미지, 애니메이션 다운로드
+                    //StartCoroutine(OnDownloadImage(avatarData.userId, avatarData.avatarImg, PhotonNetwork.LocalPlayer.ActorNumber));
 
-    //                for(int i = 0; i < avatarData.animations.Count; i++)
-    //                {
-    //                    StartCoroutine(DownloadVideo(avatarData.userId, avatarData.animations[i].animation, $"animation_{avatarData.userId}_{i}", PhotonNetwork.LocalPlayer.ActorNumber));
+                    //for (int i = 0; i < avatarData.animations.Count; i++)
+                    //{
+                    //    StartCoroutine(DownloadVideo(avatarData.userId, avatarData.animations[i].animation, $"animation_{avatarData.userId}_{i}", PhotonNetwork.LocalPlayer.ActorNumber));
 
-    //                }
+                    //}
 
-    //                Debug.Log("다른 유저 데이터 가져옴");
-    //            }
-    //            else
-    //            {
-    //                Debug.LogError("다른 유저 데이터 가져오기 실패" + webRequest.error);
-    //            }
-    //        }
-    //    }      
-    //}
+                    Debug.Log("다른 유저 데이터 가져옴");
+                }
+                else
+                {
+                    Debug.LogError("다른 유저 데이터 가져오기 실패" + webRequest.error);
+                }
+            }
+        }
+    }
 
-    //// 데이터 처리 메서드 (기존 이미지 및 비디오 적용 로직 유지)
-    //private void ApplyAvatarData(UserAvatarData avatarData)
-    //{
-    //    // 각 이미지 적용
-    //    StartCoroutine(OnDownloadImage(avatarData.userId, avatarData.avatarImg, PhotonNetwork.LocalPlayer.ActorNumber));
 
-    //    // 각 애니메이션 적용
-    //    for (int i = 0; i < avatarData.animations.Count; i++)
-    //    {
-    //        StartCoroutine(DownloadVideo(avatarData.userId, avatarData.animations[i].animation, $"animation_{avatarData.userId}_{i}", PhotonNetwork.LocalPlayer.ActorNumber));
-    //    }
-    //}
+    private List<int> GetOtherUserIds()
+    {
+        List<int> otherUserIds = new List<int>();
 
-    //private List<int> GetOtherUserIds()
-    //{
-    //    List<int> otherUserIds = new List<int>();
+        foreach (var player in PhotonNetwork.PlayerList)
+        {
+            // ActorNum 1은 제외 (선생님)
+            if (player.ActorNumber != PhotonNetwork.LocalPlayer.ActorNumber && player.ActorNumber != 1)
+            {
+                otherUserIds.Add(player.ActorNumber);
+            }
 
-    //    foreach(var player in PhotonNetwork.PlayerList)
-    //    {
-    //        if(player.ActorNumber != PhotonNetwork.LocalPlayer.ActorNumber)
-    //        {
-    //            otherUserIds.Add(player.ActorNumber);
-    //        }
-
-    //        print(player.ActorNumber);
-    //    }
-    //    return otherUserIds;
-    //}
+            print(player.ActorNumber);
+        }
+        return otherUserIds;
+    }
 
     //[PunRPC]
     //private void ApplayVideoToPlayer(string videoPath, int actorNumber)
@@ -537,11 +497,6 @@ public class K_HttpAvatar : MonoBehaviourPun
     public void CreateAvatar()
     {
         Debug.Log("createAvatar 호출됨");
-        // 아바타 만든거 보내기 (POST)
-        //StartCoroutine(UploadTextureAsPng(userId, lessonId));
-
-        //Debug.LogWarning("유저아이디" + userId);
-        //Debug.LogWarning("레슨아이디" + lessonId);
 
         // UI 변경 -> 버튼 OFF로
         btn_CreateAvatar.gameObject.SetActive(false);
