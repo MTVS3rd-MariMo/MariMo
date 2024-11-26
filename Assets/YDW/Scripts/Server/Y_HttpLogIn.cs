@@ -34,7 +34,7 @@ public class Y_HttpLogIn : MonoBehaviour
 {
     static Y_HttpLogIn instance;
     public string userId;
-    public string mainServer;
+    public string mainServer = "http://211.250.74.75:8202/";
 
     public bool isLoggedIn = false;
 
@@ -61,7 +61,7 @@ public class Y_HttpLogIn : MonoBehaviour
 
         instance = this;
         DontDestroyOnLoad(gameObject);
-        mainServer = "http://3.36.39.119:80/";
+        //mainServer = "http://3.36.39.119:80/";
     }
 
     // Start is called before the first frame update
