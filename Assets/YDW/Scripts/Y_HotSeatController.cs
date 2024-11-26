@@ -35,7 +35,7 @@ public class Y_HotSeatController : MonoBehaviourPun
     public Image myAvatarImage;
     public RectTransform inputFieldRect;
     public Vector2 expandedSize = new Vector2(1200, 200); // 확장된 크기
-    public Vector2 expandedPos = new Vector2(-345, 180); // 확장됐을 때 위치
+    public Vector2 expandedPos = new Vector2(-450, 180); // 확장됐을 때 위치
     private Vector2 originalSize;
     private Vector2 originalPosition;
     private TouchScreenKeyboard keyboard;
@@ -474,7 +474,7 @@ public class Y_HotSeatController : MonoBehaviourPun
         }
     }
 
-    public GameObject[] timerImgs;
+    //public GameObject[] timerImgs;        타이머 제거
     public int selfIntNum = 0;
 
     void RPC_StartSpeech(int index)
@@ -635,7 +635,7 @@ public class Y_HotSeatController : MonoBehaviourPun
     float currTime = 0;
     int hotSeating_count = 0;
     public GameObject[] guides;
-    public TMP_Text[] timerTxts;
+    // public TMP_Text[] timerTxts;     타이머 제거
 
     void RPC_StartTimer(int i, int time)
     {
@@ -652,7 +652,7 @@ public class Y_HotSeatController : MonoBehaviourPun
     IEnumerator StartTimer(int i, int time)
     {
         yield return new WaitForSeconds(3f); // UI 사라질 때까지 기다리기
-        timerImgs[i].gameObject.SetActive(true);
+        // timerImgs[i].gameObject.SetActive(true);         타이머 제거
 
         while (currTime < time)
         {
@@ -665,11 +665,11 @@ public class Y_HotSeatController : MonoBehaviourPun
             string timeText = string.Format("{0:00}:{1:00}",
                 timeSpan.Minutes, Mathf.Max(time - timeSpan.Seconds, 0));
 
-            timerTxts[i].text = timeText;
+            // timerTxts[i].text = timeText;        타이머 제거
 
             if (time - timeSpan.Seconds <= 0)
             {
-                timerImgs[i].gameObject.SetActive(false); 
+                //timerImgs[i].gameObject.SetActive(false);     타이머 제거
 
                 // 인터뷰로 넘어감
                 StartCoroutine(InterviewCoroutine(i));

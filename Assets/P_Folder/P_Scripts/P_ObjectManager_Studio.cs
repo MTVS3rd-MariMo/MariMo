@@ -98,7 +98,7 @@ public class P_ObjectManager_Studio : MonoBehaviourPun
     public void Studio()
     {
         StartCoroutine(Studio_UI_Player());
-        //draw_Photo.SetActive(false);
+        draw_Photo.SetActive(false);
         Ani_Object.SetActive(true);
         Y_SoundManager.instance.PlayEftSound(Y_SoundManager.ESoundType.EFT_3D_OBJECT_05);
 

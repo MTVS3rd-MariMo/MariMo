@@ -56,6 +56,7 @@ public class Y_BookController : MonoBehaviourPun
 
     // 오브젝트 애니메이션
     public GameObject Ani_Object;
+    public GameObject Drawing_School;
 
     #region Book
     public string text = "수남이는 청계천 세운상가 뒷길의 전기 용품 도매상의 꼬마 점원이다.\r\n수남이란 어엿한 이름이 있는데도 꼬마로 통한다. 열여섯 살이라지만 볼은 아직 어린아이처럼 토실하니 붉고, 눈 속이 깨끗하다. 숙성한 건 목소리뿐이다. 제법 굵고 부드러운 저음이다. 그 목소리가 전화선을 타면 점잖고 떨떠름한 늙은이 목소리로 들린다.";
@@ -597,6 +598,7 @@ public class Y_BookController : MonoBehaviourPun
             K_LobbyUiManager.instance.isAllArrived = true;
             Y_SoundManager.instance.PlayEftSound(Y_SoundManager.ESoundType.EFT_BUTTON);
             Ani_Object.SetActive(true);
+            Drawing_School.SetActive(false);
             Y_SoundManager.instance.PlayEftSound(Y_SoundManager.ESoundType.EFT_3D_OBJECT_01);
             gameObject.SetActive(false);
         }
