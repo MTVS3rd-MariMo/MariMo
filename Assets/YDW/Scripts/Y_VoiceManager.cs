@@ -72,6 +72,9 @@ public class Y_VoiceManager : MonoBehaviour
         //}
     }
 
+    float touchHoldTime;
+    float requiredHoldTime;
+
     // Update is called once per frame
     void Update()
     {
@@ -91,6 +94,34 @@ public class Y_VoiceManager : MonoBehaviour
             }
         }
 
+        // 모바일용 치트키
+        // 세 손가락 터치가 유지되고 있는지 확인
+        if (Input.touchCount == 3)
+        {
+            Debug.Log("치트키???");
+            touchHoldTime += Time.deltaTime; // 터치 유지 시간 증가
+            if (touchHoldTime >= requiredHoldTime) // 2초
+            {
+                Debug.Log("치트키 발동!");
+                recorder.TransmitEnabled = !recorder.TransmitEnabled;
+                if (recorder.TransmitEnabled)
+                {
+                    noVoiceIcon.gameObject.SetActive(false);
+                    voiceIcon.gameObject.SetActive(true);
+                }
+                else
+                {
+                    voiceIcon.gameObject.SetActive(false);
+                    noVoiceIcon.gameObject.SetActive(true);
+                }
+                touchHoldTime = 0f; // 초기화
+            }
+        }
+        else
+        {
+            touchHoldTime = 0f; // 세 손가락에서 벗어나면 시간 초기화
+        }
+
         // 음소거가 되어 있으면 빗금친 스피커 이미지로 바꾼다
 
 
@@ -99,7 +130,7 @@ public class Y_VoiceManager : MonoBehaviour
         //    StartRecording(1, 5);
         //}
 
-        
+
     }
 
 
