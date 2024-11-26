@@ -25,12 +25,12 @@ public class K_HttpAvatar : MonoBehaviourPun
     public GameObject btn_ToMap;
 
     // URL
-    public string uploadUrl = "http://211.250.74.75:8202/api/avatar/upload-img";
+    public string uploadUrl = "http://3.36.39.119:80/api/avatar/aws/upload-img";
     private string avatarImgUrl;
     private List<string> animationUrls;
 
     // 다른 유저 조회 URL
-    private string otherUserUrl = "http://211.250.74.75:8202/api/avatar/participant";
+    private string otherUserUrl = "http://3.36.39.119:80/api/avatar/participant";
 
     public GameObject bookCanvas;
 
@@ -232,54 +232,54 @@ public class K_HttpAvatar : MonoBehaviourPun
                 yield return new WaitForSeconds(0.1f);
 
                 FileInfo a = new FileInfo(filePath);
-                try
-                {
 
-                    if (a.Length == 0)
+
+                if (a == null)
+                {
+                    System.IO.File.WriteAllBytes(filePath, videoData);
+                }
+                else
+                {
+                    if(FileOpenCheck(filePath))
                     {
                         System.IO.File.WriteAllBytes(filePath, videoData);
                     }
-
-
-                    Debug.Log($"MP4 파일 다운로드 및 저장 성공: {filePath}");
-
-                    // 로컬 파일을 위한 파일 프로토콜 추가
-                    string videoPathWithProtocol = "file:///" + filePath.Replace("\\", "/"); 
-                    Debug.Log("videoPath : 들어왔니? " + videoPathWithProtocol);
-                    // K_AvatarVpSettings에서 상태별 비디오 경로 설정
-                    //Debug.LogError("Null 인가? 아닌가? : " + (bookController.allPlayers[actorNumber - 1] == null) + " ActorNum : " + bookController.allPlayers[actorNumber - 1].Owner.ActorNumber);
-                    K_AvatarVpSettings avatarSettings = null;
-                    if (actorNumber > 0)
+                    else
                     {
-                        avatarSettings = bookController.allPlayers[actorNumber - 1].GetComponent<K_AvatarVpSettings>();
-                    }
-                    print("avatarSettings 들어왔니? : " + avatarSettings);
-
-                    // 파일 이름이 "animation_0"일 경우 idle 경로 설정, "animation_1"일 경우 walk 경로 설정
-                    if (fileName.Equals("animation_0"))
-                    {
-                        print("animation_0 니? 웅");
-                        if (avatarSettings != null) avatarSettings.SetVideoPath(videoPathWithProtocol, null, actorNumber); 
-                    }
-                    else if (fileName.Equals("animation_1"))
-                    {
-                        print("animation_1 니? 웅");
-                        if (avatarSettings != null)
-                        {
-                            avatarSettings.SetVideoPath(null, videoPathWithProtocol, actorNumber);
-                            int actorNum = PhotonNetwork.LocalPlayer.ActorNumber - 1;
-                        }
+                        yield return new WaitUntil(() => FileOpenCheck(filePath));
                     }
 
                 }
 
-                catch (IOException e)
+
+                Debug.Log($"MP4 파일 다운로드 및 저장 성공: {filePath}");
+
+                // 로컬 파일을 위한 파일 프로토콜 추가
+                string videoPathWithProtocol = "file:///" + filePath.Replace("\\", "/");
+                Debug.Log("videoPath : 들어왔니? " + videoPathWithProtocol);
+                // K_AvatarVpSettings에서 상태별 비디오 경로 설정
+                //Debug.LogError("Null 인가? 아닌가? : " + (bookController.allPlayers[actorNumber - 1] == null) + " ActorNum : " + bookController.allPlayers[actorNumber - 1].Owner.ActorNumber);
+                K_AvatarVpSettings avatarSettings = null;
+                if (actorNumber > 0)
                 {
+                    avatarSettings = bookController.allPlayers[actorNumber - 1].GetComponent<K_AvatarVpSettings>();
+                }
+                print("avatarSettings 들어왔니? : " + avatarSettings);
 
-                    StartCoroutine(Co_WaitFile(filePath, actorNumber, fileName));
-                    
-
-                    Debug.LogError("파일 저장 중 오류 발생" + e.Message);
+                // 파일 이름이 "animation_0"일 경우 idle 경로 설정, "animation_1"일 경우 walk 경로 설정
+                if (fileName.Equals("animation_0"))
+                {
+                    print("animation_0 니? 웅");
+                    if (avatarSettings != null) avatarSettings.SetVideoPath(videoPathWithProtocol, null, actorNumber);
+                }
+                else if (fileName.Equals("animation_1"))
+                {
+                    print("animation_1 니? 웅");
+                    if (avatarSettings != null)
+                    {
+                        avatarSettings.SetVideoPath(null, videoPathWithProtocol, actorNumber);
+                        int actorNum = PhotonNetwork.LocalPlayer.ActorNumber - 1;
+                    }
                 }
 
 
@@ -324,39 +324,7 @@ public class K_HttpAvatar : MonoBehaviourPun
         }
     }
 
-    IEnumerator Co_WaitFile(string filePath, int actorNumber, string fileName)
-    {
-        yield return new WaitUntil(() => FileOpenCheck(filePath));
-
-        string videoPathWithProtocol = "file:///" + filePath.Replace("\\", "/"); // 로컬 파일을 위한 파일 프로토콜 추가
-        Debug.Log("videoPath : 들어왔니? " + videoPathWithProtocol);
-        // K_AvatarVpSettings에서 상태별 비디오 경로 설정
-        //Debug.LogError("Null 인가? 아닌가? : " + (bookController.allPlayers[actorNumber - 1] == null) + " ActorNum : " + bookController.allPlayers[actorNumber - 1].Owner.ActorNumber);
-        K_AvatarVpSettings avatarSettings = null;
-        if (actorNumber > 0)
-        {
-            avatarSettings = bookController.allPlayers[actorNumber - 1].GetComponent<K_AvatarVpSettings>();
-        }
-        print("avatarSettings 들어왔니? : " + avatarSettings);
-
-        // 파일 이름이 "animation_0"일 경우 idle 경로 설정, "animation_1"일 경우 walk 경로 설정
-        if (fileName.Equals("animation_0"))
-        {
-            print("animation_0 니? 웅");
-            if (avatarSettings != null) avatarSettings.SetVideoPath(videoPathWithProtocol, null, actorNumber); // idle 경로 설정
-        }
-        else if (fileName.Equals("animation_1"))
-        {
-            print("animation_1 니? 웅");
-            if (avatarSettings != null)
-            {
-                avatarSettings.SetVideoPath(null, videoPathWithProtocol, actorNumber); // walk 경로 설정
-                int actorNum = PhotonNetwork.LocalPlayer.ActorNumber - 1;
-                //int characterNumForHS = actorNum - 1 >= 0 ? bookController.allPlayers[actorNum - 1].GetComponent<Y_PlayerAvatarSetting>().avatarIndex : -1;
-                //RPC_AddUrls(actorNum, videoPathWithProtocol);
-            }
-        }
-    }
+    
 
     public bool FileOpenCheck(string path)
     {
@@ -434,7 +402,7 @@ public class K_HttpAvatar : MonoBehaviourPun
         foreach (var userId in userIds)
         {
             // 동적으로 URL 생성
-            string specificUserUrl = $"http://211.250.74.75:8202/api/avatar/participant/{Y_HttpRoomSetUp.GetInstance().userlessonId}/{Convert.ToInt32(Y_HttpLogIn.GetInstance().userId)}";
+            string specificUserUrl = $"http://3.36.39.119:80/api/avatar/participant/{Y_HttpRoomSetUp.GetInstance().userlessonId}/{Convert.ToInt32(Y_HttpLogIn.GetInstance().userId)}";
 
             using (UnityWebRequest webRequest = UnityWebRequest.Get(specificUserUrl))
             {
@@ -445,7 +413,7 @@ public class K_HttpAvatar : MonoBehaviourPun
                 if (webRequest.result == UnityWebRequest.Result.Success)
                 {
                     Debug.Log($"GET 응답 받음: {webRequest.downloadHandler.text}");
-                    
+
                     ////////////////// HZ
                     //// JSON 데이터 파싱
                     //UserAvatarData avatarData = JsonUtility.FromJson<UserAvatarData>(webRequest.downloadHandler.text);
