@@ -51,7 +51,7 @@ public class Y_PlayerMove : MonoBehaviour, IPunObservable
     void Start()
     {
         speed = 10;
-        if (Application.platform == RuntimePlatform.Android) speed = 0.001f;
+        //if (Application.platform == RuntimePlatform.Android) speed = 0.001f;
         lastFootstepPosition = transform.position; // 초기 위치
         layerMaskGround = LayerMask.GetMask("Ground");
 
@@ -157,30 +157,30 @@ public class Y_PlayerMove : MonoBehaviour, IPunObservable
                 cc.Move(finalDir * speed * Time.fixedDeltaTime);
             }
 
-            // 화면 밖으로 나가지 못하게 고정
-            Vector3 viewPortPoint = Camera.main.WorldToViewportPoint(transform.position);
+            //// 화면 밖으로 나가지 못하게 고정
+            //Vector3 viewPortPoint = Camera.main.WorldToViewportPoint(transform.position);
 
-            if (viewPortPoint.x < 0.1f)
-            {
-                transform.position += Vector3.right * (0.1f - viewPortPoint.x) * pulling * Time.deltaTime;
-            }
+            //if (viewPortPoint.x < 0.1f)
+            //{
+            //    transform.position += Vector3.right * (0.1f - viewPortPoint.x) * pulling * Time.deltaTime;
+            //}
 
-            if (viewPortPoint.x > 0.9f)
-            {
-                transform.position += Vector3.right * (0.9f - viewPortPoint.x) * pulling * Time.deltaTime;
-            }
+            //if (viewPortPoint.x > 0.9f)
+            //{
+            //    transform.position += Vector3.right * (0.9f - viewPortPoint.x) * pulling * Time.deltaTime;
+            //}
 
-            if (viewPortPoint.y < 0.1f)
-            {
-                pulling = 50;
-                transform.position += Vector3.forward * (0.1f - viewPortPoint.y) * pulling * Time.deltaTime;
-            }
+            //if (viewPortPoint.y < 0.1f)
+            //{
+            //    pulling = 50;
+            //    transform.position += Vector3.forward * (0.1f - viewPortPoint.y) * pulling * Time.deltaTime;
+            //}
 
-            if (viewPortPoint.y > 0.7f)
-            {
-                pulling = 200;
-                transform.position += Vector3.forward * (0.7f - viewPortPoint.y) * pulling * Time.deltaTime;
-            }
+            //if (viewPortPoint.y > 0.7f)
+            //{
+            //    pulling = 200;
+            //    transform.position += Vector3.forward * (0.7f - viewPortPoint.y) * pulling * Time.deltaTime;
+            //}
         }
         else
         {
@@ -207,7 +207,7 @@ public class Y_PlayerMove : MonoBehaviour, IPunObservable
         float newDistanceToTarget = Vector3.Distance(transform.position, targetPosition);
 
         // 목표 지점에 도달했거나 초과했는지 확인
-        if (newDistanceToTarget > distanceToTarget) // 임계값 조정 가능 // newDistanceToTarget <= 0.1f ||
+        if (newDistanceToTarget <= 0.1f) // 임계값 조정 가능 // newDistanceToTarget <= 0.1f ||
         {
             transform.position = targetPosition; // 목표 지점에 고정
             isMoving = false;                    // 이동 중단
