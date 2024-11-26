@@ -225,10 +225,10 @@ public class Y_HotSeatController : MonoBehaviourPun
         //    //UnMuteAllPlayers();
         //}
 
-        if(Input.GetKeyDown(KeyCode.Alpha9))
-        {
-            StartCoroutine(LastCoroutine());
-        }
+        //if(Input.GetKeyDown(KeyCode.Alpha9))
+        //{
+        //    StartCoroutine(LastCoroutine());
+        //}
     }
 
     
@@ -242,7 +242,8 @@ public class Y_HotSeatController : MonoBehaviourPun
     void ProtoTest()
     {
         testNum++;
-        StartSpeech(testNum);
+        //Debug.LogError("testNum : " + testNum);
+        if(PhotonNetwork.IsMasterClient) RPC_StartSpeech(testNum);
     }
 
     void RPC_TurnOff()
@@ -496,7 +497,7 @@ public class Y_HotSeatController : MonoBehaviourPun
             players[index - 1].GetComponent<RectTransform>().anchoredPosition = originalPos; // 이미지 위치도 원위치
             stageScriptImgs[index - 1].gameObject.SetActive(false); // 전 플레이어의 자기소개 끄기
             spotlight.SetActive(false); // 스포트라이트 끔
-            Debug.LogError("전 플레이어 원위치!");
+            //Debug.LogError("전 플레이어 원위치!");
             // 녹음 끄기
             //  Y_VoiceManager.Instance.StopRecording(playerNums[index-1], "hotseatingInterview" + playerNums[index-1].ToString());
             // 보이스 꺼 줘야 함
@@ -516,10 +517,11 @@ public class Y_HotSeatController : MonoBehaviourPun
             selfIntNum++;
         }
 
-        if (index == 4 && PhotonNetwork.IsMasterClient)
+        if (index == 4 && PhotonNetwork.IsMasterClient && !isEnd)
         {
             //StartCoroutine(LastCoroutine());
             RPC_startLastCrt();
+            isEnd = true;
         }
 
     }
@@ -550,6 +552,7 @@ public class Y_HotSeatController : MonoBehaviourPun
     [PunRPC]
     void OnStage(int i)
     {
+        //Debug.LogError("OnStage Index : " + i);
         //Debug.LogError("무대까지 거의 다 왔다");
         playerPos = rtStage.anchoredPosition; // 도착점에 위치 맞춰준다
 
@@ -673,10 +676,10 @@ public class Y_HotSeatController : MonoBehaviourPun
 
             if (time - timeSpan.Seconds <= 0)
             {
-               timerImgs[i].gameObject.SetActive(false); 
+               timerImgs[i].gameObject.SetActive(false);
 
                 // 인터뷰로 넘어감
-                StartCoroutine(InterviewCoroutine(i));
+                if(PhotonNetwork.IsMasterClient) RPC_InterviewCrt(i);
             }
         }
 
@@ -687,9 +690,23 @@ public class Y_HotSeatController : MonoBehaviourPun
         currTime = 0;
     }
 
+    void RPC_InterviewCrt(int index)
+    {
+        photonView.RPC(nameof(StartInterviewCrt), RpcTarget.All, index);
+    }
+
+    [PunRPC]
+    void StartInterviewCrt(int index)
+    {
+        StartCoroutine(InterviewCoroutine(index));
+    }
+
     public GameObject[] myTurnImgs;
+
     IEnumerator InterviewCoroutine(int index)
     {
+        //Debug.LogError("InterviewCrt index : " + index);
+
         yield return new WaitForSeconds(2f);
 
         for(int i = 0; i <= players.Count; i++)
@@ -778,7 +795,7 @@ public class Y_HotSeatController : MonoBehaviourPun
         //yield return new WaitForSeconds(2.5f);
         yield return null;
         Y_VoiceManager.Instance.recorder.TransmitEnabled = true;
-        RPC_ActivateGuide(4);
+        if(PhotonNetwork.IsMasterClient) RPC_ActivateGuide(4);
         
     }
 

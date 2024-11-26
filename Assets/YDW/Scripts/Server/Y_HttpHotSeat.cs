@@ -90,14 +90,14 @@ public class Y_HttpHotSeat : MonoBehaviour
         }
     }
 
-    public IEnumerator UploadFileByFormDataWav(HttpInfo info, byte[] wavFile)
+    public IEnumerator UploadFileByFormDataWav(HttpInfo info, byte[] wavFile, int selfIntNum)
     {
         // data 를 MultipartForm 으로 셋팅
         List<IMultipartFormSection> formData = new List<IMultipartFormSection>();
         formData.Add(new MultipartFormDataSection("lessonId", Y_HttpRoomSetUp.GetInstance().userlessonId.ToString()));
         formData.Add(new MultipartFormDataSection("userName", GetUserNickName())); // 
         formData.Add(new MultipartFormDataSection("character", GetCharacterName())); // 
-        formData.Add(new MultipartFormDataSection("selfIntNum", GameObject.Find("HotSeatCanvas").GetComponent<Y_HotSeatController>().selfIntNum.ToString()));
+        formData.Add(new MultipartFormDataSection("selfIntNum", selfIntNum.ToString())); //GameObject.Find("HotSeatCanvas").GetComponent<Y_HotSeatController>().selfIntNum.ToString()
 
         formData.Add(new MultipartFormFileSection("wavFile", wavFile, "interview.wav", "audio/wav"));
 
@@ -262,7 +262,7 @@ public class Y_HttpHotSeat : MonoBehaviour
             }
         };
 
-        yield return StartCoroutine(UploadFileByFormDataWav(info, record));
+        yield return StartCoroutine(UploadFileByFormDataWav(info, record, selfIntNum));
 
     }
 
