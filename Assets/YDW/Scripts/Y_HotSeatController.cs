@@ -474,7 +474,7 @@ public class Y_HotSeatController : MonoBehaviourPun
         }
     }
 
-    //public GameObject[] timerImgs;        타이머 제거
+    public GameObject[] timerImgs;
     public int selfIntNum = 0;
 
     void RPC_StartSpeech(int index)
@@ -638,7 +638,7 @@ public class Y_HotSeatController : MonoBehaviourPun
     float currTime = 0;
     int hotSeating_count = 0;
     public GameObject[] guides;
-    // public TMP_Text[] timerTxts;     타이머 제거
+    public TMP_Text[] timerTxts;
 
     void RPC_StartTimer(int i, int time)
     {
@@ -655,7 +655,7 @@ public class Y_HotSeatController : MonoBehaviourPun
     IEnumerator StartTimer(int i, int time)
     {
         yield return new WaitForSeconds(3f); // UI 사라질 때까지 기다리기
-        // timerImgs[i].gameObject.SetActive(true);         타이머 제거
+        timerImgs[i].gameObject.SetActive(true);
 
         while (currTime < time)
         {
@@ -668,11 +668,11 @@ public class Y_HotSeatController : MonoBehaviourPun
             string timeText = string.Format("{0:00}:{1:00}",
                 timeSpan.Minutes, Mathf.Max(time - timeSpan.Seconds, 0));
 
-            // timerTxts[i].text = timeText;        타이머 제거
+            timerTxts[i].text = timeText;
 
             if (time - timeSpan.Seconds <= 0)
             {
-                //timerImgs[i].gameObject.SetActive(false);     타이머 제거
+               timerImgs[i].gameObject.SetActive(false); 
 
                 // 인터뷰로 넘어감
                 StartCoroutine(InterviewCoroutine(i));

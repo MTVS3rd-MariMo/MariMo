@@ -25,12 +25,12 @@ public class K_HttpAvatar : MonoBehaviourPun
     public GameObject btn_ToMap;
 
     // URL
-    public string uploadUrl = "http://3.36.39.119:80/api/avatar/aws/upload-img";
+    public string uploadUrl = "http://211.250.74.75:8202/api/avatar/upload-img";
     private string avatarImgUrl;
     private List<string> animationUrls;
 
     // 다른 유저 조회 URL
-    private string otherUserUrl = "http://3.36.39.119:80/api/avatar/participant";
+    private string otherUserUrl = "http://211.250.74.75:8202/api/avatar/participant";
 
     public GameObject bookCanvas;
 
@@ -434,7 +434,7 @@ public class K_HttpAvatar : MonoBehaviourPun
         foreach (var userId in userIds)
         {
             // 동적으로 URL 생성
-            string specificUserUrl = $"http://3.36.39.119:80/api/avatar/participant/{Y_HttpRoomSetUp.GetInstance().userlessonId}/{Convert.ToInt32(Y_HttpLogIn.GetInstance().userId)}";
+            string specificUserUrl = $"http://211.250.74.75:8202/api/avatar/participant/{Y_HttpRoomSetUp.GetInstance().userlessonId}/{Convert.ToInt32(Y_HttpLogIn.GetInstance().userId)}";
 
             using (UnityWebRequest webRequest = UnityWebRequest.Get(specificUserUrl))
             {
