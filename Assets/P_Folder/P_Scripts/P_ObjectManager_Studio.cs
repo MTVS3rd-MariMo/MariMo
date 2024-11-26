@@ -377,20 +377,34 @@ public class P_ObjectManager_Studio : MonoBehaviourPun
     {
         string path = System.IO.Path.Combine(Application.dataPath, fileName);
 
-        // 경로 미지정시 프로젝트 파일에 저장
-        ScreenCapture.CaptureScreenshot(path);
-
-        SendCapture(path);
+        CaptureAndSend(path);
     }
 
     private void CaptureScreenForMobile(string fileName)
     {
         string path = System.IO.Path.Combine(Application.dataPath, fileName);
 
-        // 모바일로 사용시 추가 경로지정 필요
-        ScreenCapture.CaptureScreenshot(path);
+        CaptureAndSend(path);
+    }
 
-        SendCapture(path);
+    public IEnumerator CaptureAndSend(string filePath)
+    {
+        // 스크린샷 캡처
+        ScreenCapture.CaptureScreenshot(filePath);
+
+        yield return new WaitForSeconds(0.5f);
+
+        if (System.IO.File.Exists(filePath))
+        {
+            Debug.Log($"스크린샷 저장 경로: {filePath}");
+
+            SendCapture(filePath);
+        }
+        else
+        {
+            Debug.LogError($"스크린샷 파일을 찾을 수 없습니다: {filePath}");
+        }
+
     }
 
     public void SendCapture(string filePath)
