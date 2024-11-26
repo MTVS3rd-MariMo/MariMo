@@ -286,7 +286,12 @@ public class P_ObjectManager_Studio : MonoBehaviourPun
         whiteScreen.gameObject.SetActive(false);
 
         Y_SoundManager.instance.PlayEftSound(Y_SoundManager.ESoundType.EFT_CAMERA);
-        TakePicture();
+
+        if (PhotonNetwork.IsMasterClient)
+        {
+            TakePicture();
+        }
+
 
         // 사진 틀 이미지 띄우기
         film_Img.gameObject.SetActive(true);
@@ -357,37 +362,49 @@ public class P_ObjectManager_Studio : MonoBehaviourPun
         string fileName = "SCREENSHOT-" + timeStamp + ".png";
 
         // 플랫폼별 분기 
-        //#if UNITY_IPONE || UNITY_ANDROID
-        //        CaptureScreenForMoblie(fileName);
-        //#else
-        //        CaptureScreenForPC(fileName);
-        //#endif
+        #if UNITY_ANDROID
+            CaptureScreenForMobile(fileName);
+        #else
+            CaptureScreenForPC(fileName);
+        #endif
 
         // 플랫폼별 분기 사용 안할시
         // 파일 이름은 임시로 test.png 
-        CaptureScreenForPC("test.png");
+        //CaptureScreenForPC("test.png");
     }
 
     private void CaptureScreenForPC(string fileName)
     {
         string path = System.IO.Path.Combine(Application.dataPath, fileName);
 
-        // 경로 미지정시 프로젝트 파일에 저장
-        ScreenCapture.CaptureScreenshot(path);
-
-        if (PhotonNetwork.IsMasterClient)
-            SendCapture(path);
+        CaptureAndSend(path);
     }
 
     private void CaptureScreenForMobile(string fileName)
     {
         string path = System.IO.Path.Combine(Application.dataPath, fileName);
 
-        // 모바일로 사용시 추가 경로지정 필요
-        ScreenCapture.CaptureScreenshot(path);
+        CaptureAndSend(path);
+    }
 
-        if (PhotonNetwork.IsMasterClient)
-            SendCapture(path);
+    public IEnumerator CaptureAndSend(string filePath)
+    {
+        // 스크린샷 캡처
+        ScreenCapture.CaptureScreenshot(filePath);
+
+        yield return new WaitForSeconds(0.5f);
+
+        if (System.IO.File.Exists(filePath))
+        {
+            Debug.Log($"스크린샷 저장 경로: {filePath}");
+
+            SendCapture(filePath);
+        }
+        else
+        {
+            Debug.LogError($"스크린샷 파일을 찾을 수 없습니다: {filePath}");
+        }
+
     }
 
     public void SendCapture(string filePath)

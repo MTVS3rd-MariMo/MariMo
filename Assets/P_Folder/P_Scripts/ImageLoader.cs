@@ -12,7 +12,15 @@ public class ImageLoader : MonoBehaviour
     // URL로부터 이미지를 불러와서 적용
     public void LoadImageFromUrl(string url)
     {
-        StartCoroutine(DownloadImage(url));
+        if (url.Length == 0)
+        {
+            uiImage.sprite = null;
+        }
+        else
+        {
+            StartCoroutine(DownloadImage(url));
+        }
+
     }
 
     // 이미지를 다운로드하는 코루틴
