@@ -4487,7 +4487,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   userId: 
-  mainServer: 3.36.39.119:80
+  mainServer: http://211.250.74.75:8202/
   isLoggedIn: 0
   userNickName: 
   RegisterUrl: api/user/signup
@@ -7811,7 +7811,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7fe48e76538a28849962e3bcaea0c300, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  url_Front: http://3.36.39.119:80
+  url_Front: http://211.250.74.75:8202
   quizData:
     quizList: []
     openQuestionList: []
