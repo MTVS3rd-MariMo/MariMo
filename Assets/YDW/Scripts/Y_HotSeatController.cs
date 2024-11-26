@@ -405,7 +405,7 @@ public class Y_HotSeatController : MonoBehaviourPun
             int selfIntCount = 0;
             for(int i = 0; i < playerNums.Count; i++)
             {
-                if (PhotonNetwork.LocalPlayer.ActorNumber - 1 == playerNums[i])
+                if (PhotonNetwork.LocalPlayer.ActorNumber - 2 == playerNums[i])
                 {
                     selfIntCount = i;
                 }
@@ -413,7 +413,7 @@ public class Y_HotSeatController : MonoBehaviourPun
 
             //Debug.LogError("selfIntCount : " + selfIntCount);
 
-            Y_HttpHotSeat.GetInstance().StartSendIntCoroutine(selfIntCount);
+            if(!PhotonNetwork.IsMasterClient) Y_HttpHotSeat.GetInstance().StartSendIntCoroutine(selfIntCount);
 
             if(PhotonNetwork.IsMasterClient) RPC_StartSpeech(0);
         }
@@ -516,9 +516,10 @@ public class Y_HotSeatController : MonoBehaviourPun
             selfIntNum++;
         }
 
-        if (index == 4)
+        if (index == 4 && PhotonNetwork.IsMasterClient)
         {
-            StartCoroutine(LastCoroutine());
+            //StartCoroutine(LastCoroutine());
+            RPC_startLastCrt();
         }
 
     }
@@ -723,14 +724,14 @@ public class Y_HotSeatController : MonoBehaviourPun
 
                 myTurnImgs[index].SetActive(false);
 
-                break; // 도원 알파 시연용
+                //break; // 도원 시연용
             }
 
-            //if (i == players.Count)
-            //{
-            //    if (PhotonNetwork.IsMasterClient) RPC_ProtoTest();
-            //    print("다음 사람 자기소개로 넘어갑니다");
-            //} // 도원 시연용으로 삭제
+            if (i == players.Count)
+            {
+                if (PhotonNetwork.IsMasterClient) RPC_ProtoTest();
+                print("다음 사람 자기소개로 넘어갑니다");
+            } // 도원 시연용으로 삭제
         }
     }
 
@@ -760,16 +761,16 @@ public class Y_HotSeatController : MonoBehaviourPun
 
     #endregion
 
-    //void RPC_startLastCrt()
-    //{
-    //    photonView.RPC(nameof(StartLastCrt), RpcTarget.All);
-    //}
+    void RPC_startLastCrt()
+    {
+        photonView.RPC(nameof(StartLastCrt), RpcTarget.All);
+    }
 
-    //[PunRPC]
-    //void StartLastCrt()
-    //{
-    //    StartCoroutine(LastCoroutine());
-    //}
+    [PunRPC]
+    void StartLastCrt()
+    {
+        StartCoroutine(LastCoroutine());
+    }
 
     // 최종 단계
     IEnumerator LastCoroutine()
