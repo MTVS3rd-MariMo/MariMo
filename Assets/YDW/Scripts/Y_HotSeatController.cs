@@ -242,7 +242,7 @@ public class Y_HotSeatController : MonoBehaviourPun
     void ProtoTest()
     {
         testNum++;
-        //Debug.LogError("testNum : " + testNum);
+        Debug.LogError("testNum : " + testNum);
         if(PhotonNetwork.IsMasterClient) RPC_StartSpeech(testNum);
     }
 
@@ -412,7 +412,7 @@ public class Y_HotSeatController : MonoBehaviourPun
                 }
             }
 
-            //Debug.LogError("selfIntCount : " + selfIntCount);
+            Debug.LogError("selfIntCount : " + selfIntCount);
 
             if(!PhotonNetwork.IsMasterClient) Y_HttpHotSeat.GetInstance().StartSendIntCoroutine(selfIntCount);
 
@@ -552,7 +552,7 @@ public class Y_HotSeatController : MonoBehaviourPun
     [PunRPC]
     void OnStage(int i)
     {
-        //Debug.LogError("OnStage Index : " + i);
+        Debug.LogError("OnStage Index : " + i);
         //Debug.LogError("무대까지 거의 다 왔다");
         playerPos = rtStage.anchoredPosition; // 도착점에 위치 맞춰준다
 
@@ -705,7 +705,7 @@ public class Y_HotSeatController : MonoBehaviourPun
 
     IEnumerator InterviewCoroutine(int index)
     {
-        //Debug.LogError("InterviewCrt index : " + index);
+        Debug.LogError("InterviewCrt index : " + index);
 
         yield return new WaitForSeconds(2f);
 
