@@ -157,30 +157,30 @@ public class Y_PlayerMove : MonoBehaviour, IPunObservable
                 cc.Move(finalDir * speed * Time.fixedDeltaTime);
             }
 
-            //// 화면 밖으로 나가지 못하게 고정
-            //Vector3 viewPortPoint = Camera.main.WorldToViewportPoint(transform.position);
+            // 화면 밖으로 나가지 못하게 고정
+            Vector3 viewPortPoint = Camera.main.WorldToViewportPoint(transform.position);
 
-            //if (viewPortPoint.x < 0.1f)
-            //{
-            //    transform.position += Vector3.right * (0.1f - viewPortPoint.x) * pulling * Time.deltaTime;
-            //}
+            if (viewPortPoint.x < 0.1f)
+            {
+                transform.position += Vector3.right * (0.1f - viewPortPoint.x) * pulling * Time.deltaTime;
+            }
 
-            //if (viewPortPoint.x > 0.9f)
-            //{
-            //    transform.position += Vector3.right * (0.9f - viewPortPoint.x) * pulling * Time.deltaTime;
-            //}
+            if (viewPortPoint.x > 0.9f)
+            {
+                transform.position += Vector3.right * (0.9f - viewPortPoint.x) * pulling * Time.deltaTime;
+            }
 
-            //if (viewPortPoint.y < 0.1f)
-            //{
-            //    pulling = 50;
-            //    transform.position += Vector3.forward * (0.1f - viewPortPoint.y) * pulling * Time.deltaTime;
-            //}
+            if (viewPortPoint.y < 0.1f)
+            {
+                pulling = 50;
+                transform.position += Vector3.forward * (0.1f - viewPortPoint.y) * pulling * Time.deltaTime;
+            }
 
-            //if (viewPortPoint.y > 0.7f)
-            //{
-            //    pulling = 200;
-            //    transform.position += Vector3.forward * (0.7f - viewPortPoint.y) * pulling * Time.deltaTime;
-            //}
+            if (viewPortPoint.y > 0.7f)
+            {
+                pulling = 200;
+                transform.position += Vector3.forward * (0.7f - viewPortPoint.y) * pulling * Time.deltaTime;
+            }
         }
         else
         {

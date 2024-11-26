@@ -141,7 +141,7 @@ public class Y_HotSeatController : MonoBehaviourPun
             // 1초 딜레이
             yield return new WaitForSeconds(2f);
             // 핫시팅 완료
-            K_KeyManager.instance.isDoneOpenQnA = true;
+            K_KeyManager.instance.isDoneHotSeating = true;
             K_LobbyUiManager.instance.img_KeyEmptyBox.gameObject.SetActive(true);
             
             GameObject.Find("Object_HotSeat").GetComponent<Y_HotSeatManager>().MoveControl(true);
@@ -482,6 +482,8 @@ public class Y_HotSeatController : MonoBehaviourPun
         photonView.RPC(nameof(StartSpeech), RpcTarget.All, index);
     }
 
+    Vector3 originalPos;
+
     [PunRPC]
     // 순서대로 자기소개 - 질문
     public void StartSpeech(int index)
@@ -491,7 +493,7 @@ public class Y_HotSeatController : MonoBehaviourPun
         {
             images[index - 1].sprite = sprites[2]; // 전 플레이어는 이름표 색 원래 색으로
             buttons[5 + index - 1].GetComponent<Image>().sprite = sprites[0];
-            players[index - 1].transform.position = playerPos; // 이미지 위치도 원위치
+            players[index - 1].GetComponent<RectTransform>().anchoredPosition = originalPos; // 이미지 위치도 원위치
             stageScriptImgs[index - 1].gameObject.SetActive(false); // 전 플레이어의 자기소개 끄기
             spotlight.SetActive(false); // 스포트라이트 끔
             Debug.LogError("전 플레이어 원위치!");
@@ -508,6 +510,7 @@ public class Y_HotSeatController : MonoBehaviourPun
             buttons[5 + index].GetComponent<Image>().sprite = sprites[1];
 
             // 플레이어 무대로 가게 한다
+            originalPos = players[index].GetComponent<RectTransform>().anchoredPosition;
             playerPos = players[index].GetComponent<RectTransform>().anchoredPosition;
             StartCoroutine(ChangePos(playerPos, index));
             selfIntNum++;
@@ -720,14 +723,14 @@ public class Y_HotSeatController : MonoBehaviourPun
 
                 myTurnImgs[index].SetActive(false);
 
-                //break; // 도원 알파 시연용
+                break; // 도원 알파 시연용
             }
 
-            if (i == players.Count)
-            {
-                if (PhotonNetwork.IsMasterClient) RPC_ProtoTest();
-                print("다음 사람 자기소개로 넘어갑니다");
-            } // 도원 시연용으로 삭제
+            //if (i == players.Count)
+            //{
+            //    if (PhotonNetwork.IsMasterClient) RPC_ProtoTest();
+            //    print("다음 사람 자기소개로 넘어갑니다");
+            //} // 도원 시연용으로 삭제
         }
     }
 
@@ -756,6 +759,17 @@ public class Y_HotSeatController : MonoBehaviourPun
 
 
     #endregion
+
+    //void RPC_startLastCrt()
+    //{
+    //    photonView.RPC(nameof(StartLastCrt), RpcTarget.All);
+    //}
+
+    //[PunRPC]
+    //void StartLastCrt()
+    //{
+    //    StartCoroutine(LastCoroutine());
+    //}
 
     // 최종 단계
     IEnumerator LastCoroutine()
