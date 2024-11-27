@@ -94,7 +94,12 @@ public class Y_PlayerMove : MonoBehaviour, IPunObservable
         // 만일 내가 소유권을 가진 캐릭터라면 
         if(pv.IsMine)
         {
-            if(Application.platform == RuntimePlatform.Android && !pv.Owner.IsMasterClient)
+            if (transform.position.y != 3)
+            {
+                transform.position = new Vector3(transform.position.x, 3, transform.position.z);
+            }
+
+            if (Application.platform == RuntimePlatform.Android && !pv.Owner.IsMasterClient)
             {
                 if (Input.touchCount > 0)
                 {
@@ -181,11 +186,16 @@ public class Y_PlayerMove : MonoBehaviour, IPunObservable
                 pulling = 200;
                 transform.position += Vector3.forward * (0.7f - viewPortPoint.y) * pulling * Time.deltaTime;
             }
+
+            
+
         }
         else
         {
             transform.position = Vector3.Lerp(transform.position, myPos, Time.deltaTime * trackingSpeed);
         }
+
+        
     }
 
     // 목표 지점으로 이동
