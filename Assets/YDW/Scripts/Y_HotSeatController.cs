@@ -186,7 +186,8 @@ public class Y_HotSeatController : MonoBehaviourPun
             if (touchHoldTime >= requiredHoldTime)
             {
                 Debug.Log("치트키 발동!");
-                StartCoroutine(LastCoroutine());
+                //StartCoroutine(LastCoroutine());
+                RPC_startLastCrt();
                 touchHoldTime = 0f; // 초기화
             }
         }
