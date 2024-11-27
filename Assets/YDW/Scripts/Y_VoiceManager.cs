@@ -73,7 +73,7 @@ public class Y_VoiceManager : MonoBehaviour
     }
 
     float touchHoldTime;
-    float requiredHoldTime;
+    float requiredHoldTime = 2;
 
     // Update is called once per frame
     void Update()
@@ -102,7 +102,7 @@ public class Y_VoiceManager : MonoBehaviour
             touchHoldTime += Time.deltaTime; // 터치 유지 시간 증가
             if (touchHoldTime >= requiredHoldTime) // 2초
             {
-                Debug.Log("치트키 발동!");
+                Debug.Log("치트키 발동!"); 
                 recorder.TransmitEnabled = !recorder.TransmitEnabled;
                 if (recorder.TransmitEnabled)
                 {
@@ -119,7 +119,7 @@ public class Y_VoiceManager : MonoBehaviour
         }
         else
         {
-            touchHoldTime = 0f; // 세 손가락에서 벗어나면 시간 초기화
+            touchHoldTime = 0f; // 두 손가락에서 벗어나면 시간 초기화
         }
 
         // 음소거가 되어 있으면 빗금친 스피커 이미지로 바꾼다
