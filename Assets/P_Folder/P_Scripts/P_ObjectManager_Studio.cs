@@ -288,9 +288,11 @@ public class P_ObjectManager_Studio : MonoBehaviourPun
         Y_SoundManager.instance.PlayEftSound(Y_SoundManager.ESoundType.EFT_CAMERA);
 
         Debug.Log("사진찍기 호출");
-        TakePicture();
-        
 
+        if (PhotonNetwork.IsMasterClient)
+        {
+            TakePicture();
+        }
 
         // 사진 틀 이미지 띄우기
         film_Img.gameObject.SetActive(true);
