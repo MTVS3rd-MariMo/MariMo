@@ -68,7 +68,7 @@ public class Y_HotSeatManager : MonoBehaviourPun
     void ActivateHotSeat()
     {
         CanvasRenderer[] canvasRenderers = hotSeatCanvas.GetComponentsInChildren<CanvasRenderer>();
-        Y_SoundManager.instance.PlayEftSound(Y_SoundManager.ESoundType.EFT_3D_OBJECT_03);
+        //Y_SoundManager.instance.PlayEftSound(Y_SoundManager.ESoundType.EFT_3D_OBJECT_03);
         hotSeatCanvas.SetActive(true);
         StartCoroutine(IncreaseAlpha(canvasRenderers));
     }
