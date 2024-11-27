@@ -384,7 +384,7 @@ public class P_ObjectManager_Studio : MonoBehaviourPun
         string path = System.IO.Path.Combine(Application.dataPath, fileName);
 
         Debug.Log("PC 사진찍기");
-        CaptureAndSend(path);
+        StartCoroutine(CaptureAndSend(path));
     }
 
     private void CaptureScreenForMobile(string fileName)
@@ -392,7 +392,7 @@ public class P_ObjectManager_Studio : MonoBehaviourPun
         string path = System.IO.Path.Combine(Application.dataPath, fileName);
 
         Debug.Log("모바일 사진찍기");
-        CaptureAndSend(path);
+        StartCoroutine(CaptureAndSend(path));
     }
 
     public IEnumerator CaptureAndSend(string filePath)
