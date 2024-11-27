@@ -174,7 +174,7 @@ public class P_ObjectManager_Question : MonoBehaviourPun
         {
             obj.GetComponent<Y_PlayerMove>().movable = canmove;
 
-            print(obj.GetComponent<Y_PlayerMove>().movable);
+            obj.transform.position = new Vector3(obj.transform.position.x, 3, obj.transform.position.z);
         }
     }
 
