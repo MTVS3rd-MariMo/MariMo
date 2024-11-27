@@ -804,7 +804,8 @@ public class Y_HotSeatController : MonoBehaviourPun
         //yield return new WaitForSeconds(2.5f);
         yield return null;
         Y_VoiceManager.Instance.recorder.TransmitEnabled = true;
-        if(PhotonNetwork.IsMasterClient) RPC_ActivateGuide(4);
+        //if(PhotonNetwork.IsMasterClient) // 도원 시연
+        RPC_ActivateGuide(4); 
         
     }
 
