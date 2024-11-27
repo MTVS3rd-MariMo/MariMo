@@ -287,9 +287,10 @@ public class P_ObjectManager_Studio : MonoBehaviourPun
 
         Y_SoundManager.instance.PlayEftSound(Y_SoundManager.ESoundType.EFT_CAMERA);
 
-        
+        Debug.Log("사진찍기 호출");
         TakePicture();
         
+
 
         // 사진 틀 이미지 띄우기
         film_Img.gameObject.SetActive(true);
@@ -359,6 +360,7 @@ public class P_ObjectManager_Studio : MonoBehaviourPun
         string timeStamp = System.DateTime.Now.ToString("yyyy-MM-dd");
         string fileName = "SCREENSHOT-" + timeStamp + ".png";
 
+        Debug.Log("플랫폼 분기 확인");
         // 플랫폼별 분기 
 #if UNITY_ANDROID
         {
@@ -381,6 +383,7 @@ public class P_ObjectManager_Studio : MonoBehaviourPun
     {
         string path = System.IO.Path.Combine(Application.dataPath, fileName);
 
+        Debug.Log("PC 사진찍기");
         CaptureAndSend(path);
     }
 
@@ -388,6 +391,7 @@ public class P_ObjectManager_Studio : MonoBehaviourPun
     {
         string path = System.IO.Path.Combine(Application.dataPath, fileName);
 
+        Debug.Log("모바일 사진찍기");
         CaptureAndSend(path);
     }
 
@@ -397,6 +401,8 @@ public class P_ObjectManager_Studio : MonoBehaviourPun
         ScreenCapture.CaptureScreenshot(filePath);
 
         yield return new WaitForSeconds(0.5f);
+
+        Debug.Log("파일경로 존재 확인");
 
         if (System.IO.File.Exists(filePath))
         {
