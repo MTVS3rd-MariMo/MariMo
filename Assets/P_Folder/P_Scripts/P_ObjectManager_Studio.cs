@@ -287,11 +287,9 @@ public class P_ObjectManager_Studio : MonoBehaviourPun
 
         Y_SoundManager.instance.PlayEftSound(Y_SoundManager.ESoundType.EFT_CAMERA);
 
-        if (PhotonNetwork.IsMasterClient)
-        {
-            TakePicture();
-        }
-
+        
+        TakePicture();
+        
 
         // 사진 틀 이미지 띄우기
         film_Img.gameObject.SetActive(true);
@@ -362,15 +360,21 @@ public class P_ObjectManager_Studio : MonoBehaviourPun
         string fileName = "SCREENSHOT-" + timeStamp + ".png";
 
         // 플랫폼별 분기 
-        #if UNITY_ANDROID
+#if UNITY_ANDROID
+        {
             CaptureScreenForMobile(fileName);
-        #else
+            return;
+        }
+#else
+        {
             CaptureScreenForPC(fileName);
-        #endif
+            return;
+        }
+#endif
 
         // 플랫폼별 분기 사용 안할시
         // 파일 이름은 임시로 test.png 
-        //CaptureScreenForPC("test.png");
+        CaptureScreenForPC("test.png");
     }
 
     private void CaptureScreenForPC(string fileName)
