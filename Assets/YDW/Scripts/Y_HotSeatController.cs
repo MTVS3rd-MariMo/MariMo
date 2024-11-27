@@ -195,7 +195,7 @@ public class Y_HotSeatController : MonoBehaviourPun
         {
             touchHoldTime = 0f; // 세 손가락에서 벗어나면 시간 초기화
         }
-    
+
 
         //if(Input.GetKeyDown(KeyCode.Alpha0) && testNum == players.Count)
         //{
@@ -226,10 +226,10 @@ public class Y_HotSeatController : MonoBehaviourPun
         //    //UnMuteAllPlayers();
         //}
 
-        //if(Input.GetKeyDown(KeyCode.Alpha9))
-        //{
-        //    StartCoroutine(LastCoroutine());
-        //}
+        if (Input.GetKeyDown(KeyCode.Alpha9))
+        {
+            StartCoroutine(LastCoroutine());
+        }
     }
 
     
