@@ -96,7 +96,7 @@ public class Y_VoiceManager : MonoBehaviour
 
         // 모바일용 치트키
         // 세 손가락 터치가 유지되고 있는지 확인
-        if (Input.touchCount == 3)
+        if (Input.touchCount == 2)
         {
             Debug.Log("치트키???");
             touchHoldTime += Time.deltaTime; // 터치 유지 시간 증가

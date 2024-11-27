@@ -532,12 +532,20 @@ public class Y_HotSeatController : MonoBehaviourPun
     {
         rtStage = stagePos.GetComponent<RectTransform>();
         RectTransform rtPlayer = players[i].GetComponent<RectTransform>();
-        while (Vector3.Distance(playerPos, stagePos.position) > 160f)
+        while (true)
         {
-            // 플레이어가 무대로 가게 한다
-            rtPlayer.anchoredPosition = Vector2.Lerp(playerPos, rtStage.anchoredPosition, 0.05f);
-            playerPos = rtPlayer.anchoredPosition;
-            yield return null;
+            if(Vector3.Distance(playerPos, stagePos.position) > 160f)
+            {
+                // 플레이어가 무대로 가게 한다
+                rtPlayer.anchoredPosition = Vector2.Lerp(playerPos, rtStage.anchoredPosition, 0.05f);
+                playerPos = rtPlayer.anchoredPosition;
+                yield return null;
+            }
+            else
+            {
+                rtPlayer.anchoredPosition = rtStage.anchoredPosition;
+                break;
+            }
         }
 
         if(PhotonNetwork.IsMasterClient) RPC_OnStage(i);
