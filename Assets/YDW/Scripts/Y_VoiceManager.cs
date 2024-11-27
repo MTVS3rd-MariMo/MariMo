@@ -73,7 +73,7 @@ public class Y_VoiceManager : MonoBehaviour
     }
 
     float touchHoldTime;
-    float requiredHoldTime = 2;
+    float requiredHoldTime = 1;
 
     // Update is called once per frame
     void Update()
