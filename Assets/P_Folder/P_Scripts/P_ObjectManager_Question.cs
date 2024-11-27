@@ -131,8 +131,6 @@ public class P_ObjectManager_Question : MonoBehaviourPun
                     RPC_MoveControl(false);
 
                     RPC_StartQuestion();
-
-                    Y_SoundManager.instance.PlayEftSound(Y_SoundManager.ESoundType.EFT_3D_OBJECT_02);
                 }
             }
         }
@@ -164,7 +162,7 @@ public class P_ObjectManager_Question : MonoBehaviourPun
     public void StartQuestion()
     {
         StartCoroutine(Question_UI_Start());
-
+        Y_SoundManager.instance.PlayEftSound(Y_SoundManager.ESoundType.EFT_3D_OBJECT_02);
         draw_Question.SetActive(false);
         Ani_Object.SetActive(true);
     }

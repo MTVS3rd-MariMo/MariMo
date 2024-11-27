@@ -366,11 +366,13 @@ public class P_ObjectManager_Studio : MonoBehaviourPun
         // 플랫폼별 분기 
 #if UNITY_ANDROID
         {
+            Debug.Log("모바일 생성");
             CaptureScreenForMobile(fileName);
             return;
         }
 #else
         {
+        Debug.Log("PC 생성");
             CaptureScreenForPC(fileName);
             return;
         }
@@ -391,7 +393,7 @@ public class P_ObjectManager_Studio : MonoBehaviourPun
 
     private void CaptureScreenForMobile(string fileName)
     {
-        string path = System.IO.Path.Combine(Application.dataPath, fileName);
+        string path = System.IO.Path.Combine(Application.persistentDataPath, fileName);
 
         Debug.Log("모바일 사진찍기");
         StartCoroutine(CaptureAndSend(path));
