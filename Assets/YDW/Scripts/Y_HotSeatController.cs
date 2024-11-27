@@ -749,14 +749,14 @@ public class Y_HotSeatController : MonoBehaviourPun
 
                 myTurnImgs[index].SetActive(false);
 
-                //break; // 도원 시연용
+                break; // 도원 시연용
             }
 
-            if (i == players.Count)
-            {
-                if (PhotonNetwork.IsMasterClient) RPC_ProtoTest();
-                print("다음 사람 자기소개로 넘어갑니다");
-            } // 도원 시연용으로 삭제
+            //if (i == players.Count)
+            //{
+            //    if (PhotonNetwork.IsMasterClient) RPC_ProtoTest();
+            //    print("다음 사람 자기소개로 넘어갑니다");
+            //} // 도원 시연용으로 삭제
         }
     }
 
