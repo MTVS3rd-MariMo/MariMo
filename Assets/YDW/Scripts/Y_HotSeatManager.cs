@@ -143,6 +143,8 @@ public class Y_HotSeatManager : MonoBehaviourPun
         foreach (GameObject obj in players)
         {
             obj.GetComponent<Y_PlayerMove>().movable = canmove;
+
+            obj.transform.position = new Vector3(obj.transform.position.x, 3, obj.transform.position.z);
         }
     }
 }
