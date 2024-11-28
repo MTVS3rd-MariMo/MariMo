@@ -366,23 +366,18 @@ public class P_ObjectManager_Studio : MonoBehaviourPun
 
         Debug.Log("플랫폼 분기 확인");
         // 플랫폼별 분기 
-#if UNITY_ANDROID
+        if (Application.platform == RuntimePlatform.Android)
         {
             Debug.Log("모바일 생성");
             CaptureScreenForMobile(fileName);
             return;
         }
-#else
+        else
         {
-        Debug.Log("PC 생성");
+            Debug.Log("PC 생성");
             CaptureScreenForPC(fileName);
             return;
         }
-#endif
-
-        // 플랫폼별 분기 사용 안할시
-        // 파일 이름은 임시로 test.png 
-        CaptureScreenForPC("test.png");
     }
 
     private void CaptureScreenForPC(string fileName)
