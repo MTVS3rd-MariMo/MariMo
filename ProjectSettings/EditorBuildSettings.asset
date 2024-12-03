@@ -9,7 +9,7 @@ EditorBuildSettings:
     path: Assets/test/videoTest.unity
     guid: 99c9720ab356a0642a771bea13969a05
   - enabled: 0
-    path: Assets/Scenes/LobbyScene.unity
+    path: Assets/Scenes/Proto-Beta/LobbyScene.unity
     guid: ccac6c073d8c55844bdcfb429225ff8b
   - enabled: 0
     path: Assets/YDW/Scenes/Y_ProtoScene_Old.unity
@@ -21,10 +21,10 @@ EditorBuildSettings:
     path: Assets/YDW/Scenes/Y_ProtoScene.unity
     guid: acb927c5c0a1e1f4084983da39dff3b3
   - enabled: 0
-    path: Assets/Scenes/Proto_Real.unity
+    path: Assets/Scenes/Proto-Beta/Proto_Real.unity
     guid: ae6affcc89503fb4db6db9fedbea5a99
   - enabled: 0
-    path: Assets/Scenes/Proto_Real_Test.unity
+    path: Assets/Scenes/Proto-Beta/Proto_Real_Test.unity
     guid: 8b30ace312fc1cd4a8dc928342843199
   - enabled: 0
     path: Assets/Scenes/Proto_Real_Park.unity
@@ -33,13 +33,13 @@ EditorBuildSettings:
     path: Assets/Hz/Scenes/K_Alpha.unity
     guid: 8e5ce8e25807d4f488a236f2367af703
   - enabled: 0
-    path: Assets/Scenes/LobbyScene_YDW.unity
+    path: Assets/Scenes/Proto-Beta/LobbyScene_YDW.unity
     guid: 5fae077d5e0ae444bba96c3c0328e7eb
   - enabled: 0
     path: Assets/YDW/Scenes/Alpha_YDW.unity
     guid: c355f970d706a9644ac6dcee6ee3e1c3
   - enabled: 0
-    path: Assets/Scenes/Alpha_Real.unity
+    path: Assets/Scenes/Proto-Beta/Alpha_Real.unity
     guid: a97dd468eb7e7f549a1fd659a3e24806
   - enabled: 0
     path: Assets/P_Folder/P_Scenes/P_CreatorTool.unity
@@ -48,13 +48,13 @@ EditorBuildSettings:
     path: Assets/Hz/Scenes/K_Beta.unity
     guid: a627c2e46fa8fdf4b8e0d9b7b3dbd22a
   - enabled: 1
-    path: Assets/Scenes/BetaLobbyScene_Real.unity
+    path: Assets/Scenes/Proto-Beta/BetaLobbyScene_Real.unity
     guid: d36501a35dae3064db9f65b78894e322
   - enabled: 0
     path: Assets/YDW/Scenes/Beta_YDW.unity
     guid: 51b7057a801ed8b40ad5981055dbf8e9
   - enabled: 1
-    path: Assets/Scenes/Beta_Real.unity
+    path: Assets/Scenes/Proto-Beta/Beta_Real.unity
     guid: 9b7c14ba6a73dc543ba119aa8ceab1e9
   - enabled: 0
     path: Assets/YDW/Test/TestScene.unity
