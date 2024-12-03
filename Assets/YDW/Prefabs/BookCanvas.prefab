@@ -5439,7 +5439,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 6351960336622579975}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 8597726404939188563}
+        m_TargetAssemblyTypeName: K_PaintClear, Assembly-CSharp
+        m_MethodName: ClearPaintYes
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &6098977534624740198
 GameObject:
   m_ObjectHideFlags: 0
@@ -7489,7 +7501,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 2461502581401781021}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 8597726404939188563}
+        m_TargetAssemblyTypeName: K_PaintClear, Assembly-CSharp
+        m_MethodName: ClearPaintNo
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &8180111478541309136
 GameObject:
   m_ObjectHideFlags: 0
@@ -8871,7 +8895,7 @@ PrefabInstance:
     - target: {fileID: 3615930560580344382, guid: b9afc3e64b4aa46328ba596143c56b8b,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 2110
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3615930560580344382, guid: b9afc3e64b4aa46328ba596143c56b8b,
         type: 3}
