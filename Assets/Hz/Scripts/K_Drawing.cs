@@ -99,6 +99,23 @@ public class K_Drawing : MonoBehaviour
         }
     }
 
+    // 그림을 그리기 시작하는 메서드
+    public void StartDrawing()
+    {
+        // pixel_Texture 크기와 화소 설정
+        pixel_Width = (int)paint_RT.rect.width;
+        pixel_Height = (int)paint_RT.rect.height;
+
+        // 텍스처가 null이라면 새로운 텍스처 생성
+        if (pixel_Texture == null)
+        {
+            pixel_Texture = new Texture2D(pixel_Width, pixel_Height);
+        }
+
+        // 초기화된 텍스처에 현재 그릴 색상 설정
+        paint.texture = pixel_Texture;
+    }
+
     void Draw_Jum(Vector2 mousePos)
     {
         int brush_Width = (int)mousePos.x;

@@ -14,12 +14,13 @@ public class K_PaintClear : MonoBehaviour
     // 초기화 할 빈 텍스처
     [SerializeField]
     RawImage paint;
+    Texture2D paintTexture;
     RectTransform paint_RT;
 
     // 기본 배경 색상(흰색)
     private Color defaultColor = Color.white; 
     // 그림을 그릴 텍스처
-    private Texture2D paintTexture;
+    
     // 초기화 텍스쳐
     private Texture2D blankTexture;
     int pixel_Width, pixel_Height;
@@ -35,21 +36,23 @@ public class K_PaintClear : MonoBehaviour
 
         // Paint의 RectTransform 가져오기
         paint_RT = paint.GetComponent<RectTransform>();
-
-        // Paint의 텍스처 초기화
-        int width = Mathf.RoundToInt(paint_RT.rect.width);
-        int height = Mathf.RoundToInt(paint_RT.rect.height);
-
-        blankTexture = new Texture2D(pixel_Width, pixel_Height, TextureFormat.RGBA32, false);
-        //ResetTexture(); // 빈 텍스처로 초기화
-        //paint.texture = blankTexture; // Paint의 텍스처로 설정
     }
 
 
     void Start()
     {
         // 처음엔 UI 꺼주기
-        img_PaintClear.gameObject.SetActive(false);       
+        img_PaintClear.gameObject.SetActive(false);
+
+        // 텍스쳐 설정
+        if(paint.texture is Texture2D  texture)
+        {
+            paintTexture = texture;
+        }       
+        else
+        {
+            // 초기화
+        }
     }
 
 
@@ -76,24 +79,27 @@ public class K_PaintClear : MonoBehaviour
     // 기본 빈 텍스처 초기화
     void ResetTexture()
     {
-        // 기존 텍스처의 크기를 가져오거나 기본 크기 지정
-        int width = paint.texture != null ? paint.texture.width : 512;
-        int height = paint.texture != null ? paint.texture.height : 512;
+        print("1");
 
-        // 빈 텍스처 생성
-        blankTexture = new Texture2D(width, height, TextureFormat.RGBA32, false);
-
-        // 텍스처에 기본 색상 채우기
-        Color[] pixels = new Color[width * height];
-        for (int i = 0; i < pixels.Length; i++)
+        // K_Drawing의 static 텍스처를 초기화 (새로운 빈 텍스처로 설정)
+        K_Drawing.pixel_Texture = new Texture2D((int)paint_RT.rect.width, (int)paint_RT.rect.height);
+        
+        // 텍스처를 흰색으로 초기화 (배경색으로 설정)
+        Color[] clearColors = new Color[K_Drawing.pixel_Texture.width * K_Drawing.pixel_Texture.height];
+        for (int i = 0; i < clearColors.Length; i++)
         {
-            pixels[i] = defaultColor;
+            clearColors[i] = defaultColor;  // 기본 배경 색 (흰색)
         }
-        blankTexture.SetPixels(pixels);
-        blankTexture.Apply();
+        K_Drawing.pixel_Texture.SetPixels(clearColors);
+        K_Drawing.pixel_Texture.Apply();  // 적용하여 텍스처 업데이트
 
-        // RawImage에 새 텍스처 적용
-        paint.texture = blankTexture;
+        // paint의 RawImage에 텍스처 할당
+        paint.texture = K_Drawing.pixel_Texture;
+
+        // 다시 그릴 수 있도록 K_Drawing의 StartDrawing 메서드 호출
+        FindObjectOfType<K_Drawing>().StartDrawing();
+
+        print("2");
     }
 
 
