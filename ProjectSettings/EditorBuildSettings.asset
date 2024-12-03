@@ -12,13 +12,13 @@ EditorBuildSettings:
     path: Assets/Scenes/Proto-Beta/LobbyScene.unity
     guid: ccac6c073d8c55844bdcfb429225ff8b
   - enabled: 0
-    path: Assets/YDW/Scenes/Y_ProtoScene_Old.unity
+    path: Assets/YDW/Scenes/NoUse/Y_ProtoScene_Old.unity
     guid: c2feeb6746ff6804da19e22c9d3703d1
   - enabled: 0
-    path: Assets/YDW/Scenes/ProtoScene.unity
+    path: Assets/YDW/Scenes/NoUse/ProtoScene.unity
     guid: fe276ec6637f92949b0583917765c7cc
   - enabled: 0
-    path: Assets/YDW/Scenes/Y_ProtoScene.unity
+    path: Assets/YDW/Scenes/NoUse/Y_ProtoScene.unity
     guid: acb927c5c0a1e1f4084983da39dff3b3
   - enabled: 0
     path: Assets/Scenes/Proto-Beta/Proto_Real.unity
@@ -36,7 +36,7 @@ EditorBuildSettings:
     path: Assets/Scenes/Proto-Beta/LobbyScene_YDW.unity
     guid: 5fae077d5e0ae444bba96c3c0328e7eb
   - enabled: 0
-    path: Assets/YDW/Scenes/Alpha_YDW.unity
+    path: Assets/YDW/Scenes/NoUse/Alpha_YDW.unity
     guid: c355f970d706a9644ac6dcee6ee3e1c3
   - enabled: 0
     path: Assets/Scenes/Proto-Beta/Alpha_Real.unity
@@ -51,7 +51,7 @@ EditorBuildSettings:
     path: Assets/Scenes/Proto-Beta/BetaLobbyScene_Real.unity
     guid: d36501a35dae3064db9f65b78894e322
   - enabled: 0
-    path: Assets/YDW/Scenes/Beta_YDW.unity
+    path: Assets/YDW/Scenes/NoUse/Beta_YDW.unity
     guid: 51b7057a801ed8b40ad5981055dbf8e9
   - enabled: 0
     path: Assets/Scenes/Proto-Beta/Beta_Real.unity

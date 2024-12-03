@@ -13,6 +13,8 @@ public class QuizData
     public List<Quiz> quizList;
     public List<OpenQuestion> openQuestionList;
     public long lessonMaterialId;
+    public string bookContents;
+    public List<string> roleList;
 }
 
 [Serializable]
