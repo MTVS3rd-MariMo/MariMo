@@ -66,6 +66,8 @@ public class P_RoomCreate : MonoBehaviour
         dropdown.AddOptions(optionDatas);
 
         dropdown.value = 0;
+
+        ClearRoomCreate();
     }
 
     void OnclickRoomCreate()
@@ -115,5 +117,12 @@ public class P_RoomCreate : MonoBehaviour
         };
 
         StartCoroutine(HttpManager.GetInstance().Post(info));
+    }
+
+    public void ClearRoomCreate()
+    {
+        RoomName.text = "";
+        Class.text = "";
+        PlayerNum.text = "";
     }
 }

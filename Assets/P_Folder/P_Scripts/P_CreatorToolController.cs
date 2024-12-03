@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Photon.Pun;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -10,6 +11,7 @@ using UnityEngine.UI;
 
 public class P_CreatorToolController : MonoBehaviour
 {
+    public GameObject panel_Login;
     public GameObject panel_SelectStory;
     public GameObject panel_CreateRoom;
     public GameObject panel_Library;
@@ -37,6 +39,7 @@ public class P_CreatorToolController : MonoBehaviour
     public Button btn_Back_SerchPDF;
     public Button btn_SelectQuiz;
     public Button btn_Option;
+    public Button btn_LogOut;
 
 
     public TMP_Text titleNickname;
@@ -75,6 +78,7 @@ public class P_CreatorToolController : MonoBehaviour
         btn_Checking.onClick.AddListener(OnclickChecking);
         btn_SelectQuiz.onClick.AddListener(OnclickSelectComplete);
         btn_Option.onClick.AddListener(OnclickOption);
+        btn_LogOut.onClick.AddListener(OnclickSignOut);
 
 
         btn_SelectStory.image.sprite = sp_SelectStory[1];
@@ -101,9 +105,9 @@ public class P_CreatorToolController : MonoBehaviour
         panel_MakingQuiz.SetActive(false);
         panel_Making.SetActive(false);
         panel_FileViewer.SetActive(false);
-        panel_NewStory.SetActive(false);
-        panel_SelectPDF.SetActive(false);
-        panel_Making.SetActive(false);
+        OnclickBack_NewStory();
+        OnclickBack_SelectPDF();
+        OnclickBack_isMaking();
         panel_MakingAsk.SetActive(false);
         panel_MakingQuiz.SetActive(false);
 
@@ -169,6 +173,9 @@ public class P_CreatorToolController : MonoBehaviour
 
     public void OnclickBack_NewStory()
     {
+        text_bookName.text = "";
+        text_bookWriter.text = "";
+
         panel_NewStory.SetActive(false);
     }
 
@@ -438,5 +445,13 @@ public class P_CreatorToolController : MonoBehaviour
         // 원래 크기와 위치로 복원
         inputFieldRect.sizeDelta = originalSize;
         inputFieldRect.gameObject.transform.localPosition = originalPosition;
+    }
+
+    public void OnclickSignOut()
+    {
+        PhotonNetwork.Disconnect();
+
+        panel_Login.SetActive(true);
+        gameObject.SetActive(false);
     }
 }

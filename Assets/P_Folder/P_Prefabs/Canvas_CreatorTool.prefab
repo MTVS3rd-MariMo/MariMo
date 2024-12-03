@@ -15771,6 +15771,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3b935a345fdc3a04883c4d26e4cb7fb1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  panel_Login: {fileID: 0}
   panel_SelectStory: {fileID: 5720607823985213856}
   panel_CreateRoom: {fileID: 7717153138115623290}
   panel_Library: {fileID: 276693838659707123}
@@ -15803,6 +15804,7 @@ MonoBehaviour:
   btn_Back_SerchPDF: {fileID: 2815102889246131312}
   btn_SelectQuiz: {fileID: 7817305914623464283}
   btn_Option: {fileID: 4944949202320548493}
+  btn_LogOut: {fileID: 8729479413995484464}
   titleNickname: {fileID: 6308149762627293286}
   sp_SelectStory:
   - {fileID: 21300000, guid: c7539ebc0350cad4fbff50dbc2f3165f, type: 3}
