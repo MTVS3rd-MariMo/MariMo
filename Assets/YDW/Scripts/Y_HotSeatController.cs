@@ -34,9 +34,9 @@ public class Y_HotSeatController : MonoBehaviourPun
     public TMP_Text Txt_TitleText;
     public Image myAvatarImage;
     public RectTransform inputFieldRect;
-    public Vector2 expandedSize = new Vector2(1200, 200); // 확장된 크기
+    public Vector2 expandedSize = new Vector2(1200, 400); // 확장된 크기
     public Vector2 expandedPos = new Vector2(-450, 180); // 확장됐을 때 위치
-    public Vector2 expandedPosWordCnt = new Vector2(-480, -76);
+    public Vector2 expandedPosWordCnt = new Vector2(-480, -172);
     private Vector2 originalSize;
     private Vector2 originalPosition;
     private Vector2 originalSizeWordCnt;
@@ -245,26 +245,32 @@ public class Y_HotSeatController : MonoBehaviourPun
     // InputField가 선택되었을 때 호출
     public void OnSelect(BaseEventData eventData)
     {
-        inputFieldRect.sizeDelta = expandedSize;
-        inputFieldRect.gameObject.transform.localPosition = expandedPos;
-        wordCount.gameObject.transform.localPosition = expandedPosWordCnt;
+        if (Application.platform == RuntimePlatform.Android)
+        {
+            inputFieldRect.sizeDelta = expandedSize;
+            inputFieldRect.gameObject.transform.localPosition = expandedPos;
+            wordCount.gameObject.transform.localPosition = expandedPosWordCnt;
 
-        // 터치 키보드 호출 (모바일에서만 동작)
-        keyboard = TouchScreenKeyboard.Open("", TouchScreenKeyboardType.Default);
+            //// 터치 키보드 호출 (모바일에서만 동작)
+            //keyboard = TouchScreenKeyboard.Open("", TouchScreenKeyboardType.Default);
+        }
     }
 
     // InputField가 선택 해제되었을 때 호출
     public void OnDeselect(BaseEventData eventData)
     {
-        inputFieldRect.sizeDelta = originalSize;
-        inputFieldRect.gameObject.transform.localPosition = originalPosition;
-        wordCount.GetComponent<RectTransform>().sizeDelta = originalSizeWordCnt;
-        wordCount.gameObject.transform.localPosition = originalPositionWordCnt;
-
-        // 터치 키보드 닫기
-        if (keyboard != null && keyboard.active)
+        if (Application.platform == RuntimePlatform.Android)
         {
-            keyboard.active = false;
+            inputFieldRect.sizeDelta = originalSize;
+            inputFieldRect.gameObject.transform.localPosition = originalPosition;
+            wordCount.GetComponent<RectTransform>().sizeDelta = originalSizeWordCnt;
+            wordCount.gameObject.transform.localPosition = originalPositionWordCnt;
+
+            //// 터치 키보드 닫기
+            //if (keyboard != null && keyboard.active)
+            //{
+            //    keyboard.active = false;
+            //}
         }
     }
 
@@ -649,11 +655,22 @@ public class Y_HotSeatController : MonoBehaviourPun
         StartCoroutine(StartTimer(i, time));
     }
 
+    public Image[] speakingUIOns;
+    public Image[] speakingUIOffs;
+    Image speakingUIOn;
+    Image speakingUIOff;
+
     // 타이머 시작
     IEnumerator StartTimer(int i, int time)
     {
         yield return new WaitForSeconds(3f); // UI 사라질 때까지 기다리기
-        timerImgs[i].gameObject.SetActive(true);
+        //timerImgs[i].gameObject.SetActive(true);
+
+        speakingUIOn = speakingUIOns[i];
+        speakingUIOff = speakingUIOffs[i];
+        speakingUIOn.gameObject.SetActive(true);
+        speakingUIOff.gameObject.SetActive(true);
+        float timescale = 1 / (time / Time.deltaTime);
 
         while (currTime < time)
         {
@@ -663,14 +680,20 @@ public class Y_HotSeatController : MonoBehaviourPun
 
             // 경과 시간을 분:초 형식으로 변환
             TimeSpan timeSpan = TimeSpan.FromSeconds(currTime);
-            string timeText = string.Format("{0:00}:{1:00}",
-                timeSpan.Minutes, Mathf.Max(time - timeSpan.Seconds, 0));
+            //string timeText = string.Format("{0:00}:{1:00}",
+            //    timeSpan.Minutes, Mathf.Max(time - timeSpan.Seconds, 0));
 
-            timerTxts[i].text = timeText;
+            //timerTxts[i].text = timeText;
+
+            speakingUIOn.fillAmount = 1 - (currTime / time);
 
             if (time - timeSpan.Seconds <= 0)
             {
-               timerImgs[i].gameObject.SetActive(false);
+                timerImgs[i].gameObject.SetActive(false);
+                speakingUIOn.fillAmount = 1;
+                speakingUIOff.fillAmount = 1;
+                speakingUIOn.gameObject.SetActive(false);
+                speakingUIOff.gameObject.SetActive(false);
 
                 // 인터뷰로 넘어감
                 if(PhotonNetwork.IsMasterClient) RPC_InterviewCrt(i);
@@ -695,7 +718,8 @@ public class Y_HotSeatController : MonoBehaviourPun
         StartCoroutine(InterviewCoroutine(index));
     }
 
-    public GameObject[] myTurnImgs;
+    //public GameObject[] myTurnImgs;
+    int interviewTime = 10;
 
     IEnumerator InterviewCoroutine(int index)
     {
@@ -707,33 +731,61 @@ public class Y_HotSeatController : MonoBehaviourPun
         {
             if(i < players.Count && i != index) // playerNums[index]
             {
-                myTurnImgs[i].SetActive(true);
+                //myTurnImgs[i].SetActive(true);
+                speakingUIOffs[i].gameObject.SetActive(true);
+                speakingUIOns[i].gameObject.SetActive(true);
 
                 // 질문하는 사람 보이스 켜주고 녹음 시작
                 MuteOtherPlayers(playerNums[i] + 1); 
                 print((playerNums[i] + 1) + " 빼고 뮤트됨! - 인터뷰 질문");
                 RecordVoice(playerNums[i] + 2);
 
-                // 원래는 30초인데 테스트용 5초
-                yield return new WaitForSeconds(10f);
+                // 원래는 30초인데 테스트용 10초
+
+                float currTime = 0;
+                while (currTime < interviewTime)
+                {
+
+                    speakingUIOns[i].fillAmount = 1 - (currTime / interviewTime);
+                    currTime += Time.deltaTime;
+                    yield return null;
+                }
+                currTime = 0;
+
+                //yield return new WaitForSeconds(10f);
                 // 녹음 종료
                 StopRecordVoice(playerNums[i] + 2, index);
 
-                myTurnImgs[i].SetActive(false);
+                //myTurnImgs[i].SetActive(false);
+                speakingUIOns[i].fillAmount = 1;
+                speakingUIOns[i].gameObject.SetActive(false);
+                speakingUIOffs[i].gameObject.SetActive(false);
 
-                myTurnImgs[index].SetActive(true);
+                //myTurnImgs[index].SetActive(true);
+                speakingUIOffs[index].gameObject.SetActive(true);
+                speakingUIOns[index].gameObject.SetActive(true);
 
                 // 자기소개 한 사람(답변할 사람) 보이스 켜주고 녹음 시작
                 MuteOtherPlayers(playerNums[index] + 1);
                 print((playerNums[index] + 1) + " 빼고 뮤트됨! - 인터뷰 답변");
                 RecordVoice(playerNums[index] + 2);
 
-                // 원래는 60초인데 일단 5초
-                yield return new WaitForSeconds(10f);
+                // 원래는 60초인데 일단 10초
+                while (currTime < interviewTime)
+                {
+                    speakingUIOns[index].fillAmount = 1 - (currTime / interviewTime);
+                    currTime += Time.deltaTime;
+                    yield return null;
+                }
+                currTime = 0;
+                //yield return new WaitForSeconds(10f);
                 // 녹음 종료
                 StopRecordVoice(playerNums[index] + 2, index);
 
-                myTurnImgs[index].SetActive(false);
+                //myTurnImgs[index].SetActive(false);
+                speakingUIOns[index].fillAmount = 1;
+                speakingUIOns[index].gameObject.SetActive(false);
+                speakingUIOffs[index].gameObject.SetActive(false);
 
                 break; // 도원 시연용
             }

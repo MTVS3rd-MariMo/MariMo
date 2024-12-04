@@ -277,8 +277,4 @@ public class Y_HttpHotSeat : MonoBehaviour
         //print("캐릭터 이름입니다 : " + Y_HotSeatController.Instance.characterNames[bookController.characterNum - 1].text);
         return GameObject.Find("HotSeatCanvas").GetComponent<Y_HotSeatController>().characterNames[bookController.characterNum - 1].text;
     }
-
-
-
-
 }

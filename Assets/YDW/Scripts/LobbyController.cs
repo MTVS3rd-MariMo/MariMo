@@ -82,8 +82,12 @@ public class LobbyController : MonoBehaviour
 
     public void OnSelectNickname(BaseEventData eventData)
     {
-        inputFieldRectNickname.sizeDelta = expandedSize;
-        inputFieldRectNickname.gameObject.transform.localPosition = expandedPos;
+        if (Application.platform == RuntimePlatform.Android)
+        {
+            inputFieldRectNickname.sizeDelta = expandedSize;
+            inputFieldRectNickname.gameObject.transform.localPosition = expandedPos;
+        }
+            
 
         //// 터치 키보드 호출 (모바일에서만 동작)
         //keyboard = TouchScreenKeyboard.Open("", TouchScreenKeyboardType.Default);
@@ -92,8 +96,12 @@ public class LobbyController : MonoBehaviour
     // InputField가 선택 해제되었을 때 호출
     public void OnDeselectNickname(BaseEventData eventData)
     {
-        inputFieldRectNickname.sizeDelta = originalSize;
-        inputFieldRectNickname.gameObject.transform.localPosition = originalPositionNickname;
+        if (Application.platform == RuntimePlatform.Android)
+        {
+            inputFieldRectNickname.sizeDelta = originalSize;
+            inputFieldRectNickname.gameObject.transform.localPosition = originalPositionNickname;
+        }
+            
 
         //// 터치 키보드 닫기
         //if (keyboard != null && keyboard.active)
@@ -104,8 +112,12 @@ public class LobbyController : MonoBehaviour
 
     public void OnSelectPw(BaseEventData eventData)
     {
-        inputFieldRectPw.sizeDelta = expandedSize;
-        inputFieldRectPw.gameObject.transform.localPosition = expandedPos;
+        if (Application.platform == RuntimePlatform.Android)
+        {
+            inputFieldRectPw.sizeDelta = expandedSize;
+            inputFieldRectPw.gameObject.transform.localPosition = expandedPos;
+        }
+            
 
         //// 터치 키보드 호출 (모바일에서만 동작)
         //keyboard = TouchScreenKeyboard.Open("", TouchScreenKeyboardType.Default);
@@ -114,8 +126,12 @@ public class LobbyController : MonoBehaviour
     // InputField가 선택 해제되었을 때 호출
     public void OnDeselectPw(BaseEventData eventData)
     {
-        inputFieldRectPw.sizeDelta = originalSize;
-        inputFieldRectPw.gameObject.transform.localPosition = originalPositionPw;
+        if (Application.platform == RuntimePlatform.Android)
+        {
+            inputFieldRectPw.sizeDelta = originalSize;
+            inputFieldRectPw.gameObject.transform.localPosition = originalPositionPw;
+        }
+            
 
         //// 터치 키보드 닫기
         //if (keyboard != null && keyboard.active)
