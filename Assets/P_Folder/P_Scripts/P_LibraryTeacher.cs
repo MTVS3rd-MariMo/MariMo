@@ -53,6 +53,8 @@ public class ResultAnswer
 [Serializable]
 public class HotSittings
 {
+    public string userName;
+    public string character;
     public string selfIntroduce;
     public string[] questionAnswers;
 }
@@ -325,7 +327,7 @@ public class P_LibraryTeacher : MonoBehaviour
                 {
                     foreach (var answer in question.resultAnswers)
                     {
-                        text_Log.text += "\n\n" + (" - 작성자: " + answer.userName + ", 답변: " + answer.answer);
+                        text_Log.text += "\n\n" + (" - 작성자: " + answer.userName + ", \n답변: " + answer.answer);
                     }
                 }
                 else
@@ -342,6 +344,8 @@ public class P_LibraryTeacher : MonoBehaviour
         // HotSittings 정보
         if (allData.hotSittings != null && allData.hotSittings.Length > 0)
         {
+            int k = 0;
+
             text_Log.text += "\n\n" + ("HotSittings 목록:");
             foreach (var sitting in allData.hotSittings)
             {
@@ -350,12 +354,20 @@ public class P_LibraryTeacher : MonoBehaviour
                 {
                     foreach (var answer in sitting.questionAnswers)
                     {
-                        text_Log.text += "\n\n" + (" - 질문 답변: " + answer);
+                        if (k % 2 == 0)
+                        {
+                            text_Log.text += "\n\n" + (" - 질문\n " + answer);
+                        }
+                        else
+                        {
+                            text_Log.text += "\n\n" + (" - 답변\n " + answer);
+                        }
+                        k++;
                     }
                 }
                 else
                 {
-                    text_Log.text += "\n\n" + (" - 질문 답변이 없습니다.");
+                    text_Log.text += "\n\n" + (" - 질문 / 답변이 없습니다.");
                 }
             }
         }

@@ -20,6 +20,7 @@ public class StudentResult
 {
     public string bookTitle;
     public string photo;
+    public string createdAt;
 }
 
 
@@ -101,6 +102,7 @@ public class P_Album : MonoBehaviour
                 {
                     btn_Album.GetComponent<P_AlbumInfo>().SetBookTitle(results.studentResults[i].bookTitle);
                     btn_Album.GetComponent<P_AlbumInfo>().SetPhotoUrl(results.studentResults[i].photo);
+                    btn_Album.GetComponent<P_AlbumInfo>().SetDate(results.studentResults[i].createdAt);
                     btn_Album.GetComponent<Button>().onClick.AddListener(() => Open_Album(btn_Album.GetComponent<P_AlbumInfo>().photoUrl));
                 }
             }
@@ -113,6 +115,7 @@ public class P_Album : MonoBehaviour
 
                 btn_Album.GetComponent<P_AlbumInfo>().SetBookTitle(results.studentResults[i].bookTitle);
                 btn_Album.GetComponent<P_AlbumInfo>().SetPhotoUrl(results.studentResults[i].photo);
+                btn_Album.GetComponent<P_AlbumInfo>().SetDate(results.studentResults[i].createdAt);
                 btn_Album.GetComponent<Button>().onClick.AddListener(() => Open_Album(btn_Album.GetComponent<P_AlbumInfo>().photoUrl));
             }
         }
