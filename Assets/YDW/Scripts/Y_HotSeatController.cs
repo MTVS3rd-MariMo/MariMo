@@ -36,8 +36,11 @@ public class Y_HotSeatController : MonoBehaviourPun
     public RectTransform inputFieldRect;
     public Vector2 expandedSize = new Vector2(1200, 200); // 확장된 크기
     public Vector2 expandedPos = new Vector2(-450, 180); // 확장됐을 때 위치
+    public Vector2 expandedPosWordCnt = new Vector2(-480, -76);
     private Vector2 originalSize;
     private Vector2 originalPosition;
+    private Vector2 originalSizeWordCnt;
+    private Vector2 originalPositionWordCnt;
     private TouchScreenKeyboard keyboard;
 
     // stage
@@ -81,6 +84,8 @@ public class Y_HotSeatController : MonoBehaviourPun
         // 자기소개 인풋필드 터치 키보드 올라오면 위치/크기 변경할 준비
         originalSize = inputFieldRect.sizeDelta;
         originalPosition = inputFieldRect.gameObject.transform.localPosition;
+        originalSizeWordCnt = wordCount.GetComponent<RectTransform>().sizeDelta;
+        originalPositionWordCnt = wordCount.gameObject.transform.localPosition;
 
         // stage 부분 사전 준비/저장
         playerPos = players[0].transform.position;
@@ -165,12 +170,12 @@ public class Y_HotSeatController : MonoBehaviourPun
 
     private void Update()
     {
-        //if(Input.GetKeyDown(KeyCode.Alpha0) && testNum <= players.Count)
-        //{
-        //    RPC_ProtoTest();
-        //} 
-        
-        if(selfIntroduceInput.text.Length >= 80 && !over80)
+        if (selfIntroduceInput != null && selfIntroduceInput.isActiveAndEnabled)
+        {
+            WordCount();
+        }
+
+        if (selfIntroduceInput.text.Length >= 80 && !over80)
         {
             buttons[0].GetComponent<Button>().interactable = true;
             buttons[0].GetComponent<Image>().sprite = sprites[5];
@@ -196,43 +201,20 @@ public class Y_HotSeatController : MonoBehaviourPun
             touchHoldTime = 0f; // 세 손가락에서 벗어나면 시간 초기화
         }
 
-
-        //if(Input.GetKeyDown(KeyCode.Alpha0) && testNum == players.Count)
-        //{
-
-        //}
-
-        //if(Input.GetKeyDown(KeyCode.N))
-        //{
-        //    RPC_TurnOff();
-        //}
-
-        // 네 명이 다 인터뷰 하면 자동으로 활동 종료
-        //if(testNum > players.Count && !isEnd)
-        //{
-        //    isEnd = true;
-        //    StartCoroutine(LastCoroutine());
-        //}
-
-        //if(Input.GetKeyDown(KeyCode.Alpha8))
-        //{
-        //    photonView.RPC(nameof(MuteOtherPlayers), RpcTarget.All, PhotonNetwork.LocalPlayer.ActorNumber);
-        //    //MuteOtherPlayers(PhotonNetwork.LocalPlayer.ActorNumber);
-        //}
-
-        //if(Input.GetKeyDown(KeyCode.Alpha7))
-        //{
-        //    photonView.RPC(nameof(UnMuteAllPlayers), RpcTarget.All);
-        //    //UnMuteAllPlayers();
-        //}
-
         if (Input.GetKeyDown(KeyCode.Alpha9))
         {
             StartCoroutine(LastCoroutine());
         }
     }
 
-    
+
+    public TMP_Text wordCount;
+
+    // 실시간으로 글자 수 업데이트
+    void WordCount()
+    {
+        wordCount.text = selfIntroduceInput.text.Length.ToString() + "/80";
+    }
 
     void RPC_ProtoTest()
     {
@@ -265,6 +247,7 @@ public class Y_HotSeatController : MonoBehaviourPun
     {
         inputFieldRect.sizeDelta = expandedSize;
         inputFieldRect.gameObject.transform.localPosition = expandedPos;
+        wordCount.gameObject.transform.localPosition = expandedPosWordCnt;
 
         // 터치 키보드 호출 (모바일에서만 동작)
         keyboard = TouchScreenKeyboard.Open("", TouchScreenKeyboardType.Default);
@@ -275,6 +258,8 @@ public class Y_HotSeatController : MonoBehaviourPun
     {
         inputFieldRect.sizeDelta = originalSize;
         inputFieldRect.gameObject.transform.localPosition = originalPosition;
+        wordCount.GetComponent<RectTransform>().sizeDelta = originalSizeWordCnt;
+        wordCount.gameObject.transform.localPosition = originalPositionWordCnt;
 
         // 터치 키보드 닫기
         if (keyboard != null && keyboard.active)

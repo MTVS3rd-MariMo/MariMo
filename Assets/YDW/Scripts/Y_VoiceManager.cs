@@ -100,7 +100,7 @@ public class Y_VoiceManager : MonoBehaviour
         {
             Debug.Log("치트키???");
             touchHoldTime += Time.deltaTime; // 터치 유지 시간 증가
-            if (touchHoldTime >= requiredHoldTime) // 2초
+            if (touchHoldTime >= requiredHoldTime) // 1초
             {
                 Debug.Log("치트키 발동!"); 
                 recorder.TransmitEnabled = !recorder.TransmitEnabled;
