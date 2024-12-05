@@ -61,6 +61,8 @@ public class K_QuizManager : MonoBehaviourPun
     // 카운트다운 코루틴 함수
     IEnumerator Co_CountDown()
     {
+        // 1초 지난 후 UI 활성화 HZ
+        yield return new WaitForSeconds(1f);
         // 퀴즈 안내 UI 활성화 (앵글 고정 후 1초 뒤 활성화, 2초 뒤 사라짐)
         K_QuizUiManager.instance.img_direction.gameObject.SetActive(true);
         // 퀴즈 박스 비활성화
@@ -70,15 +72,12 @@ public class K_QuizManager : MonoBehaviourPun
 
         // 1초 대기 후 카운트 다운 띄워주기
         yield return new WaitForSeconds(1f);
-
         // 카운트다운 이미지 활성화
         K_QuizUiManager.instance.img_countDown.gameObject.SetActive(true);
-
-        
+     
         // second 셋팅
         int second = (int)(quizDuration - currTime);
         
-
         // second가 0보다 크면
         while (second > 0)
         {
@@ -105,6 +104,12 @@ public class K_QuizManager : MonoBehaviourPun
         // 시간초과(텍스트) 보여주자.
         K_QuizUiManager.instance.text_countDown.text = "시간 종료!";
 
+        // 2초 대기 후
+        yield return new WaitForSeconds(2f);
+
+        // 카운트다운 이미지 비활성화
+        K_QuizUiManager.instance.img_countDown.gameObject.SetActive(false);
+
         // 선생님만 학생들의 답을 RPC로 받기
         if (PhotonNetwork.IsMasterClient)
         {
@@ -114,11 +119,11 @@ public class K_QuizManager : MonoBehaviourPun
         // 모든 학생들의 정답을 기다리기
         StartCoroutine(WaitFourAnswer());
 
-        // 2초 대기 후
-        yield return new WaitForSeconds(1f);
+        // // 2초 대기 후
+        // yield return new WaitForSeconds(2f);
 
-        // 카운트다운 이미지 비활성화
-        K_QuizUiManager.instance.img_countDown.gameObject.SetActive(false);
+        // // 카운트다운 이미지 비활성화
+        // K_QuizUiManager.instance.img_countDown.gameObject.SetActive(false);
     }
 
 
@@ -333,8 +338,8 @@ public class K_QuizManager : MonoBehaviourPun
         // 플레이어 정답 리스트 초기화
         answerList.Clear();
 
-        // 5초 대기
-        yield return new WaitForSeconds(delay);
+        // 5초 대기 HZ delay -> 5f
+        yield return new WaitForSeconds(5f);
 
         // 카운트다운 시작 함수 호출
         CountDownStart();
