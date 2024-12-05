@@ -52,6 +52,7 @@ public class K_Drawing : MonoBehaviour
     {
         pen_Active = true;
         K_Erasing.erase_Active = false;
+        K_PaintBin.bucket_Active = false;
         //print("눌리니?");
 
     }

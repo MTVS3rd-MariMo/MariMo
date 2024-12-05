@@ -21,6 +21,7 @@ public class K_ChangeDrawColor : MonoBehaviour
     void ChangePenColor()
     {
         K_Drawing.draw_Color = penColor;
+        K_PaintBin.fill_Color = penColor;
     }
 
     void ChangeBinColor()

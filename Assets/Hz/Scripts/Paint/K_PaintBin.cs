@@ -10,13 +10,11 @@ public class K_PaintBin : MonoBehaviour
     [SerializeField]
     RawImage paint;
 
-    // 텍스쳐
-    //public Texture2D texture;
+    // 채울 색상 - 일단 white로
+    public static Color fill_Color = Color.white;
 
-    //private Color targetColor;
-
-    // 채울 색상 - 일단 blue?
-    public static Color fill_Color = Color.blue;
+    // 페인트 통 true?
+    public static bool bucket_Active = false;
 
     // 색상 일치 허용 오차
     [SerializeField]
@@ -32,25 +30,30 @@ public class K_PaintBin : MonoBehaviour
 
     void Update()
     {
-        // if (Input.GetMouseButtonDown(0))
-        // {
-        //     RectTransform rectTransform = paint.rectTransform;
-        //     Vector2 localPos;
-        //     RectTransformUtility.ScreenPointToLocalPointInRectangle(
-        //         rectTransform,
-        //         Input.mousePosition,
-        //         null,
-        //         out localPos
-        //     );
+        // bool 값 체크 + 버튼 클릭시
+        if (bucket_Active && Input.GetMouseButtonDown(0))
+        {
+            // 활성화
+            OnPaintBucketClick();
+        }
 
-        //     Texture2D texture = K_Drawing.pixel_Texture;
-        //     int pixelX = Mathf.RoundToInt(((localPos.x / rectTransform.rect.width) + 0.5f) * texture.width);
-        //     int pixelY = Mathf.RoundToInt(((localPos.y / rectTransform.rect.height) + 0.5f) * texture.height);
+    }
 
+    public void BinButtonOn()
+    {
+        bucket_Active = true;
+        K_Drawing.pen_Active = false;
+        K_Erasing.erase_Active = false;
+        print("눌리니?");
 
-        //     // FloodFill 수행
-        //     FloodFill(texture, pixelX, pixelY, fill_Color);
-        // }
+    }
+
+    public void BinButtonOff()
+    {
+        bucket_Active = false;
+        K_Drawing.pen_Active = false;
+        K_Erasing.erase_Active = false;
+        print("그만 눌려라 ");
     }
 
     public void OnPaintBucketClick()
@@ -66,10 +69,9 @@ public class K_PaintBin : MonoBehaviour
         out Vector2 localPoint
     );
 
+        // 마우스 위치 -> 텍스처 좌표로 변환
         int pixelX = Mathf.RoundToInt(((localPoint.x / paint.rectTransform.rect.width) + 0.5f) * K_Drawing.pixel_Texture.width);
         int pixelY = Mathf.RoundToInt(((localPoint.y / paint.rectTransform.rect.height) + 0.5f) * K_Drawing.pixel_Texture.height);
-
-        //Color targetColor = K_Drawing.pixel_Texture.GetPixel(pixelX, pixelY);
 
         // FloodFill 메서드 호출
         FloodFill(K_Drawing.pixel_Texture, pixelX, pixelY, fill_Color);
@@ -127,23 +129,4 @@ public class K_PaintBin : MonoBehaviour
                Mathf.Abs(a.b - b.b) <= colorTolerance * 1.5f &&
                Mathf.Abs(a.a - b.a) <= colorTolerance * 1.5f;
     }
-
-
-
-
-
-
-    // // GET
-    // public void Fill()
-    // {
-
-    // }
-
-    // // SET
-    // public void FloodFill()
-    // {
-
-    // }
-
-
 }
