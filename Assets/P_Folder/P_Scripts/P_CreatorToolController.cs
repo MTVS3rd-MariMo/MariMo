@@ -18,6 +18,9 @@ public class P_CreatorToolController : MonoBehaviour
     public GameObject panel_NewStory;
     public GameObject panel_SelectPDF;
     public GameObject panel_FileViewer;
+    public GameObject panel_CheckPDF;
+    public GameObject panel_TextChange;
+    public GameObject panel_LookCharacter;
     public GameObject panel_Making;
     public GameObject panel_SelectQuiz;
     public GameObject panel_MakingQuiz;
@@ -34,13 +37,17 @@ public class P_CreatorToolController : MonoBehaviour
     public Button btn_Back_SelectPDF;
     public Button btn_SerchPDF;
     public Button btn_SendPDF;
+    public Button btn_CheckPDF;
+    public Button btn_Back_CheckPDF;
+    public Button btn_LookCharacter;
+    public Button btn_FinishCharacter;
+    public Button btn_Back_LookCharacter;
     public Button btn_Back_isMaking;
     public Button btn_Checking;
     public Button btn_Back_SerchPDF;
     public Button btn_SelectQuiz;
     public Button btn_Option;
     public Button btn_LogOut;
-
 
     public TMP_Text titleNickname;
 
@@ -73,6 +80,12 @@ public class P_CreatorToolController : MonoBehaviour
         btn_Back_SelectPDF.onClick.AddListener(OnclickBack_SelectPDF);
         btn_SerchPDF.onClick.AddListener(OnclickSerchPDF);
         btn_SendPDF.onClick.AddListener(OnclickSend);
+        btn_CheckPDF.onClick.AddListener(OnclickCheckPDF);
+        btn_Back_SerchPDF.onClick.AddListener (OnclickBack_SerchPDF);
+        btn_LookCharacter.onClick.AddListener(OnclickLookCharacter);
+        btn_Back_CheckPDF.onClick.AddListener(Onclick_Back_CheckPDF);
+        btn_FinishCharacter.onClick.AddListener(OnclickFinishCharacter);
+        btn_Back_LookCharacter.onClick.AddListener(Onclick_Back_LookCharacter);
         btn_Back_isMaking.onClick.AddListener (OnclickBack_isMaking);
         btn_CreateRoom.onClick.AddListener(OnclickCreateRoom);
         btn_Checking.onClick.AddListener(OnclickChecking);
@@ -101,16 +114,16 @@ public class P_CreatorToolController : MonoBehaviour
     public void OnclickSelectStory()
     {
         // 이전 작업들 끄기
-        panel_MakingAsk.SetActive(false);
-        panel_MakingQuiz.SetActive(false);
-        panel_Making.SetActive(false);
-        panel_FileViewer.SetActive(false);
         OnclickBack_NewStory();
         OnclickBack_SelectPDF();
         OnclickBack_isMaking();
         panel_MakingAsk.SetActive(false);
         panel_MakingQuiz.SetActive(false);
-
+        panel_FileViewer.SetActive(false);
+        panel_Making.SetActive(false);
+        panel_CheckPDF.SetActive(false);
+        panel_TextChange.SetActive(false);
+        panel_LookCharacter.SetActive(false);
         panel_SelectStory.SetActive(true);
         btn_SelectStory.image.sprite = sp_SelectStory[1];
         panel_CreateRoom.SetActive(false);
@@ -243,9 +256,39 @@ public class P_CreatorToolController : MonoBehaviour
     // 데이터 로드 완료시 실행
     private void SendFinish()
     {
+        panel_CheckPDF.SetActive(true);
+        
+    }
+    
+    private void OnclickCheckPDF()
+    {
+        panel_TextChange.SetActive(true);
+
+        panel_CheckPDF.GetComponent<P_ChangePDF>().OnStart();
+    }
+
+    private void Onclick_Back_CheckPDF()
+    {
+        panel_CheckPDF.SetActive(false);
+    }
+
+    private void OnclickLookCharacter()
+    {
+        panel_LookCharacter.SetActive(true);
+        panel_LookCharacter.GetComponent<P_LookCharacter>().OnStart();
+    }
+
+    private void OnclickFinishCharacter()
+    {
+        panel_LookCharacter.GetComponent<P_LookCharacter>().FinishCharacter();
         panel_Making.SetActive(true);
     }
-     
+
+    private void Onclick_Back_LookCharacter()
+    {
+        panel_LookCharacter.SetActive(false);
+    }
+
     private void OnclickBack_isMaking()
     {
         panel_Making.SetActive(false);
@@ -394,8 +437,7 @@ public class P_CreatorToolController : MonoBehaviour
 
                 // 바로 퀴즈 수정 창으로 이동
                 panel_SelectPDF.SetActive(true);
-                panel_MakingQuiz.SetActive(true);
-                panel_MakingQuiz.GetComponent<P_MakingQuiz>().OpenQuizSet(0);
+                panel_CheckPDF.SetActive(true);
             }
             catch (Exception e)
             {
