@@ -112,6 +112,17 @@ public class Y_HttpLogIn : MonoBehaviour
 
     public string RegisterUrl = "api/user/signup"; ///////////////////
     public GameObject signUpError;
+    public GameObject signUpUI;
+    public GameObject logInUI;
+
+    // 서버 응답 데이터를 위한 클래스 정의
+    [System.Serializable]
+    public class ServerErrorResponse
+    {
+        public string message;
+        public int status;
+        public string error;
+    }
 
     public IEnumerator SignUpCoroutine(string username, string password, string school, int grade, int className, int studentNumber, bool isTeacher)
     {
@@ -150,17 +161,22 @@ public class Y_HttpLogIn : MonoBehaviour
             if (webRequest.result == UnityWebRequest.Result.Success)
             {
                 Debug.Log("회원가입 성공: " + webRequest.downloadHandler.text);
+
+                signUpUI.SetActive(false);
+                logInUI.SetActive(true);
             }
             else
             {
-                if(webRequest.responseCode == 500) // && "유저가 이미 존재합니다" 일 때
+                // 서버 응답 메시지 처리
+                string responseText = webRequest.downloadHandler.text;
+                var responseJson = JsonUtility.FromJson<ServerErrorResponse>(responseText);
+
+                if (webRequest.responseCode == 500 && responseJson.message.Contains("유저가 이미 존재합니다.")) // && "유저가 이미 존재합니다" 일 때
                 {
                     signUpError.SetActive(true);
                     yield return new WaitForSeconds(2f);
                     signUpError.SetActive(false);
                 }
-
-                Debug.LogError("회원가입 실패: " + webRequest.error);
             }
         }
     }
