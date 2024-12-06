@@ -71,6 +71,38 @@ public class Roles
 }
 
 
+public class PDFCreator
+{
+    public void CreatePDF(string textContent, string filePath)
+    {
+        // PDF 문서 생성
+        Document pdfDoc = new Document();
+
+        try
+        {
+
+
+            // PDF 파일 작성
+            using (FileStream stream = new FileStream(filePath, FileMode.Create))
+            {
+                PdfWriter.GetInstance(pdfDoc, stream);
+                pdfDoc.Open();
+
+                // 텍스트 추가
+                pdfDoc.Add(new Paragraph(textContent));
+
+                pdfDoc.Close();
+            }
+
+            Debug.Log($"PDF 파일 생성 완료: {filePath}");
+        }
+        catch (System.Exception e)
+        {
+            Debug.LogError($"PDF 생성 중 오류 발생: {e.Message}");
+        }
+    }
+}
+
 
 public class P_LibraryTeacher : MonoBehaviour
 {
@@ -80,6 +112,7 @@ public class P_LibraryTeacher : MonoBehaviour
     public GameObject panel_log;
     public TMP_Text text_Log;
     public Button btn_CloseLog;
+    public Button btn_MakePDF;
 
     public TeacherLibrary teacherLibrary;
 
@@ -91,6 +124,7 @@ public class P_LibraryTeacher : MonoBehaviour
         GetLogList();
 
         btn_CloseLog.onClick.AddListener(OnclickCloseLog);
+        btn_MakePDF.onClick.AddListener(OnclickMakePDF);
     }
 
     void GetLogList()
@@ -302,24 +336,14 @@ public class P_LibraryTeacher : MonoBehaviour
         panel_log.SetActive(false);
     }
 
-    // pdf 생성용 - 테스트 해본 적 없음
-    public void CreateLogPDF(string textContent, string filePath)
+    
+
+    public void OnclickMakePDF()
     {
-        // PDF 문서 생성
-        Document pdfDoc = new Document();
+        string content = text_Log.text;
+        string filePath = Application.persistentDataPath + "/GeneratedFile.pdf";
 
-        // PDF 파일 작성
-        using (FileStream stream = new FileStream(filePath, FileMode.Create))
-        {
-            PdfWriter.GetInstance(pdfDoc, stream);
-            pdfDoc.Open();
-
-            // 텍스트 추가
-            pdfDoc.Add(new Paragraph(textContent));
-
-            pdfDoc.Close();
-        }
-
-        UnityEngine.Debug.Log("PDF 파일 생성 완료: " + filePath);
+        PDFCreator pdfCreator = new PDFCreator();
+        pdfCreator.CreatePDF(content, filePath);
     }
 }

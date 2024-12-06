@@ -264,7 +264,7 @@ public class P_CreatorToolController : MonoBehaviour
     {
         panel_TextChange.SetActive(true);
 
-        panel_CheckPDF.GetComponent<P_ChangePDF>().OnStart();
+        panel_CheckPDF.GetComponentInChildren<P_ChangePDF>().OnStart();
     }
 
     private void Onclick_Back_CheckPDF()
