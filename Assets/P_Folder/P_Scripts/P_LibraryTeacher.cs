@@ -88,6 +88,11 @@ public class PDFCreator
                 PdfWriter.GetInstance(pdfDoc, stream);
                 pdfDoc.Open();
 
+                string fontPath = Path.Combine(Application.dataPath, "Resources/HYHWPEQ.ttf");
+                BaseFont koreanFont = BaseFont.CreateFont(fontPath, BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
+                iTextSharp.text.Font font = new iTextSharp.text.Font(koreanFont, 12, iTextSharp.text.Font.NORMAL);
+
+
                 // 텍스트 추가
                 pdfDoc.Add(new Paragraph(textContent));
 
