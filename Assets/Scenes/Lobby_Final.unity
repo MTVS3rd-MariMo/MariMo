@@ -4491,6 +4491,9 @@ MonoBehaviour:
   isLoggedIn: 0
   userNickName: 
   RegisterUrl: api/user/signup
+  signUpError: {fileID: 0}
+  logInErrorsSprite: []
+  logInError: {fileID: 0}
   logInUrl: api/user/login
   isTeacher: 0
   img_background: {fileID: 1245044469}
@@ -14626,6 +14629,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 557653834216421785, guid: 96e3ccfb92e8dec4abba84d5e3f2afe4,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 792798435896518869, guid: 96e3ccfb92e8dec4abba84d5e3f2afe4,
         type: 3}
       propertyPath: m_Pivot.x
