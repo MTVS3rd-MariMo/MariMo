@@ -405,6 +405,7 @@ public class P_ObjectManager_Studio : MonoBehaviourPun
 
         Debug.Log("파일경로 존재 확인");
 
+
         if (System.IO.File.Exists(filePath))
         {
             Debug.Log($"스크린샷 저장 경로: {filePath}");
