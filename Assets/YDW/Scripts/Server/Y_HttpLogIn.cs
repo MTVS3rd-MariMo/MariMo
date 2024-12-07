@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
+using UnityEngine.UI;
 
 [Serializable]
 public class SignUpData
@@ -110,6 +111,7 @@ public class Y_HttpLogIn : MonoBehaviour
     }
 
     public string RegisterUrl = "api/user/signup"; ///////////////////
+    public GameObject signUpError;
 
     public IEnumerator SignUpCoroutine(string username, string password, string school, int grade, int className, int studentNumber, bool isTeacher)
     {
@@ -151,10 +153,20 @@ public class Y_HttpLogIn : MonoBehaviour
             }
             else
             {
+                if(webRequest.responseCode == 500) // && "유저가 이미 존재합니다" 일 때
+                {
+                    signUpError.SetActive(true);
+                    yield return new WaitForSeconds(2f);
+                    signUpError.SetActive(false);
+                }
+
                 Debug.LogError("회원가입 실패: " + webRequest.error);
             }
         }
     }
+
+    public Sprite[] logInErrorsSprite;
+    public GameObject logInError;
 
     public string logInUrl = "api/user/login";
     public bool isTeacher;
@@ -216,7 +228,22 @@ public class Y_HttpLogIn : MonoBehaviour
             }
             else
             {
-                Debug.LogError("로그인 실패: " + webRequest.error);
+                if (webRequest.responseCode == 401)
+                {
+                    logInError.GetComponent<Image>().sprite = logInErrorsSprite[0];
+                }
+                else if ((webRequest.result == UnityWebRequest.Result.ConnectionError) || (webRequest.result == UnityWebRequest.Result.ProtocolError))
+                {
+                    logInError.GetComponent<Image>().sprite = logInErrorsSprite[0];
+                }
+                else
+                {
+                    logInError.GetComponent<Image>().sprite = logInErrorsSprite[0];
+                }
+
+                logInError.SetActive(true);
+                yield return new WaitForSeconds(2f);
+                logInError.SetActive(false);
 
             }
         }

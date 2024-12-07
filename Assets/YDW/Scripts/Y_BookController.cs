@@ -278,7 +278,8 @@ public class Y_BookController : MonoBehaviourPun
     // 페이지 왼쪽 넘김
     public void left()
     {
-        pageNo = Mathf.Max(0, --pageNo);
+        if (pageNo == 0) return;
+        pageNo = Mathf.Max(1, --pageNo);
         Y_SoundManager.instance.PlayEftSound(Y_SoundManager.ESoundType.EFT_BUTTON);
         DisplayPage(pageNo);
     }

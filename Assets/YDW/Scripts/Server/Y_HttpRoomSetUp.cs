@@ -77,32 +77,6 @@ public class Y_HttpRoomSetUp : MonoBehaviourPun
         }
     }
 
-    public IEnumerator Post(HttpInfo info)
-    {
-        using (UnityWebRequest webRequest = UnityWebRequest.Post(info.url, info.body, info.contentType))
-        {
-            // 서버에 요청 보내기
-            yield return webRequest.SendWebRequest();
-
-
-            // 서버에게 응답이 왔다.
-            DoneRequest(webRequest, info);
-        }
-    }
-
-    // GET : 서버에게 데이터를 조회 요청
-    public IEnumerator Get(HttpInfo info)
-    {
-        using (UnityWebRequest webRequest = UnityWebRequest.Get(info.url))
-        {
-            // 서버에 요청 보내기
-            yield return webRequest.SendWebRequest();
-
-            // 서버에게 응답이 왔다.
-            DoneRequest(webRequest, info);
-        }
-    }
-
     public IEnumerator Put(HttpInfo info)
     {
         using (UnityWebRequest webRequest = new UnityWebRequest(info.url, "PUT"))
@@ -203,6 +177,7 @@ public class Y_HttpRoomSetUp : MonoBehaviourPun
 
         using (UnityWebRequest webRequest = UnityWebRequest.Get(Y_HttpLogIn.GetInstance().mainServer + requestUserListUrl + sendLessonId.lessonId.ToString()))
         {
+            webRequest.SetRequestHeader("userId", Y_HttpLogIn.GetInstance().userId.ToString());
             webRequest.downloadHandler = new DownloadHandlerBuffer(); // 서버가 다운로드 할 수 있는 공간 만듦
 
             // 서버에 요청 보내기
@@ -242,6 +217,7 @@ public class Y_HttpRoomSetUp : MonoBehaviourPun
 
         using (UnityWebRequest webRequest = UnityWebRequest.Get(Y_HttpLogIn.GetInstance().mainServer + requestUserListUrl + sendMaterialId.lessonMaterialId.ToString()))
         {
+            webRequest.SetRequestHeader("userId", Y_HttpLogIn.GetInstance().userId.ToString());
             webRequest.downloadHandler = new DownloadHandlerBuffer(); // 서버가 다운로드 할 수 있는 공간 만듦
 
             // 서버에 요청 보내기

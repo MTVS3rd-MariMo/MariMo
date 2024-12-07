@@ -75,6 +75,10 @@ public class Y_SignUp : MonoBehaviour
         buttons[1].GetComponent<Image>().sprite = sprites[2];
         teacherOrStudent[0].SetActive(true);
         teacherOrStudent[1].SetActive(false);
+        foreach(TMP_InputField signUpInput in signUpInputs)
+        {
+            signUpInput.text = "";
+        }
     }
 
     public void ClickTeacher()
@@ -84,6 +88,10 @@ public class Y_SignUp : MonoBehaviour
         buttons[1].GetComponent<Image>().sprite = sprites[3];
         teacherOrStudent[0].SetActive(false);
         teacherOrStudent[1].SetActive(true);
+        foreach (TMP_InputField signUpInput in signUpInputs)
+        {
+            signUpInput.text = "";
+        }
     }
 
     string username;
