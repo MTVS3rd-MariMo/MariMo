@@ -111,7 +111,7 @@ public class P_ObjectManager_Studio : MonoBehaviourPun
                 playerStartPos.y = player.transform.position.y;
 
                 float distanceSqr = (player.transform.position - playerStartPos).sqrMagnitude; // 제곱 거리
-                if (distanceSqr < 1f)
+                if (distanceSqr < 0.1f)
                 {
                     player.transform.position = playerStartPos; // 정확히 위치 고정
                     playersInPosition[i] = true; // 도달 상태 업데이트
@@ -132,6 +132,8 @@ public class P_ObjectManager_Studio : MonoBehaviourPun
             {
                 if (photonView.IsMine)
                 {
+                    
+
                     RPC_MoveControl(false);
 
                     RPC_Studio();

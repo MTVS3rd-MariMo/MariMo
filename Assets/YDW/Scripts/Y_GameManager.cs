@@ -197,7 +197,7 @@ public class Y_GameManager : MonoBehaviourPun
                 playerStartPos.y = student.transform.position.y;
 
                 float distanceSqr = (student.transform.position - playerStartPos).sqrMagnitude; // 제곱 거리
-                if (distanceSqr < 1f) // 0.1f^2 = 0.01
+                if (distanceSqr < 0.1f) // 0.1f^2 = 0.01
                 {
                     student.transform.position = playerStartPos; // 정확히 위치 고정
                     playersInPosition[i] = true; // 도달 상태 업데이트

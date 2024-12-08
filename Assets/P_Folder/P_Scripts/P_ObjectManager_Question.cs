@@ -173,7 +173,7 @@ public class P_ObjectManager_Question : MonoBehaviourPun
                 playerStartPos.y = player.transform.position.y;
 
                 float distanceSqr = (player.transform.position - playerStartPos).sqrMagnitude; // 제곱 거리
-                if (distanceSqr < 1f) // 0.1f^2 = 0.01
+                if (distanceSqr < 0.1f) // 0.1f^2 = 0.01
                 {
                     player.transform.position = playerStartPos; // 정확히 위치 고정
                     playersInPosition[i] = true; // 도달 상태 업데이트
