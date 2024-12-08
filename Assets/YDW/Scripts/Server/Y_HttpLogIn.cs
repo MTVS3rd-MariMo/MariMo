@@ -35,7 +35,7 @@ public class Y_HttpLogIn : MonoBehaviour
 {
     static Y_HttpLogIn instance;
     public string userId;
-    public string mainServer = "http://3.36.39.119:80/";
+    public string mainServer = "http://52.78.164.236:80/";
 
     public bool isLoggedIn = false;
 
