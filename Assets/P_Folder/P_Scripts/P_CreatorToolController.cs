@@ -443,11 +443,6 @@ public class P_CreatorToolController : MonoBehaviour
                 // QuizManager의 ParseQuizData 메서드 호출하여 데이터 파싱
                 P_CreatorToolConnectMgr.Instance.ParseQuizData(downloadHandler.text);
 
-                // 데이터 로드 완료 후 처리할 작업이 있다면 여기에 추가
-                Debug.Log("퀴즈 데이터 로드 완료!");
-                Debug.Log($"로드된 퀴즈 개수: {P_CreatorToolConnectMgr.Instance.GetQuizCount()}");
-                Debug.Log($"로드된 주관식 문제 개수: {P_CreatorToolConnectMgr.Instance.GetOpenQuestionCount()}");
-
                 // 바로 퀴즈 수정 창으로 이동
                 panel_SelectPDF.SetActive(true);
                 panel_CheckPDF.SetActive(true);

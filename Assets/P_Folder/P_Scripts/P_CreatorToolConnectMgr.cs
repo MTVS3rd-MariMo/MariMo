@@ -14,7 +14,7 @@ public class QuizData
     public List<OpenQuestion> openQuestionList;
     public long lessonMaterialId;
     public string bookContents;
-    public List<string> roleList;
+    public List<RoleList> roleList;
 }
 
 [Serializable]
@@ -36,6 +36,12 @@ public class OpenQuestion
     public string questionTitle;
 }
 
+[Serializable]
+public class RoleList
+{
+    public int roleId;
+    public string roleName;
+}
 
 // 수업자료 조회용 구조체
 [Serializable]
@@ -296,6 +302,16 @@ public class P_CreatorToolConnectMgr : MonoBehaviour
             for (int i = 0; i < quizData.openQuestionList.Count; i++)
             {
                 Debug.Log($"{i + 1}. {quizData.openQuestionList[i].questionTitle}");
+            }
+        }
+
+        Debug.Log("\n=== 역할 ID 와 역할 이름 ===");
+        if (quizData.roleList != null)
+        {
+            for (int i = 0; i < quizData.roleList.Count; i++)
+            {
+                Debug.Log($"{i + 1}. {quizData.roleList[i].roleId}");
+                Debug.Log($"{i + 1}. {quizData.roleList[i].roleName}");
             }
         }
     }

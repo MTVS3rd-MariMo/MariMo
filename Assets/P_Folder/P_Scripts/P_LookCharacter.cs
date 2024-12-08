@@ -13,7 +13,7 @@ public class P_LookCharacter : MonoBehaviour
     {
         for (int i = 0; i < input_Characters.Length; i++)
         {
-            input_Characters[i].text = P_CreatorToolConnectMgr.Instance.quizData.roleList[i];
+            input_Characters[i].text = P_CreatorToolConnectMgr.Instance.quizData.roleList[i].roleName;
         }
     }
 
@@ -21,7 +21,7 @@ public class P_LookCharacter : MonoBehaviour
     {
         for (int i = 0; i < input_Characters.Length; i++)
         {
-            P_CreatorToolConnectMgr.Instance.quizData.roleList[i] = input_Characters[i].text;
+            P_CreatorToolConnectMgr.Instance.quizData.roleList[i].roleName = input_Characters[i].text;
         }
     }
 }

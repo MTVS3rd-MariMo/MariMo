@@ -19,6 +19,7 @@ public class P_ChangePDF : MonoBehaviour
     public void OnStart()
     {
         text_pdf.text = P_CreatorToolConnectMgr.Instance.quizData.bookContents;
+        Debug.Log(P_CreatorToolConnectMgr.Instance.quizData.bookContents);
     }
 
     public void GoBack()
