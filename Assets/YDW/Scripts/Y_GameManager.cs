@@ -286,7 +286,7 @@ public class Y_GameManager : MonoBehaviourPun
 
 
         // 파티클 시간만큼 3초로 딜레이
-        yield return new WaitForSeconds(3f);
+        //yield return new WaitForSeconds(3f);
 
         // 먼지 파티클 끝난 후 sparks, glow 재생
         
