@@ -30,10 +30,6 @@ public class Y_GameManager : MonoBehaviourPun
     public ParticleSystem particle_Destroy;
     public GameObject VC_Fence;
 
-    // 추가 파티클
-    //public ParticleSystem particle_Sparks;
-    //public ParticleSystem particle_Glow;
-
     // 각 플레이어에 할당할 VideoRenderTexture 파일 경로 배열
     public string[] videoRendererPaths = new string[]
     {
@@ -67,7 +63,7 @@ public class Y_GameManager : MonoBehaviourPun
         //
         //StartCoroutine(AA());
 
-        
+
         //particle_Destroy = GetComponent<ParticleSystem>();
     }
 
@@ -118,20 +114,20 @@ public class Y_GameManager : MonoBehaviourPun
     {
         // 룸에 입장이 완료될 때까지 기다린다.
         //yield return new WaitUntil(() => { return playerCount == 5; });
-        
+
         //yield return new WaitForSeconds(5);
         Debug.LogWarning("스폰됐다!!");
         // 현재 플레이어의 인덱스(순서)를 가져옴 (원래 네명일 땐 - 1 였는데 이제 5명이라 -2 (선생님이 언제나 Master, ActorNum = 1))
         int playerIndex = PhotonNetwork.LocalPlayer.ActorNumber - 2;
 
         // 지정된 스폰 지점의 위치 가져옴 
-        if(playerIndex >= 0)
+        if (playerIndex >= 0)
         {
             Vector3 spawnPosition = spawnPoints[playerIndex].position;
             // 플레이어를 해당 스폰 지점에 생성
             GameObject player = PhotonNetwork.Instantiate("Player", spawnPosition, Quaternion.identity);
         }
-        else if(PhotonNetwork.IsMasterClient)
+        else if (PhotonNetwork.IsMasterClient)
         {
             GameObject player = PhotonNetwork.Instantiate("Teacher", spawnPoints[4].position, Quaternion.identity);
             //yield return new WaitUntil(() => player != null);
@@ -153,31 +149,88 @@ public class Y_GameManager : MonoBehaviourPun
         yield return null;
     }
 
-    public List<GameObject> students = new List<GameObject>(5);
+    public List<GameObject> players = new List<GameObject>(5);
     PhotonView myPhotonView = null;
 
     public void SetPlayerObject(PhotonView go)
     {
-        students[go.Owner.ActorNumber - 1] = go.gameObject;
-        if(go.IsMine)
+        players[go.Owner.ActorNumber - 1] = go.gameObject;
+        if (go.IsMine)
         {
             myPhotonView = go;
         }
 
-        if(students.Count >= 5 && students.All(student => student != null))
+        if (players.Count >= 5 && players.All(player => player != null))
         {
             myPhotonView.GetComponent<Y_SetCamera>().isFive = true;
-            for (int i = 0; i < students.Count; i++)
+            for (int i = 0; i < players.Count; i++)
             {
-                students[i].GetComponent<Y_PlayerMove>().isFive = true;
+                players[i].GetComponent<Y_PlayerMove>().isFive = true;
+                if (i > 0) students[i - 1] = players[i];
             }
         }
 
     }
 
-    
+    public List<GameObject> students = new List<GameObject>(4);
+    public Transform[] startPos = new Transform[4];
+
+    // 오브젝트 애니메이션
+    public GameObject Ani_Object;
+    public GameObject Drawing_School;
+
+    public IEnumerator SetStartPos()
+    {
+        bool[] playersInPosition = new bool[students.Count]; // 각 플레이어의 도달 상태를 추적
+        int i = 0;
+
+        while (true)
+        {
+            bool allPlayersInPosition = true;
+
+            for (i = 0; i < students.Count; i++)
+            {
+                if (playersInPosition[i]) continue; // 이미 도달한 플레이어는 무시
+
+                GameObject student = students[i];
+                Vector3 playerStartPos = startPos[i].position;
+                playerStartPos.y = student.transform.position.y;
+
+                float distanceSqr = (student.transform.position - playerStartPos).sqrMagnitude; // 제곱 거리
+                if (distanceSqr < 1f) // 0.1f^2 = 0.01
+                {
+                    student.transform.position = playerStartPos; // 정확히 위치 고정
+                    playersInPosition[i] = true; // 도달 상태 업데이트
+                }
+                //if (Vector3.Distance(student.transform.position, playerStartPos) < 0.5f) // 도달 여부 확인
+                //{
+                //    student.transform.position = playerStartPos; // 정확히 위치 고정
+                //    playersInPosition[i] = true; // 도달 상태 업데이트
+                //}
+                else
+                {
+                    allPlayersInPosition = false;
+                    student.transform.position = Vector3.Lerp(student.transform.position, playerStartPos, 0.01f); // 부드럽게 이동
+                }
+            }
+
+            if (allPlayersInPosition)
+            {
+                K_LobbyUiManager.instance.isAllArrived = true;
+                Ani_Object.SetActive(true);
+                Drawing_School.SetActive(false);
+                Y_SoundManager.instance.PlayEftSound(Y_SoundManager.ESoundType.EFT_3D_OBJECT_01);
+                //myPhotonView.GetComponent<Y_SetCamera>().isFive = true;
+                break; // 모든 플레이어가 위치에 도달하면 코루틴 종료
+            }
+
+            yield return null;
+        }
+    }
 
     public GameObject hotSeat;
+    public bool afterbook = false;
+
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.Alpha2))
@@ -185,11 +238,17 @@ public class Y_GameManager : MonoBehaviourPun
             hotSeat.SetActive(true);
             //photonView.RPC(nameof(AddPlayerCnt), RpcTarget.AllBuffered);
         }
+
+        if (afterbook)
+        {
+            StartCoroutine(SetStartPos());
+            afterbook = false;
+        }
     }
 
     public void RPC_Unlock()
     {
-        if(PhotonNetwork.IsMasterClient)
+        if (PhotonNetwork.IsMasterClient)
         {
             photonView.RPC("Unlock", RpcTarget.All);
 
@@ -222,12 +281,18 @@ public class Y_GameManager : MonoBehaviourPun
         // 애니메이션 !!!!!!!!!!!!!!!!!!!!
         anim.enabled = true;
         anim.SetTrigger("Unlock");
-        // 먼지 파티클 재생
+        //anim.Play("Fence_Animation");
         particle_Destroy.Play();
+
+
+        // 파티클 시간만큼 3초로 딜레이
+        yield return new WaitForSeconds(3f);
+
         // 먼지 파티클 끝난 후 sparks, glow 재생
         
         // 파티클 시간만큼 딜레이
         yield return new WaitForSeconds(5f);
+
         VC_Fence.SetActive(false);
         // Fence 사운드
         Y_SoundManager.instance.PlayEftSound(Y_SoundManager.ESoundType.EFT_FENCE_ON);
