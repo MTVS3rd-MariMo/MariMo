@@ -42,6 +42,7 @@ public class P_ObjectManager_Question : MonoBehaviourPun
     public TMP_Text question_Text;
     public Button btn_speaker;
     public TMP_InputField answer_InputField;
+    public TMP_Text wordCount;
     public Button btn_Submit;
     public GameObject answerUI_Canvas;
     public TMP_Text answer_Text1;
@@ -88,7 +89,12 @@ public class P_ObjectManager_Question : MonoBehaviourPun
 
     private void Update()
     {
-        if(answer_InputField.text.Length >= 50 || PhotonNetwork.IsMasterClient)
+        if (answer_InputField != null && answer_InputField.isActiveAndEnabled)
+        {
+            WordCount();
+        }
+
+        if (answer_InputField.text.Length >= 50 || PhotonNetwork.IsMasterClient)
         {
             BtnState(true);
         }
@@ -207,6 +213,11 @@ public class P_ObjectManager_Question : MonoBehaviourPun
 
         // 인풋필드 비우기
         answer_InputField.text = "";
+    }
+
+    void WordCount()
+    {
+        wordCount.text = answer_InputField.text.Length.ToString() + "/50";
     }
 
     void SendAnswer(QuestionAnswer answer)
