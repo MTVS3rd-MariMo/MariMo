@@ -406,6 +406,9 @@ public class K_HttpAvatar : MonoBehaviourPun
 
             using (UnityWebRequest webRequest = UnityWebRequest.Get(specificUserUrl))
             {
+                // 헤더 검증
+                webRequest.SetRequestHeader("userId", Y_HttpLogIn.GetInstance().userId.ToString());
+
                 print("서버에게 GET 요청 갔는지" + specificUserUrl);
 
                 yield return webRequest.SendWebRequest();
