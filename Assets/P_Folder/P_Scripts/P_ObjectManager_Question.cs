@@ -56,6 +56,7 @@ public class P_ObjectManager_Question : MonoBehaviourPun
     public CinemachineVirtualCamera virtual_Camera1;
 
     public Sprite[] btn_sprites;
+    public Sprite[] input_sprites;
 
     // 타임라인 실행을 한번만 하기위한 체크
     bool act = false;
@@ -65,7 +66,7 @@ public class P_ObjectManager_Question : MonoBehaviourPun
     Color black;
 
     // 질문 카운트
-    int question_count = 1;
+    int question_count = 0;
     // 답변 인원 카운트
     int answer_count = 0;
 
@@ -438,6 +439,7 @@ public class P_ObjectManager_Question : MonoBehaviourPun
         inputFieldRect.sizeDelta = expandedSize;
         inputFieldRect.gameObject.transform.localPosition = expandedPos;
 
+        answer_InputField.image.sprite = input_sprites[1];
     }
 
     // InputField가 선택 해제되었을 때 호출
@@ -446,6 +448,7 @@ public class P_ObjectManager_Question : MonoBehaviourPun
         inputFieldRect.sizeDelta = originalSize;
         inputFieldRect.gameObject.transform.localPosition = originalPosition;
 
+        answer_InputField.image.sprite = input_sprites[1];
     }
 
 }

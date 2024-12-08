@@ -61,6 +61,7 @@ public class P_CreatorToolController : MonoBehaviour
     public TMP_InputField text_bookWriter;
 
     bool isSend = false;
+    public bool isUploaded = false;
 
     // 인풋필드 사이즈 조정
     public Vector2 expandedSize = new Vector2(1200, 200); // 확장된 크기
@@ -167,6 +168,8 @@ public class P_CreatorToolController : MonoBehaviour
     public void OnclickStory()
     {
         panel_NewStory.SetActive(true);
+
+        isUploaded = false;
     }
 
     public void OnclickNamingDone()
@@ -281,7 +284,17 @@ public class P_CreatorToolController : MonoBehaviour
     private void OnclickFinishCharacter()
     {
         panel_LookCharacter.GetComponent<P_LookCharacter>().FinishCharacter();
-        panel_Making.SetActive(true);
+        if (isUploaded)
+        {
+            panel_MakingQuiz.SetActive(true);
+
+            panel_MakingQuiz.GetComponent<P_MakingQuiz>().OpenQuizSet(0);
+        }
+        else
+        {
+            panel_Making.SetActive(true);
+        }
+        
     }
 
     private void Onclick_Back_LookCharacter()
@@ -438,6 +451,8 @@ public class P_CreatorToolController : MonoBehaviour
                 // 바로 퀴즈 수정 창으로 이동
                 panel_SelectPDF.SetActive(true);
                 panel_CheckPDF.SetActive(true);
+
+                isUploaded = true;
             }
             catch (Exception e)
             {
