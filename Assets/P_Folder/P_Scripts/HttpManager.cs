@@ -150,6 +150,7 @@ public class HttpManager : MonoBehaviour
     {
         using (UnityWebRequest webRequest = UnityWebRequest.Post(info.url, info.body, info.contentType))
         {
+            webRequest.SetRequestHeader("userId", Y_HttpLogIn.GetInstance().userId.ToString());
             // 서버에 요청 보내기
             yield return webRequest.SendWebRequest();
 
@@ -163,6 +164,7 @@ public class HttpManager : MonoBehaviour
     {
         using (UnityWebRequest webRequest = UnityWebRequest.Post(info.url, info.body, info.contentType))
         {
+            webRequest.SetRequestHeader("userId", Y_HttpLogIn.GetInstance().userId.ToString());
             // 서버에 요청 보내기
             yield return webRequest.SendWebRequest();
 
@@ -196,7 +198,7 @@ public class HttpManager : MonoBehaviour
             webRequest.uploadHandler = new UploadHandlerRaw(jsonToSend);
             webRequest.downloadHandler = new DownloadHandlerBuffer();
             webRequest.SetRequestHeader("Content-Type", "application/json");
-
+            webRequest.SetRequestHeader("userId", Y_HttpLogIn.GetInstance().userId.ToString());
             // 서버에 요청 보내기
             yield return webRequest.SendWebRequest();
 
@@ -233,6 +235,7 @@ public class HttpManager : MonoBehaviour
         {
             webRequest.downloadHandler = new DownloadHandlerBuffer();
 
+            webRequest.SetRequestHeader("userId", Y_HttpLogIn.GetInstance().userId.ToString());
             // 서버에 요청 보내기
             yield return webRequest.SendWebRequest();
 
@@ -410,6 +413,7 @@ public class HttpManager : MonoBehaviour
             // 응답 받는 데이터 공간
             webRequest.downloadHandler = new DownloadHandlerBuffer();
 
+            webRequest.SetRequestHeader("userId", Y_HttpLogIn.GetInstance().userId.ToString());
             // 서버에 요청 보내기
             yield return webRequest.SendWebRequest();
 
@@ -423,6 +427,8 @@ public class HttpManager : MonoBehaviour
     {
         using (UnityWebRequest webRequest = UnityWebRequestTexture.GetTexture(info.url))
         {
+            webRequest.SetRequestHeader("userId", Y_HttpLogIn.GetInstance().userId.ToString());
+
             yield return webRequest.SendWebRequest();
 
             DoneRequest(webRequest, info);
