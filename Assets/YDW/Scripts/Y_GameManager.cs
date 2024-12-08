@@ -227,7 +227,7 @@ public class Y_GameManager : MonoBehaviourPun
         // 먼지 파티클 끝난 후 sparks, glow 재생
         
         // 파티클 시간만큼 딜레이
-        yield return new WaitForSeconds(7f);
+        yield return new WaitForSeconds(5f);
         VC_Fence.SetActive(false);
         // Fence 사운드
         Y_SoundManager.instance.PlayEftSound(Y_SoundManager.ESoundType.EFT_FENCE_ON);
