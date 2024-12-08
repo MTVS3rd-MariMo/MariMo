@@ -601,6 +601,7 @@ public class Y_BookController : MonoBehaviourPun
             Ani_Object.SetActive(true);
             Drawing_School.SetActive(false);
             Y_SoundManager.instance.PlayEftSound(Y_SoundManager.ESoundType.EFT_3D_OBJECT_01);
+            
             gameObject.SetActive(false);
         }
     }
