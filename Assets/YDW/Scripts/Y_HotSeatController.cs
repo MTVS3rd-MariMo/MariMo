@@ -709,18 +709,27 @@ public class Y_HotSeatController : MonoBehaviourPun
 
             speakingUIOn.fillAmount = 1 - (currTime / time);
 
-            if (time - timeSpan.Seconds <= 0)
-            {
-                timerImgs[i].gameObject.SetActive(false);
-                speakingUIOn.fillAmount = 1;
-                speakingUIOff.fillAmount = 1;
-                speakingUIOn.gameObject.SetActive(false);
-                speakingUIOff.gameObject.SetActive(false);
+            //if (time - timeSpan.Seconds <= 0)
+            //{
+            //    timerImgs[i].gameObject.SetActive(false);
+            //    speakingUIOn.fillAmount = 1;
+            //    speakingUIOff.fillAmount = 1;
+            //    speakingUIOn.gameObject.SetActive(false);
+            //    speakingUIOff.gameObject.SetActive(false);
 
-                // 인터뷰로 넘어감
-                if(PhotonNetwork.IsMasterClient) RPC_InterviewCrt(i);
-            }
+            //    // 인터뷰로 넘어감
+            //    if(PhotonNetwork.IsMasterClient) RPC_InterviewCrt(i);
+            //}
         }
+
+        timerImgs[i].gameObject.SetActive(false);
+        speakingUIOn.fillAmount = 1;
+        speakingUIOff.fillAmount = 1;
+        speakingUIOn.gameObject.SetActive(false);
+        speakingUIOff.gameObject.SetActive(false);
+
+        // 인터뷰로 넘어감
+        if (PhotonNetwork.IsMasterClient) RPC_InterviewCrt(i);
 
         // "자기소개를 듣고 궁금한 것들을 질문해봅시다" -> 2초 뒤 자동으로 deactivate
         ActivateGuide(3);
