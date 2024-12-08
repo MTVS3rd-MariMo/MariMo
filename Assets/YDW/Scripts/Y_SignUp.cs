@@ -121,8 +121,8 @@ public class Y_SignUp : MonoBehaviour
 
         StartCoroutine(Y_HttpLogIn.GetInstance().SignUpCoroutine(username, password, school, Int32.Parse(grade), Int32.Parse(className), Int32.Parse(studentNumber), isTeacher));
 
-        signUpUI.SetActive(false);
-        logInUI.SetActive(true);
+        //signUpUI.SetActive(false);
+        //logInUI.SetActive(true);
     }
 
     public void ClickBack()

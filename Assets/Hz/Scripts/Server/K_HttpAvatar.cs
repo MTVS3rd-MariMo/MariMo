@@ -406,10 +406,6 @@ public class K_HttpAvatar : MonoBehaviourPun
 
             using (UnityWebRequest webRequest = UnityWebRequest.Get(specificUserUrl))
             {
-                // 헤더에 userId 추가
-                webRequest.SetRequestHeader("userId", Y_HttpLogIn.GetInstance().userId.ToString());
-
-
                 print("서버에게 GET 요청 갔는지" + specificUserUrl);
 
                 yield return webRequest.SendWebRequest();
@@ -417,6 +413,19 @@ public class K_HttpAvatar : MonoBehaviourPun
                 if (webRequest.result == UnityWebRequest.Result.Success)
                 {
                     Debug.Log($"GET 응답 받음: {webRequest.downloadHandler.text}");
+
+                    ////////////////// HZ
+                    //// JSON 데이터 파싱
+                    //UserAvatarData avatarData = JsonUtility.FromJson<UserAvatarData>(webRequest.downloadHandler.text);
+
+                    //// 이미지, 애니메이션 다운로드
+                    //StartCoroutine(OnDownloadImage(avatarData.userId, avatarData.avatarImg, PhotonNetwork.LocalPlayer.ActorNumber));
+
+                    //for (int i = 0; i < avatarData.animations.Count; i++)
+                    //{
+                    //    StartCoroutine(DownloadVideo(avatarData.userId, avatarData.animations[i].animation, $"animation_{avatarData.userId}_{i}", PhotonNetwork.LocalPlayer.ActorNumber));
+
+                    //}
 
                     Debug.Log("다른 유저 데이터 가져옴");
                 }
@@ -445,6 +454,12 @@ public class K_HttpAvatar : MonoBehaviourPun
         }
         return otherUserIds;
     }
+
+    //[PunRPC]
+    //private void ApplayVideoToPlayer(string videoPath, int actorNumber)
+    //{
+    //    Y_BookController.Instance.allPlayers[actorNumber - 1].GetComponent<K_AvatarVpSettings>().SetVideoPath(videoPath, actorNumber);
+    //}
 
     // 캐릭터 생성하기 버튼 누르면 서버에 전송
     public void CreateAvatar()
