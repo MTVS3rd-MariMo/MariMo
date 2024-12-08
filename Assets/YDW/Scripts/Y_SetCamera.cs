@@ -100,7 +100,7 @@ public class Y_SetCamera : MonoBehaviour
         for(int i = 1; i <= playerPositions.Length; i++)
         {
             //Debug.LogWarning("students == Null ? " + (students[i] == null) + " 이 때 i 는 몇? : " + i);
-            playerPositions[i-1] = Y_GameManager.instance.students[i].transform.position;
+            playerPositions[i-1] = Y_GameManager.instance.students[i-1].transform.position;
         }
 
         // 플레이어들의 평균 위치 계산

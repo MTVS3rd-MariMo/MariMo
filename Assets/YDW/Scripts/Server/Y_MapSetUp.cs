@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Y_MapSetUp : MonoBehaviour
 {
@@ -20,6 +21,8 @@ public class Y_MapSetUp : MonoBehaviour
     public static Y_MapSetUp mapSetUp;
     public Y_BookController bookController;
     public GameObject img_loading;
+    public GameObject Btn_Left;
+    public GameObject Btn_Right;
 
     private void Awake()
     {
@@ -31,6 +34,8 @@ public class Y_MapSetUp : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        Btn_Left = GameObject.Find("Btn_Left");
+        Btn_Right = GameObject.Find("Btn_Right");
         img_loading = GameObject.Find("Img_Loading");
         bookTitleFirst = GameObject.Find("Txt_Title").GetComponent<TMP_Text>();
         bookAuthor = GameObject.Find("Txt_Author").GetComponent<TMP_Text>();
@@ -59,5 +64,7 @@ public class Y_MapSetUp : MonoBehaviour
         role4.text = classMaterial.lessonRoles[3];
 
         img_loading.SetActive(false);
+        Btn_Left.GetComponent<Button>().interactable = true;
+        Btn_Right.GetComponent<Button>().interactable = true;
     }
 }
