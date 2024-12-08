@@ -596,11 +596,12 @@ public class Y_BookController : MonoBehaviourPun
         if (mapCnt >= 4)
         {
             // 맵 소개 UI 실행
-            K_LobbyUiManager.instance.isAllArrived = true;
+            Y_GameManager.instance.afterbook = true;
+            //K_LobbyUiManager.instance.isAllArrived = true;
             Y_SoundManager.instance.PlayEftSound(Y_SoundManager.ESoundType.EFT_BUTTON);
-            Ani_Object.SetActive(true);
-            Drawing_School.SetActive(false);
-            Y_SoundManager.instance.PlayEftSound(Y_SoundManager.ESoundType.EFT_3D_OBJECT_01);
+            //Ani_Object.SetActive(true);
+            //Drawing_School.SetActive(false);
+            //Y_SoundManager.instance.PlayEftSound(Y_SoundManager.ESoundType.EFT_3D_OBJECT_01);
             
             gameObject.SetActive(false);
         }
