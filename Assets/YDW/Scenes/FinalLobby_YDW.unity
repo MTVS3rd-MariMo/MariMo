@@ -4494,6 +4494,8 @@ MonoBehaviour:
   userNickName: 
   RegisterUrl: api/user/signup
   signUpError: {fileID: 1738999677}
+  signUpUI: {fileID: 26498565}
+  logInUI: {fileID: 56896046}
   logInErrorsSprite:
   - {fileID: 21300000, guid: 8063adac103b5f646bfe46c918f359b0, type: 3}
   - {fileID: 21300000, guid: 5ac6d8719de31d6498bd882032edf1f3, type: 3}
@@ -12129,7 +12131,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1738999678
 RectTransform:
   m_ObjectHideFlags: 0
@@ -12147,7 +12149,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 100, y: 100}
+  m_SizeDelta: {x: 500, y: 300}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1738999679
 MonoBehaviour:

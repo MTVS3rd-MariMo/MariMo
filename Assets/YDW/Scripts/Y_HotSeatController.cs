@@ -71,6 +71,9 @@ public class Y_HotSeatController : MonoBehaviourPun
 
     public GameObject VirtualCamera;
 
+    public Image guideImg;
+    public Sprite[] guideImages;
+
     void Start()
     {
         Y_SoundManager.instance.StopBgmSound();
@@ -106,9 +109,28 @@ public class Y_HotSeatController : MonoBehaviourPun
         }
 
         // 안내 가이드 띄워주기
-        guide.SetActive(true);
+        //guide.SetActive(true);
+        //Y_SoundManager.instance.PlayEftSound(Y_SoundManager.ESoundType.EFT_INFO);
+        //StartCoroutine(Deactivate(guide));
+
+        // 안내 가이드 띄워주기
+        guideImg.gameObject.SetActive(true);
         Y_SoundManager.instance.PlayEftSound(Y_SoundManager.ESoundType.EFT_INFO);
-        StartCoroutine(Deactivate(guide));
+    }
+
+    int guideNum = 0;
+
+    public void NextGuide()
+    {
+        guideNum++;
+        if (guideNum < 5)
+        {
+            guideImg.sprite = guideImages[guideNum];
+        }
+        else
+        {
+            guideImg.gameObject.SetActive(false);
+        }
     }
 
     float canvasAlphaTime = 0;
