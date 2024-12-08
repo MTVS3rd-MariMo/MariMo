@@ -30,6 +30,10 @@ public class Y_GameManager : MonoBehaviourPun
     public ParticleSystem particle_Destroy;
     public GameObject VC_Fence;
 
+    // 추가 파티클
+    //public ParticleSystem particle_Sparks;
+    //public ParticleSystem particle_Glow;
+
     // 각 플레이어에 할당할 VideoRenderTexture 파일 경로 배열
     public string[] videoRendererPaths = new string[]
     {
@@ -218,11 +222,12 @@ public class Y_GameManager : MonoBehaviourPun
         // 애니메이션 !!!!!!!!!!!!!!!!!!!!
         anim.enabled = true;
         anim.SetTrigger("Unlock");
-        //anim.Play("Fence_Animation");
+        // 먼지 파티클 재생
         particle_Destroy.Play();
+        // 먼지 파티클 끝난 후 sparks, glow 재생
         
-        // 파티클 시간만큼 3초로 딜레이
-        yield return new WaitForSeconds(3f);
+        // 파티클 시간만큼 딜레이
+        yield return new WaitForSeconds(7f);
         VC_Fence.SetActive(false);
         // Fence 사운드
         Y_SoundManager.instance.PlayEftSound(Y_SoundManager.ESoundType.EFT_FENCE_ON);

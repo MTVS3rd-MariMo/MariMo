@@ -66,13 +66,13 @@ EditorBuildSettings:
     path: Assets/Scenes/Lobby_Final.unity
     guid: 8d617b4705aa44258a0c327677288b3b
   - enabled: 0
-    path: Assets/Scenes/Main_Final.unity
+    path: Assets/Scenes/Proto-Beta/Main_Final_NotReal.unity
     guid: 4c0334f9bbc2b4c759288e07e1620413
   - enabled: 1
     path: Assets/YDW/Scenes/FinalLobby_YDW.unity
     guid: 9bebb6ab163c0744ab31aa31e0fbf6a7
   - enabled: 1
-    path: Assets/YDW/Scenes/Final_YDW.unity
+    path: Assets/Scenes/Main_Final.unity
     guid: aaf712dcea2c28843b80ed0210618175
   m_configObjects:
     com.unity.input.settings: {fileID: 11400000, guid: 9e7be553448fa2546aea5752021cbcf7,
