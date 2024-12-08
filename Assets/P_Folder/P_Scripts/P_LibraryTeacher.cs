@@ -1,7 +1,10 @@
-﻿using JetBrains.Annotations;
+﻿using iTextSharp.text.pdf;
+using iTextSharp.text;
+using JetBrains.Annotations;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Networking;
@@ -68,6 +71,43 @@ public class Roles
 }
 
 
+public class PDFCreator
+{
+    public void CreatePDF(string textContent, string filePath)
+    {
+        // PDF 문서 생성
+        Document pdfDoc = new Document();
+
+        try
+        {
+
+
+            // PDF 파일 작성
+            using (FileStream stream = new FileStream(filePath, FileMode.Create))
+            {
+                PdfWriter.GetInstance(pdfDoc, stream);
+                pdfDoc.Open();
+
+                string fontPath = Path.Combine(Application.streamingAssetsPath, "MALGUN.ttf");
+                BaseFont koreanFont = BaseFont.CreateFont(fontPath, BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
+                iTextSharp.text.Font font = new iTextSharp.text.Font(koreanFont, 12, iTextSharp.text.Font.NORMAL);
+
+
+                // 텍스트 추가
+                pdfDoc.Add(new Paragraph(textContent, font));
+
+                pdfDoc.Close();
+            }
+
+            Debug.Log($"PDF 파일 생성 완료: {filePath}");
+        }
+        catch (System.Exception e)
+        {
+            Debug.LogError($"PDF 생성 중 오류 발생: {e.Message}");
+        }
+    }
+}
+
 
 public class P_LibraryTeacher : MonoBehaviour
 {
@@ -77,6 +117,7 @@ public class P_LibraryTeacher : MonoBehaviour
     public GameObject panel_log;
     public TMP_Text text_Log;
     public Button btn_CloseLog;
+    public Button btn_MakePDF;
 
     public TeacherLibrary teacherLibrary;
 
@@ -88,6 +129,7 @@ public class P_LibraryTeacher : MonoBehaviour
         GetLogList();
 
         btn_CloseLog.onClick.AddListener(OnclickCloseLog);
+        btn_MakePDF.onClick.AddListener(OnclickMakePDF);
     }
 
     void GetLogList()
@@ -193,8 +235,6 @@ public class P_LibraryTeacher : MonoBehaviour
         try
         {
             allData = JsonUtility.FromJson<AllData>(jsonString);
-
-            DebugingLog(allData);
         }
         catch (Exception e)
         {
@@ -203,89 +243,6 @@ public class P_LibraryTeacher : MonoBehaviour
         }
     }
 
-    void DebugingLog(AllData allData)
-    {
-        if (allData == null)
-        {
-            Debug.LogError("allData가 null입니다. 데이터 로드 실패.");
-            return;
-        }
-
-        Debug.Log("=== AllData 정보 출력 시작 ===");
-
-        // 기본 정보
-        Debug.Log("책 제목: " + allData.bookTitle);
-        Debug.Log("생성 날짜: " + allData.createdAt);
-
-
-        // OpenQuestions 정보
-        if (allData.openQuestions != null && allData.openQuestions.Length > 0)
-        {
-            Debug.Log("OpenQuestions 목록:");
-            foreach (var question in allData.openQuestions)
-            {
-                Debug.Log("질문: " + question.question);
-                if (question.resultAnswers != null && question.resultAnswers.Length > 0)
-                {
-                    foreach (var answer in question.resultAnswers)
-                    {
-                        Debug.Log(" - 사용자: " + answer.userName + ", 답변: " + answer.answer);
-                    }
-                }
-                else
-                {
-                    Debug.Log(" - 답변이 없습니다.");
-                }
-            }
-        }
-        else
-        {
-            Debug.Log("OpenQuestions 정보가 없습니다.");
-        }
-
-        // HotSittings 정보
-        if (allData.hotSittings != null && allData.hotSittings.Length > 0)
-        {
-            Debug.Log("HotSittings 목록:");
-            foreach (var sitting in allData.hotSittings)
-            {
-                Debug.Log("자기소개: " + sitting.selfIntroduce);
-                if (sitting.questionAnswers != null && sitting.questionAnswers.Length > 0)
-                {
-                    foreach (var answer in sitting.questionAnswers)
-                    {
-                        Debug.Log(" - 질문 답변: " + answer);
-                    }
-                }
-                else
-                {
-                    Debug.Log(" - 질문 답변이 없습니다.");
-                }
-            }
-        }
-        else
-        {
-            Debug.Log("HotSittings 정보가 없습니다.");
-        }
-
-        // Roles 정보
-        if (allData.roles != null && allData.roles.Length > 0)
-        {
-            Debug.Log("Roles 목록:");
-            foreach (var role in allData.roles)
-            {
-                Debug.Log("사용자 이름: " + role.userName);
-                Debug.Log("캐릭터: " + role.character);
-                Debug.Log("아바타 URL: " + role.avatarUrl);
-            }
-        }
-        else
-        {
-            Debug.Log("Roles 정보가 없습니다.");
-        }
-
-        Debug.Log("=== AllData 정보 출력 종료 ===");
-    }
 
     void SetLogDetail(AllData allData)
     {
@@ -382,5 +339,16 @@ public class P_LibraryTeacher : MonoBehaviour
     void OnclickCloseLog()
     {
         panel_log.SetActive(false);
+    }
+
+    
+
+    public void OnclickMakePDF()
+    {
+        string content = text_Log.text;
+        string filePath = Application.persistentDataPath + "/GeneratedFile.pdf";
+
+        PDFCreator pdfCreator = new PDFCreator();
+        pdfCreator.CreatePDF(content, filePath);
     }
 }
