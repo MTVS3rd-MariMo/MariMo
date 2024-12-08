@@ -266,7 +266,7 @@ public class Y_GameManager : MonoBehaviourPun
     public IEnumerator UnlockBarrierAfterKeyUI()
     {
         // 딜레이줘야함 (마지막 활동 끝나고) HZ 원래 2초였는데 베타 시연용 4초로 변경
-        yield return new WaitForSeconds(4f);
+        yield return new WaitForSeconds(2f);
 
         //VC_Fence.SetActive(true); HZ
         // 마지막 키 활성화
@@ -296,6 +296,7 @@ public class Y_GameManager : MonoBehaviourPun
         VC_Fence.SetActive(false);
         // Fence 사운드
         Y_SoundManager.instance.PlayEftSound(Y_SoundManager.ESoundType.EFT_FENCE_ON);
+        yield return new WaitForSeconds(1f);
         OpenBarrier();
     }
 
