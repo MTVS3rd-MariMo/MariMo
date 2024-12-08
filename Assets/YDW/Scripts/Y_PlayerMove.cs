@@ -34,6 +34,12 @@ public class Y_PlayerMove : MonoBehaviour, IPunObservable
     Vector3 targetPosition;
     bool isMoving;
 
+    public ParticleSystem footstepsSystem;
+    public float footstepDelta = 1f; // 발자국 간 거리
+    public float footstepGap = 0.5f; // 좌우 간격
+    private int dir = 1; // 발자국 좌우 방향
+    private Vector3 lastFootstepPosition;
+
     private void Awake()
     {
         pv = GetComponent<PhotonView>();
@@ -46,6 +52,7 @@ public class Y_PlayerMove : MonoBehaviour, IPunObservable
     {
         speed = 10;
         //if (Application.platform == RuntimePlatform.Android) speed = 0.001f;
+        lastFootstepPosition = transform.position; // 초기 위치
         layerMaskGround = LayerMask.GetMask("Ground");
 
         cc = GetComponent<CharacterController>();

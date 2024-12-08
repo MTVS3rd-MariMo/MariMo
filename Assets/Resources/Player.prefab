@@ -166,6 +166,9 @@ MonoBehaviour:
   movable: 0
   isFive: 0
   moveDistance: 0
+  footstepsSystem: {fileID: 0}
+  footstepDelta: 1
+  footstepGap: 0.5
 --- !u!114 &2044002936649389299
 MonoBehaviour:
   m_ObjectHideFlags: 0

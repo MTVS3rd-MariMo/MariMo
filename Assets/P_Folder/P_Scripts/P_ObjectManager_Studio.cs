@@ -76,91 +76,19 @@ public class P_ObjectManager_Studio : MonoBehaviourPun
             {
                 act = true;
 
-                StartCoroutine(CameraMove());
-                //StartCoroutine(SetPlayerPos());
-
                 if (photonView.IsMine)
                 {
 
                     RPC_MoveControl(false);
-
-                    RPC_Studio();
-
-                }
-            }
-        }
-    }
-
-    public Transform[] StudioPos;
-
-    IEnumerator SetPlayerPos()
-    {
-        bool[] playersInPosition = new bool[players.Count]; // 각 플레이어의 도달 상태를 추적
-        int i = 0;
-
-        while (true)
-        {
-            bool allPlayersInPosition = true;
-
-            for (i = 0; i < players.Count; i++)
-            {
-                if (playersInPosition[i]) continue; // 이미 도달한 플레이어는 무시
-
-                GameObject player = players[i];
-                Vector3 playerStartPos = StudioPos[i].position;
-                playerStartPos.y = player.transform.position.y;
-
-                float distanceSqr = (player.transform.position - playerStartPos).sqrMagnitude; // 제곱 거리
-                if (distanceSqr < 0.1f)
-                {
-                    player.transform.position = playerStartPos; // 정확히 위치 고정
-                    playersInPosition[i] = true; // 도달 상태 업데이트
-                }
-                //if (Vector3.Distance(player.transform.position, playerStartPos) < 0.5f) // 도달 여부 확인
-                //{
-                //    player.transform.position = playerStartPos; // 정확히 위치 고정
-                //    playersInPosition[i] = true; // 도달 상태 업데이트
-                //}
-                else
-                {
-                    allPlayersInPosition = false;
-                    player.transform.position = Vector3.Lerp(player.transform.position, playerStartPos, 0.01f); // 부드럽게 이동
-                }
-            }
-
-            if (allPlayersInPosition)
-            {
-                if (photonView.IsMine)
-                {
                     
-
-                    RPC_MoveControl(false);
-
                     RPC_Studio();
 
                 }
-                break; // 모든 플레이어가 위치에 도달하면 코루틴 종료
             }
-
-            yield return null;
         }
     }
 
-    IEnumerator CameraMove()
-    {
-        // 타임라인 재생
-        timeline.Play();
-
-        yield return new WaitForSeconds(0.5f);
-
-        virtualCamera1.gameObject.SetActive(true);
-
-        yield return new WaitForSeconds(3.5f);
-
-        virtualCamera2.gameObject.SetActive(true);
-    }
-
-
+    
     void RPC_Studio()
     {
         photonView.RPC(nameof(Studio), RpcTarget.All);
@@ -208,7 +136,16 @@ public class P_ObjectManager_Studio : MonoBehaviourPun
     {
         //Moving(false);
 
-        yield return new WaitForSeconds(3f);
+        // 타임라인 재생
+        timeline.Play();
+
+        yield return new WaitForSeconds(0.5f);
+
+        virtualCamera1.gameObject.SetActive(true);
+
+        yield return new WaitForSeconds(3.5f);
+
+        virtualCamera2.gameObject.SetActive(true);
 
         //// 책갈피 UI 꺼주기
         int j = 0;

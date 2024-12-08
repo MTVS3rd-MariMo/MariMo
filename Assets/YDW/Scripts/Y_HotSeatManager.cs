@@ -44,73 +44,18 @@ public class Y_HotSeatManager : MonoBehaviourPun
 
             if (triggerNum >= 4 && !act)
             {
-
+                
                 //hotSeatCanvas.SetActive(true);
-                VirtualCamera.SetActive(true);
-                StartCoroutine(SetPlayerPos());
 
-                //if(photonView.IsMine)
-                //{
-                //    act = true;
-
-                //    RPC_MoveControl(false);
-
-                //    RPC_AniDelayStart();
-                //}
-            }
-        }
-    }
-
-    public Transform[] hotSeatPos;
-
-    IEnumerator SetPlayerPos()
-    {
-        bool[] playersInPosition = new bool[players.Count]; // 각 플레이어의 도달 상태를 추적
-        int i = 0;
-
-        while (true)
-        {
-            bool allPlayersInPosition = true;
-
-            for (i = 0; i < players.Count; i++)
-            {
-                if (playersInPosition[i]) continue; // 이미 도달한 플레이어는 무시
-
-                GameObject player = players[i];
-                Vector3 playerStartPos = hotSeatPos[i].position;
-                playerStartPos.y = player.transform.position.y;
-
-                float distanceSqr = (player.transform.position - playerStartPos).sqrMagnitude; // 제곱 거리
-                if (distanceSqr < 0.1f) // 0.1f^2 = 0.01
-                {
-                    player.transform.position = playerStartPos; // 정확히 위치 고정
-                    playersInPosition[i] = true; // 도달 상태 업데이트
-                }
-                //if (Vector3.Distance(player.transform.position, playerStartPos) < 0.5f) // 도달 여부 확인
-                //{
-                //    player.transform.position = playerStartPos; // 정확히 위치 고정
-                //    playersInPosition[i] = true; // 도달 상태 업데이트
-                //}
-                else
-                {
-                    allPlayersInPosition = false;
-                    player.transform.position = Vector3.Lerp(player.transform.position, playerStartPos, 0.01f); // 부드럽게 이동
-                }
-            }
-
-            if (allPlayersInPosition)
-            {
-                if (photonView.IsMine)
+                if(photonView.IsMine)
                 {
                     act = true;
 
                     RPC_MoveControl(false);
+
                     RPC_AniDelayStart();
                 }
-                break; // 모든 플레이어가 위치에 도달하면 코루틴 종료
             }
-
-            yield return null;
         }
     }
 
@@ -167,7 +112,7 @@ public class Y_HotSeatManager : MonoBehaviourPun
 
     public IEnumerator AniDelay()
     {
-        //VirtualCamera.SetActive(true);
+        VirtualCamera.SetActive(true);
 
         Ani_Object.SetActive(true);
         Y_SoundManager.instance.PlayEftSound(Y_SoundManager.ESoundType.EFT_3D_OBJECT_03);
