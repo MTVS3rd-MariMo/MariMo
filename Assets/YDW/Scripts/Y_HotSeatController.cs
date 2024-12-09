@@ -756,7 +756,7 @@ public class Y_HotSeatController : MonoBehaviourPun
     {
         Debug.LogError("InterviewCrt index : " + index);
 
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(3f);
 
         for(int i = 0; i <= players.Count; i++)
         {
