@@ -196,21 +196,21 @@ public class Y_GameManager : MonoBehaviourPun
                 Vector3 playerStartPos = startPos[i].position;
                 playerStartPos.y = student.transform.position.y;
 
-                float distanceSqr = (student.transform.position - playerStartPos).sqrMagnitude; // 제곱 거리
-                if (distanceSqr < 1f) // 0.1f^2 = 0.01
-                {
-                    student.transform.position = playerStartPos; // 정확히 위치 고정
-                    playersInPosition[i] = true; // 도달 상태 업데이트
-                }
-                //if (Vector3.Distance(student.transform.position, playerStartPos) < 0.5f) // 도달 여부 확인
+                //float distanceSqr = (student.transform.position - playerStartPos).sqrMagnitude; // 제곱 거리
+                //if (distanceSqr < 1f) // 0.1f^2 = 0.01
                 //{
                 //    student.transform.position = playerStartPos; // 정확히 위치 고정
                 //    playersInPosition[i] = true; // 도달 상태 업데이트
                 //}
+                if (Vector3.Distance(student.transform.position, playerStartPos) < 0.5f) // 도달 여부 확인
+                {
+                    student.transform.position = playerStartPos; // 정확히 위치 고정
+                    playersInPosition[i] = true; // 도달 상태 업데이트
+                }
                 else
                 {
                     allPlayersInPosition = false;
-                    student.transform.position = Vector3.Lerp(student.transform.position, playerStartPos, 0.01f); // 부드럽게 이동
+                    student.transform.position = Vector3.Lerp(student.transform.position, playerStartPos, 0.1f); // 부드럽게 이동
                 }
             }
 
@@ -266,7 +266,7 @@ public class Y_GameManager : MonoBehaviourPun
     public IEnumerator UnlockBarrierAfterKeyUI()
     {
         // 딜레이줘야함 (마지막 활동 끝나고) HZ 원래 2초였는데 베타 시연용 4초로 변경
-        yield return new WaitForSeconds(4f);
+        yield return new WaitForSeconds(2f);
 
         //VC_Fence.SetActive(true); HZ
         // 마지막 키 활성화
@@ -276,7 +276,9 @@ public class Y_GameManager : MonoBehaviourPun
         VC_Fence.SetActive(true);
         // 사운드
         Y_SoundManager.instance.PlayEftSound(Y_SoundManager.ESoundType.EFT_KEY);
-        yield return new WaitForSeconds(2f);
+        
+        // HZ 1209 잠깐 꺼보는걸로
+        //yield return new WaitForSeconds(2f);
 
         // 애니메이션 !!!!!!!!!!!!!!!!!!!!
         anim.enabled = true;
@@ -286,7 +288,7 @@ public class Y_GameManager : MonoBehaviourPun
 
 
         // 파티클 시간만큼 3초로 딜레이
-        yield return new WaitForSeconds(3f);
+        //yield return new WaitForSeconds(3f);
 
         // 먼지 파티클 끝난 후 sparks, glow 재생
         
@@ -296,6 +298,7 @@ public class Y_GameManager : MonoBehaviourPun
         VC_Fence.SetActive(false);
         // Fence 사운드
         Y_SoundManager.instance.PlayEftSound(Y_SoundManager.ESoundType.EFT_FENCE_ON);
+        yield return new WaitForSeconds(1f);
         OpenBarrier();
     }
 
