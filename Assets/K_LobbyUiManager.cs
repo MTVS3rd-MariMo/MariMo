@@ -46,7 +46,7 @@ public class K_LobbyUiManager : MonoBehaviour
         //로비에 모든 학생들 입장하게 되면 1초뒤에 활성화 시키기
         if (isAllArrived && !hasDisplayInfo)
         {
-            StartCoroutine(DisplayInfoWithDelay(1f));
+            StartCoroutine(DisplayInfoWithDelay(2f));
             hasDisplayInfo = true;
         }
     }
@@ -68,7 +68,7 @@ public class K_LobbyUiManager : MonoBehaviour
         Y_SoundManager.instance.PlayEftSound(Y_SoundManager.ESoundType.EFT_INFO);
 
         // 5초 뒤 비활성화
-        StartCoroutine(HideInfo(5f));      
+        StartCoroutine(HideInfo(4f));      
     }
 
     IEnumerator HideInfo(float delay)
