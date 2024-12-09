@@ -286,22 +286,35 @@ public class Y_GameManager : MonoBehaviourPun
         // 애니메이션 !!!!!!!!!!!!!!!!!!!!
         anim.enabled = true;
         anim.SetTrigger("Unlock");
-        //anim.Play("Fence_Animation");
+
+        // HZ 추가!
+        float animationDuration = 3.33f;
+        // 파티클
         particle_Destroy.Play();
 
+        // 파티클 재생 시간 동기화 (애니메이션 길이에 맞춤)
+        yield return new WaitForSeconds(animationDuration);
 
-        // 파티클 시간만큼 3초로 딜레이
-        //yield return new WaitForSeconds(3f);
-
-        // 먼지 파티클 끝난 후 sparks, glow 재생
-        
-        // 파티클 시간만큼 딜레이
-        yield return new WaitForSeconds(5f);
-
+        particle_Destroy.Stop(); // 파티클 강제 정지
         VC_Fence.SetActive(false);
+
+
+        // HZ
+
+        //// 파티클 시간만큼 3초로 딜레이
+        ////yield return new WaitForSeconds(3f);
+
+        //// 먼지 파티클 끝난 후 sparks, glow 재생
+
+        //// 파티클 시간만큼 딜레이
+        //yield return new WaitForSeconds(5f);
+
+        //VC_Fence.SetActive(false);
+
+
         // Fence 사운드
         Y_SoundManager.instance.PlayEftSound(Y_SoundManager.ESoundType.EFT_FENCE_ON);
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(2f);
         OpenBarrier();
     }
 
