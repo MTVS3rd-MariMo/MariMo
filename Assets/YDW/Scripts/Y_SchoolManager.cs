@@ -16,7 +16,7 @@ public class Y_SchoolManager : MonoBehaviour
 
     IEnumerator movableCoroutine()
     {
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(6f);
         MoveControl(true);
     }
 
