@@ -202,7 +202,7 @@ public class Y_GameManager : MonoBehaviourPun
                 //    student.transform.position = playerStartPos; // 정확히 위치 고정
                 //    playersInPosition[i] = true; // 도달 상태 업데이트
                 //}
-                if (Vector3.Distance(student.transform.position, playerStartPos) < 0.5f) // 도달 여부 확인
+                if (Vector3.Distance(student.transform.position, playerStartPos) < 0.3f) // 도달 여부 확인
                 {
                     student.transform.position = playerStartPos; // 정확히 위치 고정
                     playersInPosition[i] = true; // 도달 상태 업데이트
@@ -210,7 +210,7 @@ public class Y_GameManager : MonoBehaviourPun
                 else
                 {
                     allPlayersInPosition = false;
-                    student.transform.position = Vector3.Lerp(student.transform.position, playerStartPos, 0.1f); // 부드럽게 이동
+                    student.transform.position = Vector3.Lerp(student.transform.position, playerStartPos, 0.01f); // 부드럽게 이동
                 }
             }
 
