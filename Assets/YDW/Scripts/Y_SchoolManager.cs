@@ -7,21 +7,16 @@ using UnityEngine.UI;
 public class Y_SchoolManager : MonoBehaviour
 {
     List<GameObject> players = new List<GameObject>();
-    public Button btn_enter;
 
-    void Start()
-    {
-        btn_enter.onClick.AddListener(startMovableCoroutine);
-    }
 
-    void startMovableCoroutine()
+    public void startMovableCoroutine()
     {
         StartCoroutine(movableCoroutine());
     }
 
     IEnumerator movableCoroutine()
     {
-        yield return new WaitForSeconds(6f);
+        yield return new WaitForSeconds(1f);
         MoveControl(true);
     }
 

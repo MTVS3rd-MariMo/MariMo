@@ -179,6 +179,8 @@ public class Y_GameManager : MonoBehaviourPun
     public GameObject Ani_Object;
     public GameObject Drawing_School;
 
+    public Y_SchoolManager y_SchoolManager;
+
     public IEnumerator SetStartPos()
     {
         bool[] playersInPosition = new bool[students.Count]; // 각 플레이어의 도달 상태를 추적
@@ -219,6 +221,7 @@ public class Y_GameManager : MonoBehaviourPun
                 K_LobbyUiManager.instance.isAllArrived = true;
                 Ani_Object.SetActive(true);
                 Drawing_School.SetActive(false);
+                y_SchoolManager.startMovableCoroutine();
                 Y_SoundManager.instance.PlayEftSound(Y_SoundManager.ESoundType.EFT_3D_OBJECT_01);
                 //myPhotonView.GetComponent<Y_SetCamera>().isFive = true;
                 break; // 모든 플레이어가 위치에 도달하면 코루틴 종료
