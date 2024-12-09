@@ -276,7 +276,9 @@ public class Y_GameManager : MonoBehaviourPun
         VC_Fence.SetActive(true);
         // 사운드
         Y_SoundManager.instance.PlayEftSound(Y_SoundManager.ESoundType.EFT_KEY);
-        yield return new WaitForSeconds(2f);
+        
+        // HZ 1209 잠깐 꺼보는걸로
+        //yield return new WaitForSeconds(2f);
 
         // 애니메이션 !!!!!!!!!!!!!!!!!!!!
         anim.enabled = true;
