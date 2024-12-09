@@ -268,45 +268,35 @@ public class Y_GameManager : MonoBehaviourPun
         // 딜레이줘야함 (마지막 활동 끝나고) HZ 원래 2초였는데 베타 시연용 4초로 변경
         yield return new WaitForSeconds(2f);
 
-        //VC_Fence.SetActive(true); HZ
         // 마지막 키 활성화
         K_KeyUiManager.instance.EndKeyUi();
+
         // HZ 키 애니메이션 다 보여주고 cameraON
         yield return new WaitForSeconds(4f);
         VC_Fence.SetActive(true);
+
         // 사운드
         Y_SoundManager.instance.PlayEftSound(Y_SoundManager.ESoundType.EFT_KEY);
         
-        // HZ 1209 잠깐 꺼보는걸로
-        //yield return new WaitForSeconds(2f);
+        // 카메라 재생되고 딜레이 주고 애니메이션 켜주기
+        yield return new WaitForSeconds(1f);
 
         // 애니메이션 !!!!!!!!!!!!!!!!!!!!
         anim.enabled = true;
         anim.SetTrigger("Unlock");
 
-        // HZ 추가!
-        float animationDuration = 3.33f;
         // 파티클
         particle_Destroy.Play();
 
-        // 파티클 재생 시간 동기화 (애니메이션 길이에 맞춤)
-        yield return new WaitForSeconds(animationDuration);
-
-        particle_Destroy.Stop(); // 파티클 강제 정지
-        VC_Fence.SetActive(false);
-
-
         // HZ
 
-        //// 파티클 시간만큼 3초로 딜레이
-        ////yield return new WaitForSeconds(3f);
+        // 파티클 시간만큼 딜레이
+        yield return new WaitForSeconds(5f);
 
-        //// 먼지 파티클 끝난 후 sparks, glow 재생
+        // 파티클 멈춰
+        particle_Destroy.Stop();
 
-        //// 파티클 시간만큼 딜레이
-        //yield return new WaitForSeconds(5f);
-
-        //VC_Fence.SetActive(false);
+        VC_Fence.SetActive(false);
 
 
         // Fence 사운드
