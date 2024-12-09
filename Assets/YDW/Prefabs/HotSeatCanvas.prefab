@@ -4622,11 +4622,11 @@ MonoBehaviour:
   VirtualCamera: {fileID: 0}
   guideImg: {fileID: 3895026585791814631}
   guideImages:
-  - {fileID: 21300000, guid: 39107836767ad57408bfcc34bb578104, type: 3}
-  - {fileID: 21300000, guid: 4fe65148873fc2343b23e9416a536d4d, type: 3}
-  - {fileID: 21300000, guid: 4453888e7ffaaed4fb614ae2f16304e6, type: 3}
-  - {fileID: 21300000, guid: 3363c06533353a446a4f1d6acd79d3fd, type: 3}
-  - {fileID: 21300000, guid: ce5c7b3e0d325084391aa80a9eae001e, type: 3}
+  - {fileID: 21300000, guid: e9802374430fe684d9c48240f5656c78, type: 3}
+  - {fileID: 21300000, guid: d8a469860d5165440b365b9d4c5f8001, type: 3}
+  - {fileID: 21300000, guid: 462916f31f02d1543b7144b898acd605, type: 3}
+  - {fileID: 21300000, guid: b7a52df4c8aa11c4386e112e29dff55d, type: 3}
+  - {fileID: 21300000, guid: 9c912b2547f1fe34782384bb96d47ca8, type: 3}
   requiredHoldTime: 2
   wordCount: {fileID: 1984129265432463489}
   characterNameTags:
@@ -7397,7 +7397,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 812, y: -378}
-  m_SizeDelta: {x: 100, y: 100}
+  m_SizeDelta: {x: 80, y: 77}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &5596053032857653149
 CanvasRenderer:
@@ -7420,15 +7420,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
-  m_Type: 1
+  m_Sprite: {fileID: 21300000, guid: 16d1ffa0d2c546749b53b01d0dcd4441, type: 3}
+  m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
