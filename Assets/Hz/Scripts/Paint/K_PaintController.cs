@@ -34,7 +34,7 @@ public class K_PaintController : MonoBehaviour
 
         float time = 0;
         // 임시 셋팅 (더미 데이터 기준)
-        while(time < 5f)
+        while(time < 13f)
         {
             time += Time.deltaTime;
             img_MakingBar.GetComponentInChildren<Image>().fillAmount = Mathf.Lerp(img_MakingBar.GetComponent<Image>().fillAmount, 1, time / 2);
