@@ -185,7 +185,7 @@ public class Y_HotSeatController : MonoBehaviourPun
     }
 
     bool isEnd = false;
-    bool over80 = false;
+    bool over50 = false;
 
     public float requiredHoldTime = 2.0f; // 세 손가락을 유지해야 하는 시간
     private float touchHoldTime = 0f;
@@ -198,11 +198,11 @@ public class Y_HotSeatController : MonoBehaviourPun
             WordCount();
         }
 
-        if (selfIntroduceInput.text.Length >= 80 && !over80)
+        if (selfIntroduceInput.text.Length >= 50 && !over50)
         {
             buttons[0].GetComponent<Button>().interactable = true;
             buttons[0].GetComponent<Image>().sprite = sprites[5];
-            over80 = true;
+            over50 = true;
         }
 
         // 모바일용 치트키
@@ -236,7 +236,7 @@ public class Y_HotSeatController : MonoBehaviourPun
     // 실시간으로 글자 수 업데이트
     void WordCount()
     {
-        wordCount.text = selfIntroduceInput.text.Length.ToString() + "/80";
+        wordCount.text = selfIntroduceInput.text.Length.ToString() + "/50";
     }
 
     void RPC_ProtoTest()
@@ -595,13 +595,13 @@ public class Y_HotSeatController : MonoBehaviourPun
         // 처음 순서면 15초, 아니면 5초 타이머 시작
         if (i == 0 && PhotonNetwork.IsMasterClient) // 테스트용으로 5초, 시연 땐 15초 정도 할까 /////////////////////////
         {
-            if (PhotonNetwork.IsMasterClient) RPC_StartTimer(i, 60); 
+            if (PhotonNetwork.IsMasterClient) RPC_StartTimer(i, 30); 
                                     //recordTime = 15;
 
         }
         else if (PhotonNetwork.IsMasterClient)
         {
-            if (PhotonNetwork.IsMasterClient) RPC_StartTimer(i, 60);
+            if (PhotonNetwork.IsMasterClient) RPC_StartTimer(i, 30);
             //recordTime = 5;
         }
 
@@ -752,6 +752,7 @@ public class Y_HotSeatController : MonoBehaviourPun
 
     //public GameObject[] myTurnImgs;
     int interviewTime = 30;
+    int answerTime = 60;
 
     IEnumerator InterviewCoroutine(int index)
     {
@@ -803,9 +804,9 @@ public class Y_HotSeatController : MonoBehaviourPun
                 RecordVoice(playerNums[index] + 2);
 
                 // 원래는 60초인데 일단 10초
-                while (currTime < interviewTime)
+                while (currTime < answerTime)
                 {
-                    speakingUIOns[index].fillAmount = 1 - (currTime / interviewTime);
+                    speakingUIOns[index].fillAmount = 1 - (currTime / answerTime);
                     currTime += Time.deltaTime;
                     yield return null;
                 }
