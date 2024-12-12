@@ -207,27 +207,27 @@ public class Y_HotSeatController : MonoBehaviourPun
 
         // 모바일용 치트키
         // 세 손가락 터치가 유지되고 있는지 확인
-        if (Input.touchCount == 3)
-        {
-            Debug.Log("치트키???");
-            touchHoldTime += Time.deltaTime; // 터치 유지 시간 증가
-            if (touchHoldTime >= requiredHoldTime)
-            {
-                Debug.Log("치트키 발동!");
-                //StartCoroutine(LastCoroutine());
-                RPC_startLastCrt();
-                touchHoldTime = 0f; // 초기화
-            }
-        }
-        else
-        {
-            touchHoldTime = 0f; // 세 손가락에서 벗어나면 시간 초기화
-        }
+        //if (Input.touchCount == 3)
+        //{
+        //    Debug.Log("치트키???");
+        //    touchHoldTime += Time.deltaTime; // 터치 유지 시간 증가
+        //    if (touchHoldTime >= requiredHoldTime)
+        //    {
+        //        Debug.Log("치트키 발동!");
+        //        //StartCoroutine(LastCoroutine());
+        //        RPC_startLastCrt();
+        //        touchHoldTime = 0f; // 초기화
+        //    }
+        //}
+        //else
+        //{
+        //    touchHoldTime = 0f; // 세 손가락에서 벗어나면 시간 초기화
+        //}
 
-        if (Input.GetKeyDown(KeyCode.Alpha9))
-        {
-            StartCoroutine(LastCoroutine());
-        }
+        //if (Input.GetKeyDown(KeyCode.Alpha9))
+        //{
+        //    StartCoroutine(LastCoroutine());
+        //}
     }
 
 
