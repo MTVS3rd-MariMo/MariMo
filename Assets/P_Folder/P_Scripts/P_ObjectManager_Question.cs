@@ -94,7 +94,7 @@ public class P_ObjectManager_Question : MonoBehaviourPun
             WordCount();
         }
 
-        if (answer_InputField.text.Length >= 50 || PhotonNetwork.IsMasterClient)
+        if (answer_InputField.text.Length >= 30 || PhotonNetwork.IsMasterClient)
         {
             BtnState(true);
         }
@@ -217,7 +217,7 @@ public class P_ObjectManager_Question : MonoBehaviourPun
 
     void WordCount()
     {
-        wordCount.text = answer_InputField.text.Length.ToString() + "/50";
+        wordCount.text = answer_InputField.text.Length.ToString() + "/30";
     }
 
     void SendAnswer(QuestionAnswer answer)
