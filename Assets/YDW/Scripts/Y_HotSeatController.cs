@@ -205,8 +205,8 @@ public class Y_HotSeatController : MonoBehaviourPun
             over50 = true;
         }
 
-        // 모바일용 치트키
-        // 세 손가락 터치가 유지되고 있는지 확인
+        //모바일용 치트키
+        //세 손가락 터치가 유지되고 있는지 확인
         if (Input.touchCount == 3)
         {
             Debug.Log("치트키???");
@@ -595,13 +595,13 @@ public class Y_HotSeatController : MonoBehaviourPun
         // 처음 순서면 15초, 아니면 5초 타이머 시작
         if (i == 0 && PhotonNetwork.IsMasterClient) // 테스트용으로 5초, 시연 땐 15초 정도 할까 /////////////////////////
         {
-            if (PhotonNetwork.IsMasterClient) RPC_StartTimer(i, 30); 
+            if (PhotonNetwork.IsMasterClient) RPC_StartTimer(i, 15); 
                                     //recordTime = 15;
 
         }
         else if (PhotonNetwork.IsMasterClient)
         {
-            if (PhotonNetwork.IsMasterClient) RPC_StartTimer(i, 30);
+            if (PhotonNetwork.IsMasterClient) RPC_StartTimer(i, 15);
             //recordTime = 5;
         }
 
@@ -751,8 +751,8 @@ public class Y_HotSeatController : MonoBehaviourPun
     }
 
     //public GameObject[] myTurnImgs;
-    int interviewTime = 30;
-    int answerTime = 60;
+    int interviewTime = 15;
+    int answerTime = 15;
 
     IEnumerator InterviewCoroutine(int index)
     {
@@ -820,14 +820,14 @@ public class Y_HotSeatController : MonoBehaviourPun
                 speakingUIOns[index].gameObject.SetActive(false);
                 speakingUIOffs[index].gameObject.SetActive(false);
 
-                //break; // 도원 시연용
+                break; // 도원 시연용
             }
 
-            if (i == players.Count)
-            {
-                if (PhotonNetwork.IsMasterClient) RPC_ProtoTest();
-                print("다음 사람 자기소개로 넘어갑니다");
-            } // 도원 시연용으로 삭제
+            //if (i == players.Count)
+            //{
+            //    if (PhotonNetwork.IsMasterClient) RPC_ProtoTest();
+            //    print("다음 사람 자기소개로 넘어갑니다");
+            //} // 도원 시연용으로 삭제
         }
     }
 

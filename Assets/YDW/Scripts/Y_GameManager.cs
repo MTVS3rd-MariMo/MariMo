@@ -236,11 +236,11 @@ public class Y_GameManager : MonoBehaviourPun
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Alpha2))
-        {
-            hotSeat.SetActive(true);
-            //photonView.RPC(nameof(AddPlayerCnt), RpcTarget.AllBuffered);
-        }
+        //if (Input.GetKeyDown(KeyCode.Alpha2))
+        //{
+        //    hotSeat.SetActive(true);
+        //    //photonView.RPC(nameof(AddPlayerCnt), RpcTarget.AllBuffered);
+        //}
 
         if (afterbook)
         {
