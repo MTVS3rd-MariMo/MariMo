@@ -67,7 +67,7 @@ public class P_ObjectManager_Question : MonoBehaviourPun
     Color black;
 
     // 질문 카운트
-    int question_count = 0;
+    int question_count = 1;
     // 답변 인원 카운트
     int answer_count = 0;
 
