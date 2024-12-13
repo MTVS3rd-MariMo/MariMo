@@ -70,7 +70,7 @@ public class K_KeyManager : MonoBehaviour
         }
 
         // 총 열쇠 4개 -> 투명벽 열림 HZ 시연 때는 3개로 변경하기
-        if (totalKeys >= 4 && !isBarrierOpened)
+        if (totalKeys >= 3 && !isBarrierOpened)
         {
             //// 스탬프 다모이면 큰 열쇠 이미지 띄워주는 함수
             //K_KeyUiManager.instance.EndKeyUi();

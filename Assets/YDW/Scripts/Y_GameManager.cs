@@ -269,7 +269,7 @@ public class Y_GameManager : MonoBehaviourPun
     public IEnumerator UnlockBarrierAfterKeyUI()
     {
         // 딜레이줘야함 (마지막 활동 끝나고) HZ 원래 2초였는데 베타 시연용 4초로 변경
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(4f);
 
         // 마지막 키 활성화
         K_KeyUiManager.instance.EndKeyUi();
