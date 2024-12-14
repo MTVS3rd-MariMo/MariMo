@@ -11,6 +11,9 @@ using UnityEngine.UI;
 
 public class P_CreatorToolController : MonoBehaviour
 {
+    // grid
+    public GameObject img_backGround;
+
     public GameObject panel_Login;
     public GameObject panel_SelectStory;
     public GameObject panel_CreateRoom;
@@ -504,6 +507,8 @@ public class P_CreatorToolController : MonoBehaviour
         PhotonNetwork.Disconnect();
 
         panel_Login.SetActive(true);
+        // grid
+        img_backGround.SetActive(true);
         gameObject.SetActive(false);
     }
 }
