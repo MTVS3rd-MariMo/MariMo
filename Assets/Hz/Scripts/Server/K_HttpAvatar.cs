@@ -25,7 +25,7 @@ public class K_HttpAvatar : MonoBehaviourPun
     public GameObject btn_ToMap;
 
     // URL
-    public string uploadUrl = "http://211.250.74.75:8202/api/avatar/upload-img";
+    public string uploadUrl = "http://211.250.74.75:8202/api/avatar/dummy/upload-img";
     private string avatarImgUrl;
     private List<string> animationUrls;
 
