@@ -30,7 +30,7 @@ public class K_HttpAvatar : MonoBehaviourPun
     private List<string> animationUrls;
 
     // 다른 유저 조회 URL
-    private string otherUserUrl = "http://52.78.164.236/api/avatar/upload-img";
+    //private string otherUserUrl = "http://52.78.164.236/api/avatar/upload-img";
 
     public GameObject bookCanvas;
 
