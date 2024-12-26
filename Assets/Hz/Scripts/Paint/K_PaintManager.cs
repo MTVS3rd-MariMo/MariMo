@@ -83,11 +83,4 @@ public class K_PaintManager : MonoBehaviour
     {
         SetPenColor(Color.green);
     }
-
-
-    public void CreateCharacter()
-    {
-        // 만들기 전 비활성
-        // 버튼 누르면 캐릭터 생성
-    }
 }
