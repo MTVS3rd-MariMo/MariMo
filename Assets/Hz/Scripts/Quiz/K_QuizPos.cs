@@ -35,13 +35,7 @@ public class K_QuizPos : MonoBehaviourPun
     {
         // 퀴즈 매니저 찾고
         quizManager = FindObjectOfType<K_QuizManager>();
-
-        if (quizManager == null)
-        {
-            print("퀴즈매니저업슴");
-        }
-
-
+        
         bookController = GameObject.Find("BookCanvas").GetComponent<Y_BookController>();
     }
 
@@ -53,8 +47,6 @@ public class K_QuizPos : MonoBehaviourPun
         text_Choices[1].text = choice2;
         text_Choices[2].text = choice3;
         text_Choices[3].text = choice4;
-        // 답도 마찬가지로 설정해줘야함
-        //text_Answer.text = answerIndex.ToString();
 
         // 답 (서버에서 int로 줌)
         // 서버로부터 받은 정답 인덱스 기반으로 올바른 선택지의 텍스트를 가져와서 저장
@@ -73,19 +65,11 @@ public class K_QuizPos : MonoBehaviourPun
                     correct.AddComponent<K_QuizCorrect>();
                 }
             }
-            //string correctAnswerText = text_Choices[answerIndex - 1].text;
-            //text_Answer.text = text_Choices[answerIndex].text; // 정답 번호 저장 (정답 인덱스)
-
-            Debug.Log("정답 오브젝트 설정 완료");
         }
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        //K_QuizUiManager.instance.isPlaying = true;
-
-        //Debug.Log("트리거된 오브젝트: " + other.gameObject.name);
-
         if (other.CompareTag("Player") && !isQuizStarted)
         {
             playerCount++;
@@ -99,7 +83,6 @@ public class K_QuizPos : MonoBehaviourPun
         if (other.gameObject == correct)
         {
             isInCorrectZone = true;
-            print("정답 구역 들어감");
         }
     }
 
@@ -137,10 +120,6 @@ public class K_QuizPos : MonoBehaviourPun
                 allPlayers[i].gameObject.transform.localScale = allPlayers[i].gameObject.GetComponent<Y_PlayerAvatarSetting>().quizScale;
             }
         }
-        else
-        {
-            Debug.LogError("quiManager 못찾음!");
-        }
     }
 
     private void OnTriggerExit(Collider other)
@@ -157,7 +136,6 @@ public class K_QuizPos : MonoBehaviourPun
         if (correctScript != null && correctScript.isCorrect)
         {
             // 정답 처리
-            print("정답!");
             // 정답 UI 띄워주기
             K_QuizUiManager.instance.img_correctA.gameObject.SetActive(true);
             // 정답 UI 2초 뒤에 숨겨주기
@@ -175,7 +153,6 @@ public class K_QuizPos : MonoBehaviourPun
         else
         {
             // 오답 처리
-            print("정답이 아님, 오답 처리");
             K_QuizUiManager.instance.img_wrongA.gameObject.SetActive(true);
             StartCoroutine(HideWrongAnswer(2f));
             return false;
@@ -194,11 +171,6 @@ public class K_QuizPos : MonoBehaviourPun
             quizManager.isPlaying = false;
             quizManager.isCounting = false;
         }
-
-        //isInCorrectZone = false;
-        //isQuizStarted = false;
-        //K_QuizManager.instance.isPlaying = false;
-        //K_QuizManager.instance.isCounting = false;
     }
 
     // 오답입니다 UI 코루틴 함수

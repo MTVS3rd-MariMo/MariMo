@@ -53,15 +53,12 @@ public class K_Drawing : MonoBehaviour
         pen_Active = true;
         K_Erasing.erase_Active = false;
         K_PaintBin.bucket_Active = false;
-        //print("눌리니?");
-
     }
 
     public void ButtonOff()
     {
         pen_Active = false;
         K_Erasing.erase_Active = true;
-        print("그만 눌려라 ");
     }
 
     Vector2 lastPosition, currPosition = Vector2.zero;
@@ -71,11 +68,7 @@ public class K_Drawing : MonoBehaviour
     {
         if (pen_Active)
         {
-            //print("pen Activated!");
             RectTransformUtility.ScreenPointToLocalPointInRectangle(paint_RT, Input.mousePosition, null, out currPosition);
-            //currPosition.x = Mathf.Clamp((int)currPosition.x, 0, pixel_Width - 1);
-            //currPosition.y = Mathf.Clamp((int)currPosition.y, 0, pixel_Height - 1);
-
             mousePosition = new Vector2
                 (
                     (currPosition.x / pixel_Width + 0.5f) * pixel_Width,
@@ -86,14 +79,11 @@ public class K_Drawing : MonoBehaviour
             if (Input.GetMouseButtonDown(0))
             {
                 Draw_Jum(mousePosition);
-                //lastPosition = currPosition;
             }
 
             else if (Input.GetMouseButton(0))
             {
                 Draw_Line(lastPosition, mousePosition);
-                //lastPosition = currPosition;
-
             }
 
             pixel_Texture.Apply();
@@ -122,9 +112,6 @@ public class K_Drawing : MonoBehaviour
         int brush_Width = (int)mousePos.x;
         int brush_Height = (int)mousePos.y;
 
-        //print(brush_Height);
-        //print(brush_Width);
-
         for (int height_Plus = -3; height_Plus <= 3; height_Plus++)
         {
             for (int width_Plus = -3; width_Plus <= 3; width_Plus++)
@@ -138,7 +125,6 @@ public class K_Drawing : MonoBehaviour
         }
 
         lastPosition = mousePos;
-        //pixel_Texture.Apply();
     }
 
     void Draw_Line(Vector2 lastPos, Vector2 currPos)

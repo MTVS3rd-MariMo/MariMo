@@ -40,8 +40,6 @@ public class K_QuizCorrect : MonoBehaviour
             {
                 // 정답 true
                 isCorrect = true;
-                print("정답구역");
-
             }
         }
     }
@@ -66,7 +64,6 @@ public class K_QuizCorrect : MonoBehaviour
             playerCount--;
             if(playerCount < 4)
             isCorrect = false;
-            print("정답구역 벗어남");
         }
     }
 }

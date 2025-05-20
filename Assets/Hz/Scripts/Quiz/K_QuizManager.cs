@@ -26,12 +26,7 @@ public class K_QuizManager : MonoBehaviourPun
 
     // 플레이어 선택한 선택지 저장 인덱스
     private int selectedIndex = -1;
-
-
-    // 연출용 요소들
-    //public Image blackScreen;
-    //public PlayableDirector timeline;
-
+    
 
 
     public Y_BookController bookController;
@@ -39,17 +34,6 @@ public class K_QuizManager : MonoBehaviourPun
     private void Start()
     {
         bookController = GameObject.Find("BookCanvas").GetComponent<Y_BookController>();
-    }
-
-    void Update()
-    {
-        // 플레이어 4명 모두 오면 활성화 -> 카운트 다운 하기
-        if (isPlaying)
-        {
-            // 입장
-            // 연출 시작
-            //StartCoroutine(Start_Production());
-        }
     }
 
     // 카운트다운 함수 -> 코루틴으로 재실행
@@ -90,7 +74,6 @@ public class K_QuizManager : MonoBehaviourPun
             int seconds = second % 60;
 
             // 퀴즈 카운트_초 텍스트 
-            //K_QuizUiManager.instance.text_countDown.text = second.ToString();
             // 00 : 15로 변경하기
             K_QuizUiManager.instance.text_countDown.text = string.Format("{0:D2}:{1:D2}", minutes, seconds);
 
@@ -159,7 +142,6 @@ public class K_QuizManager : MonoBehaviourPun
 
                     //RPC_CHeckAnswer();
                 }
-                print("정답 RPC 됨?");
 
                 if (!PhotonNetwork.IsMasterClient)
                 {
@@ -187,9 +169,7 @@ public class K_QuizManager : MonoBehaviourPun
         //내가 정답인지 아닌지 쏴준다
         K_QuizCorrect correctScript = quizCorrect.correct.GetComponent<K_QuizCorrect>();
         bool isCorrect = correctScript.isMinePlayerCorrect;
-
-        print("제출한 답 : " + isCorrect);
-
+        
         // 정답 받아서 리스트 저장시키기 (학생일 경우의 답만 저장)
         if(!PhotonNetwork.IsMasterClient)
         {
@@ -206,7 +186,6 @@ public class K_QuizManager : MonoBehaviourPun
     [PunRPC]
     public void GetAnswer(bool playerAnswer)
     {
-        print("받은 답 : " + playerAnswer);
         //정답인지 아닌지 받아서 리스트에 저장   
         answerList.Add(playerAnswer);
     }
@@ -216,9 +195,7 @@ public class K_QuizManager : MonoBehaviourPun
     //정답이 4개 올때까지 기다리는 함수
     public IEnumerator WaitFourAnswer()
     {
-        print("정답 기다리는중");
         yield return new WaitUntil(() => answerList.Count == 4);
-        print("모든 정답 수집 완료");
 
         // 정답 판별 함수 호출 (정답 판별은 선생님이 한번만)
         if(PhotonNetwork.IsMasterClient)
@@ -236,8 +213,6 @@ public class K_QuizManager : MonoBehaviourPun
     [PunRPC]
     public void CheckAnswer()
     {
-        print("정답체크");
-
         // isCorrect 초기에 false
         bool isCorrect = false;
         //정답 리스트를 for 문을 통해 모두가 정답인지 확인
@@ -256,7 +231,6 @@ public class K_QuizManager : MonoBehaviourPun
         // isCorrect가 true인지를 CheckAnswer 함수를 통해 받아오기
         if (isCorrect)
         {
-            print("isCorrect");
             // 정답이면 퀴즈 종료
             EndQuiz();
             // 연출 카메라 꺼주기 (원래대로 맵으로 돌아감)
@@ -268,7 +242,6 @@ public class K_QuizManager : MonoBehaviourPun
         }
         else
         {
-            print("isInCorrect");
             // 오답 UI
             K_QuizUiManager.instance.img_wrongA.gameObject.SetActive(true);
             // 2초 후에 꺼줄거임
@@ -276,7 +249,6 @@ public class K_QuizManager : MonoBehaviourPun
 
             // 재시작 함수 실행
             StartCoroutine(RestartQuiz(5f));
-            print("Restart??? YES");
         }
     }
 
@@ -291,12 +263,9 @@ public class K_QuizManager : MonoBehaviourPun
 
     public void EndQuiz()
     {
-        print("퀴즈 종료 호출 체크");
         isPlaying = false;
         isCounting = false;
         currTime = 0;
-        // 카운트 다운 이미지 꺼주기
-        //K_QuizUiManager.instance.img_countDown.gameObject.SetActive(false);
 
         // 정답입니다 이미지 켜주기
         K_QuizUiManager.instance.img_correctA.gameObject.SetActive(true);
@@ -322,7 +291,7 @@ public class K_QuizManager : MonoBehaviourPun
         // 키 박스 다시 켜주자
         K_LobbyUiManager.instance.img_KeyEmptyBox.gameObject.SetActive(true);
         yield return new WaitForSeconds(1f);
-        // HZ TEST!!!!!!!!!!!!!!
+        // HZ 
         K_LobbyUiManager.instance.gameObject.SetActive(true);        
         yield return new WaitForSeconds(1f);
         K_KeyManager.instance.isDoneQuiz_1 = true;
@@ -346,10 +315,9 @@ public class K_QuizManager : MonoBehaviourPun
         //isDirecting = false;
 
         K_QuizUiManager.instance.img_wrongA.gameObject.SetActive(false);
-
+        
         // 카운트다운 다시 시작
         K_QuizUiManager.instance.img_countDown.gameObject.SetActive(true);
-        //StartCoroutine(HideDirection(2f));
     }
 
 
@@ -358,10 +326,6 @@ public class K_QuizManager : MonoBehaviourPun
     {
         yield return new WaitForSeconds(delay);
         K_QuizUiManager.instance.img_direction.gameObject.SetActive(false);
-
-        //yield return new WaitForSeconds(1f);
-        //img_countDown.gameObject.SetActive(true);
-        //isCounting = true;
     }
 
 
@@ -376,24 +340,11 @@ public class K_QuizManager : MonoBehaviourPun
             StartCoroutine(HideDirection(2f));
             isDirecting = true;
         }
-
-        //timeline.Play();
-
         yield return new WaitForSeconds(2f);
-
-        //timeline.Pause();
-
-        //CountDown(); // UI 시작
-        // 이걸 업데이트에서 해주면 안댐;;
     }
 
     IEnumerator End_Production()
     {
-        //timeline.Play();
-        // 퀴즈 박스 다시 켜주기
-        //K_LobbyUiManager.instance.img_KeyEmptyBox.gameObject.SetActive(true);
-
         yield return new WaitForSeconds(2f);
-
     }
 }

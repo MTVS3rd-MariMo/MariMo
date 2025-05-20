@@ -28,14 +28,12 @@ public class K_QuizSpawnMgr : MonoBehaviourPun
 
     void Start()
     {
-        print("Start 전");
         pv = GetComponent<PhotonView>();
 
         if(PhotonNetwork.IsMasterClient)
         {
             StartCoroutine(DelayStart(10f));
         }       
-        print("Start 후");
     }
 
     IEnumerator DelayStart(float delay)
@@ -52,15 +50,12 @@ public class K_QuizSpawnMgr : MonoBehaviourPun
             for (int i = 0; i < quizCount; i++)
             {
                 //SpawnObj(quizzes[i], i);
-
                 StartCoroutine(SpawnObj(quizzes_Names[i], i));
             }
         }
         else
         {
-            print("Not MasterClient1");
             yield return new WaitUntil(() => quiz_correct != null);
-            print("Not MasterClient2");
         }
     }
 
@@ -68,7 +63,7 @@ public class K_QuizSpawnMgr : MonoBehaviourPun
 
     IEnumerator SpawnObj(string obj, int idx)
     {
-        print("스폰옵젝 호출됨");
+        // 랜덤 
         //Vector3 center = quiz_spawnCenter[idx];
         //Vector3 size = quiz_spawnSize[idx];
         //Vector3 randomPos = GetRandomPosInArea(center, size);
@@ -85,12 +80,10 @@ public class K_QuizSpawnMgr : MonoBehaviourPun
             GameObject quizInstance = PhotonNetwork.Instantiate(obj, spawnPosition, Quaternion.identity);
             //yield return new WaitForSeconds(2f);
             yield return new WaitUntil(() => quizInstance != null);
-            print("퀴즈 인스턴스 생성");
 
             // 생성된 quizInstance에서 QuizPos 스크립트를 찾음
             K_QuizPos k_QuizPos = quizInstance.GetComponent<K_QuizPos>();
             yield return new WaitUntil(() => k_QuizPos != null);
-            print("퀴즈 포즈 받아옴");
 
             // 수업자료 받는거 기다리기
             //yield return new WaitUntil(() => classMaterial != null && idx < classMaterial.quizzes.Count);
@@ -110,19 +103,10 @@ public class K_QuizSpawnMgr : MonoBehaviourPun
                           quizData.choices1, quizData.choices2, quizData.choices3, quizData.choices4, quizData.answer);
 
                     //quiz_correct[idx] = k_QuizPos.correct;
-                    Debug.Log("정답 선택시 설정함");
 
-                }
-                else
-                {
-                    print("널이다");
                 }
             }
         }
-        else
-        {
-            print("프리팹 없음");
-        }    
     }
 
 
@@ -132,9 +116,7 @@ public class K_QuizSpawnMgr : MonoBehaviourPun
     // 퀴즈1 텍스트 업뎃
     public void UpdateQuizText(int idx, string question, string choice1, string choice2, string choice3, string choice4, int answerIndex)
     {
-        // 참조해
-        //K_QuizPos quizPos, Quiz quiz
-        //int idx, string question, string choice1, string choice2, string choice3, string choice4, int answerIndex
+        // 참조
         K_QuizPos quizPos = quizzes[idx].GetComponent<K_QuizPos>();
 
         if (quizPos != null)
@@ -154,15 +136,8 @@ public class K_QuizSpawnMgr : MonoBehaviourPun
             {
                 string correctAnswerText = quizPos.text_Choices[answerIndex -1].text;
                 answerNumber = answerIndex - 1; // 정답 번호 저장 (정답 인덱스)
-
-                Debug.Log($"정답은: {correctAnswerText} (인덱스: {answerIndex})");
+                
             }
-
-            Debug.Log("퀴즈 잘 들어감");
-        }
-        else
-        {
-            Debug.LogError("퀴즈업슴");
         }
     }
 
@@ -171,6 +146,7 @@ public class K_QuizSpawnMgr : MonoBehaviourPun
     {
         float x = Random.Range(0, 2) * quiz_correctASize.x;
         float y = Random.Range(0, 2) * quiz_correctASize.y;
+        
         // 크기를 1로 생각하기 (scale 10 생각 x)
         Vector3 randomPos = new Vector3(x, y, -0.01f) - (quiz_correctASize * 0.5f);
 

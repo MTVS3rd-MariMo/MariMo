@@ -44,8 +44,6 @@ public class K_PaintBin : MonoBehaviour
         bucket_Active = true;
         K_Drawing.pen_Active = false;
         K_Erasing.erase_Active = false;
-        print("눌리니?");
-
     }
 
     public void BinButtonOff()
@@ -53,7 +51,6 @@ public class K_PaintBin : MonoBehaviour
         bucket_Active = false;
         K_Drawing.pen_Active = false;
         K_Erasing.erase_Active = false;
-        print("그만 눌려라 ");
     }
 
     public void OnPaintBucketClick()
