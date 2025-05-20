@@ -24,7 +24,7 @@ public class K_KeyManager : MonoBehaviour
     public static K_KeyManager instance;
 
 
-    // 사용시
+    // 싱글톤 사용시!!
     // Hot Sitting 활동 완료 시 KeyManager의 bool 값을 true로 설정
     //K_KeyManager.Instance.isDoneHotSeating = true;
 
@@ -33,7 +33,6 @@ public class K_KeyManager : MonoBehaviour
         if (null == instance)
         {
             instance = this;
-            //DontDestroyOnLoad(gameObject);
         }
         else
         {
@@ -70,13 +69,8 @@ public class K_KeyManager : MonoBehaviour
         }
 
         // 총 열쇠 4개 -> 투명벽 열림 HZ 시연 때는 3개로 변경하기
-        if (totalKeys >= 3 && !isBarrierOpened)
+        if (totalKeys >= 4 && !isBarrierOpened)
         {
-            //// 스탬프 다모이면 큰 열쇠 이미지 띄워주는 함수
-            //K_KeyUiManager.instance.EndKeyUi();
-            //// 투명벽 열려
-            //OpenBarrier();
-
             // 여기도 코루틴써야하나 (왕 열쇠 띄워주는 함수..?)
             Y_GameManager.instance.RPC_Unlock();
             isBarrierOpened = true;
@@ -93,32 +87,11 @@ public class K_KeyManager : MonoBehaviour
         {
             StartCoroutine(DisplayGetKeyUI());
         }
-
-
-        // 열쇠 아이콘 업데이트 함수
-        //K_KeyUiManager.instance.UpdateKeyUI(totalKeys);
-        print("열쇠 획득! 현재 열쇠 갯수 : " + totalKeys);
-        
     }
 
     // 키 안내창 -> 키 아이콘 생성 딜레이 함수
     private IEnumerator DisplayGetKeyUI()
     {
-        //// 열쇠 획득 안내 해주고
-        //K_KeyUiManager.instance.img_getKeyDir.gameObject.SetActive(true);
-        //// 2초 대기 하고
-        //yield return new WaitForSeconds(2f);
-        //// 열쇠 획득 안내 사라지셈
-        //print("1번");
-        //K_KeyUiManager.instance.img_getKeyDir.gameObject.SetActive(false);
-        //yield return new WaitForSeconds(2f);
-        //print("2번");
-
-        //// 그리고 열쇠 아이콘 업데이트
-        //K_KeyUiManager.instance.UpdateKeyUI(totalKeys);
-
-
-        // 다시. 
         // 열린질문
         if (isDoneOpenQnA)
         {

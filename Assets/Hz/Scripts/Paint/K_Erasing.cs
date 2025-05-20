@@ -15,11 +15,7 @@ public class K_Erasing : MonoBehaviour
     int pixel_Width, pixel_Height;
 
     Color erase_Color;
-
-    //// '화이트 보드 전환'
-    //public static Color draw_Color = Color.white;
-
-    //public static Texture2D pixel_Texture;
+    
 
     private void Awake()
     {
@@ -39,17 +35,13 @@ public class K_Erasing : MonoBehaviour
     public void ButtonOn()
     {
         erase_Active = true;
-
         K_Drawing.pen_Active = false;
-        print("지우개 지워");
     }
 
     public void ButtonOff()
     {
         erase_Active = false;
-
         K_Drawing.pen_Active = true;
-        print("다시 그릴꺼야");
     }
 
     Vector2 lastPosition, currPosition = Vector2.zero;
@@ -60,27 +52,21 @@ public class K_Erasing : MonoBehaviour
         if (erase_Active)
         {
             RectTransformUtility.ScreenPointToLocalPointInRectangle(paint_RT, Input.mousePosition, null, out currPosition);
-            //currPosition.x = Mathf.Clamp((int)currPosition.x, 0, pixel_Width - 1);
-            //currPosition.y = Mathf.Clamp((int)currPosition.y, 0, pixel_Height - 1);
-
+            
             mousePosition = new Vector2
                 (
                     (currPosition.x / pixel_Width + 0.5f) * pixel_Width,
                     (currPosition.y / pixel_Height + 0.5f) * pixel_Height
-
                 );
 
             if (Input.GetMouseButtonDown(0))
             {
                 Erase_Jum(mousePosition);
-                //lastPosition = currPosition;
             }
 
             else if (Input.GetMouseButton(0))
             {
                 Erase_Line(lastPosition, mousePosition);
-                //lastPosition = currPosition;
-
             }
 
             K_Drawing.pixel_Texture.Apply();
@@ -91,10 +77,7 @@ public class K_Erasing : MonoBehaviour
     {
         int brush_Width = (int)mousePos.x;
         int brush_Height = (int)mousePos.y;
-
-        //print(brush_Height);
-        //print(brush_Width);
-
+        
         for (int height_Plus = -18; height_Plus <= 18; height_Plus++)
         {
             for (int width_Plus = -18; width_Plus <= 18; width_Plus++)
@@ -106,9 +89,7 @@ public class K_Erasing : MonoBehaviour
                 }
             }
         }
-
         lastPosition = mousePos;
-
     }
 
     void Erase_Line(Vector2 lastPos, Vector2 currPos)

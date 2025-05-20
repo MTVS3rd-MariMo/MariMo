@@ -19,14 +19,7 @@ public class K_PaintBin : MonoBehaviour
     // 색상 일치 허용 오차
     [SerializeField]
     float colorTolerance = 0.1f;
-
-    //public Button btn_PaintBin;
-
-    void Start()
-    {
-        // 이벤트 등록
-        //btn_PaintBin.onClick.AddListener(FloodFill(texture, startX, startY, fill_Color));
-    }
+    
 
     void Update()
     {
@@ -36,7 +29,6 @@ public class K_PaintBin : MonoBehaviour
             // 활성화
             OnPaintBucketClick();
         }
-
     }
 
     public void BinButtonOn()
@@ -84,8 +76,7 @@ public class K_PaintBin : MonoBehaviour
 
         // 대상 색상이 이미 채우기 색상과 같다면 종료하기
         if (ColorsMatch(targetColor, fillColor)) return;
-
-
+        
         // Queue
         Queue<Vector2Int> pixelsToCheck = new Queue<Vector2Int>();
         pixelsToCheck.Enqueue(new Vector2Int(startX, startY));
@@ -114,7 +105,6 @@ public class K_PaintBin : MonoBehaviour
             pixelsToCheck.Enqueue(new Vector2Int(x, y + 1));
             pixelsToCheck.Enqueue(new Vector2Int(x, y - 1));
         }
-
         // 텍스쳐 변경사항 적용
         texture.Apply();
     }

@@ -10,6 +10,7 @@ public class K_PaintClear : MonoBehaviour
     // 화이트 보드 가져올것
     [SerializeField]
     Image whiteBoard;
+    
     // 초기화 할 빈 텍스처
     [SerializeField]
     RawImage paint;
@@ -18,13 +19,12 @@ public class K_PaintClear : MonoBehaviour
 
     // 기본 배경 색상(흰색)
     private Color defaultColor = Color.white; 
-    // 그림을 그릴 텍스처
     
     // 초기화 텍스쳐
     private Texture2D blankTexture;
     int pixel_Width, pixel_Height;
 
-    // 그림 지울꺼냐는 안내 UI
+    // 그림 지울껀가? 안내 UI
     public GameObject img_PaintClear;
 
 
@@ -48,10 +48,6 @@ public class K_PaintClear : MonoBehaviour
         {
             paintTexture = texture;
         }       
-        else
-        {
-            // 초기화
-        }
     }
 
 
@@ -78,8 +74,6 @@ public class K_PaintClear : MonoBehaviour
     // 기본 빈 텍스처 초기화
     void ResetTexture()
     {
-        print("1");
-
         // K_Drawing의 static 텍스처를 초기화 (새로운 빈 텍스처로 설정)
         K_Drawing.pixel_Texture = new Texture2D((int)paint_RT.rect.width, (int)paint_RT.rect.height);
         
@@ -97,8 +91,6 @@ public class K_PaintClear : MonoBehaviour
 
         // 다시 그릴 수 있도록 K_Drawing의 StartDrawing 메서드 호출
         FindObjectOfType<K_Drawing>().StartDrawing();
-
-        print("2");
     }
 
 

@@ -49,9 +49,7 @@ public class K_KeyUiManager : MonoBehaviour
     {
         img_getKeyDir.gameObject.SetActive(false);
         img_endKeyDir.gameObject.SetActive(false);
-
         
-
         // 책갈피로 변경해줌 (애니메이션 적용)
         img_FinalKeyDir.gameObject.SetActive(false);
 
@@ -90,13 +88,8 @@ public class K_KeyUiManager : MonoBehaviour
     public void EndKeyUi()
     {
         // 왕열쇠 이미지 띄워주고 (이거 KEY_UI 프리팹으로 교체해야함)
-        //img_endKeyDir.gameObject.SetActive(true);
         img_FinalKeyDir.SetActive(true);
         StartCoroutine(HideLastKey());
-        //anim_FinalBookMark.Play("Key Animation");
-        // 1초뒤에 숨겨주고 -> 이것도 애니메이션 초에 맞게 UI false
-        //StartCoroutine(HideLastKey(3f));
-        //StartCoroutine(HideLastKey(1f));
     }
 
     // 코루틴 ~
@@ -106,21 +99,14 @@ public class K_KeyUiManager : MonoBehaviour
         
         yield return new WaitForSeconds(delay);
         img_getKeyDir.gameObject.SetActive(false);
-        print("안내 창 없어지니?");
     }
 
     // 마지막 큰 열쇠 이미지 3초뒤에 사라짐
     public IEnumerator HideLastKey()
     {
-        //yield return new WaitForSeconds();
-
-        // 애니메이션 이미지 켜주고
-        //img_FinalKeyDir.SetActive(true);
         anim_FinalBookMark.enabled = true;
-        //anim_FinalBookMark.Play("Key Animation");
         // 3초 후
         yield return new WaitForSeconds(3f);
-        //img_endKeyDir.gameObject.SetActive(false);
         // 이미지 꺼주기
         img_FinalKeyDir.SetActive(false);
 

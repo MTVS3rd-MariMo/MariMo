@@ -123,7 +123,6 @@ public class K_Drawing : MonoBehaviour
                 }
             }
         }
-
         lastPosition = mousePos;
     }
 

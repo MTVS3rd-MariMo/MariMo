@@ -49,12 +49,8 @@ public class K_AvatarVpSettings : MonoBehaviourPun
         bookController.AddAllPlayer(pv);
         index = pv.Owner.ActorNumber - 1;
         name = pv.Owner.NickName;
-        //print(PhotonNetwork.LocalPlayer.ActorNumber);
         y_PlayerMove = GetComponent<Y_PlayerMove>();
         layerMaskGround = LayerMask.GetMask("Ground");
-
-        
-
     }
 
     private void Update()
@@ -87,14 +83,8 @@ public class K_AvatarVpSettings : MonoBehaviourPun
 
                     if (Physics.Raycast(ray, out hit, 9999f, layerMaskGround))
                     {
-                        //print("디버그?");
-
-                        //y_PlayerMove.agent.SetDestination(hit.point);
-
                         // Walk 상태
                         SetWalkingState(isMove);
-
-                        //Debug.LogError(ray);
                     }
                 }
             }
@@ -112,11 +102,6 @@ public class K_AvatarVpSettings : MonoBehaviourPun
         {
             pv.RPC(nameof(SelectCharNum), RpcTarget.AllBuffered, characterIndex);
         }
-        else
-        {
-            Debug.Log("rpc업슴");
-        }
-        
     }
 
     [PunRPC]
@@ -130,26 +115,20 @@ public class K_AvatarVpSettings : MonoBehaviourPun
         // Debug
         if(avatarIndex < 0 || avatarIndex >= renderTextures.Length)
         {
-            Debug.Log("Invalid avatarIndex : " + avatarIndex + ". Array length is " + renderTextures.Length);
             return;
         }
 
         if(rawImage == null || vp == null)
         {
-            Debug.Log("로우이미지 vp 업슴");
             return;
         }
 
         if (renderTextures[avatarIndex] == null)
         {
-            Debug.LogError("Render texture at index " + avatarIndex + " is null");
             return;
         }
-
-
-        //print(avatarIndex);
+        
         rawImage.texture = vp.targetTexture = renderTextures[avatarIndex];
-        //print("renderTexture" + renderTextures[avatarIndex]);
     }
 
     // 서버에서 전달받은 비디오 URL 적용
@@ -163,10 +142,6 @@ public class K_AvatarVpSettings : MonoBehaviourPun
 
         if (vp != null && adjustActorNumber >= 0 && adjustActorNumber <= 3)
         {
-            
-
-            // 연산자 사용해보기
-            //print(videoPath);
             vp.targetTexture = renderTextures[adjustActorNumber];
             rawImage.material = new Material(rawImage.material);
             rawImage.material.mainTexture = vp.targetTexture;
@@ -174,21 +149,13 @@ public class K_AvatarVpSettings : MonoBehaviourPun
             if (idlePath != null)
             {
                 idleUrl = idlePath;
-                print("idleUrl 은 머야 " + idleUrl);
                 PlayCurrAnim();
             }
 
             if(walkPath != null)
             {
                 walkUrl = walkPath;
-                print("walkUrl 은 머야 " + walkUrl);
             }
-
-
-            //vp.prepareCompleted += OnVideoPrepared;
-            print("준비됐나요? ");
-            
-            //PlayCurrAnim();
         }
     }
 
@@ -200,29 +167,20 @@ public class K_AvatarVpSettings : MonoBehaviourPun
             vp.url = walkUrl;
             vp.Play();
             currState = isWalking ? AnimState.Walk : AnimState.Idle;
-            //print("걷기로 전환");
         }
         else if(!walking && currState == AnimState.Walk)
         {
             vp.url = idleUrl;
             currState = isWalking ? AnimState.Walk : AnimState.Idle;
             vp.Play();
-            //print("대기로 전환");
 
         }
-
-        //PlayCurrAnim();
-
-        //print("SetWalkingState?");
     }
 
     public void PlayCurrAnim()
     {
         vp.url = idleUrl;
-        //vp.Prepare();
         vp.Play();
-
-        print("PlayAnim?!!!!!!!!!!!!!!!!!!!!!!!!!!");
     }
 
 
@@ -230,7 +188,6 @@ public class K_AvatarVpSettings : MonoBehaviourPun
     private void OnVideoPrepared(VideoPlayer source)
     {
         vp.Play();
-        //Debug.Log("비디오가 성공적으로 재생되었습니다: " + vp.url);
     }
 
     public void SetAvatarImage(Texture2D texture)
@@ -243,7 +200,6 @@ public class K_AvatarVpSettings : MonoBehaviourPun
                 new Vector2(0.5f, 0.5f)
             );
             rawImage.texture = texture;
-            Debug.Log("아바타 이미지가 성공적으로 적용되었습니다.");
         }
     }
 
@@ -256,7 +212,6 @@ public class K_AvatarVpSettings : MonoBehaviourPun
     void UpdatePhoto(int index)
     {
         avatarIndex = index - 1;
-        //print("avatarIndex from UpdatePhoto: " + avatarIndex);
         bookController.buttons[avatarIndex].GetComponent<Image>().sprite = images[avatarIndex];
     }
 }

@@ -10,12 +10,7 @@ public class K_MapQuizSetUp : MonoBehaviour
     public List<Quiz> quizzes;
     // 수업자료
     ClassMaterial classMaterial;
-
-    //// 퀴즈 문제, 선지, 정답
-    //public TMP_Text Question;
-    //public TMP_Text[] Choices;
-    //public TMP_Text answer;
-
+    
     // 퀴즈 안에 있는 스크립트
     K_QuizPos k_QuizPos;
 
@@ -40,12 +35,6 @@ public class K_MapQuizSetUp : MonoBehaviour
     {
         // classMaterial 받아오기
         classMaterial = Y_HttpRoomSetUp.GetInstance().realClassMaterial;
-        //quizzes = classMaterial.quizzes;
-
-        //if(quiz1Pos != null && quiz2Pos != null)
-        //{
-        //    ReSetQuizzes();
-        //}
     }
 
 
@@ -74,8 +63,6 @@ public class K_MapQuizSetUp : MonoBehaviour
     // 퀴즈 리셋후 조정
     private void ReSetQuizzes()
     {
-        print("호출댐2? ");
-
         if (classMaterial != null && classMaterial.quizzes.Count >= 2)
         {
             Quiz firstQuiz = classMaterial.quizzes[0];
@@ -84,10 +71,6 @@ public class K_MapQuizSetUp : MonoBehaviour
             Quiz secondQuiz = classMaterial.quizzes[1];
             UpdateQuizText(quiz2Pos, secondQuiz);
 
-        }
-        else
-        {
-            Debug.Log("수업자료 비었음");
         }
     }
 
@@ -108,12 +91,7 @@ public class K_MapQuizSetUp : MonoBehaviour
             // 답
             int correctIndex = quiz.answer;
             quizPos.text_Choices[3].text = correctIndex.ToString();
-
-            Debug.Log("퀴즈 잘 들어감");
-        }
-        else
-        {
-            Debug.LogError("퀴즈업슴");
+            
         }
     }
 }

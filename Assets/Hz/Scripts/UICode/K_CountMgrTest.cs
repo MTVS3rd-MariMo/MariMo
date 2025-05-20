@@ -12,12 +12,10 @@ public class K_CountMgrTest : MonoBehaviour
         if (players.Length >= 1 && K_LobbyUiManager.instance != null)
         {
             K_LobbyUiManager.instance.isAllArrived = true;
-            print("4명 다옴");
         }
         else if (K_LobbyUiManager.instance != null)
         {
             K_LobbyUiManager.instance.isAllArrived = false;
-            print("아직 4명 안댐");
         }
     }
 }
