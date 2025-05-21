@@ -63,13 +63,13 @@ public class K_QuizSpawnMgr : MonoBehaviourPun
 
     IEnumerator SpawnObj(string obj, int idx)
     {
-        // 랜덤 
-        //Vector3 center = quiz_spawnCenter[idx];
-        //Vector3 size = quiz_spawnSize[idx];
-        //Vector3 randomPos = GetRandomPosInArea(center, size);
+        // 랜덤 (기존)
+        Vector3 center = quiz_spawnCenter[idx];
+        Vector3 size = quiz_spawnSize[idx];
+        Vector3 randomPos = GetRandomPosInArea(center, size);
 
-        ////// 시연 때 고정으로 퀴즈 스폰할 것
-        Vector3 spawnPosition = spawnPoints[idx].position;
+        ////// 시연용 고정으로 퀴즈 스폰할 것 
+        //Vector3 spawnPosition = spawnPoints[idx].position;
 
         // Resources 폴더에서 quizName으로 프리팹을 로드하고 PhotonNetwork.Instantiate로 생성
         GameObject quizPrefab = Resources.Load<GameObject>(obj);
@@ -77,33 +77,25 @@ public class K_QuizSpawnMgr : MonoBehaviourPun
         // 퀴즈 프리팹 있다면
         if (quizPrefab != null)
         {
-            GameObject quizInstance = PhotonNetwork.Instantiate(obj, spawnPosition, Quaternion.identity);
-            //yield return new WaitForSeconds(2f);
+            // 시연용 -> 랜덤으로 변경했음!
+            GameObject quizInstance = PhotonNetwork.Instantiate(obj, randomPos, Quaternion.identity);
             yield return new WaitUntil(() => quizInstance != null);
 
             // 생성된 quizInstance에서 QuizPos 스크립트를 찾음
             K_QuizPos k_QuizPos = quizInstance.GetComponent<K_QuizPos>();
             yield return new WaitUntil(() => k_QuizPos != null);
-
-            // 수업자료 받는거 기다리기
-            //yield return new WaitUntil(() => classMaterial != null && idx < classMaterial.quizzes.Count);
-
-            /////////////////// 퀴즈데이터
+            
+            
+            // 퀴즈데이터
             if (idx < classMaterial.quizzes.Count)
             {
-                print("퀴즈 받았니?");
                 Quiz quizData = classMaterial.quizzes[idx];
                 PhotonView quizPv = quizInstance.GetComponent<PhotonView>();
-
-                print("널?");
+                
                 if (quizPv != null)
                 {
-                    print("널2??");
                     quizPv.RPC(nameof(k_QuizPos.InitializeQuiz), RpcTarget.AllBuffered, idx, quizData.question,
                           quizData.choices1, quizData.choices2, quizData.choices3, quizData.choices4, quizData.answer);
-
-                    //quiz_correct[idx] = k_QuizPos.correct;
-
                 }
             }
         }
